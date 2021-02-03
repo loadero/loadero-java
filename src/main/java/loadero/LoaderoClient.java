@@ -19,6 +19,15 @@ public class LoaderoClient {
     private static final String PROJECT_ID = "5040";
     private static final String TEST_ID = "6866";
 
+    /**
+     * TODO: probably should be private helper method.
+     * getRequest() takes in two params and returns HttpUriRequest object
+     * with predefined headers such as Accept, Content-Type, Authorization.
+     *
+     * @param projectId - ID of the Loadero project
+     * @param testId - ID of the Loadero test
+     * @return
+     */
     public static HttpUriRequest getRequest(String projectId, String testId) {
         URI uri = URI.create(BASE_URL+"/projects/"+projectId+"/tests/"+testId);
         HttpUriRequest req = RequestBuilder.get(uri).build();
@@ -28,8 +37,13 @@ public class LoaderoClient {
         return req;
     }
 
+    /**
+     * Returns test description of the specified project and test.
+     * @param projectId
+     * @param testId
+     */
     public static void getTestDescription(String projectId, String testId) {
-        HttpUriRequest get = getRequest(PROJECT_ID, TEST_ID);
+        HttpUriRequest get = getRequest(projectId, testId);
         // Try-catch with resources statement that will close
         // everything for us after we are done.
         try (CloseableHttpClient client = HttpClients.custom().build();
