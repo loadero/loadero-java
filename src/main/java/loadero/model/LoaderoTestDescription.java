@@ -11,13 +11,12 @@ import lombok.ToString;
  * optional parameters to it. Params that are not specified is just empty String.
  */
 @Data
-@AllArgsConstructor
 @ToString
+@AllArgsConstructor
 public class LoaderoTestDescription {
     private final String name;
     private final String runMode;
     private final String incrementStrategy;
-    private final String testTimeout;
     private final int participantTimeout;
     private final String script;
     private final int startInterval;
