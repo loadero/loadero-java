@@ -5,7 +5,6 @@ import org.apache.http.HttpHeaders;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
-import org.apache.http.entity.HttpEntityWrapper;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
@@ -13,7 +12,7 @@ import org.apache.http.util.EntityUtils;
 import java.net.URI;
 
 public class LoaderoClient {
-    private static final String BASE_URL = "http://api.loadero.com/v2";
+    private static final String BASE_URL = "https://api.loadero.com/v2";
     private static final String LOADERO_API_TOKEN = System.getenv("LOADERO_API_TOKEN");
     private static final String PROJECT_ID = "5040";
     private static final String TEST_ID = "6866";
