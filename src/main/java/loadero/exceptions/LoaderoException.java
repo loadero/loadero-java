@@ -1,2 +1,4 @@
-package loadero.exceptions;public class LoaderoException {
+package loadero.exceptions;
+
+public class LoaderoException {
 }
