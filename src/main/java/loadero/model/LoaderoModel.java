@@ -1,2 +1,4 @@
-package loadero.model;public interface LoaderoModel {
+package loadero.model;
+
+public interface LoaderoModel {
 }
