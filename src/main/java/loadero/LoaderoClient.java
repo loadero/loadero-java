@@ -94,12 +94,21 @@ public class LoaderoClient {
     }
 
     public static void main(String[] args) {
-        LoaderoTestOptions test = new LoaderoTestOptions("new name 4",
-                30, 10, "performance",
-                "random", "");
-        LoaderoTestOptions getTest = getTestDescription(PROJECT_ID, TEST_ID);
-        System.out.println(getTest);
-        LoaderoTestOptions updateTest = updateTestDescription(PROJECT_ID, TEST_ID, test);
-        System.out.println(updateTest);
+        LoaderoTestOptions test = new LoaderoTestOptions(
+                "new name 5", 30,
+                10, "performance",
+                "random", "src/main/resources/test.js");
+
+        // Retrieving current test from loadero
+        LoaderoTestOptions currentTest = getTestDescription(PROJECT_ID, TEST_ID);
+        System.out.println("Current test: " + currentTest);
+        System.out.println("Setting new name and script");
+        // Setting new params
+        currentTest.setName("new test 6");
+        currentTest.setScript("src/main/resources/test1.js");
+        // Sending updated test options to Loadero
+        LoaderoTestOptions updatedTest = updateTestDescription(PROJECT_ID, TEST_ID, currentTest);
+
+        System.out.println("Updated test: " + updatedTest);
     }
 }
