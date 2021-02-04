@@ -12,6 +12,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import loadero.LoaderoClientUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -25,7 +26,6 @@ public class LoaderoClient {
     private static final String LOADERO_API_TOKEN = System.getenv("LOADERO_API_TOKEN");
     private static final String PROJECT_ID = "5040";
     private static final String TEST_ID = "6866";
-    private static final Gson gson = new Gson();
     private static final HttpClientBuilder client = HttpClients.custom();
     // TODO: create some generic method to create uris.
     private static final URI uri = URI.create(BASE_URL+"/projects/"+PROJECT_ID+"/tests/"+TEST_ID+"/");
@@ -39,14 +39,14 @@ public class LoaderoClient {
     public static LoaderoTestDescription getTestDescription(String projectId, String testId) {
         LoaderoTestDescription test = null;
         HttpUriRequest get = RequestBuilder.get(uri).build();
-        setDefaultHeaders(get);
+        LoaderoClientUtils.setDefaultHeaders(get, LOADERO_API_TOKEN);
         // Try-catch with resources statement that will close
         // everything for us after we are done.
         try (CloseableHttpClient client = HttpClients.custom().build();
              CloseableHttpResponse res = client.execute(get)) {
             HttpEntity entity = res.getEntity();
             test = Objects.requireNonNull(
-                    jsonToTestDescr(entity),
+                    LoaderoClientUtils.jsonToTestDescr(entity),
                     "Response returned null");
         } catch (NullPointerException | IOException e) {
             System.out.println(e.getMessage());
@@ -68,20 +68,23 @@ public class LoaderoClient {
                                              String testId,
                                              LoaderoTestDescription newTest) {
         LoaderoTestDescription result = null;
-        if (checkNull(newTest)) {
+        if (LoaderoClientUtils.checkNull(newTest)) {
             throw new NullPointerException();
         }
+
         try {
-            String testToJson = testDescrToJson(newTest);
+            String testToJson = LoaderoClientUtils.testDescrToJson(newTest);
             HttpEntity entity = new StringEntity(testToJson);
             HttpUriRequest put = RequestBuilder.put(uri)
                     .setEntity(entity)
                     .build();
-            setDefaultHeaders(put);
+            LoaderoClientUtils.setDefaultHeaders(put, LOADERO_API_TOKEN);
+
             try(CloseableHttpResponse res = client.build().execute(put)) {
                 if (res.getStatusLine().getStatusCode() == 200 &&
-                        !(checkNull(res.getEntity()))) {
-                    result = jsonToTestDescr(res.getEntity());
+                        !(LoaderoClientUtils.checkNull(res.getEntity()))) {
+                    result = LoaderoClientUtils.jsonToTestDescr(res.getEntity());
+                    System.out.println("Successfully updated.");
                 } else {
                     System.out.println(res.getStatusLine());
                 }
@@ -95,36 +98,23 @@ public class LoaderoClient {
     }
 
     public static void main(String[] args) {
+        LoaderoTestDescription test = new LoaderoTestDescription("new name 4",
+                30, 10, "performance",
+                "random", "function(client) {\n" +
+                "    // Example of locating elements using CSS selectors\n" +
+                "    client\n" +
+                "        // Navigate to website google.com\n" +
+                "        .url('https://www.google.com')\n" +
+                "        // Wait up to 10 seconds until 'body' element is visible)\n" +
+                "        .waitForElementVisible('body', 10 * 1000)\n" +
+                "        // Type \"Loadero\" in the search bar\n" +
+                "        .setValue('input[type=text]', 'Loadero')\n" +
+                "         // Trigger search by sending \"Enter\" key event in the search bar\n" +
+                "        .setValue('input[type=text]', client.Keys.ENTER);\n" +
+                "}");
         LoaderoTestDescription getTest = getTestDescription(PROJECT_ID, TEST_ID);
-        LoaderoTestDescription updateTest = updateTestDescription(PROJECT_ID, TEST_ID, null);
+        System.out.println(getTest);
+        LoaderoTestDescription updateTest = updateTestDescription(PROJECT_ID, TEST_ID, test);
         System.out.println(updateTest);
-    }
-
-    private static boolean checkNull(Object test) {
-        return Objects.isNull(test);
-    }
-    // Converts JSON from response into LoaderTestDescription object
-    private static LoaderoTestDescription jsonToTestDescr(HttpEntity entity) {
-        LoaderoTestDescription test = null;
-        try {
-            test = gson.fromJson(EntityUtils.toString(entity), LoaderoTestDescription.class);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return test;
-    }
-
-    private static String testDescrToJson(LoaderoTestDescription test) {
-        return gson.toJson(test);
-    }
-
-    /**
-     * Sets some default headers for Http methods.
-     * @param req - Http request for which set default headers
-     */
-    private static void setDefaultHeaders(HttpUriRequest req) {
-        req.setHeader(HttpHeaders.ACCEPT, "application/json");
-        req.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
-        req.setHeader(HttpHeaders.AUTHORIZATION, "LoaderoAuth " + LOADERO_API_TOKEN);
     }
 }
