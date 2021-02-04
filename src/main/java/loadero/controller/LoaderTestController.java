@@ -9,7 +9,6 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 
 import java.io.IOException;
@@ -23,12 +22,13 @@ import java.util.Objects;
  */
 public class LoaderTestController extends LoaderoAbstractController {
 
-    public LoaderTestController(URI uri, String loaderoApiToken) {
-        super(uri, loaderoApiToken);
+    public LoaderTestController(URI uri, String loaderoApiToken,
+                                String projectId, String testId) {
+        super(uri, loaderoApiToken, projectId, testId);
     }
 
     @Override
-    public LoaderoModel getById(String projectId, String testId) {
+    public LoaderoTestOptions get() {
         LoaderoTestOptions test = null;
         HttpUriRequest get = RequestBuilder.get(super.getUri()).build();
         LoaderoClientUtils.setDefaultHeaders(get, super.getLoaderoApiToken());
@@ -45,45 +45,16 @@ public class LoaderTestController extends LoaderoAbstractController {
         }
         return test;
     }
-//
-//    public LoaderoTestOptions getTestDescription(String projectId, String testId) {
-//        LoaderoTestOptions test = null;
-//        HttpUriRequest get = RequestBuilder.get(uri).build();
-//        LoaderoClientUtils.setDefaultHeaders(get, loaderoApiToken);
-//        // Try-catch with resources statement that will close
-//        // everything for us after we are done.
-//        try (CloseableHttpClient client = HttpClients.custom().build();
-//             CloseableHttpResponse res = client.execute(get)) {
-//            HttpEntity entity = res.getEntity();
-//            test = Objects.requireNonNull(
-//                    LoaderoClientUtils.jsonToTestDescr(entity),
-//                    "Response returned null");
-//        } catch (NullPointerException | IOException e) {
-//            System.out.println(e.getMessage());
-//        }
-//        return test;
-//    }
 
-
-    // TODO: refactor, make more readable
-    /**
-     * Updates description for specified Loadero test in specified project.
-     * Returns LoaderoTestDescription object.
-     * @param projectId
-     * @param testId
-     * @param newTest - LoaderoTestDescription that will replace old one.
-     * @return
-     */
-    public LoaderoTestOptions updateTestDescription(String projectId,
-                                                           String testId,
-                                                           LoaderoTestOptions newTest) {
+    @Override
+    public LoaderoTestOptions update(LoaderoModel newTest) {
         LoaderoTestOptions result = null;
         if (LoaderoClientUtils.checkNull(newTest)) {
             throw new NullPointerException();
         }
 
         try {
-            String testToJson = LoaderoClientUtils.testDescrToJson(newTest);
+            String testToJson = LoaderoClientUtils.modelDescrToJson(newTest);
             HttpEntity entity = new StringEntity(testToJson);
             HttpUriRequest put = RequestBuilder.put(super.getUri())
                     .setEntity(entity)
