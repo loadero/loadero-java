@@ -3,6 +3,7 @@ package loadero.controller;
 import loadero.LoaderoClientUtils;
 import loadero.model.LoaderoModel;
 import loadero.model.LoaderoTestOptions;
+import loadero.model.LoaderoType;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -29,7 +30,7 @@ public class LoaderTestController extends LoaderoAbstractController {
 
     @Override
     public LoaderoTestOptions get() {
-        LoaderoTestOptions test = null;
+        LoaderoTestOptions test = new LoaderoTestOptions();
         HttpUriRequest get = RequestBuilder.get(super.getUri()).build();
         LoaderoClientUtils.setDefaultHeaders(get, super.getLoaderoApiToken());
         // Try-catch with resources statement that will close
@@ -37,8 +38,10 @@ public class LoaderTestController extends LoaderoAbstractController {
         try (CloseableHttpClient client = HttpClients.custom().build();
              CloseableHttpResponse res = client.execute(get)) {
             HttpEntity entity = res.getEntity();
-            test = Objects.requireNonNull(
-                    LoaderoClientUtils.jsonToTestDescr(entity),
+            test = (LoaderoTestOptions) Objects.requireNonNull(
+                    LoaderoClientUtils.jsonToObject(
+                            entity,
+                            LoaderoType.LOADERO_TEST),
                     "Response returned null");
         } catch (NullPointerException | IOException e) {
             System.out.println(e.getMessage());
@@ -48,7 +51,7 @@ public class LoaderTestController extends LoaderoAbstractController {
 
     @Override
     public LoaderoTestOptions update(LoaderoModel newTest) {
-        LoaderoTestOptions result = null;
+        LoaderoTestOptions result = new LoaderoTestOptions();
         if (LoaderoClientUtils.checkNull(newTest)) {
             throw new NullPointerException();
         }
@@ -64,7 +67,9 @@ public class LoaderTestController extends LoaderoAbstractController {
             try(CloseableHttpResponse res = super.getClient().build().execute(put)) {
                 if (res.getStatusLine().getStatusCode() == 200 &&
                         !(LoaderoClientUtils.checkNull(res.getEntity()))) {
-                    result = LoaderoClientUtils.jsonToTestDescr(res.getEntity());
+                    result = (LoaderoTestOptions) LoaderoClientUtils.jsonToObject(
+                            res.getEntity(),
+                            LoaderoType.LOADERO_TEST);
                     System.out.println("Successfully updated.");
                 } else {
                     System.out.println(res.getStatusLine());
