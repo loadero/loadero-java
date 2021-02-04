@@ -1,8 +1,9 @@
 package loadero.model;
 
-import lombok.AllArgsConstructor;
+import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 import lombok.ToString;
+import lombok.AllArgsConstructor;
 
 /**
  * LoaderoTestDescription object is a configuration profile to specify
@@ -15,9 +16,12 @@ import lombok.ToString;
 @AllArgsConstructor
 public class LoaderoTestDescription {
     private final String name;
-    private final String runMode;
-    private final String incrementStrategy;
-    private final int participantTimeout;
-    private final String script;
+    @SerializedName("start_interval")
     private final int startInterval;
+    @SerializedName("participant_timeout")
+    private final int participantTimeout;
+    private final String mode;
+    @SerializedName("increment_strategy")
+    private final String incrementStrategy;
+    private final String script;
 }
