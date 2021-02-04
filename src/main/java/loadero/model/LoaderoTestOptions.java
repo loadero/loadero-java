@@ -27,17 +27,6 @@ public class LoaderoTestOptions implements LoaderoModel {
     @Setter(AccessLevel.NONE)
     private String script;
 
-    public LoaderoTestOptions(String name, int startInterval,
-                              int participantTimeout, String mode,
-                              String incrementStrategy, String script) {
-        this.name = name;
-        this.startInterval = startInterval;
-        this.participantTimeout = participantTimeout;
-        this.mode = mode;
-        this.incrementStrategy = incrementStrategy;
-        this.script = script;
-    }
-
     public void setScript(String script) {
         this.script = jsToString(script);
     }
