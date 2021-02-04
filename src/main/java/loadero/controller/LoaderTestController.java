@@ -1,6 +1,7 @@
 package loadero.controller;
 
 import loadero.LoaderoClientUtils;
+import loadero.model.LoaderoModel;
 import loadero.model.LoaderoTestOptions;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -20,25 +21,17 @@ import java.util.Objects;
  * REST controller class responsible for CRUD actions related to tests.
  * Meaning here is defined logic for creating, updetaing, retrieving and deleting Loadero tests.
  */
-public class LoaderTestController {
-    private final URI uri;
-    private final String loaderoApiToken;
-    private final HttpClientBuilder client = HttpClients.custom();
+public class LoaderTestController extends LoaderoAbstractController {
 
     public LoaderTestController(URI uri, String loaderoApiToken) {
-        this.uri = uri;
-        this.loaderoApiToken = loaderoApiToken;
+        super(uri, loaderoApiToken);
     }
 
-    /**
-     * Returns test description for the specific test in specific project.
-     * @param projectId
-     * @param testId
-     */
-    public LoaderoTestOptions getTestDescription(String projectId, String testId) {
+    @Override
+    public LoaderoModel getById(String projectId, String testId) {
         LoaderoTestOptions test = null;
-        HttpUriRequest get = RequestBuilder.get(uri).build();
-        LoaderoClientUtils.setDefaultHeaders(get, loaderoApiToken);
+        HttpUriRequest get = RequestBuilder.get(super.getUri()).build();
+        LoaderoClientUtils.setDefaultHeaders(get, super.getLoaderoApiToken());
         // Try-catch with resources statement that will close
         // everything for us after we are done.
         try (CloseableHttpClient client = HttpClients.custom().build();
@@ -52,6 +45,24 @@ public class LoaderTestController {
         }
         return test;
     }
+//
+//    public LoaderoTestOptions getTestDescription(String projectId, String testId) {
+//        LoaderoTestOptions test = null;
+//        HttpUriRequest get = RequestBuilder.get(uri).build();
+//        LoaderoClientUtils.setDefaultHeaders(get, loaderoApiToken);
+//        // Try-catch with resources statement that will close
+//        // everything for us after we are done.
+//        try (CloseableHttpClient client = HttpClients.custom().build();
+//             CloseableHttpResponse res = client.execute(get)) {
+//            HttpEntity entity = res.getEntity();
+//            test = Objects.requireNonNull(
+//                    LoaderoClientUtils.jsonToTestDescr(entity),
+//                    "Response returned null");
+//        } catch (NullPointerException | IOException e) {
+//            System.out.println(e.getMessage());
+//        }
+//        return test;
+//    }
 
 
     // TODO: refactor, make more readable
@@ -74,12 +85,12 @@ public class LoaderTestController {
         try {
             String testToJson = LoaderoClientUtils.testDescrToJson(newTest);
             HttpEntity entity = new StringEntity(testToJson);
-            HttpUriRequest put = RequestBuilder.put(uri)
+            HttpUriRequest put = RequestBuilder.put(super.getUri())
                     .setEntity(entity)
                     .build();
-            LoaderoClientUtils.setDefaultHeaders(put, loaderoApiToken);
+            LoaderoClientUtils.setDefaultHeaders(put, super.getLoaderoApiToken());
 
-            try(CloseableHttpResponse res = client.build().execute(put)) {
+            try(CloseableHttpResponse res = super.getClient().build().execute(put)) {
                 if (res.getStatusLine().getStatusCode() == 200 &&
                         !(LoaderoClientUtils.checkNull(res.getEntity()))) {
                     result = LoaderoClientUtils.jsonToTestDescr(res.getEntity());
