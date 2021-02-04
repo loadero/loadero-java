@@ -20,6 +20,11 @@ import java.net.URI;
 import java.util.Objects;
 
 @Getter
+
+/**
+ * REST controller class responsible for CRUD actions related to tests.
+ * Meaning here is defined logic for creating, updetaing, retrieving and deleting Loadero tests.
+ */
 public abstract class LoaderoAbstractController {
     private final String loaderoApiToken;
     private final String projectId;
@@ -90,7 +95,7 @@ public abstract class LoaderoAbstractController {
                     result = LoaderoClientUtils.jsonToObject(
                             res.getEntity(),
                             type);
-                    System.out.println("Successfully updated.");
+                    System.out.println(type.toString() + " successfully updated.");
                 } else {
                     System.out.println(res.getStatusLine());
                 }

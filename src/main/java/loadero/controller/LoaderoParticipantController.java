@@ -1,7 +1,5 @@
 package loadero.controller;
 
-import java.net.URI;
-
 public class LoaderoParticipantController extends LoaderoAbstractController {
 
     public LoaderoParticipantController(String loaderoApiToken,
