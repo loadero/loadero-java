@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class LoaderoGroup {
+public class LoaderoGroup implements LoaderoModel {
     private String name;
     private int count;
     private List<LoaderoParticipant> loaderoParticipantList;
