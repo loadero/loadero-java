@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 
 @Data
-public class LoaderoParticipant {
+public class LoaderoParticipant implements LoaderoModel {
     private String name;
     @SerializedName("group_id")
     private long groupId;
