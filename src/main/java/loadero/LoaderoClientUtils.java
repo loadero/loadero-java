@@ -1,6 +1,7 @@
 package loadero;
 
 import com.google.gson.Gson;
+import loadero.model.LoaderoModel;
 import loadero.model.LoaderoTestOptions;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
@@ -25,7 +26,7 @@ public class LoaderoClientUtils {
         return test;
     }
 
-    public static String testDescrToJson(LoaderoTestOptions test) {
+    public static String modelDescrToJson(LoaderoModel test) {
         return gson.toJson(test);
     }
 
