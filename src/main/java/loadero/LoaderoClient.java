@@ -13,6 +13,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.util.Objects;
@@ -43,15 +44,26 @@ public class LoaderoClient {
         // everything for us after we are done.
         try (CloseableHttpClient client = HttpClients.custom().build();
              CloseableHttpResponse res = client.execute(get)) {
-            test = jsonToTestDescr(res.getEntity());
-        } catch (Exception e) {
+            HttpEntity entity = res.getEntity();
+            test = Objects.requireNonNull(
+                    jsonToTestDescr(entity),
+                    "Response returned null");
+        } catch (NullPointerException | IOException e) {
             System.out.println(e.getMessage());
         }
         return test;
     }
 
 
-    // TODO: refactor, make more readable, add javadoc
+    // TODO: refactor, make more readable
+    /**
+     * Updates description for specified Loadero test in specified project.
+     * Returns LoaderoTestDescription object.
+     * @param projectId
+     * @param testId
+     * @param newTest - LoaderoTestDescription that will replace old one.
+     * @return
+     */
     public static LoaderoTestDescription updateTestDescription(String projectId,
                                              String testId,
                                              LoaderoTestDescription newTest) {
