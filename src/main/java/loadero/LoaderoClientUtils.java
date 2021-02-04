@@ -35,8 +35,8 @@ public class LoaderoClientUtils {
         return result;
     }
 
-    public static String modelDescrToJson(LoaderoModel test) {
-        return gson.toJson(test);
+    public static String modelDescrToJson(LoaderoModel model) {
+        return gson.toJson(model);
     }
 
     /**
