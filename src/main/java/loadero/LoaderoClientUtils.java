@@ -1,8 +1,7 @@
 package loadero;
 
 import com.google.gson.Gson;
-import loadero.model.LoaderoModel;
-import loadero.model.LoaderoTestOptions;
+import loadero.model.*;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -16,14 +15,24 @@ public class LoaderoClientUtils {
         return Objects.isNull(test);
     }
     // Converts JSON from response into LoaderTestDescription object
-    public static LoaderoTestOptions jsonToTestDescr(HttpEntity entity) {
-        LoaderoTestOptions test = null;
+    public static LoaderoModel jsonToObject(HttpEntity entity, LoaderoType type) {
+        LoaderoModel result = null;
         try {
-            test = gson.fromJson(EntityUtils.toString(entity), LoaderoTestOptions.class);
+            switch (type) {
+                case LOADERO_TEST:
+                    result = gson.fromJson(EntityUtils.toString(entity), LoaderoTestOptions.class);
+                    break;
+                case LOADERO_GROUP:
+                    result = gson.fromJson(EntityUtils.toString(entity), LoaderoGroup.class);
+                    break;
+                case LOADERO_PARTICIPANT:
+                    result = gson.fromJson(EntityUtils.toString(entity), LoaderoParticipant.class);
+                    break;
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        return test;
+        return result;
     }
 
     public static String modelDescrToJson(LoaderoModel test) {
