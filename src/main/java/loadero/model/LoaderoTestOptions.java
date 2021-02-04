@@ -1,9 +1,11 @@
 package loadero.model;
 
 import com.google.gson.annotations.SerializedName;
-import lombok.Data;
-import lombok.ToString;
-import lombok.AllArgsConstructor;
+import lombok.*;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * LoaderoTestDescription object is a configuration profile to specify
@@ -12,16 +14,41 @@ import lombok.AllArgsConstructor;
  * optional parameters to it. Params that are not specified is just empty String.
  */
 @Data
-@ToString
-@AllArgsConstructor
 public class LoaderoTestOptions {
-    private final String name;
+    private String name;
     @SerializedName("start_interval")
-    private final int startInterval;
+    private int startInterval;
     @SerializedName("participant_timeout")
-    private final int participantTimeout;
-    private final String mode;
+    private int participantTimeout;
+    private String mode;
     @SerializedName("increment_strategy")
-    private final String incrementStrategy;
-    private final String script;
+    private String incrementStrategy;
+    @Setter(AccessLevel.NONE)
+    private String script;
+
+    public LoaderoTestOptions(String name, int startInterval,
+                              int participantTimeout, String mode,
+                              String incrementStrategy, String script) {
+        this.name = name;
+        this.startInterval = startInterval;
+        this.participantTimeout = participantTimeout;
+        this.mode = mode;
+        this.incrementStrategy = incrementStrategy;
+        this.script = script;
+    }
+
+    public void setScript(String script) {
+        this.script = jsToString(script);
+    }
+
+    private String jsToString(String pathToJs) {
+        String content = null;
+        try {
+            Path path = Path.of(pathToJs);
+            content = Files.readString(path);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        return content;
+    }
 }
