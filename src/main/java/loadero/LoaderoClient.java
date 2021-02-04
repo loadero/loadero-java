@@ -1,9 +1,7 @@
 package loadero;
 
-import com.google.gson.Gson;
-import loadero.model.LoaderoTestDescription;
+import loadero.model.LoaderoTestOptions;
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpHeaders;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
@@ -11,8 +9,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
-import loadero.LoaderoClientUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -36,8 +32,8 @@ public class LoaderoClient {
      * @param projectId
      * @param testId
      */
-    public static LoaderoTestDescription getTestDescription(String projectId, String testId) {
-        LoaderoTestDescription test = null;
+    public static LoaderoTestOptions getTestDescription(String projectId, String testId) {
+        LoaderoTestOptions test = null;
         HttpUriRequest get = RequestBuilder.get(uri).build();
         LoaderoClientUtils.setDefaultHeaders(get, LOADERO_API_TOKEN);
         // Try-catch with resources statement that will close
@@ -64,10 +60,10 @@ public class LoaderoClient {
      * @param newTest - LoaderoTestDescription that will replace old one.
      * @return
      */
-    public static LoaderoTestDescription updateTestDescription(String projectId,
-                                             String testId,
-                                             LoaderoTestDescription newTest) {
-        LoaderoTestDescription result = null;
+    public static LoaderoTestOptions updateTestDescription(String projectId,
+                                                           String testId,
+                                                           LoaderoTestOptions newTest) {
+        LoaderoTestOptions result = null;
         if (LoaderoClientUtils.checkNull(newTest)) {
             throw new NullPointerException();
         }
@@ -98,23 +94,12 @@ public class LoaderoClient {
     }
 
     public static void main(String[] args) {
-        LoaderoTestDescription test = new LoaderoTestDescription("new name 4",
+        LoaderoTestOptions test = new LoaderoTestOptions("new name 4",
                 30, 10, "performance",
-                "random", "function(client) {\n" +
-                "    // Example of locating elements using CSS selectors\n" +
-                "    client\n" +
-                "        // Navigate to website google.com\n" +
-                "        .url('https://www.google.com')\n" +
-                "        // Wait up to 10 seconds until 'body' element is visible)\n" +
-                "        .waitForElementVisible('body', 10 * 1000)\n" +
-                "        // Type \"Loadero\" in the search bar\n" +
-                "        .setValue('input[type=text]', 'Loadero')\n" +
-                "         // Trigger search by sending \"Enter\" key event in the search bar\n" +
-                "        .setValue('input[type=text]', client.Keys.ENTER);\n" +
-                "}");
-        LoaderoTestDescription getTest = getTestDescription(PROJECT_ID, TEST_ID);
+                "random", "");
+        LoaderoTestOptions getTest = getTestDescription(PROJECT_ID, TEST_ID);
         System.out.println(getTest);
-        LoaderoTestDescription updateTest = updateTestDescription(PROJECT_ID, TEST_ID, test);
+        LoaderoTestOptions updateTest = updateTestDescription(PROJECT_ID, TEST_ID, test);
         System.out.println(updateTest);
     }
 }
