@@ -14,7 +14,7 @@ import lombok.AllArgsConstructor;
 @Data
 @ToString
 @AllArgsConstructor
-public class LoaderoTestDescription {
+public class LoaderoTestOptions {
     private final String name;
     @SerializedName("start_interval")
     private final int startInterval;
