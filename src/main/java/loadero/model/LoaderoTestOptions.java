@@ -14,6 +14,7 @@ import java.nio.file.Path;
  * optional parameters to it. Params that are not specified is just empty String.
  */
 @Data
+@NoArgsConstructor
 public class LoaderoTestOptions implements LoaderoModel {
     private String name;
     @SerializedName("start_interval")
