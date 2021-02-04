@@ -2,15 +2,6 @@ package loadero;
 
 import loadero.controller.LoaderTestController;
 import loadero.model.LoaderoTestOptions;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.client.methods.RequestBuilder;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.HttpClients;
-
 import java.net.URI;
 
 // TODO: Parse return value into java object - Done
