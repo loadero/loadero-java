@@ -20,18 +20,20 @@ public class LoaderoClientUtils {
     public static LoaderoModel jsonToObject(HttpEntity entity, LoaderoType type) {
         LoaderoModel result = null;
         try {
+            String content = entity.getContent().toString();
+
             switch (type) {
                 case LOADERO_TEST:
-                    result = gson.fromJson(EntityUtils.toString(entity), LoaderoTestOptions.class);
+                    result = gson.fromJson(content, LoaderoTestOptions.class);
                     break;
                 case LOADERO_GROUP:
-                    result = gson.fromJson(EntityUtils.toString(entity), LoaderoGroup.class);
+                    result = gson.fromJson(content, LoaderoGroup.class);
                     break;
                 case LOADERO_PARTICIPANT:
-                    result = gson.fromJson(EntityUtils.toString(entity), LoaderoParticipant.class);
+                    result = gson.fromJson(content, LoaderoParticipant.class);
                     break;
                 case LOADERO_TEST_RESULT:
-                    result = gson.fromJson(EntityUtils.toString(entity), LoaderoTestResults.class);
+                    result = gson.fromJson(content, LoaderoTestResults.class);
                     break;
             }
         } catch (Exception e) {
