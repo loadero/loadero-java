@@ -40,44 +40,12 @@ public class LoaderoClient {
                 testUri,
                 LoaderoType.LOADERO_TEST);
 
-        // Starting test
-        LoaderoRunInfo startTestRun = (LoaderoRunInfo) testController.startTestRun(startRunsURI);
-        System.out.println(startTestRun);
-        String runsId = String.valueOf(startTestRun.getId());
-        URI getRunsURI = URI.create(testUri + "runs/" + runsId + "/");
+        // Starting test and collect run's info
+        LoaderoRunInfo runInfo = (LoaderoRunInfo) testController.startTestAndPoll(
+                startRunsURI, 20, 600
+        );
+        System.out.println(runInfo);
 
-        System.out.println("Current test: " + currentTest);
-        System.out.println();
-
-        boolean done = false;
-        int interval = 30000; // ms
-        int times = 4;
-        int timeout = 300000; // 5 mins
-        ConnectionKeepAliveStrategy keepAliveStrategy = new DefaultConnectionKeepAliveStrategy() {
-            @Override
-            public long getKeepAliveDuration(HttpResponse response,
-                                             HttpContext context) {
-                long keepAlive = super.getKeepAliveDuration(response, context);
-                if (keepAlive == -1) {
-                    keepAlive = timeout;
-                }
-                return keepAlive;
-            }
-        };
-        testController.getClient().setKeepAliveStrategy(keepAliveStrategy);
-        while (!done) {
-            Thread.sleep(interval);
-            LoaderoRunInfo getTestResult = (LoaderoRunInfo) testController
-                    .get(getRunsURI,
-                            LoaderoType.LOADERO_TEST_RESULT);
-            if (getTestResult.getStatus().equals("done")) {
-                done = true;
-                System.out.println("Done! Test results: " + getTestResult);
-            } else {
-                System.out.println("Test results are still not done.");
-                System.out.println("Test status: " + getTestResult.getStatus());
-            }
-        }
 
 //        String newScript = FunctionBodyParser.getBody("src/test/java/TestParser.java");
 

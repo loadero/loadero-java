@@ -42,7 +42,8 @@ public class LoaderoController {
     /**
      * Retrieves LoaderoModel i.e test, participant or group description
      * from the specific URI.
-     * @param uri - URI of the API to get data from
+     *
+     * @param uri  - URI of the API to get data from
      * @param type - type of the returned data
      */
     public LoaderoModel get(URI uri, LoaderoType type) {
@@ -65,8 +66,9 @@ public class LoaderoController {
 
     /**
      * Update operation on existing LoaderoModel by supplying new LoaderoModel
-     * @param uri - URI of the API pointing to which LoaderoModel(test, group or participant) to update
-     * @param type - type of the model to be created by factory
+     *
+     * @param uri      - URI of the API pointing to which LoaderoModel(test, group or participant) to update
+     * @param type     - type of the model to be created by factory
      * @param newModel - new model that will replace old one
      * @return
      */
@@ -105,11 +107,12 @@ public class LoaderoController {
     }
 
     /**
+     * Start test run by sending POST request to /runs url.
      *
      * @param uri
      * @return
      */
-    public LoaderoModel startTestRun(URI uri) {
+    private LoaderoModel startTestRun(URI uri) {
         LoaderoModel result = factory.getLoaderoModel(LoaderoType.LOADERO_RUN_INFO);
         try {
             HttpUriRequest postRun = RequestBuilder.post(uri).build();
@@ -129,12 +132,17 @@ public class LoaderoController {
                 }
             }
         } catch (IOException e) {
-            System.out.println(Arrays.toString(e.getStackTrace()));
+            e.printStackTrace();
         }
         return result;
     }
 
-    public void stopTestRun(URI uri) {
+    /**
+     * Stops test run by calling GET on /stop.
+     *
+     * @param uri
+     */
+    private void stopTestRun(URI uri) {
         URI stopURI = URI.create(uri + "stop/");
         HttpUriRequest stopRun = RequestBuilder.post(stopURI).build();
         LoaderoClientUtils.setDefaultHeaders(stopRun, loaderoApiToken);
@@ -142,10 +150,63 @@ public class LoaderoController {
         try (CloseableHttpResponse res = client.build().execute(stopRun)) {
             System.out.println("Stopping test run...");
         } catch (IOException e) {
-            System.out.println(Arrays.toString(e.getStackTrace()));
+            e.printStackTrace();
         }
     }
+
     /**
+     * @param uri      - uri from wher to get info
+     * @param interval - time in seconds between get requests
+     * @param timeout  - maximum amount of time in seconds should spend polling
+     * @return
+     */
+    private LoaderoModel startPolling(URI uri, String runId,
+                                      int interval, int timeout) {
+        LoaderoRunInfo result = null;
+        System.out.println("Run id: " + runId);
+        URI getRunsURI = URI.create(uri + runId + "/");
+        int tries = timeout / interval;
+
+        for (int i = 0; i < tries; i++) {
+            System.out.println("try number: " + i);
+            boolean done = false;
+            while (!done) {
+                try {
+                    Thread.sleep(interval);
+                    result = (LoaderoRunInfo) get(getRunsURI,
+                            LoaderoType.LOADERO_RUN_INFO);
+                    System.out.println(result);
+                    if (result.getStatus().equals("done")) {
+                        done = true;
+                        System.out.println("Done! Test run results: " + result);
+                    } else {
+                        System.out.println("Test run results are still not available.");
+                        System.out.println("Test status: " + result.getStatus());
+                    }
+                    if (System.currentTimeMillis() > timeout) {
+                        done = true;
+                        System.out.println("Time run out.");
+                    }
+                } catch (Exception e) {
+                    done = true;
+                    stopTestRun(uri);
+                }
+            }
+        }
+        return result;
+    }
+
+    public LoaderoModel startTestAndPoll(URI uri, int interval, int timeout) {
+        LoaderoRunInfo startTestRun = (LoaderoRunInfo) startTestRun(uri);
+        System.out.println("Start and poll: " + startTestRun);
+        return startPolling(uri,
+                String.valueOf(startTestRun.getId()),
+                1000*interval, 1000*timeout);
+    }
+
+
+    /**
+     * Helper method for startPolling().
      *
      * @param uri
      * @param interval
@@ -160,36 +221,25 @@ public class LoaderoController {
         while (!done) {
             try {
                 Thread.sleep(interval);
-                getInfo = (LoaderoRunInfo) get(uri, LoaderoType.LOADERO_RUN_INFO);
-
+                getInfo = (LoaderoRunInfo) get(uri,
+                        LoaderoType.LOADERO_RUN_INFO);
+                System.out.println(getInfo);
                 if (getInfo.getStatus().equals("done")) {
                     done = true;
-                    System.out.println("Done! Test results: " + getInfo);
+                    System.out.println("Done! Test run results: " + getInfo);
                 } else {
-                    System.out.println("Test results are still not done.");
+                    System.out.println("Test run results are still not available.");
                     System.out.println("Test status: " + getInfo.getStatus());
                 }
                 if (System.currentTimeMillis() > timeout) {
                     done = true;
-                    System.out.println("Time runs out.");
-                    stopTestRun(uri);
+                    System.out.println("Time run out.");
                 }
             } catch (Exception e) {
-                stopTestRun(uri);
                 done = true;
+                stopTestRun(uri);
             }
         }
         return getInfo;
-    }
-
-    public LoaderoModel startPolling(URI uri, int interval, int timeout) {
-        LoaderoRunInfo result = new LoaderoRunInfo();
-        int tries = timeout / interval;
-
-        for (int i = 0; i < tries; i++) {
-            result = (LoaderoRunInfo) startPollingTestRunInfo(uri, interval, timeout);
-        }
-
-        return result;
     }
 }
