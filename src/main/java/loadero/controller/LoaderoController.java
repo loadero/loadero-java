@@ -24,14 +24,14 @@ import java.util.Objects;
  * Meaning here is defined logic for creating, updetaing, retrieving and deleting Loadero tests.
  */
 @Getter
-public abstract class LoaderoAbstractController {
+public class LoaderoController {
     private final String loaderoApiToken;
     private final String projectId;
     private final String testId;
     private final HttpClientBuilder client = HttpClients.custom();
 
-    public LoaderoAbstractController(String loaderoApiToken, String projectId,
-                                     String testId) {
+    public LoaderoController(String loaderoApiToken, String projectId,
+                             String testId) {
         this.loaderoApiToken = loaderoApiToken;
         this.projectId = projectId;
         this.testId = testId;
