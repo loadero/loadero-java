@@ -7,6 +7,7 @@ public class LoaderoModelFactory implements LoaderoModel {
             case LOADERO_TEST: return new LoaderoTestOptions();
             case LOADERO_GROUP: return new LoaderoGroup();
             case LOADERO_PARTICIPANT: return new LoaderoParticipant();
+            case LOADERO_TEST_RESULT: return new LoaderoTestResults();
             default: return null;
         }
     }
