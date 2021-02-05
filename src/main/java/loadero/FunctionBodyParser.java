@@ -6,18 +6,23 @@ import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinte
 
 import java.io.File;
 
-public class TryParser {
-    private static final String path = "src/test/java/TestParser.java";
-    public static void main(String[] args) {
+/**
+ * This class responsibility is to provide simple parser to parse
+ * TestUI code snippets from given path and return them as strings
+ * to later pass those snippets as part of JSON request.
+ */
+public class FunctionBodyParser {
+    public static String getBody(String path) {
+        String result = "";
         try {
             CompilationUnit cu =  StaticJavaParser.parse(new File(path));
             LexicalPreservingPrinter.setup(cu);
-            String test = LexicalPreservingPrinter.print(cu);
-            test = test.substring(test.lastIndexOf("public"));
-            test = test.substring(0, test.indexOf('}')+1);
-            System.out.println(test);
+            result = LexicalPreservingPrinter.print(cu);
+            result = result.substring(result.lastIndexOf("public"));
+            result = result.substring(0, result.indexOf('}')+1);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        return result;
     }
 }

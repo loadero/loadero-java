@@ -12,6 +12,7 @@ import java.net.URI;
 
 // TODO: get rid of the casting
 // TODO: proper logging system
+// TODO: decide how to pass Ids and other params
 public class LoaderoClient {
     private static final String BASE_URL = "https://api.loadero.com/v2";
     private static final String LOADERO_API_TOKEN = System.getenv("LOADERO_API_TOKEN");
@@ -19,8 +20,7 @@ public class LoaderoClient {
     private static final String TEST_ID = "6866";
     private static final String GROUP_ID = "48797";
     private static final String PARTICIPANT_ID = "94633";
-
-    // TODO: create some method to create uris based on some params.
+    // TODO: create some method to create uris based on given params.
     private static final URI testUri =
             URI.create(BASE_URL+"/projects/"+PROJECT_ID+"/tests/"+TEST_ID+"/");
     private static final URI groupsURI =  URI.create(testUri + "groups/" + GROUP_ID + "/");
