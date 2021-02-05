@@ -3,6 +3,7 @@ package loadero.controller;
 import loadero.LoaderoClientUtils;
 import loadero.model.LoaderoModel;
 import loadero.model.LoaderoModelFactory;
+import loadero.model.LoaderoRunInfo;
 import loadero.model.LoaderoType;
 import lombok.Getter;
 import org.apache.http.HttpEntity;
@@ -123,6 +124,7 @@ public class LoaderoController {
                     );
                     System.out.println("Test successfully started.");
                 } else {
+                    stopTestRun(uri);
                     System.out.println(res.getStatusLine());
                 }
             }
@@ -133,19 +135,61 @@ public class LoaderoController {
     }
 
     public void stopTestRun(URI uri) {
+        URI stopURI = URI.create(uri + "stop/");
+        HttpUriRequest stopRun = RequestBuilder.post(stopURI).build();
+        LoaderoClientUtils.setDefaultHeaders(stopRun, loaderoApiToken);
 
+        try (CloseableHttpResponse res = client.build().execute(stopRun)) {
+            System.out.println("Stopping test run...");
+        } catch (IOException e) {
+            System.out.println(Arrays.toString(e.getStackTrace()));
+        }
     }
     /**
      *
      * @param uri
      * @param interval
-     * @param time
      * @param timeout
      * @return
      */
-    public LoaderoModel pollTestRunResults(URI uri, int interval,
-                                           int time, int timeout) {
+    private LoaderoModel startPollingTestRunInfo(URI uri, int interval, int timeout) {
 
-        return null;
+        boolean done = false;
+        LoaderoRunInfo getInfo = null;
+
+        while (!done) {
+            try {
+                Thread.sleep(interval);
+                getInfo = (LoaderoRunInfo) get(uri, LoaderoType.LOADERO_RUN_INFO);
+
+                if (getInfo.getStatus().equals("done")) {
+                    done = true;
+                    System.out.println("Done! Test results: " + getInfo);
+                } else {
+                    System.out.println("Test results are still not done.");
+                    System.out.println("Test status: " + getInfo.getStatus());
+                }
+                if (System.currentTimeMillis() > timeout) {
+                    done = true;
+                    System.out.println("Time runs out.");
+                    stopTestRun(uri);
+                }
+            } catch (Exception e) {
+                stopTestRun(uri);
+                done = true;
+            }
+        }
+        return getInfo;
+    }
+
+    public LoaderoModel startPolling(URI uri, int interval, int timeout) {
+        LoaderoRunInfo result = new LoaderoRunInfo();
+        int tries = timeout / interval;
+
+        for (int i = 0; i < tries; i++) {
+            result = (LoaderoRunInfo) startPollingTestRunInfo(uri, interval, timeout);
+        }
+
+        return result;
     }
 }
