@@ -24,21 +24,5 @@ public class LoaderoTestOptions implements LoaderoModel {
     private String mode;
     @SerializedName("increment_strategy")
     private String incrementStrategy;
-    @Setter(AccessLevel.NONE)
     private String script;
-
-    public void setScript(String script) {
-        this.script = jsToString(script);
-    }
-
-    private String jsToString(String pathToJs) {
-        String content = null;
-        try {
-            Path path = Path.of(pathToJs);
-            content = Files.readString(path);
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-        return content;
-    }
 }
