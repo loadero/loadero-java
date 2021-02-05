@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class LoaderoTestResults implements LoaderoModel {
+public class LoaderoRunInfo implements LoaderoModel {
     private long id;
     @SerializedName("test_id")
     private long testId;
