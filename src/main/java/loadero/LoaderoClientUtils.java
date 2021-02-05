@@ -11,10 +11,12 @@ import java.util.Objects;
 
 public class LoaderoClientUtils {
     private static final Gson gson = new Gson();
+
     public static boolean checkNull(Object test) {
         return Objects.isNull(test);
     }
-    // Converts JSON from response into LoaderTestDescription object
+
+    // Converts JSON from response into according LoaderModel object
     public static LoaderoModel jsonToObject(HttpEntity entity, LoaderoType type) {
         LoaderoModel result = null;
         try {
@@ -28,6 +30,9 @@ public class LoaderoClientUtils {
                 case LOADERO_PARTICIPANT:
                     result = gson.fromJson(EntityUtils.toString(entity), LoaderoParticipant.class);
                     break;
+                case LOADERO_TEST_RESULT:
+                    result = gson.fromJson(EntityUtils.toString(entity), LoaderoTestResults.class);
+                    break;
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -35,6 +40,7 @@ public class LoaderoClientUtils {
         return result;
     }
 
+    // Serializes LoaderModel into JSON
     public static String modelDescrToJson(LoaderoModel model) {
         return gson.toJson(model);
     }
