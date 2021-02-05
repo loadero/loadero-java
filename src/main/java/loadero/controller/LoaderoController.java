@@ -6,6 +6,7 @@ import loadero.model.LoaderoModelFactory;
 import loadero.model.LoaderoType;
 import lombok.Getter;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
@@ -16,7 +17,7 @@ import org.apache.http.impl.client.HttpClients;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.util.Objects;
+import java.util.Arrays;
 
 /**
  * REST controller class responsible for CRUD actions related to tests.
@@ -51,12 +52,10 @@ public class LoaderoController {
         // Try-catch with resources statement that will close
         // everything for us after we are done.
         try (CloseableHttpResponse res = client.build().execute(get)) {
-            HttpEntity entity = res.getEntity();
-            result = Objects.requireNonNull(
-                    LoaderoClientUtils.jsonToObject(
-                            entity,
-                            type),
-                    "Response returned null");
+            if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                HttpEntity entity = res.getEntity();
+                result = LoaderoClientUtils.jsonToObject(entity, type);
+            }
         } catch (NullPointerException | IOException e) {
             System.out.println(e.getMessage());
         }
@@ -73,7 +72,7 @@ public class LoaderoController {
     public LoaderoModel update(URI uri, LoaderoType type, LoaderoModel newModel) {
         LoaderoModel result = factory.getLoaderoModel(type);
 
-        if (LoaderoClientUtils.checkNull(newModel)) {
+        if (LoaderoClientUtils.isNull(newModel)) {
             throw new NullPointerException();
         }
 
@@ -86,8 +85,8 @@ public class LoaderoController {
             LoaderoClientUtils.setDefaultHeaders(put, loaderoApiToken);
 
             try (CloseableHttpResponse res = client.build().execute(put)) {
-                if (res.getStatusLine().getStatusCode() == 200 &&
-                        !(LoaderoClientUtils.checkNull(res.getEntity()))) {
+                if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK &&
+                        !(LoaderoClientUtils.isNull(res.getEntity()))) {
                     result = LoaderoClientUtils.jsonToObject(
                             res.getEntity(),
                             type);
@@ -104,17 +103,23 @@ public class LoaderoController {
         return result;
     }
 
+    /**
+     *
+     * @param uri
+     * @return
+     */
     public LoaderoModel startTestRun(URI uri) {
-        LoaderoModel result = factory.getLoaderoModel(LoaderoType.LOADERO_TEST_RESULT);
+        LoaderoModel result = factory.getLoaderoModel(LoaderoType.LOADERO_RUN_INFO);
         try {
             HttpUriRequest postRun = RequestBuilder.post(uri).build();
             LoaderoClientUtils.setDefaultHeaders(postRun, loaderoApiToken);
 
             try (CloseableHttpResponse res = client.build().execute(postRun)) {
-                if (res.getStatusLine().getStatusCode() == 200) {
+                if (res.getStatusLine().getStatusCode() == HttpStatus.SC_ACCEPTED &&
+                        !LoaderoClientUtils.isNull(res.getEntity())) {
                     result = LoaderoClientUtils.jsonToObject(
                             res.getEntity(),
-                            LoaderoType.LOADERO_TEST_RESULT
+                            LoaderoType.LOADERO_RUN_INFO
                     );
                     System.out.println("Test successfully started.");
                 } else {
@@ -122,12 +127,24 @@ public class LoaderoController {
                 }
             }
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.out.println(Arrays.toString(e.getStackTrace()));
         }
         return result;
     }
 
-    public LoaderoModel getTestRunResults(URI uri) {
+    public void stopTestRun(URI uri) {
+
+    }
+    /**
+     *
+     * @param uri
+     * @param interval
+     * @param time
+     * @param timeout
+     * @return
+     */
+    public LoaderoModel pollTestRunResults(URI uri, int interval,
+                                           int time, int timeout) {
 
         return null;
     }
