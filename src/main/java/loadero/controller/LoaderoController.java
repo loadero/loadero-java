@@ -10,7 +10,6 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 
@@ -29,6 +28,7 @@ public class LoaderoController {
     private final String projectId;
     private final String testId;
     private final HttpClientBuilder client = HttpClients.custom();
+    private final LoaderoModelFactory factory = new LoaderoModelFactory();
 
     public LoaderoController(String loaderoApiToken, String projectId,
                              String testId) {
@@ -44,15 +44,13 @@ public class LoaderoController {
      * @param type - type of the returned data
      */
     public LoaderoModel get(URI uri, LoaderoType type) {
-        LoaderoModelFactory factory = new LoaderoModelFactory();
         LoaderoModel result = factory.getLoaderoModel(type);
 
         HttpUriRequest get = RequestBuilder.get(uri).build();
         LoaderoClientUtils.setDefaultHeaders(get, loaderoApiToken);
         // Try-catch with resources statement that will close
         // everything for us after we are done.
-        try (CloseableHttpClient client = HttpClients.custom().build();
-             CloseableHttpResponse res = client.execute(get)) {
+        try (CloseableHttpResponse res = client.build().execute(get)) {
             HttpEntity entity = res.getEntity();
             result = Objects.requireNonNull(
                     LoaderoClientUtils.jsonToObject(
@@ -73,7 +71,6 @@ public class LoaderoController {
      * @return
      */
     public LoaderoModel update(URI uri, LoaderoType type, LoaderoModel newModel) {
-        LoaderoModelFactory factory = new LoaderoModelFactory();
         LoaderoModel result = factory.getLoaderoModel(type);
 
         if (LoaderoClientUtils.checkNull(newModel)) {
@@ -105,5 +102,33 @@ public class LoaderoController {
             System.out.println(e.getMessage());
         }
         return result;
+    }
+
+    public LoaderoModel startTestRun(URI uri) {
+        LoaderoModel result = factory.getLoaderoModel(LoaderoType.LOADERO_TEST_RESULT);
+        try {
+            HttpUriRequest postRun = RequestBuilder.post(uri).build();
+            LoaderoClientUtils.setDefaultHeaders(postRun, loaderoApiToken);
+
+            try (CloseableHttpResponse res = client.build().execute(postRun)) {
+                if (res.getStatusLine().getStatusCode() == 200) {
+                    result = LoaderoClientUtils.jsonToObject(
+                            res.getEntity(),
+                            LoaderoType.LOADERO_TEST_RESULT
+                    );
+                    System.out.println("Test successfully started.");
+                } else {
+                    System.out.println(res.getStatusLine());
+                }
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        return result;
+    }
+
+    public LoaderoModel getTestRunResults(URI uri) {
+
+        return null;
     }
 }
