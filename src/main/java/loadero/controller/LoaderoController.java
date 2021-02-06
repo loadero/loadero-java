@@ -10,6 +10,7 @@ import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpStatus;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
@@ -22,6 +23,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -31,17 +33,16 @@ import java.util.List;
 @Getter
 public class LoaderoController {
     private final String loaderoApiToken;
-    private final String projectId;
-    private final String testId;
-    private final HttpClientBuilder client = HttpClients.custom();
+//    private final String projectId;
+//    private final String testId;
+    private final HttpClientBuilder client = HttpClientBuilder.create();
     private final LoaderoModelFactory factory = new LoaderoModelFactory();
     private final List<Header> headers = new ArrayList<>();
 
-    public LoaderoController(String loaderoApiToken, String projectId,
-                             String testId) {
+    public LoaderoController(String loaderoApiToken) {
         this.loaderoApiToken = loaderoApiToken;
-        this.projectId = projectId;
-        this.testId = testId;
+//        this.projectId = projectId;
+//        this.testId = testId;
         headers.addAll(List.of(
                 new BasicHeader(HttpHeaders.ACCEPT, "application/json"),
                 new BasicHeader(HttpHeaders.CONTENT_TYPE, "application/json"),
@@ -53,12 +54,11 @@ public class LoaderoController {
      * Retrieves LoaderoModel i.e test, participant or group description
      * from the specific URI.
      *
-     * @param uri  - URI of the API to get data from
+     * @param uri  - GET endpoint of data
      * @param type - type of the returned data
      */
-    public LoaderoModel get(URI uri, LoaderoType type) {
-        LoaderoModel result = factory.getLoaderoModel(type);
-
+    public LoaderoModel get(String uri, LoaderoType type) {
+        LoaderoModel result = null;
         HttpUriRequest get = RequestBuilder.get(uri).build();
         // Try-catch with resources statement that will close
         // everything for us after we are done.
@@ -66,6 +66,7 @@ public class LoaderoController {
             if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 HttpEntity entity = res.getEntity();
                 result = LoaderoClientUtils.jsonToObject(entity, type);
+                System.out.println("Result: " + result);
             }
         } catch (NullPointerException | IOException e) {
             System.out.println(e.getMessage());
@@ -89,7 +90,7 @@ public class LoaderoController {
         }
 
         try {
-            String testToJson = LoaderoClientUtils.modelDescrToJson(newModel);
+            String testToJson = LoaderoClientUtils.modelToJson(newModel);
             HttpEntity entity = new StringEntity(testToJson);
             HttpUriRequest put = RequestBuilder.put(uri)
                     .setEntity(entity)
@@ -191,7 +192,7 @@ public class LoaderoController {
             tries--;
             while (!done) {
                 try {
-                    result = (LoaderoRunInfo) get(getRunsURI,
+                    result = (LoaderoRunInfo) get(getRunsURI.toString(),
                             LoaderoType.LOADERO_RUN_INFO);
                     System.out.println(result);
                     if (result.getStatus().equals("done")) {
