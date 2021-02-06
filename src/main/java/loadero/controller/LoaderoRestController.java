@@ -1,22 +1,18 @@
 package loadero.controller;
 
-import loadero.utils.LoaderoClientUtils;
 import loadero.model.LoaderoModel;
 import loadero.model.LoaderoModelFactory;
-import loadero.model.LoaderoRunInfo;
 import loadero.model.LoaderoType;
+import loadero.utils.LoaderoClientUtils;
 import loadero.utils.LoaderoHttpClient;
 import lombok.Getter;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpHeaders;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.message.BasicHeader;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

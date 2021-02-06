@@ -2,11 +2,8 @@ package loadero.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import lombok.*;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * LoaderoTestDescription object is a configuration profile to specify
