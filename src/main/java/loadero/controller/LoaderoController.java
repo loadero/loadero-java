@@ -6,7 +6,9 @@ import loadero.model.LoaderoModelFactory;
 import loadero.model.LoaderoRunInfo;
 import loadero.model.LoaderoType;
 import lombok.Getter;
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHeaders;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -14,11 +16,13 @@ import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicHeader;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * REST controller class responsible for CRUD actions related to tests.
@@ -31,12 +35,18 @@ public class LoaderoController {
     private final String testId;
     private final HttpClientBuilder client = HttpClients.custom();
     private final LoaderoModelFactory factory = new LoaderoModelFactory();
+    private final List<Header> headers = new ArrayList<>();
 
     public LoaderoController(String loaderoApiToken, String projectId,
                              String testId) {
         this.loaderoApiToken = loaderoApiToken;
         this.projectId = projectId;
         this.testId = testId;
+        headers.addAll(List.of(
+                new BasicHeader(HttpHeaders.ACCEPT, "application/json"),
+                new BasicHeader(HttpHeaders.CONTENT_TYPE, "application/json"),
+                new BasicHeader(HttpHeaders.AUTHORIZATION, "LoaderoAuth " + loaderoApiToken)));
+        client.setDefaultHeaders(headers);
     }
 
     /**
@@ -50,7 +60,6 @@ public class LoaderoController {
         LoaderoModel result = factory.getLoaderoModel(type);
 
         HttpUriRequest get = RequestBuilder.get(uri).build();
-        LoaderoClientUtils.setDefaultHeaders(get, loaderoApiToken);
         // Try-catch with resources statement that will close
         // everything for us after we are done.
         try (CloseableHttpResponse res = client.build().execute(get)) {
@@ -85,7 +94,6 @@ public class LoaderoController {
             HttpUriRequest put = RequestBuilder.put(uri)
                     .setEntity(entity)
                     .build();
-            LoaderoClientUtils.setDefaultHeaders(put, loaderoApiToken);
 
             try (CloseableHttpResponse res = client.build().execute(put)) {
                 if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK &&
@@ -106,6 +114,17 @@ public class LoaderoController {
         return result;
     }
 
+    public LoaderoModel startTestAndPoll(URI uri, int interval, int timeout) {
+        LoaderoRunInfo startTestRun = (LoaderoRunInfo) startTestRun(uri);
+        System.out.println("Started test run ID: " + startTestRun.getId());
+        return startPolling(uri,
+                String.valueOf(startTestRun.getId()),
+                1000 * interval, 1000 * timeout);
+    }
+
+
+    // Private helper methods below. TODO: maybe separate into different class?
+
     /**
      * Start test run by sending POST request to /runs url.
      *
@@ -116,7 +135,6 @@ public class LoaderoController {
         LoaderoModel result = factory.getLoaderoModel(LoaderoType.LOADERO_RUN_INFO);
         try {
             HttpUriRequest postRun = RequestBuilder.post(uri).build();
-            LoaderoClientUtils.setDefaultHeaders(postRun, loaderoApiToken);
 
             try (CloseableHttpResponse res = client.build().execute(postRun)) {
                 if (res.getStatusLine().getStatusCode() == HttpStatus.SC_ACCEPTED &&
@@ -139,13 +157,11 @@ public class LoaderoController {
 
     /**
      * Stops test run by calling GET on /stop.
-     *
      * @param uri
      */
     private void stopTestRun(URI uri) {
         URI stopURI = URI.create(uri + "stop/");
         HttpUriRequest stopRun = RequestBuilder.post(stopURI).build();
-        LoaderoClientUtils.setDefaultHeaders(stopRun, loaderoApiToken);
 
         try (CloseableHttpResponse res = client.build().execute(stopRun)) {
             System.out.println("Stopping test run...");
@@ -163,7 +179,6 @@ public class LoaderoController {
     private LoaderoModel startPolling(URI uri, String runId,
                                       int interval, int timeout) {
         LoaderoRunInfo result = null;
-        System.out.println("Run id: " + runId);
         URI getRunsURI = URI.create(uri + runId + "/");
         int tries = timeout / interval;
         boolean done = false;
@@ -171,11 +186,9 @@ public class LoaderoController {
         long start = System.currentTimeMillis();
         long end = start + timeout;
 
-        while (tries != 0 | System.currentTimeMillis() < end) {
+        while (tries != 0 | System.currentTimeMillis() < end | done) {
             System.out.println("try number: " + tries);
             tries--;
-            if (done) { break; }
-
             while (!done) {
                 try {
                     result = (LoaderoRunInfo) get(getRunsURI,
@@ -196,52 +209,5 @@ public class LoaderoController {
             }
         }
         return result;
-    }
-
-    public LoaderoModel startTestAndPoll(URI uri, int interval, int timeout) {
-        LoaderoRunInfo startTestRun = (LoaderoRunInfo) startTestRun(uri);
-        System.out.println("Start and poll: " + startTestRun);
-        return startPolling(uri,
-                String.valueOf(startTestRun.getId()),
-                1000*interval, 1000*timeout);
-    }
-
-
-    /**
-     * Helper method for startPolling().
-     *
-     * @param uri
-     * @param interval
-     * @param timeout
-     * @return
-     */
-    private LoaderoModel startPollingTestRunInfo(URI uri, int interval, int timeout) {
-
-        boolean done = false;
-        LoaderoRunInfo getInfo = null;
-
-        while (!done) {
-            try {
-                Thread.sleep(interval);
-                getInfo = (LoaderoRunInfo) get(uri,
-                        LoaderoType.LOADERO_RUN_INFO);
-                System.out.println(getInfo);
-                if (getInfo.getStatus().equals("done")) {
-                    done = true;
-                    System.out.println("Done! Test run results: " + getInfo);
-                } else {
-                    System.out.println("Test run results are still not available.");
-                    System.out.println("Test status: " + getInfo.getStatus());
-                }
-                if (System.currentTimeMillis() > timeout) {
-                    done = true;
-                    System.out.println("Time run out.");
-                }
-            } catch (Exception e) {
-                done = true;
-                stopTestRun(uri);
-            }
-        }
-        return getInfo;
     }
 }
