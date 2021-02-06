@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class LoaderoParticipant implements LoaderoModel {
+    private long id;
     private String name;
     private int count;
     @SerializedName("compute_unit")

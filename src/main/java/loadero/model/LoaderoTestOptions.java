@@ -1,5 +1,6 @@
 package loadero.model;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import lombok.*;
 
@@ -16,6 +17,7 @@ import java.nio.file.Path;
 @Data
 @NoArgsConstructor
 public class LoaderoTestOptions implements LoaderoModel {
+    private long id;
     private String name;
     @SerializedName("start_interval")
     private int startInterval;
@@ -25,4 +27,7 @@ public class LoaderoTestOptions implements LoaderoModel {
     @SerializedName("increment_strategy")
     private String incrementStrategy;
     private String script;
+    @Expose
+    private String uri;
+
 }

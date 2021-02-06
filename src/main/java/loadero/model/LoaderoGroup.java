@@ -12,6 +12,7 @@ import java.util.List;
 @ToString
 @NoArgsConstructor
 public class LoaderoGroup implements LoaderoModel {
+    private long id;
     private String name;
     private int count;
     private List<LoaderoParticipant> loaderoParticipantList;
