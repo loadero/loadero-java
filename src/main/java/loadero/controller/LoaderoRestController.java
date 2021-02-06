@@ -6,7 +6,6 @@ import loadero.model.LoaderoType;
 import loadero.utils.LoaderoClientUtils;
 import loadero.utils.LoaderoHttpClient;
 import lombok.Getter;
-import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -17,8 +16,6 @@ import org.apache.http.entity.StringEntity;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * REST controller class responsible for CRUD actions related to Loadero tests.
