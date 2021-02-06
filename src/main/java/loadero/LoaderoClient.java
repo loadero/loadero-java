@@ -80,8 +80,8 @@ public class LoaderoClient {
     }
 
     /**
-     *
-     * @param groupId
+     * Builds URL for Loadero groups based on given ID.
+     * @param groupId - ID of the desired group
      * @return
      */
     public String buildGroupURL(String groupId) {
@@ -92,6 +92,12 @@ public class LoaderoClient {
                 + "/";
     }
 
+    /**
+     * Builds URL to for specific participant of specific group.
+     * @param participantId - ID of desired participant.
+     * @param groupId - ID of the group participant belongs to.
+     * @return
+     */
     public String buildParticipantURL(String participantId,
                                       String groupId) {
         String groupUrl = buildGroupURL(groupId);
