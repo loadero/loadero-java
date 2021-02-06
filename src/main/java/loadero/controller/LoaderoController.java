@@ -57,6 +57,21 @@ public class LoaderoController {
      * @param uri  - GET endpoint of data
      * @param type - type of the returned data
      */
+    /*
+    @GET
+@Path("retrieve/{uuid}")
+public Response retrieveSomething(@PathParam("uuid") String uuid) {
+    if(uuid == null || uuid.trim().length() == 0) {
+        return Response.serverError().entity("UUID cannot be blank").build();
+    }
+    Entity entity = service.getById(uuid);
+    if(entity == null) {
+        return Response.status(Response.Status.NOT_FOUND).entity("Entity not found for UUID: " + uuid).build();
+    }
+    String json = //convert entity to json
+    return Response.ok(json, MediaType.APPLICATION_JSON).build();
+}
+     */
     public LoaderoModel get(String uri, LoaderoType type) {
         LoaderoModel result = null;
         HttpUriRequest get = RequestBuilder.get(uri).build();
