@@ -1,4 +1,4 @@
-package loadero;
+package loadero.utils;
 
 import com.google.gson.Gson;
 import loadero.model.*;
