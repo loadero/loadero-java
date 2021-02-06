@@ -1,5 +1,6 @@
 package loadero.model;
 
+import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,7 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 public class LoaderoGroup implements LoaderoModel {
     private long id;
+    @SerializedName("test_id")
+    private long testId;
     private String name;
     private int count;
-    private List<LoaderoParticipant> loaderoParticipantList;
 }
