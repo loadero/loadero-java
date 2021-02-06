@@ -19,12 +19,10 @@ public class LoaderoClient {
     private final LoaderoPollController pollController;
 
 //    private final URI projectURI = URI.create(BASE_URL + "/projects/" + projectId);
-//    private static final URI startRunsURI = URI.create(testUri + "runs/");
-
 
     public LoaderoClient(String loaderApiToken, String projectId, String testId) {
         this.projectId = projectId;
-        this.testId = testId;
+        this.testId    = testId;
         restController = new LoaderoRestController(loaderApiToken);
         pollController = new LoaderoPollController(loaderApiToken);
     }
@@ -75,9 +73,18 @@ public class LoaderoClient {
                 + testId + "/";
     }
 
-    public LoaderoRunInfo startTestAndPollInfo(String url, int interval, int timeout) {
+    /**
+     * Start test run by sending POST command underneath to /runs url.
+     * After which starts activly polling for information about test run.
+     * Returns run info when test is done or time of the polling run out.
+     * @param interval - how often check for information. In seconds.
+     * @param timeout  - how long should polling for information. In seconds.
+     * @return
+     */
+    public LoaderoRunInfo startTestAndPollInfo(int interval, int timeout) {
+        String startRunsUrl = buildTestURL() + "runs/";
         LoaderoRunInfo info = (LoaderoRunInfo) pollController
-                .startTestAndPoll(url, interval, timeout);
+                .startTestAndPoll(startRunsUrl, interval, timeout);
         return info;
     }
 

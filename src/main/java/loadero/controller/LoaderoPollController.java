@@ -15,11 +15,13 @@ import java.io.IOException;
 import java.net.URI;
 
 public class LoaderoPollController {
-    private final LoaderoHttpClient client;
-    private final LoaderoModelFactory factory = new LoaderoModelFactory();
+    private final LoaderoHttpClient     client;
+    private final LoaderoModelFactory   factory;
     private final LoaderoRestController restController;
+
     public LoaderoPollController(String loaderoApiToken) {
-        this.client = new LoaderoHttpClient(loaderoApiToken);
+        this.factory = new LoaderoModelFactory();
+        this.client  = new LoaderoHttpClient(loaderoApiToken);
         this.restController = new LoaderoRestController(loaderoApiToken);
     }
 
@@ -33,7 +35,6 @@ public class LoaderoPollController {
 
     /**
      * Start test run by sending POST request to /runs url.
-     *
      * @param uri
      * @return
      */

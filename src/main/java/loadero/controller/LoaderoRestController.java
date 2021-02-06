@@ -21,15 +21,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * REST controller class responsible for CRUD actions related to tests.
+ * REST controller class responsible for CRUD actions related to Loadero tests.
  * Meaning here is defined logic for creating, updetaing, retrieving and deleting Loadero tests.
  */
 @Getter
 public class LoaderoRestController {
     private final String loaderoApiToken;
-    private final LoaderoHttpClient client;
+    private final LoaderoHttpClient   client;
     private final LoaderoModelFactory factory = new LoaderoModelFactory();
-    private final List<Header> headers = new ArrayList<>();
 
     public LoaderoRestController(String loaderoApiToken) {
         this.loaderoApiToken = loaderoApiToken;
@@ -46,6 +45,7 @@ public class LoaderoRestController {
     public LoaderoModel get(String uri, LoaderoType type) {
         LoaderoModel result = null;
         HttpUriRequest get = RequestBuilder.get(uri).build();
+
         // Try-catch with resources statement that will close
         // everything for us after we are done.
         try (CloseableHttpResponse res = client.build().execute(get)) {
