@@ -37,7 +37,7 @@ public class LoaderoPollController {
      * @param uri
      * @return
      */
-    protected LoaderoModel startTestRun(String uri) {
+    private LoaderoModel startTestRun(String uri) {
         LoaderoModel result = factory.getLoaderoModel(LoaderoType.LOADERO_RUN_INFO);
         try {
             HttpUriRequest postRun = RequestBuilder.post(uri).build();
@@ -65,7 +65,7 @@ public class LoaderoPollController {
      * Stops test run by calling GET on /stop.
      * @param uri
      */
-    protected void stopTestRun(String uri) {
+    private void stopTestRun(String uri) {
         String stopURI = uri + "stop/";
         HttpUriRequest stopRun = RequestBuilder.post(stopURI).build();
 
@@ -83,7 +83,7 @@ public class LoaderoPollController {
      * @param timeout  - maximum amount of time in seconds should spend polling
      * @return
      */
-    protected LoaderoModel startPolling(String uri, String runId,
+    private LoaderoModel startPolling(String uri, String runId,
                                       int interval, int timeout) {
         LoaderoRunInfo result = null;
         URI getRunsURI = URI.create(uri + runId + "/");
