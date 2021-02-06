@@ -1,15 +1,12 @@
 package loadero;
 
-import loadero.controller.LoaderoController;
-import loadero.model.LoaderoGroup;
-import loadero.model.LoaderoParticipant;
-import loadero.model.LoaderoTestOptions;
-import loadero.model.LoaderoType;
+import loadero.controller.LoaderoRestController;
+import loadero.controller.LoaderoPollController;
+import loadero.model.*;
 import lombok.Getter;
 
 // TODO: get rid of the casting
 // TODO: proper logging system
-// TODO: decide how to pass Ids and other params
 @Getter
 public class LoaderoClient {
     private final String BASE_URL = "https://api.loadero.com/v2";
@@ -18,8 +15,9 @@ public class LoaderoClient {
     private String groupId;// = "48797";
     private String participantId;// = "94633";
     private String RUNS_ID;// = "94633";
-    private final LoaderoController controller;
-    // TODO: create some method to create uris based on given params.
+    private final LoaderoRestController restController;
+    private final LoaderoPollController pollController;
+
 //    private final URI projectURI = URI.create(BASE_URL + "/projects/" + projectId);
 //    private static final URI startRunsURI = URI.create(testUri + "runs/");
 
@@ -27,30 +25,29 @@ public class LoaderoClient {
     public LoaderoClient(String loaderApiToken, String projectId, String testId) {
         this.projectId = projectId;
         this.testId = testId;
-        controller = new LoaderoController(loaderApiToken);
+        restController = new LoaderoRestController(loaderApiToken);
+        pollController = new LoaderoPollController(loaderApiToken);
     }
 
     /**
      * Returns information about test as LoaderoTestOptions.
-     * @return
+     * @return - LoaderoTestOptions object.
      */
     public LoaderoTestOptions getTestOptions() {
         String testUrl = buildTestURL();
-        return (LoaderoTestOptions) controller.get(testUrl,
+        return (LoaderoTestOptions) restController.get(testUrl,
                 LoaderoType.LOADERO_TEST_OPTIONS);
     }
 
     /**
      * Returns group as LoaderoGroup object from Loadero with specified ID.
      * @param id - ID of the group.
-     * @return
+     * @return - LoaderoGroup object.
      */
     public LoaderoGroup getGroupById(String id) {
         String groupUrl = buildGroupURL(id);
-        LoaderoGroup group = (LoaderoGroup) controller.get(groupUrl,
+        return (LoaderoGroup) restController.get(groupUrl,
                 LoaderoType.LOADERO_GROUP);
-        // Save group ID for later usage
-        return group;
     }
 
     /**
@@ -59,16 +56,15 @@ public class LoaderoClient {
      * So, yeah...¯\_(ツ)_/¯
      * @param participantId - desired participant.
      * @param groupId - group ID you want get participant from.
-     * @return
+     * @return - LoaderoParticipant object
      */
     public LoaderoParticipant getParticipantById(String participantId,
                                                  String groupId) {
         String particUrl = buildParticipantURL(participantId, groupId);
         System.out.println(particUrl);
-        LoaderoParticipant participant = (LoaderoParticipant) controller.get(
+        return (LoaderoParticipant) restController.get(
                 particUrl, LoaderoType.LOADERO_PARTICIPANT
         );
-        return participant;
     }
 
     public String buildTestURL() {
@@ -79,12 +75,21 @@ public class LoaderoClient {
                 + testId + "/";
     }
 
+    public LoaderoRunInfo startTestAndPollInfo(String url, int interval, int timeout) {
+        LoaderoRunInfo info = (LoaderoRunInfo) pollController
+                .startTestAndPoll(url, interval, timeout);
+        return info;
+    }
+
+
+    // Private methods
+
     /**
      * Builds URL for Loadero groups based on given ID.
      * @param groupId - ID of the desired group
-     * @return
+     * @return - String of url pointing to group.
      */
-    public String buildGroupURL(String groupId) {
+    private String buildGroupURL(String groupId) {
         String testUrl = buildTestURL();
         return testUrl
                 + "groups/"
@@ -96,9 +101,9 @@ public class LoaderoClient {
      * Builds URL to for specific participant of specific group.
      * @param participantId - ID of desired participant.
      * @param groupId - ID of the group participant belongs to.
-     * @return
+     * @return - String url pointing to participant.
      */
-    public String buildParticipantURL(String participantId,
+    private String buildParticipantURL(String participantId,
                                       String groupId) {
         String groupUrl = buildGroupURL(groupId);
         return groupUrl

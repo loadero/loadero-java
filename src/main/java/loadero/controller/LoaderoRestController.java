@@ -1,29 +1,27 @@
 package loadero.controller;
 
-import loadero.LoaderoClientUtils;
+import loadero.utils.LoaderoClientUtils;
 import loadero.model.LoaderoModel;
 import loadero.model.LoaderoModelFactory;
 import loadero.model.LoaderoRunInfo;
 import loadero.model.LoaderoType;
+import loadero.utils.LoaderoHttpClient;
 import lombok.Getter;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicHeader;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -35,19 +33,13 @@ public class LoaderoController {
     private final String loaderoApiToken;
 //    private final String projectId;
 //    private final String testId;
-    private final HttpClientBuilder client = HttpClientBuilder.create();
+    private LoaderoHttpClient client;
     private final LoaderoModelFactory factory = new LoaderoModelFactory();
     private final List<Header> headers = new ArrayList<>();
 
     public LoaderoController(String loaderoApiToken) {
         this.loaderoApiToken = loaderoApiToken;
-//        this.projectId = projectId;
-//        this.testId = testId;
-        headers.addAll(List.of(
-                new BasicHeader(HttpHeaders.ACCEPT, "application/json"),
-                new BasicHeader(HttpHeaders.CONTENT_TYPE, "application/json"),
-                new BasicHeader(HttpHeaders.AUTHORIZATION, "LoaderoAuth " + loaderoApiToken)));
-        client.setDefaultHeaders(headers);
+        this.client = new LoaderoHttpClient(loaderoApiToken);
     }
 
     /**
@@ -187,7 +179,7 @@ public Response retrieveSomething(@PathParam("uuid") String uuid) {
     }
 
     /**
-     * @param uri      - uri from wher to get info
+     * @param uri      - uri from where to get info
      * @param interval - time in seconds between get requests
      * @param timeout  - maximum amount of time in seconds should spend polling
      * @return
