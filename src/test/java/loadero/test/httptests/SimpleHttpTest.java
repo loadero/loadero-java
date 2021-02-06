@@ -27,7 +27,6 @@ public class SimpleHttpTest {
     @Test
     public void testGetTestOptions() {
         LoaderoTestOptions options = client.getTestOptions();
-        System.out.println(options);
         assertEquals(options.getClass().getSimpleName(), LoaderoTestOptions.class.getSimpleName());
     }
 }
