@@ -29,15 +29,13 @@ import java.util.List;
  * Meaning here is defined logic for creating, updetaing, retrieving and deleting Loadero tests.
  */
 @Getter
-public class LoaderoController {
+public class LoaderoRestController {
     private final String loaderoApiToken;
-//    private final String projectId;
-//    private final String testId;
-    private LoaderoHttpClient client;
+    private final LoaderoHttpClient client;
     private final LoaderoModelFactory factory = new LoaderoModelFactory();
     private final List<Header> headers = new ArrayList<>();
 
-    public LoaderoController(String loaderoApiToken) {
+    public LoaderoRestController(String loaderoApiToken) {
         this.loaderoApiToken = loaderoApiToken;
         this.client = new LoaderoHttpClient(loaderoApiToken);
     }
@@ -48,21 +46,6 @@ public class LoaderoController {
      *
      * @param uri  - GET endpoint of data
      * @param type - type of the returned data
-     */
-    /*
-    @GET
-@Path("retrieve/{uuid}")
-public Response retrieveSomething(@PathParam("uuid") String uuid) {
-    if(uuid == null || uuid.trim().length() == 0) {
-        return Response.serverError().entity("UUID cannot be blank").build();
-    }
-    Entity entity = service.getById(uuid);
-    if(entity == null) {
-        return Response.status(Response.Status.NOT_FOUND).entity("Entity not found for UUID: " + uuid).build();
-    }
-    String json = //convert entity to json
-    return Response.ok(json, MediaType.APPLICATION_JSON).build();
-}
      */
     public LoaderoModel get(String uri, LoaderoType type) {
         LoaderoModel result = null;
@@ -118,103 +101,6 @@ public Response retrieveSomething(@PathParam("uuid") String uuid) {
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
-        }
-        return result;
-    }
-
-    public LoaderoModel startTestAndPoll(URI uri, int interval, int timeout) {
-        LoaderoRunInfo startTestRun = (LoaderoRunInfo) startTestRun(uri);
-        System.out.println("Started test run ID: " + startTestRun.getId());
-        return startPolling(uri,
-                String.valueOf(startTestRun.getId()),
-                1000 * interval, 1000 * timeout);
-    }
-
-
-    // Private helper methods below. TODO: maybe separate into different class?
-
-    /**
-     * Start test run by sending POST request to /runs url.
-     *
-     * @param uri
-     * @return
-     */
-    private LoaderoModel startTestRun(URI uri) {
-        LoaderoModel result = factory.getLoaderoModel(LoaderoType.LOADERO_RUN_INFO);
-        try {
-            HttpUriRequest postRun = RequestBuilder.post(uri).build();
-
-            try (CloseableHttpResponse res = client.build().execute(postRun)) {
-                if (res.getStatusLine().getStatusCode() == HttpStatus.SC_ACCEPTED &&
-                        !LoaderoClientUtils.isNull(res.getEntity())) {
-                    result = LoaderoClientUtils.jsonToObject(
-                            res.getEntity(),
-                            LoaderoType.LOADERO_RUN_INFO
-                    );
-                    System.out.println("Test successfully started.");
-                } else {
-                    stopTestRun(uri);
-                    System.out.println(res.getStatusLine());
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-    /**
-     * Stops test run by calling GET on /stop.
-     * @param uri
-     */
-    private void stopTestRun(URI uri) {
-        URI stopURI = URI.create(uri + "stop/");
-        HttpUriRequest stopRun = RequestBuilder.post(stopURI).build();
-
-        try (CloseableHttpResponse res = client.build().execute(stopRun)) {
-            System.out.println("Stopping test run...");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * @param uri      - uri from where to get info
-     * @param interval - time in seconds between get requests
-     * @param timeout  - maximum amount of time in seconds should spend polling
-     * @return
-     */
-    private LoaderoModel startPolling(URI uri, String runId,
-                                      int interval, int timeout) {
-        LoaderoRunInfo result = null;
-        URI getRunsURI = URI.create(uri + runId + "/");
-        int tries = timeout / interval;
-        boolean done = false;
-
-        long start = System.currentTimeMillis();
-        long end = start + timeout;
-
-        while (tries != 0 | System.currentTimeMillis() < end | done) {
-            System.out.println("try number: " + tries);
-            tries--;
-            while (!done) {
-                try {
-                    result = (LoaderoRunInfo) get(getRunsURI.toString(),
-                            LoaderoType.LOADERO_RUN_INFO);
-                    System.out.println(result);
-                    if (result.getStatus().equals("done")) {
-                        done = true;
-                        System.out.println("Done! Test run results: " + result);
-                    } else {
-                        System.out.println("Test run results are still not available.");
-                        System.out.println("Test status: " + result.getStatus());
-                    }
-                    Thread.sleep(interval);
-                } catch (Exception e) {
-                    done = true;
-                    stopTestRun(uri);
-                }
-            }
         }
         return result;
     }
