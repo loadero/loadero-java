@@ -166,13 +166,18 @@ public class LoaderoController {
         System.out.println("Run id: " + runId);
         URI getRunsURI = URI.create(uri + runId + "/");
         int tries = timeout / interval;
+        boolean done = false;
 
-        for (int i = 0; i < tries; i++) {
-            System.out.println("try number: " + i);
-            boolean done = false;
+        long start = System.currentTimeMillis();
+        long end = start + timeout;
+
+        while (tries != 0 | System.currentTimeMillis() < end) {
+            System.out.println("try number: " + tries);
+            tries--;
+            if (done) { break; }
+
             while (!done) {
                 try {
-                    Thread.sleep(interval);
                     result = (LoaderoRunInfo) get(getRunsURI,
                             LoaderoType.LOADERO_RUN_INFO);
                     System.out.println(result);
@@ -183,10 +188,7 @@ public class LoaderoController {
                         System.out.println("Test run results are still not available.");
                         System.out.println("Test status: " + result.getStatus());
                     }
-                    if (System.currentTimeMillis() > timeout) {
-                        done = true;
-                        System.out.println("Time run out.");
-                    }
+                    Thread.sleep(interval);
                 } catch (Exception e) {
                     done = true;
                     stopTestRun(uri);
