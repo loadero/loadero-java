@@ -1,11 +1,8 @@
 package loadero;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import loadero.model.*;
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpHeaders;
-import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.util.EntityUtils;
 
 import java.util.Objects;
@@ -23,7 +20,7 @@ public class LoaderoClientUtils {
         try {
             String content = EntityUtils.toString(entity);
             switch (type) {
-                case LOADERO_TEST:
+                case LOADERO_TEST_OPTIONS:
                     result = gson.fromJson(content, LoaderoTestOptions.class);
                     break;
                 case LOADERO_GROUP:
