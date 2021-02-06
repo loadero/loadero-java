@@ -1,6 +1,7 @@
 package loadero;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import loadero.model.*;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
@@ -45,17 +46,8 @@ public class LoaderoClientUtils {
     }
 
     // Serializes LoaderModel into JSON
-    public static String modelDescrToJson(LoaderoModel model) {
+    public static String modelToJson(LoaderoModel model) {
         return gson.toJson(model);
     }
 
-    /**
-     * Sets some default headers for Http methods.
-     * @param req - Http request for which set default headers
-     */
-    public static void setDefaultHeaders(HttpUriRequest req, String loadero_token) {
-        req.setHeader(HttpHeaders.ACCEPT, "application/json");
-        req.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
-        req.setHeader(HttpHeaders.AUTHORIZATION, "LoaderoAuth " + loadero_token);
-    }
 }
