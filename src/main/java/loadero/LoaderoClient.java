@@ -63,14 +63,6 @@ public class LoaderoClient {
         );
     }
 
-    public String buildTestURL() {
-        return BASE_URL
-                + "/projects/"
-                + projectId
-                + "/tests/"
-                + testId + "/";
-    }
-
     /**
      * Start test run by sending POST command underneath to /runs url.
      * After which starts activly polling for information about test run.
@@ -81,9 +73,17 @@ public class LoaderoClient {
      */
     public LoaderoModel startTestAndPollInfo(int interval, int timeout) {
         String startRunsUrl = buildTestURL() + "runs/";
-        LoaderoModel info = pollController
+        return pollController
                 .startTestAndPoll(startRunsUrl, interval, timeout);
-        return info;
+    }
+
+    // Public for testing purposes. May make it private later
+    public String buildTestURL() {
+        return BASE_URL
+                + "/projects/"
+                + projectId
+                + "/tests/"
+                + testId + "/";
     }
 
 
