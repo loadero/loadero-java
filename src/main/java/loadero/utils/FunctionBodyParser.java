@@ -1,4 +1,4 @@
-package loadero;
+package loadero.utils;
 
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;

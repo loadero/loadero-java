@@ -14,6 +14,8 @@ import org.apache.http.client.methods.RequestBuilder;
 import java.io.IOException;
 import java.net.URI;
 
+
+// TODO: log for test status
 public class LoaderoPollController {
     private final LoaderoHttpClient     client;
     private final LoaderoModelFactory   factory;
