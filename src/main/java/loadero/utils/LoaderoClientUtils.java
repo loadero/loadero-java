@@ -21,20 +21,15 @@ public class LoaderoClientUtils {
             String content = EntityUtils.toString(entity);
             switch (type) {
                 case LOADERO_TEST_OPTIONS:
-                    result = gson.fromJson(content, LoaderoTestOptions.class);
-                    break;
+                    return gson.fromJson(content, LoaderoTestOptions.class);
                 case LOADERO_GROUP:
-                    result = gson.fromJson(content, LoaderoGroup.class);
-                    break;
+                    return gson.fromJson(content, LoaderoGroup.class);
                 case LOADERO_PARTICIPANT:
-                    result = gson.fromJson(content, LoaderoParticipant.class);
-                    break;
+                    return gson.fromJson(content, LoaderoParticipant.class);
                 case LOADERO_RUN_INFO:
-                    result = gson.fromJson(content, LoaderoRunInfo.class);
-                    break;
+                    return gson.fromJson(content, LoaderoRunInfo.class);
                 case LOADERO_TEST_RESULT:
-                    result = gson.fromJson(content, LoaderoTestResult.class);
-                    break;
+                    return gson.fromJson(content, LoaderoTestResult.class);
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
