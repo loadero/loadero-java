@@ -40,7 +40,7 @@ public class LoaderoRestController {
      * @param type - type of the returned data
      */
     public LoaderoModel get(String uri, LoaderoType type) {
-        LoaderoModel result = null;
+        LoaderoModel result = factory.getLoaderoModel(type);
         HttpUriRequest get = RequestBuilder.get(uri).build();
 
         // Try-catch with resources statement that will close

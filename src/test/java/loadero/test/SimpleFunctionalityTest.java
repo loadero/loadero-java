@@ -3,6 +3,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import loadero.LoaderoClient;
 import loadero.model.LoaderoGroup;
+import loadero.model.LoaderoModel;
 import loadero.model.LoaderoParticipant;
 import loadero.model.LoaderoTestOptions;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
@@ -58,20 +59,20 @@ public class SimpleFunctionalityTest {
 
     @Test
     public void testGetTestOptions() {
-        LoaderoTestOptions options = client.getTestOptions();
+        LoaderoModel options = client.getTestOptions();
         assertEquals(options.getClass().getSimpleName(), LoaderoTestOptions.class.getSimpleName());
     }
 
     @Test
     public void testGetGroupById() {
-        LoaderoGroup group = client.getGroupById(GROUP_ID);
+        LoaderoModel group = client.getGroupById(GROUP_ID);
         assertEquals(group.getClass().getSimpleName(),
                 LoaderoGroup.class.getSimpleName());
     }
 
     @Test
     public void testGetParticipantById() {
-        LoaderoParticipant participant = client.getParticipantById(
+        LoaderoModel participant = client.getParticipantById(
                 PARTICIPANT_ID, GROUP_ID);
         assertEquals(participant.getClass().getSimpleName(),
                 LoaderoParticipant.class.getSimpleName());

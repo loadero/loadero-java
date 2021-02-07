@@ -18,8 +18,6 @@ public class LoaderoClient {
     private final LoaderoRestController restController;
     private final LoaderoPollController pollController;
 
-//    private final URI projectURI = URI.create(BASE_URL + "/projects/" + projectId);
-
     public LoaderoClient(String loaderApiToken, String projectId, String testId) {
         this.projectId = projectId;
         this.testId    = testId;
@@ -31,9 +29,9 @@ public class LoaderoClient {
      * Returns information about test as LoaderoTestOptions.
      * @return - LoaderoTestOptions object.
      */
-    public LoaderoTestOptions getTestOptions() {
+    public LoaderoModel getTestOptions() {
         String testUrl = buildTestURL();
-        return (LoaderoTestOptions) restController.get(testUrl,
+        return restController.get(testUrl,
                 LoaderoType.LOADERO_TEST_OPTIONS);
     }
 
@@ -42,9 +40,9 @@ public class LoaderoClient {
      * @param id - ID of the group.
      * @return - LoaderoGroup object.
      */
-    public LoaderoGroup getGroupById(String id) {
+    public LoaderoModel getGroupById(String id) {
         String groupUrl = buildGroupURL(id);
-        return (LoaderoGroup) restController.get(groupUrl,
+        return restController.get(groupUrl,
                 LoaderoType.LOADERO_GROUP);
     }
 
@@ -56,11 +54,11 @@ public class LoaderoClient {
      * @param groupId - group ID you want get participant from.
      * @return - LoaderoParticipant object
      */
-    public LoaderoParticipant getParticipantById(String participantId,
+    public LoaderoModel getParticipantById(String participantId,
                                                  String groupId) {
         String particUrl = buildParticipantURL(participantId, groupId);
         System.out.println(particUrl);
-        return (LoaderoParticipant) restController.get(
+        return restController.get(
                 particUrl, LoaderoType.LOADERO_PARTICIPANT
         );
     }
@@ -81,9 +79,9 @@ public class LoaderoClient {
      * @param timeout  - how long should polling for information. In seconds.
      * @return
      */
-    public LoaderoRunInfo startTestAndPollInfo(int interval, int timeout) {
+    public LoaderoModel startTestAndPollInfo(int interval, int timeout) {
         String startRunsUrl = buildTestURL() + "runs/";
-        LoaderoRunInfo info = (LoaderoRunInfo) pollController
+        LoaderoModel info = pollController
                 .startTestAndPoll(startRunsUrl, interval, timeout);
         return info;
     }

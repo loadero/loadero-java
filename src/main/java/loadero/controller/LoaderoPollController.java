@@ -28,7 +28,7 @@ public class LoaderoPollController {
     }
 
     public LoaderoModel startTestAndPoll(String uri, int interval, int timeout) {
-        LoaderoRunInfo startTestRun = (LoaderoRunInfo) startTestRun(uri);
+        LoaderoRunInfo startTestRun = startTestRun(uri);
         System.out.println("Started test run ID: " + startTestRun.getId());
         return startPolling(uri,
                 String.valueOf(startTestRun.getId()),
@@ -40,7 +40,7 @@ public class LoaderoPollController {
      * @param uri
      * @return
      */
-    private LoaderoModel startTestRun(String uri) {
+    private LoaderoRunInfo startTestRun(String uri) {
         LoaderoModel result = factory.getLoaderoModel(LoaderoType.LOADERO_RUN_INFO);
         try {
             HttpUriRequest postRun = RequestBuilder.post(uri).build();
@@ -61,7 +61,7 @@ public class LoaderoPollController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return result;
+        return (LoaderoRunInfo) result;
     }
 
     /**
