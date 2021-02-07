@@ -12,9 +12,9 @@ public class LoaderoClient {
     private final String BASE_URL = "https://api.loadero.com/v2";
     private final String projectId;// = "5040";
     private final String testId;// = "6866";
-    private String groupId;// = "48797";
-    private String participantId;// = "94633";
-    private String RUNS_ID;// = "94633";
+//    private String groupId;// = "48797";
+//    private String participantId;// = "94633";
+//    private String RUNS_ID;// = "94633";
     private final LoaderoRestController restController;
     private final LoaderoPollController pollController;
 

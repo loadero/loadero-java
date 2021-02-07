@@ -28,10 +28,10 @@ public class SimpleFunctionalityTest {
 
     private static final URI testUri = URI.create(
             client.getBASE_URL()
-                    +"/projects/"
+                    + "/projects/"
                     + client.getProjectId()
-                    +"/tests/"
-                    +client.getTestId() + "/");
+                    + "/tests/"
+                    + client.getTestId() + "/");
 
     @BeforeAll
     public static void testIfApiIsUp() {
@@ -73,8 +73,12 @@ public class SimpleFunctionalityTest {
     public void testGetParticipantById() {
         LoaderoParticipant participant = client.getParticipantById(
                 PARTICIPANT_ID, GROUP_ID);
-        System.out.println(participant);
         assertEquals(participant.getClass().getSimpleName(),
                 LoaderoParticipant.class.getSimpleName());
+    }
+
+    @Test
+    public void testPolling() {
+
     }
 }
