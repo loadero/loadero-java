@@ -35,6 +35,14 @@ public class LoaderoClient {
                 LoaderoType.LOADERO_TEST_OPTIONS);
     }
 
+    // TODO: How to pass new options for test?
+    public LoaderoModel updateTestOptionsById() {
+        String testUrl = buildTestURL();
+        LoaderoModel newTest = restController.update(testUrl,
+                LoaderoType.LOADERO_TEST_OPTIONS, new LoaderoTestOptions());
+        return null;
+    }
+
     /**
      * Returns group as LoaderoGroup object from Loadero with specified ID.
      * @param id - ID of the group.
@@ -62,6 +70,7 @@ public class LoaderoClient {
                 particUrl, LoaderoType.LOADERO_PARTICIPANT
         );
     }
+
 
     /**
      * Start test run by sending POST command underneath to /runs url.

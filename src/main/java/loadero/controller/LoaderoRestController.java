@@ -65,7 +65,7 @@ public class LoaderoRestController {
      * @param newModel - new model that will replace old one
      * @return
      */
-    public LoaderoModel update(URI uri, LoaderoType type, LoaderoModel newModel) {
+    public LoaderoModel update(String uri, LoaderoType type, LoaderoModel newModel) {
         LoaderoModel result = factory.getLoaderoModel(type);
 
         if (LoaderoClientUtils.isNull(newModel)) {

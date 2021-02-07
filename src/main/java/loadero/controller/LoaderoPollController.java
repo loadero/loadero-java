@@ -97,7 +97,6 @@ public class LoaderoPollController {
         long end = start + timeout;
 
         while (tries != 0 | System.currentTimeMillis() < end | done) {
-            System.out.println("try number: " + tries);
             tries--;
             while (!done) {
                 try {
