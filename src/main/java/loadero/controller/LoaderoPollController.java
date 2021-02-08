@@ -109,7 +109,7 @@ public class LoaderoPollController {
                         done = true;
                         logger.info("Test run is done.");
                         logger.info("Test run information available on {}",
-                                getRunsURI + "/results/");
+                                getRunsURI + "results/");
                     } else {
                         logger.info("Test status: {}", result.getStatus());
                     }
