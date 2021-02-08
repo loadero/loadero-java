@@ -89,20 +89,15 @@ public class LoaderoClient {
 
     /**
      * Returns participant's information from Loadero as LoaderoParticipant object.
-     * Note: You can't get participant before you know group ID.
-     * So, yeah...¯\_(ツ)_/¯
      * @param participantId - desired participant.
-     * @param groupId       - group ID you want get participant from.
      * @return              - LoaderoParticipant object
      */
-    public LoaderoModel getParticipantById(String participantId,
-                                                 String groupId) {
-        String particUrl = buildParticipantURL(participantId, groupId);
+    public LoaderoModel getParticipantById(String participantId) {
+        String particUrl = buildParticipantURL(participantId);
         return restController.get(
                 particUrl, LoaderoType.LOADERO_PARTICIPANT
         );
     }
-
 
     /**
      * Start test run by sending POST command underneath to /runs url.
@@ -146,17 +141,14 @@ public class LoaderoClient {
     /**
      * Builds URL to for specific participant of specific group.
      * @param participantId - ID of desired participant.
-     * @param groupId       - ID of the group participant belongs to.
      * @return              - String url pointing to participant.
      */
-    private String buildParticipantURL(String participantId,
-                                      String groupId) {
-        String groupUrl = buildGroupURL(groupId);
-        return groupUrl
+    private String buildParticipantURL(String participantId) {
+//
+        return buildTestURL()
                 + "participants/"
                 + participantId
                 + "/";
-
     }
 
     public String buildScriptFileURL(String fileId) {

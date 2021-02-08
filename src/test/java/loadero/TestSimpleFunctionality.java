@@ -1,12 +1,9 @@
 package loadero;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import loadero.LoaderoClient;
 import loadero.model.LoaderoGroup;
 import loadero.model.LoaderoModel;
 import loadero.model.LoaderoParticipant;
 import loadero.model.LoaderoTestOptions;
-import loadero.utils.LoaderoClientUtils;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpUriRequest;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
@@ -18,8 +15,8 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.List;
-import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class TestSimpleFunctionality {
@@ -67,6 +64,7 @@ public class TestSimpleFunctionality {
         assertEquals(options.getClass().getSimpleName(), LoaderoTestOptions.class.getSimpleName());
     }
 
+    //TODO
     @Test
     @Disabled
     public void testUpdateTestOptions() {
@@ -82,7 +80,7 @@ public class TestSimpleFunctionality {
     @Test
     public void testGetParticipantById() {
         LoaderoModel participant = client.getParticipantById(
-                PARTICIPANT_ID, GROUP_ID);
+                PARTICIPANT_ID);
         assertEquals(participant.getClass().getSimpleName(),
                 LoaderoParticipant.class.getSimpleName());
     }
