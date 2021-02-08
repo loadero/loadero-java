@@ -1,4 +1,4 @@
-package loadero.test;
+package loadero;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import loadero.LoaderoClient;
@@ -12,13 +12,14 @@ import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
 import org.apache.hc.core5.http.HttpResponse;
 import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URI;
 
 
-public class SimpleFunctionalityTest {
+public class TestSimpleFunctionality {
     private static final String token = System.getenv("LOADERO_API_TOKEN");
     private static final String GROUP_ID = "48797";
     private static final String PROJECT_ID = "5040";

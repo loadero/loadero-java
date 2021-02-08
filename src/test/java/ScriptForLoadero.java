@@ -5,7 +5,7 @@ import static testUI.Utils.AppiumHelps.sleep;
 import static testUI.Utils.By.byCssSelector;
 import static testUI.Utils.By.byId;
 
-public class TestParser {
+public class ScriptForLoadero {
 
     @Test
     public void test() {
