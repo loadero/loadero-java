@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="debug">
+<Configuration status="warn">
     <Appenders>
         <Console name="LogToConsole" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %m%n"/>
+            <PatternLayout pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{10}.%M - %msg%n"/>
         </Console>
     </Appenders>
     <Loggers>
-        <Logger name="loadero" level="warn" additivity="false">
+        <Logger name="loadero" level="info" additivity="false">
             <AppenderRef ref="LogToConsole"/>
         </Logger>
-        <Root level="debug">
+        <Root level="error">
             <AppenderRef ref="LogToConsole"/>
         </Root>
     </Loggers>
