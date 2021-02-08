@@ -65,7 +65,6 @@ public class LoaderoClient {
     public LoaderoModel getParticipantById(String participantId,
                                                  String groupId) {
         String particUrl = buildParticipantURL(participantId, groupId);
-        System.out.println(particUrl);
         return restController.get(
                 particUrl, LoaderoType.LOADERO_PARTICIPANT
         );

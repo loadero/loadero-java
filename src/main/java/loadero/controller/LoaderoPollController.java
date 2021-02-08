@@ -10,6 +10,8 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URI;
@@ -20,6 +22,7 @@ public class LoaderoPollController {
     private final LoaderoHttpClient     client;
     private final LoaderoModelFactory   factory;
     private final LoaderoRestController restController;
+    private final Logger logger = LogManager.getLogger(LoaderoPollController.class);
 
     public LoaderoPollController(String loaderoApiToken) {
         this.factory = new LoaderoModelFactory();
@@ -29,7 +32,9 @@ public class LoaderoPollController {
 
     public LoaderoModel startTestAndPoll(String uri, int interval, int timeout) {
         LoaderoRunInfo startTestRun = startTestRun(uri);
-        System.out.println("Started test run ID: " + startTestRun.getId());
+        logger.info("Test {} is now running.", startTestRun.getTestId());
+        logger.info("Run ID {}", startTestRun.getId());
+//        System.out.println("Started test run ID: " + startTestRun.getId());
         return startPolling(uri,
                 String.valueOf(startTestRun.getId()),
                 1000 * interval, 1000 * timeout);
@@ -41,6 +46,7 @@ public class LoaderoPollController {
      * @return
      */
     private LoaderoRunInfo startTestRun(String uri) {
+        logger.info("Starting test...");
         LoaderoModel result = factory.getLoaderoModel(LoaderoType.LOADERO_RUN_INFO);
         try {
             HttpUriRequest postRun = RequestBuilder.post(uri).build();
@@ -52,10 +58,9 @@ public class LoaderoPollController {
                             res.getEntity(),
                             LoaderoType.LOADERO_RUN_INFO
                     );
-                    System.out.println("Test successfully started.");
+                    logger.info("Test successfully started.");
                 } else {
                     stopTestRun(uri);
-                    System.out.println(res.getStatusLine());
                 }
             }
         } catch (IOException e) {
@@ -71,10 +76,9 @@ public class LoaderoPollController {
     private void stopTestRun(String uri) {
         String stopURI = uri + "stop/";
         HttpUriRequest stopRun = RequestBuilder.post(stopURI).build();
-
         try {
             client.build().execute(stopRun);
-            System.out.println("Stopping test run...");
+            logger.error("Something went wrong. Test run has stopped.");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -105,10 +109,10 @@ public class LoaderoPollController {
                     System.out.println(result);
                     if (result.getStatus().equals("done")) {
                         done = true;
-                        System.out.println("Done! Test run results: " + result);
+                        logger.info("Test run is done.");
+                        logger.info("Test run information available on {}", result.getId());
                     } else {
-                        System.out.println("Test run results are still not available.");
-                        System.out.println("Test status: " + result.getStatus());
+                        logger.info("Test is still running. Status {}", result.getStatus());
                     }
                     Thread.sleep(interval);
                 } catch (Exception e) {

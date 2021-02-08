@@ -12,10 +12,11 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.entity.StringEntity;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
 
 /**
  * REST controller class responsible for CRUD actions related to Loadero tests.
@@ -26,6 +27,7 @@ public class LoaderoRestController {
     private final String loaderoApiToken;
     private final LoaderoHttpClient   client;
     private final LoaderoModelFactory factory = new LoaderoModelFactory();
+    private static final Logger logger = LogManager.getLogger(LoaderoRestController.class);
 
     public LoaderoRestController(String loaderoApiToken) {
         this.loaderoApiToken = loaderoApiToken;
@@ -49,10 +51,12 @@ public class LoaderoRestController {
             if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 HttpEntity entity = res.getEntity();
                 result = LoaderoClientUtils.jsonToObject(entity, type);
-                System.out.println("Result: " + result);
+//                System.out.println("Result: " + result);
+                logger.info("{}", res.getStatusLine());
             }
         } catch (NullPointerException | IOException e) {
-            System.out.println(e.getMessage());
+//            System.out.println(e.getMessage());
+            logger.error("{}", e.getMessage());
         }
         return result;
     }
@@ -69,7 +73,7 @@ public class LoaderoRestController {
         LoaderoModel result = factory.getLoaderoModel(type);
 
         if (LoaderoClientUtils.isNull(newModel)) {
-            throw new NullPointerException();
+            logger.error("newModel parameter can't be null.");
         }
 
         try {
@@ -85,15 +89,15 @@ public class LoaderoRestController {
                     result = LoaderoClientUtils.jsonToObject(
                             res.getEntity(),
                             type);
-                    System.out.println(type.toString() + " successfully updated.");
+                    logger.info("{} - {}", res.getStatusLine(), result);
                 } else {
-                    System.out.println(res.getStatusLine());
+                    logger.error("{}", res.getStatusLine());
                 }
             } catch (UnsupportedEncodingException e) {
-                System.out.println(e.getLocalizedMessage());
+                logger.error("{}", e.getMessage());
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            logger.error("{}", e.getMessage());
         }
         return result;
     }
