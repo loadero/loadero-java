@@ -2,19 +2,20 @@ package loadero;
 
 import loadero.controller.LoaderoPollController;
 import loadero.controller.LoaderoRestController;
-import loadero.model.*;
+import loadero.model.LoaderoModel;
+import loadero.model.LoaderoScriptFileLoc;
+import loadero.model.LoaderoTestOptions;
+import loadero.model.LoaderoType;
+import loadero.utils.LoaderoClientUtils;
 import lombok.Getter;
 
-// TODO: get rid of the casting
-// TODO: proper logging system
+import java.util.Objects;
+
 @Getter
 public class LoaderoClient {
     private final String BASE_URL = "https://api.loadero.com/v2";
     private final String projectId;// = "5040";
     private final String testId;// = "6866";
-//    private String groupId;// = "48797";
-//    private String participantId;// = "94633";
-//    private String RUNS_ID;// = "94633";
     private final LoaderoRestController restController;
     private final LoaderoPollController pollController;
 
@@ -35,18 +36,50 @@ public class LoaderoClient {
                 LoaderoType.LOADERO_TEST_OPTIONS);
     }
 
-    // TODO: How to pass new options for test?
-    public LoaderoModel updateTestOptionsById() {
+    /**
+     * Updates the existing Loadero test description based on the
+     * parameters provided in new LoaderoTestOptions() object.
+     *
+     * @param newTestOptions - new LoaderoTestOptions object with parameters that you wish to change
+     * @return               - Updated LoaderoTestOptions
+     */
+    public LoaderoModel updateTestOptions(LoaderoTestOptions newTestOptions) {
         String testUrl = buildTestURL();
-        LoaderoModel newTest = restController.update(testUrl,
-                LoaderoType.LOADERO_TEST_OPTIONS, new LoaderoTestOptions());
-        return null;
+        LoaderoTestOptions currentOptions = (LoaderoTestOptions) getTestOptions();
+
+        // If new script is not provided
+        // We get the old script from Loadero API endpoint /files/fileId
+        // And update accordingly.
+        if (Objects.equals(newTestOptions.getScript(), "")) {
+            String scriptContent = getFileScriptConent(
+                    String.valueOf(currentOptions.getScriptFileId()));
+            currentOptions.setScript(scriptContent);
+        }
+        LoaderoTestOptions updatedOptions = LoaderoClientUtils.copyUncommonFields(
+                currentOptions,
+                newTestOptions);
+        return restController.update(testUrl,
+                LoaderoType.LOADERO_TEST_OPTIONS, updatedOptions);
+    }
+
+    /**
+     * Retrieves content of the script file from Loadero API
+     * @param id - ID of the script file
+     * @return   - String containing script content.
+     */
+    public String getFileScriptConent(String id) {
+        String scriptFileid = String.valueOf(id);
+        String scriptFileUrl = buildScriptFileURL(scriptFileid);
+        LoaderoScriptFileLoc scriptFile = (LoaderoScriptFileLoc) restController.get(
+                    scriptFileUrl,
+                    LoaderoType.LOADERO_SCRIPT_FILE_LOC);
+        return scriptFile.getContent();
     }
 
     /**
      * Returns group as LoaderoGroup object from Loadero with specified ID.
      * @param id - ID of the group.
-     * @return - LoaderoGroup object.
+     * @return   - LoaderoGroup object.
      */
     public LoaderoModel getGroupById(String id) {
         String groupUrl = buildGroupURL(id);
@@ -59,8 +92,8 @@ public class LoaderoClient {
      * Note: You can't get participant before you know group ID.
      * So, yeah...¯\_(ツ)_/¯
      * @param participantId - desired participant.
-     * @param groupId - group ID you want get participant from.
-     * @return - LoaderoParticipant object
+     * @param groupId       - group ID you want get participant from.
+     * @return              - LoaderoParticipant object
      */
     public LoaderoModel getParticipantById(String participantId,
                                                  String groupId) {
@@ -100,7 +133,7 @@ public class LoaderoClient {
     /**
      * Builds URL for Loadero groups based on given ID.
      * @param groupId - ID of the desired group
-     * @return - String of url pointing to group.
+     * @return        - String of url pointing to group.
      */
     private String buildGroupURL(String groupId) {
         String testUrl = buildTestURL();
@@ -113,8 +146,8 @@ public class LoaderoClient {
     /**
      * Builds URL to for specific participant of specific group.
      * @param participantId - ID of desired participant.
-     * @param groupId - ID of the group participant belongs to.
-     * @return - String url pointing to participant.
+     * @param groupId       - ID of the group participant belongs to.
+     * @return              - String url pointing to participant.
      */
     private String buildParticipantURL(String participantId,
                                       String groupId) {
@@ -125,4 +158,23 @@ public class LoaderoClient {
                 + "/";
 
     }
+
+    public String buildScriptFileURL(String fileId) {
+        return BASE_URL
+                + "/projects/"
+                + projectId
+                + "/files/"
+                + fileId
+                + "/";
+    }
+
+    public String buildRunResultsURL(String runId) {
+        return BASE_URL
+                + "/projects/"
+                + projectId
+                + "/runs/"
+                + runId
+                + "/results/";
+    }
 }
+

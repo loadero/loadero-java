@@ -27,7 +27,7 @@ public class FunctionBodyParser {
             result = result.substring(result.lastIndexOf("public"));
             result = result.substring(0, result.indexOf('}')+1);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            result = path;
         }
         return result;
     }

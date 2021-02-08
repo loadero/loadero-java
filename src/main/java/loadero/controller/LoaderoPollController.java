@@ -34,7 +34,6 @@ public class LoaderoPollController {
         LoaderoRunInfo startTestRun = startTestRun(uri);
         logger.info("Test {} is now running.", startTestRun.getTestId());
         logger.info("Run ID {}", startTestRun.getId());
-//        System.out.println("Started test run ID: " + startTestRun.getId());
         return startPolling(uri,
                 String.valueOf(startTestRun.getId()),
                 1000 * interval, 1000 * timeout);
@@ -106,13 +105,13 @@ public class LoaderoPollController {
                 try {
                     result = (LoaderoRunInfo) restController.get(getRunsURI.toString(),
                             LoaderoType.LOADERO_RUN_INFO);
-                    System.out.println(result);
                     if (result.getStatus().equals("done")) {
                         done = true;
                         logger.info("Test run is done.");
-                        logger.info("Test run information available on {}", result.getId());
+                        logger.info("Test run information available on {}",
+                                getRunsURI + "/results/");
                     } else {
-                        logger.info("Test is still running. Status {}", result.getStatus());
+                        logger.info("Test status: {}", result.getStatus());
                     }
                     Thread.sleep(interval);
                 } catch (Exception e) {

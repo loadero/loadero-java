@@ -9,6 +9,7 @@ public class LoaderoModelFactory implements LoaderoModel {
             case LOADERO_PARTICIPANT: return new LoaderoParticipant();
             case LOADERO_RUN_INFO: return new LoaderoRunInfo();
             case LOADERO_TEST_RESULT: return new LoaderoTestResult();
+            case LOADERO_SCRIPT_FILE_LOC: return new LoaderoScriptFileLoc();
             default: return null;
         }
     }

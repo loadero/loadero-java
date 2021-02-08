@@ -6,6 +6,7 @@ import loadero.model.LoaderoGroup;
 import loadero.model.LoaderoModel;
 import loadero.model.LoaderoParticipant;
 import loadero.model.LoaderoTestOptions;
+import loadero.utils.LoaderoClientUtils;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpUriRequest;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
@@ -17,6 +18,8 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.List;
+import java.util.Map;
 
 
 public class TestSimpleFunctionality {
@@ -65,6 +68,11 @@ public class TestSimpleFunctionality {
     }
 
     @Test
+    @Disabled
+    public void testUpdateTestOptions() {
+    }
+
+    @Test
     public void testGetGroupById() {
         LoaderoModel group = client.getGroupById(GROUP_ID);
         assertEquals(group.getClass().getSimpleName(),
@@ -80,7 +88,12 @@ public class TestSimpleFunctionality {
     }
 
     @Test
-    public void testPolling() {
-
+    public void testGetUncommonTraits() {
+        LoaderoGroup g1 = new LoaderoGroup(1, 1, "group 1", 2);
+        LoaderoGroup g2 = new LoaderoGroup(1, 1, "group 1", 2);
+//        Map<String, List<Object>> diffs = LoaderoClientUtils.getUncommonTraits(g1, g2);
+//        for(Map.Entry<String, List<Object>> entry : diffs.entrySet()){
+//            System.out.println(entry.getKey() + ":\t" + entry.getValue());
+//        }
     }
 }
