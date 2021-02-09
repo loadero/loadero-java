@@ -15,7 +15,7 @@ existing tests, updating information about Loadero group and participants.
 <hr>
 <h4>Classes</h4>
 Classes that are mainly used to interact with Loadero API.
-<table>
+<table style="text-align: center; vertical-align: middle;">
 <thead>
 <tr>
 <th>Name</th>
@@ -115,10 +115,11 @@ class LoaderoModelFactory(){}
 
 <h4>Methods</h4>
 Public methods that is used to interact with Loadero API.
-<table>
+<table style="text-align: left; vertical-align: middle;">
 <thead>
-  <tr>
+  <tr style="text-align: center; vertical-align: middle;">
     <th>Name</th>
+    <th>Parameters</th>
     <th>Description</th>
   </tr>
 </thead>
@@ -127,8 +128,11 @@ Public methods that is used to interact with Loadero API.
 <td>
 
 ```java
-public LoaderoTestOptions getTestOptions()
+ LoaderoTestOptions getTestOptions()
 ```
+</td>
+<td>
+-
 </td>
 <td>
 Makes GET request to <b>/projects/{projectID}/tests/{testID}</b> endpoint and
@@ -138,9 +142,13 @@ retrieves information about existing test. Takes no arugments. Returns data as L
 <td>
 
 ```java
-public LoaderoTestOptions updateTestOptions
+ LoaderoTestOptions updateTestOptions
         (LoaderoTestOptions newOptions)
 ```
+</td>
+<td>
+LoaderoTestOptions newOptions - Required parameter that is used to set new test options
+in Loadero via API call.
 </td>
 <td>Makes PUT request to <b>/projects/{projectID}/tests/{testID}</b> and updates existing test options 
 in Loadero. 
@@ -151,8 +159,11 @@ Takes in LoaderoTestOptions object with desired params set through setter method
 <td>
 
 ```java
-public String getFileScriptConent(String id)
+ String getFileScriptConent(String id)
 ```
+</td>
+<td>
+String id - ID that is pointing to the script file on Loadero.
 </td>
 <td>Makes GET request to <b>/projects/{projectID}/files/{fileID}/</b> and retrieves the content
 of the script used for testing.
@@ -162,8 +173,11 @@ of the script used for testing.
 <td>
 
 ```java
-public LoaderoGroup getGroupById(String id)
+ LoaderoGroup getGroupById(String id)
 ```
+</td>
+<td>
+String id - ID of the group that is used to retrieve information about Loadero Group.
 </td>
 <td>Makes GET request to <b>/projects/{projectID}/tests/{testID}/groups/{groupID}/</b> 
 and retrieves information about group.
@@ -173,8 +187,11 @@ and retrieves information about group.
 <td>
 
 ```java
-public LoaderoGroup getParticipantById(String groupId)
+ LoaderoGroup getParticipantById(String groupId)
 ```
+</td>
+<td>
+String id - ID of the participant that is used to retrieve information.
 </td>
 <td>Makes GET request to <b> /projects/{projectID}/tests/{testID}/participants/{participantID}/</b> 
 and retrieves information about participant.
@@ -184,9 +201,14 @@ and retrieves information about participant.
 <td>
 
 ```java
-public LoaderoModel startTestAndPollInfi(int interval,
-        int timeout)
+  LoaderoModel startTestAndPollInfo
+        (int interval, int timeout)
 ```
+</td>
+<td>
+int interval - Specifying how often should be method poll for information. In seconds.
+
+int timeout  - Total amount of time that should be spending polling information. In seconds.
 </td>
 <td>Starts test run by sending POST command to <b>/projects/{projectID}/tests/{testID}/runs/</b>.
 After which starts with specified interval within given timeout sending GET request to retrieve information
@@ -196,3 +218,52 @@ Also, will give link to results.
 </tr>
 </tbody>
 </table>
+
+<h3>Usage</h3>
+<hr>
+
+<h3>Basic usage</h3>
+<p>Getting and updating information about existing test.</p>
+
+```java
+// Initiating client through which we will be iterating with Loadero API.
+LoaderoClient client = new LoaderoClient(loaderoToken, projectId, testId);
+
+// Retrieving current test description, if needed.
+LaoderoTestOptions currentTestOptions = client.getTestOptions();
+
+// Initiating new test options.
+// New options are...well...optional. Those options that wasn't specified
+// won't be substitute.
+LoaderoTestOptions newTestOptions = new LoaderoTestOptions();
+
+// Desired options can be get/set via getters and setters, respectively.
+        
+// There is two possibilities of setting script content.
+// First one is to provide path to location where script is stored.
+// This location will be parsed to string. 
+// Regardless, if this is .java or .js file.
+newTestOptions.setName("New name 1");
+newTestOptions.setMode("performance");
+newTestOptions.setScript(URI.create("path/to/.java or .js"));
+
+// The second approach is to pass script as string directly.
+newTestOptions.setScript(new String("your script here"));
+
+// After that you can call updateTestOptions() method and store result
+// of the operation for later usage if needed.       
+LoaderoTestOptions updatedOptions = (LoaderoTestOptions) client.updateTestOptions(newTestOptions);
+```
+
+<h3>Basic polling usage.</h3>
+```java
+// Another currently popular feature is to poll your test 
+// results while running the test itself!
+// And this wrapper can give you just that!
+        
+// With method startTestAndPollInfo(interval, timeout) you can start test and...
+// you guessed it! Poll the information about the state of the running test!
+// When test is done the method will return LoaderoRunInfo object with
+// all the information you need to retrieve results of the test later.        
+LoaderoRunInfo testRunInfo = (LoaderoRunInfo) client.startTestAndPollInfo(15, 100);
+```
