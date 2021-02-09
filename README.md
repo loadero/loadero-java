@@ -1,5 +1,5 @@
 <h2>Java wrapper for Loadero API</h2>
-<hr>
+
 <h3>Description</h3>
 <hr>
 <p>This is a small java library that can be used as a wrapper to interact with Loadero API.</p>
@@ -27,7 +27,7 @@ Classes that are mainly used to interact with Loadero API.
 <td>
 
 ```java
-class LoaderoClient()
+class LoaderoClient(){}
 ```
 </td>
 <td>Main class to interact with Loadero API.</td>
@@ -36,7 +36,7 @@ class LoaderoClient()
 <td>
 
 ```java
-interface LoaderoModel()
+interface LoaderoModel(){}
 ```
 </td>
 <td>Marker interface to group similar classes.</td>
@@ -45,7 +45,7 @@ interface LoaderoModel()
 <td>
 
 ```java
-class LoaderoGroup()
+class LoaderoGroup(){}
 ```
 </td>
 <td>Class that is responsible to represent information about Loadero group.</td>
@@ -54,7 +54,7 @@ class LoaderoGroup()
 <td>
 
 ```java
-class LoaderoTestOptions()
+class LoaderoTestOptions(){}
 ```
 </td>
 <td>
@@ -66,7 +66,7 @@ from Loadero API.
 <td>
 
 ```java
-class LoaderoRunInfo()
+class LoaderoRunInfo(){}
 ```
 </td>
 <td>Class that is used to collect information about test runs.</td>
@@ -75,7 +75,7 @@ class LoaderoRunInfo()
 <td>
 
 ```java
-class LoaderoParticipant()
+class LoaderoParticipant(){}
 ```
 </td>
 <td>Class that represents information about Loadero participant.</td>
@@ -84,7 +84,7 @@ class LoaderoParticipant()
 <td>
 
 ```java
-class LoaderoScriptFileLoc()
+class LoaderoScriptFileLoc(){}
 ```
 </td>
 <td>Class that is represent information about script file that is used
@@ -95,7 +95,7 @@ by Loadero to run tests against.
 <td>
 
 ```java
-class LoaderoTestResults()
+class LoaderoTestResults(){}
 ```
 </td>
 <td>Class that (will) represent information about Loadero test's results.</td>
@@ -104,7 +104,7 @@ class LoaderoTestResults()
 <td>
 
 ```java
-class LoaderoModelFactory()
+class LoaderoModelFactory(){}
 ```
 </td>
 <td>Factory that is used to create concrete classes of LoaderoModel interface.</td>
