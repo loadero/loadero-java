@@ -5,6 +5,8 @@ import loadero.utils.FunctionBodyParser;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.net.URI;
+
 /**
  * LoaderoTestDescription object is a configuration profile to specify
  * test parameters for creation of Loadero tests.
@@ -27,10 +29,19 @@ public class LoaderoTestOptions implements LoaderoModel {
     @SerializedName("script_file_id")
     private long scriptFileId;
 
-    public void setScriptPath(String scriptPath) {
-        this.script = FunctionBodyParser.getBody(scriptPath);
+    /**
+     * When given URI as argument, threats this argument as path
+     * in where to look for a script, then parses it to string.
+     * @param scriptPath - URI pointing to script location.
+     */
+    public void setScript(URI scriptPath) {
+        this.script = FunctionBodyParser.getBody(scriptPath.toString());
     }
 
+    /**
+     * When given String as argument, threats it as script.
+     * @param script - Script given as string.
+     */
     public void setScript(String script) {
         this.script = script;
     }
