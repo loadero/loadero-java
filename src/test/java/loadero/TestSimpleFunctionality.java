@@ -84,14 +84,4 @@ public class TestSimpleFunctionality {
         assertEquals(participant.getClass().getSimpleName(),
                 LoaderoParticipant.class.getSimpleName());
     }
-
-    @Test
-    public void testGetUncommonTraits() {
-        LoaderoGroup g1 = new LoaderoGroup(1, 1, "group 1", 2);
-        LoaderoGroup g2 = new LoaderoGroup(1, 1, "group 1", 2);
-//        Map<String, List<Object>> diffs = LoaderoClientUtils.getUncommonTraits(g1, g2);
-//        for(Map.Entry<String, List<Object>> entry : diffs.entrySet()){
-//            System.out.println(entry.getKey() + ":\t" + entry.getValue());
-//        }
-    }
 }
