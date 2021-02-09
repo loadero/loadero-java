@@ -168,5 +168,11 @@ public class LoaderoClient {
                 + runId
                 + "/results/";
     }
+
+    public String buildProjectURL() {
+        return BASE_URL
+                + "/projects/"
+                + projectId;
+    }
 }
 
