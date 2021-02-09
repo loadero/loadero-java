@@ -115,7 +115,7 @@ class LoaderoModelFactory(){}
 
 <h4>Methods</h4>
 Public methods that is used to interact with Loadero API.
-<table style="text-align: left; vertical-align: middle;">
+<table style="text-align: left; vertical-align: middle; table-layout: fixed;wrap:break-word;">
 <thead>
   <tr style="text-align: center; vertical-align: middle;">
     <th>Name</th>
@@ -125,6 +125,7 @@ Public methods that is used to interact with Loadero API.
 </thead>
 <tbody>
 <tr>
+
 <td>
 
 ```java
@@ -256,6 +257,7 @@ LoaderoTestOptions updatedOptions = (LoaderoTestOptions) client.updateTestOption
 ```
 
 <h3>Basic polling usage.</h3>
+
 ```java
 // Another currently popular feature is to poll your test 
 // results while running the test itself!
