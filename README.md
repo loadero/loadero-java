@@ -132,7 +132,7 @@ public LoaderoTestOptions getTestOptions()
 </td>
 <td>
 Makes GET request to <b>/projects/{projectID}/tests/{testID}</b> endpoint and
-retrieves information about existing test. Takes no arugments. Returns data as LoaderoTestOptions object.</td>
+retrieves information about existing test. Takes no arguments. Returns data as LoaderoTestOptions object.</td>
 </tr>
 <tr>
 <td>
