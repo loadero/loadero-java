@@ -55,6 +55,7 @@ public class LoaderoClient {
                     String.valueOf(currentOptions.getScriptFileId()));
             currentOptions.setScript(scriptContent);
         }
+
         LoaderoTestOptions updatedOptions = LoaderoClientUtils.copyUncommonFields(
                 currentOptions,
                 newTestOptions);
@@ -144,7 +145,6 @@ public class LoaderoClient {
      * @return              - String url pointing to participant.
      */
     private String buildParticipantURL(String participantId) {
-//
         return buildTestURL()
                 + "participants/"
                 + participantId
