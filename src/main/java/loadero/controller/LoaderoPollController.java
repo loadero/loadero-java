@@ -16,8 +16,6 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.net.URI;
 
-
-// TODO: log for test status
 public class LoaderoPollController {
     private final LoaderoHttpClient     client;
     private final LoaderoModelFactory   factory;
@@ -41,8 +39,8 @@ public class LoaderoPollController {
 
     /**
      * Start test run by sending POST request to /runs url.
-     * @param uri
-     * @return
+     * @param uri - Link pointing on concrete testID
+     * @return    - Returns LoaderoRunInfo object with information about test run.
      */
     private LoaderoRunInfo startTestRun(String uri) {
         logger.info("Starting test...");
@@ -70,7 +68,7 @@ public class LoaderoPollController {
 
     /**
      * Stops test run by calling GET on /stop.
-     * @param uri
+     * @param uri - Link pointing to concrete testID
      */
     private void stopTestRun(String uri) {
         String stopURI = uri + "stop/";
@@ -87,7 +85,7 @@ public class LoaderoPollController {
      * @param uri      - uri from where to get info
      * @param interval - time in seconds between get requests
      * @param timeout  - maximum amount of time in seconds should spend polling
-     * @return
+     * @return         - On success will return LoaderoRunInfo object, otherwise null.
      */
     private LoaderoModel startPolling(String uri, String runId,
                                       int interval, int timeout) {
