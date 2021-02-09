@@ -3,9 +3,7 @@ package loadero.model;
 import com.google.gson.annotations.SerializedName;
 import lombok.*;
 
-@Getter
-@Setter
-@ToString
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoaderoGroup implements LoaderoModel {
