@@ -1,0 +1,18 @@
+{
+  "id" : "0849491f-ba30-3fa0-88ef-9a3740a4183b",
+  "request" : {
+    "url" : "/projects/",
+    "method" : "GET"
+  },
+  "response" : {
+    "status" : 401,
+    "bodyFileName" : "body-projects-6OUzP.json",
+    "headers" : {
+      "Server" : "nginx/1.18.0 (Ubuntu)",
+      "Date" : "Wed, 10 Feb 2021 08:26:47 GMT",
+      "Content-Type" : "application/json; charset=UTF-8",
+      "Strict-Transport-Security" : "max-age=15768000; includeSubDomains"
+    }
+  },
+  "uuid" : "0849491f-ba30-3fa0-88ef-9a3740a4183b"
+}

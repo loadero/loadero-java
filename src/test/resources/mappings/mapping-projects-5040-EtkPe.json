@@ -1,0 +1,19 @@
+{
+  "id" : "943a5f97-1218-3365-9b1e-87c16fba2cb4",
+  "request" : {
+    "url" : "/projects/5040/",
+    "method" : "GET"
+  },
+  "response" : {
+    "status" : 200,
+    "bodyFileName" : "body-projects-5040-EtkPe.json",
+    "headers" : {
+      "Server" : "nginx/1.18.0 (Ubuntu)",
+      "Date" : "Wed, 10 Feb 2021 08:16:18 GMT",
+      "Content-Type" : "application/json; charset=UTF-8",
+      "Vary" : "Accept-Encoding",
+      "Strict-Transport-Security" : "max-age=15768000; includeSubDomains"
+    }
+  },
+  "uuid" : "943a5f97-1218-3365-9b1e-87c16fba2cb4"
+}

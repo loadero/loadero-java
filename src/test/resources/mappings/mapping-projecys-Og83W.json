@@ -1,0 +1,19 @@
+{
+  "id" : "2e800a99-5761-3bcd-b3e0-b5a1e9e5bd62",
+  "request" : {
+    "url" : "/projecys/",
+    "method" : "GET"
+  },
+  "response" : {
+    "status" : 404,
+    "bodyFileName" : "body-projecys-Og83W.txt",
+    "headers" : {
+      "Server" : "nginx/1.18.0 (Ubuntu)",
+      "Date" : "Wed, 10 Feb 2021 08:26:42 GMT",
+      "Content-Type" : "text/plain; charset=utf-8",
+      "X-Content-Type-Options" : "nosniff",
+      "Strict-Transport-Security" : "max-age=15768000; includeSubDomains"
+    }
+  },
+  "uuid" : "2e800a99-5761-3bcd-b3e0-b5a1e9e5bd62"
+}
