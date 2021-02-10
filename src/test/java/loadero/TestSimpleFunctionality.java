@@ -10,7 +10,6 @@ import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
 import org.apache.hc.core5.http.HttpResponse;
 import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -62,12 +61,6 @@ public class TestSimpleFunctionality {
     public void testGetTestOptions() {
         LoaderoModel options = client.getTestOptions();
         assertEquals(options.getClass().getSimpleName(), LoaderoTestOptions.class.getSimpleName());
-    }
-
-    //TODO
-    @Test
-    @Disabled
-    public void testUpdateTestOptions() {
     }
 
     @Test
