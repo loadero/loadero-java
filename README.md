@@ -148,7 +148,7 @@ retrieves information about existing test. Takes no arugments. Returns data as L
 ```
 </td>
 <td>
-LoaderoTestOptions newOptions - Required parameter that is used to set new test options
+<b>LoaderoTestOptions newOptions</b> - Required parameter that is used to set new test options
 in Loadero via API call.
 </td>
 <td>Makes PUT request to <b>/projects/{projectID}/tests/{testID}</b> and updates existing test options 
@@ -164,7 +164,7 @@ Takes in LoaderoTestOptions object with desired params set through setter method
 ```
 </td>
 <td>
-String id - ID that is pointing to the script file on Loadero.
+<b>String id</b> - ID that is pointing to the script file on Loadero.
 </td>
 <td>Makes GET request to <b>/projects/{projectID}/files/{fileID}/</b> and retrieves the content
 of the script used for testing.
@@ -178,7 +178,7 @@ of the script used for testing.
 ```
 </td>
 <td>
-String id - ID of the group that is used to retrieve information about Loadero Group.
+<b>String id</b> - ID of the group that is used to retrieve information about Loadero Group.
 </td>
 <td>Makes GET request to <b>/projects/{projectID}/tests/{testID}/groups/{groupID}/</b> 
 and retrieves information about group.
@@ -192,7 +192,7 @@ and retrieves information about group.
 ```
 </td>
 <td>
-String id - ID of the participant that is used to retrieve information.
+<b>String id</b> - ID of the participant that is used to retrieve information.
 </td>
 <td>Makes GET request to <b> /projects/{projectID}/tests/{testID}/participants/{participantID}/</b> 
 and retrieves information about participant.
@@ -207,9 +207,9 @@ and retrieves information about participant.
 ```
 </td>
 <td>
-int interval - Specifying how often should be method poll for information. In seconds.
+<b>int interval</b> - Specifying how often should be method poll for information. In seconds.
 
-int timeout  - Total amount of time that should be spending polling information. In seconds.
+<b>int timeout</b>  - Total amount of time that should be spending polling information. In seconds.
 </td>
 <td>Starts test run by sending POST command to <b>/projects/{projectID}/tests/{testID}/runs/</b>.
 After which starts with specified interval within given timeout sending GET request to retrieve information
