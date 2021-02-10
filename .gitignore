@@ -1,9 +1,6 @@
 .idea
 target
 build
-src/test/resources
-src/test/resources/__files
-src/test/resources/__mappings
 src/main/resources/wiremock-standalone-2.27.2.jar
 .DS_Store
 src/.DS_Store
