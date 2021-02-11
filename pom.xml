@@ -14,9 +14,11 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.0</version>
                 <configuration>
-                    <environmentVariables>
-                        <LOADERO_API_TOKEN>651cfe0b5a2cf14951cfe11d7468072e2f7a5bf985ac4cad</LOADERO_API_TOKEN>
-                    </environmentVariables>
+                    <systemPropertyVariables>
+                        <LOADERO_API_TOKEN>
+                            ${env.PATH}
+                        </LOADERO_API_TOKEN>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
         </plugins>
