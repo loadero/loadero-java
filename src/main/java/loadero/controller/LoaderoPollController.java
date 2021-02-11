@@ -34,7 +34,7 @@ public class LoaderoPollController {
         logger.info("Run ID {}", startTestRun.getId());
         return startPolling(uri,
                 String.valueOf(startTestRun.getId()),
-                1000 * interval, 1000 * timeout);
+                interval, timeout);
     }
 
     /**
@@ -91,31 +91,41 @@ public class LoaderoPollController {
                                       int interval, int timeout) {
         LoaderoRunInfo result = null;
         URI getRunsURI = URI.create(uri + runId + "/");
+        // converting seconds into ms
+        interval = interval * 1000;
+        timeout = timeout * 1000;
+
         int tries = timeout / interval;
         boolean done = false;
 
         long start = System.currentTimeMillis();
         long end = start + timeout;
 
-        while (tries != 0 | System.currentTimeMillis() < end | done) {
-            tries--;
+        while (!done | System.currentTimeMillis() < end) {
+            if (tries <= 0) {
+                logger.info("Number of tries expired.");
+                break;
+            }
+
             while (!done) {
                 try {
-                    result = (LoaderoRunInfo) restController.get(getRunsURI.toString(),
-                            LoaderoType.LOADERO_RUN_INFO);
+                    result = (LoaderoRunInfo)
+                            restController.get(getRunsURI.toString(), LoaderoType.LOADERO_RUN_INFO);
                     if (result.getStatus().equals("done")) {
                         done = true;
                         logger.info("Test run is done.");
-                        logger.info("Test run information available on {}",
+                        logger.info("Test run information available at {}",
                                 getRunsURI + "results/");
                     } else {
                         logger.info("Test status: {}", result.getStatus());
+                        Thread.sleep(interval);
                     }
-                    Thread.sleep(interval);
                 } catch (Exception e) {
                     done = true;
+                    logger.warn("{}", e.getMessage());
                     stopTestRun(uri);
                 }
+                tries--;
             }
         }
         return result;
