@@ -8,6 +8,8 @@ import loadero.controller.LoaderoRestController;
 import loadero.model.LoaderoParticipant;
 import loadero.model.LoaderoRunInfo;
 import loadero.model.LoaderoTestOptions;
+import loadero.model.LoaderoType;
+import loadero.utils.LoaderoClientUtils;
 import loadero.utils.LoaderoHttpClient;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpStatus;
@@ -173,23 +175,28 @@ public class TestWithWireMock {
     @Order(6)
     public void testGetParticipantById() {
         String participantId = "94633";
-        LoaderoParticipant participant = (LoaderoParticipant)
+        LoaderoParticipant participant =
                 loaderoClient.getParticipantById(participantId);
-
         assertEquals(participantId, String.valueOf(participant.getId()));
     }
 
-    /*
-    1: initializes client
-    1.1 asserts that client is created (from Loadero response)
-    2: updates test (sets script and participants)
-    2.1 asserts that the test is updated
-    3: runs the test (polls for result object)
-    3.1 asserts that result has a pass status
-     */
+    @Test
+    public void testUpdateParticipantById() {
+        String participantId = "94633";
+        // name, group_id, count and browser params are required
+        LoaderoParticipant newParticipant = new LoaderoParticipant();
+        newParticipant.setName("New participant name from @Test");
+
+        LoaderoParticipant updatedParticipant = loaderoClient
+                .updateTestParticipantById(participantId, newParticipant);
+
+        assertEquals("New participant name from @Test", updatedParticipant.getName());
+        assertEquals(participantId, String.valueOf(updatedParticipant.getId()));
+    }
 
     @Test
-    @Order(7)
+    @Disabled
+    @Order(8)
     public void testFullFunctionalityFlow() {
         LoaderoClient localClient = new LoaderoClient(token, PROJECT_ID, TEST_ID);
         String testClientInitUrl = localClient.buildProjectURL();
