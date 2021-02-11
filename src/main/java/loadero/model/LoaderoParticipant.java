@@ -5,9 +5,9 @@ import lombok.Data;
 
 @Data
 public class LoaderoParticipant implements LoaderoModel {
-    private long id = 0L;
+    private long id = 0;
     @SerializedName("group_id")
-    private long groupId = 0L;
+    private long groupId = 0;
     @SerializedName("test_id")
     private long testId = 0;
     private String name = "";
