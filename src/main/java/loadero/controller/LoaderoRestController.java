@@ -52,6 +52,7 @@ public class LoaderoRestController {
                 HttpEntity entity = res.getEntity();
                 result = LoaderoClientUtils.jsonToObject(entity, type);
                 logger.info("{}", res.getStatusLine());
+                logger.info("{}", result);
             }
         } catch (NullPointerException | IOException e) {
             logger.error("{}", e.getMessage());

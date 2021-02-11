@@ -102,7 +102,6 @@ public class LoaderoClient {
         );
     }
 
-    // TODO
     /**
      * Updates Loadero Participant by it's ID.
      * @param participantId       - ID of desired participant.
