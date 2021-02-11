@@ -1,5 +1,6 @@
 package loadero;
 
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import loadero.utils.LoaderoHttpClient;
 import org.apache.http.HttpHeaders;
@@ -23,19 +24,21 @@ public class TestWithWireMock {
     private static final String token      = System.getenv("LOADERO_API_TOKEN");
     private static final String PROJECT_ID = "5040";
     private static final String TEST_ID    = "6866";
-    private static final LoaderoClient loaderoClient = new LoaderoClient(token,PROJECT_ID, TEST_ID);
+    private static final LoaderoClient loaderoClient = new LoaderoClient(token, PROJECT_ID, TEST_ID);
 
-    private static final int port               = 8089;
-    private static final String localhost       = "http://localhost:" + port;
+    private static String localhost             = "http://localhost:";
     private static final String loaderoTokenStr = "LoaderoAuth " + token;
     private final LoaderoHttpClient httpClient  = new LoaderoHttpClient(token);
 
     @Rule
-    public static WireMockRule wmRule = new WireMockRule(8089);
+    public static WireMockRule wmRule = new WireMockRule(
+            WireMockConfiguration.wireMockConfig().dynamicPort()
+    );
 
     @BeforeAll
     public static void setup() {
         wmRule.start();
+        localhost = localhost + wmRule.port();
     }
 
     @AfterAll
