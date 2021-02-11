@@ -64,7 +64,8 @@ public class LoaderoClientUtils {
             try {
                 if (Objects.equals(field.get(currentObj), field.get(newObject))
                         || Objects.equals(field.get(newObject), "")
-                        || Objects.equals(field.get(newObject), 0)) {
+                        || Objects.equals(field.get(newObject), 0)
+                        || Objects.equals(field.get(newObject), 0L)) {
                     field.set(result, field.get(currentObj));
                 } else {
                     field.set(result, field.get(newObject));
