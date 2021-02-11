@@ -44,7 +44,7 @@ public class LoaderoClient {
      */
     public LoaderoTestOptions updateTestOptions(LoaderoTestOptions newTestOptions) {
         String testUrl = buildTestURL();
-        LoaderoTestOptions currentOptions = (LoaderoTestOptions) getTestOptions();
+        LoaderoTestOptions currentOptions = getTestOptions();
 
         // If new script is not provided
         // We get the old script from Loadero API endpoint /files/fileId
@@ -55,9 +55,10 @@ public class LoaderoClient {
             currentOptions.setScript(scriptContent);
         }
 
-        LoaderoTestOptions updatedOptions = LoaderoClientUtils.copyUncommonFields(
+        LoaderoModel updatedOptions = LoaderoClientUtils.copyUncommonFields(
                 currentOptions,
-                newTestOptions);
+                newTestOptions,
+                LoaderoType.LOADERO_TEST_OPTIONS);
         return (LoaderoTestOptions) restController.update(testUrl,
                 LoaderoType.LOADERO_TEST_OPTIONS, updatedOptions);
     }
@@ -99,12 +100,26 @@ public class LoaderoClient {
         );
     }
 
+    /**
+     *
+     * @param participantId
+     * @param newParticipant
+     * @return
+     */
     public LoaderoParticipant updateTestParticipantById(String participantId,
                                                     LoaderoParticipant newParticipant) {
         String participnatUrl = buildParticipantURL(participantId);
         LoaderoParticipant currentParticInfo = getParticipantById(participantId);
+        System.out.println(currentParticInfo);
 
-        return null;
+        LoaderoParticipant updatedParticipant = (LoaderoParticipant) LoaderoClientUtils
+                .copyUncommonFields(
+                currentParticInfo,
+                newParticipant,
+                LoaderoType.LOADERO_PARTICIPANT);
+
+        return (LoaderoParticipant) restController
+                .update(participnatUrl, LoaderoType.LOADERO_PARTICIPANT, updatedParticipant);
     }
 
     /**
