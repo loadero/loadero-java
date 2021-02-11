@@ -256,7 +256,7 @@ newTestOptions.setScript(new String("your script here"));
 LoaderoTestOptions updatedOptions = (LoaderoTestOptions) client.updateTestOptions(newTestOptions);
 ```
 
-<h3>Basic polling usage.</h3>
+<h3>Basic polling usage</h3>
 
 ```java
 // Another currently popular feature is to poll your test 
@@ -268,4 +268,22 @@ LoaderoTestOptions updatedOptions = (LoaderoTestOptions) client.updateTestOption
 // When test is done the method will return LoaderoRunInfo object with
 // all the information you need to retrieve results of the test later.        
 LoaderoRunInfo testRunInfo = (LoaderoRunInfo) client.startTestAndPollInfo(15, 100);
+```
+
+<h3>Unit tests</h3>
+<p>Package provides some predefined set of unit tests that can be run with Maven.</p>
+
+<b>To run all tests in /test directory.</b>
+```
+mvm test
+```
+
+<b>To run a specific set of tests.</b>
+```
+mvn -DTest=TestWithWiremock test
+```
+
+<b>To run a specific test method inside test class.</b>
+```
+mvn -DTest=TestWithWiremock#getTestOptions test
 ```
