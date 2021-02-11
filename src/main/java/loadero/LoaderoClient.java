@@ -102,17 +102,17 @@ public class LoaderoClient {
         );
     }
 
+    // TODO
     /**
-     *
-     * @param participantId
-     * @param newParticipant
-     * @return
+     * Updates Loadero Participant by it's ID.
+     * @param participantId       - ID of desired participant.
+     * @param newParticipant      - LoaderoParticipant object with new params.
+     * @return LoaderoParticipant - updated LoaderoParticipant object.
      */
     public LoaderoParticipant updateTestParticipantById(String participantId,
                                                     LoaderoParticipant newParticipant) {
         String participnatUrl = buildParticipantURL(participantId);
         LoaderoParticipant currentParticInfo = getParticipantById(participantId);
-        System.out.println(currentParticInfo);
 
         LoaderoParticipant updatedParticipant = (LoaderoParticipant) LoaderoClientUtils
                 .copyUncommonFields(
