@@ -52,9 +52,13 @@ public class LoaderoClientUtils {
     // Does nothing if no difference.
     // Slightly modified version of code from SO.
     // source: https://stackoverflow.com/a/20366149
-    public static LoaderoTestOptions copyUncommonFields(LoaderoTestOptions currentObj, LoaderoTestOptions newObject) {
-        LoaderoTestOptions results = new LoaderoTestOptions();
-        for(Field field : LoaderoTestOptions.class.getDeclaredFields()){
+    public static LoaderoModel copyUncommonFields(LoaderoModel currentObj,
+                                                  LoaderoModel newObject,
+                                                  LoaderoType type) {
+        Field[] fieldsArr = factory.getLoaderoModel(type).getClass().getDeclaredFields();
+
+        LoaderoModel results = new LoaderoTestOptions();
+        for(Field field : fieldsArr){
             // make private fields accessible
             field.setAccessible(true);
             try {
