@@ -8,6 +8,8 @@ import lombok.Getter;
 
 import java.util.Objects;
 
+
+// TODO: abstract heavy logic into service
 @Getter
 public class LoaderoClient {
     private final String BASE_URL = "https://api.loadero.com/v2";
