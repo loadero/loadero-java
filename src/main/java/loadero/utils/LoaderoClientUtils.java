@@ -55,27 +55,26 @@ public class LoaderoClientUtils {
     public static LoaderoModel copyUncommonFields(LoaderoModel currentObj,
                                                   LoaderoModel newObject,
                                                   LoaderoType type) {
-        Field[] fieldsArr = factory.getLoaderoModel(type).getClass().getDeclaredFields();
+        LoaderoModel result = factory.getLoaderoModel(type);
+        Field[] fieldsArr = result.getClass().getDeclaredFields();
 
-        LoaderoModel results = new LoaderoTestOptions();
         for(Field field : fieldsArr){
             // make private fields accessible
             field.setAccessible(true);
             try {
-                if(Objects.equals(field.get(currentObj), field.get(newObject)) |
-                Objects.equals(field.get(newObject), "") |
-                Objects.equals(field.get(newObject), 0)){
-                    field.set(results, field.get(currentObj));
+                if (Objects.equals(field.get(currentObj), field.get(newObject))
+                        || Objects.equals(field.get(newObject), "")
+                        || Objects.equals(field.get(newObject), 0)) {
+                    field.set(result, field.get(currentObj));
                 } else {
-                    field.set(results, field.get(newObject));
+                    field.set(result, field.get(newObject));
                 }
             } catch (IllegalArgumentException | IllegalAccessException e) {
                 e.printStackTrace();
-            } finally {
-                // remove access to private fields just in case
-                field.setAccessible(false);
             }
+            field.setAccessible(false);
         }
-        return results;
+        System.out.println("After copy result: " + result);
+        return result;
     }
 }
