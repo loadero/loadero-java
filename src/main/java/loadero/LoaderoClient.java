@@ -2,10 +2,7 @@ package loadero;
 
 import loadero.controller.LoaderoPollController;
 import loadero.controller.LoaderoRestController;
-import loadero.model.LoaderoModel;
-import loadero.model.LoaderoScriptFileLoc;
-import loadero.model.LoaderoTestOptions;
-import loadero.model.LoaderoType;
+import loadero.model.*;
 import loadero.utils.LoaderoClientUtils;
 import lombok.Getter;
 
@@ -16,12 +13,14 @@ public class LoaderoClient {
     private final String BASE_URL = "https://api.loadero.com/v2";
     private final String projectId;// = "5040";
     private final String testId;// = "6866";
+    private final String loaderoApiToken;
     private final LoaderoRestController restController;
     private final LoaderoPollController pollController;
 
     public LoaderoClient(String loaderApiToken, String projectId, String testId) {
         this.projectId = projectId;
         this.testId    = testId;
+        this.loaderoApiToken = loaderApiToken;
         restController = new LoaderoRestController(loaderApiToken);
         pollController = new LoaderoPollController(loaderApiToken);
     }
@@ -30,9 +29,9 @@ public class LoaderoClient {
      * Returns information about test as LoaderoTestOptions.
      * @return - LoaderoTestOptions object.
      */
-    public LoaderoModel getTestOptions() {
+    public LoaderoTestOptions getTestOptions() {
         String testUrl = buildTestURL();
-        return restController.get(testUrl,
+        return (LoaderoTestOptions) restController.get(testUrl,
                 LoaderoType.LOADERO_TEST_OPTIONS);
     }
 
@@ -43,7 +42,7 @@ public class LoaderoClient {
      * @param newTestOptions - new LoaderoTestOptions object with parameters that you wish to change
      * @return               - Updated LoaderoTestOptions
      */
-    public LoaderoModel updateTestOptions(LoaderoTestOptions newTestOptions) {
+    public LoaderoTestOptions updateTestOptions(LoaderoTestOptions newTestOptions) {
         String testUrl = buildTestURL();
         LoaderoTestOptions currentOptions = (LoaderoTestOptions) getTestOptions();
 
@@ -59,7 +58,7 @@ public class LoaderoClient {
         LoaderoTestOptions updatedOptions = LoaderoClientUtils.copyUncommonFields(
                 currentOptions,
                 newTestOptions);
-        return restController.update(testUrl,
+        return (LoaderoTestOptions) restController.update(testUrl,
                 LoaderoType.LOADERO_TEST_OPTIONS, updatedOptions);
     }
 
@@ -93,11 +92,19 @@ public class LoaderoClient {
      * @param participantId - desired participant.
      * @return              - LoaderoParticipant object
      */
-    public LoaderoModel getParticipantById(String participantId) {
+    public LoaderoParticipant getParticipantById(String participantId) {
         String particUrl = buildParticipantURL(participantId);
-        return restController.get(
+        return (LoaderoParticipant) restController.get(
                 particUrl, LoaderoType.LOADERO_PARTICIPANT
         );
+    }
+
+    public LoaderoParticipant updateTestParticipantById(String participantId,
+                                                    LoaderoParticipant newParticipant) {
+        String participnatUrl = buildParticipantURL(participantId);
+        LoaderoParticipant currentParticInfo = getParticipantById(participantId);
+
+        return null;
     }
 
     /**
@@ -144,7 +151,7 @@ public class LoaderoClient {
      * @param participantId - ID of desired participant.
      * @return              - String url pointing to participant.
      */
-    private String buildParticipantURL(String participantId) {
+    public String buildParticipantURL(String participantId) {
         return buildTestURL()
                 + "participants/"
                 + participantId
