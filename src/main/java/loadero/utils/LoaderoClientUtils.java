@@ -1,5 +1,7 @@
 package loadero.utils;
 
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import loadero.model.*;
@@ -11,7 +13,21 @@ import java.util.Objects;
 
 public class LoaderoClientUtils {
     private static final LoaderoModelFactory factory = new LoaderoModelFactory();
-    private static final Gson gson = new GsonBuilder().create();
+    private static final Gson gson = new GsonBuilder()
+            .addSerializationExclusionStrategy(new ExclusionStrategy() {
+        @Override
+        public boolean shouldSkipField(FieldAttributes fieldAttributes) {
+            return fieldAttributes.getName().equals("id") ||
+                    fieldAttributes.getName().equals("scriptFileId");
+        }
+
+        @Override
+        public boolean shouldSkipClass(Class<?> aClass) {
+            return false;
+        }
+    })
+            .create();
+
 
     public static boolean isNull(Object test) {
         return Objects.isNull(test);
@@ -75,7 +91,6 @@ public class LoaderoClientUtils {
             }
             field.setAccessible(false);
         }
-        System.out.println("After copy result: " + result);
         return result;
     }
 }
