@@ -1,5 +1,6 @@
 package loadero.model;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import loadero.utils.FunctionBodyParser;
 import lombok.Data;
@@ -16,6 +17,7 @@ import java.net.URI;
 @Data
 @NoArgsConstructor
 public class LoaderoTestOptions implements LoaderoModel {
+    @Expose(serialize = false)
     private long id = 0L;
     private String name = "";
     @SerializedName("start_interval")
@@ -27,6 +29,7 @@ public class LoaderoTestOptions implements LoaderoModel {
     private String incrementStrategy = "";
     private String script = ""; // Path to script
     @SerializedName("script_file_id")
+    @Expose(serialize = false)
     private long scriptFileId = 0L;
 
     /**
