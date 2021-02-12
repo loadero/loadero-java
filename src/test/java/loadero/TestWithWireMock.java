@@ -169,19 +169,13 @@ public class TestWithWireMock {
         String testClientInitUrl = localClient.buildProjectURL() + "/";
 
         // Checking that client can establish connection and make requests
-        StubMapping stub = wmRule.givenThat(get(urlMatching(testClientInitUrl))
-                .willReturn(aResponse()
-                        .proxiedFrom(localClient.getBaseUrl())
-                        .withAdditionalRequestHeader(
-                                HttpHeaders.AUTHORIZATION,
-                                "LoaderoAuth " + localClient.getLoaderoApiToken()
-                        )));
+        makeGetRequest(testClientInitUrl);
+        assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
 
-        assertEquals(HttpStatus.SC_OK, stub.getResponse().getStatus());
         // Checking that client is able to update test
         LoaderoTestOptions currentTestOptions = localClient.getTestOptionsById(TEST_ID);
         LoaderoTestOptions newTestOptions = new LoaderoTestOptions();
-        newTestOptions.setName("New Test Name from @Test");
+        newTestOptions.setName("New test name from testFullFunctionalityFlow");
         // Setting script through path using URI
         newTestOptions.setScript(
                 URI.create("src/main/resources/loadero/scripts/testui/LoaderoScriptJava.java"));
@@ -192,7 +186,45 @@ public class TestWithWireMock {
         logger.info("Before update: {}", currentTestOptions);
         logger.info("After update: {}", updatedTestOptions);
         // asserting that update did happen
-        assertEquals("New Test Name from @Test", updatedTestOptions.getName());
+        assertEquals("New test name from testFullFunctionalityFlow",
+                updatedTestOptions.getName());
+
+        // Checking polling function
+        LoaderoRunInfo startAndPollTest = localClient.startTestAndPollInfo(TEST_ID, 20, 40);
+        assertEquals("done", startAndPollTest.getStatus());
+    }
+
+    @Test
+    @Disabled
+    @Order(10)
+    public void testFullFunctionalityFlowWithAnotherScript() {
+        String baseUrl = "https://api.loadero.com/v2";
+        LoaderoClient localClient = new LoaderoClient(
+                baseUrl, token,
+                PROJECT_ID);
+        String testClientInitUrl = localClient.buildProjectURL() + "/";
+
+        // Checking that client can establish connection and make requests
+        makeGetRequest(testClientInitUrl);
+        assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
+
+        // Checking that client is able to update test
+        LoaderoTestOptions currentTestOptions = localClient.getTestOptionsById(TEST_ID);
+        LoaderoTestOptions newTestOptions = new LoaderoTestOptions();
+        newTestOptions.setName("New Test from testFunctionalityFlowWithAnotherScript");
+        // Setting script through path using URI
+        // Another script
+        newTestOptions.setScript(
+                URI.create("src/main/resources/loadero/scripts/testui/LoaderoScript.java"));
+        newTestOptions.setMode("load");
+        newTestOptions.setStartInterval(30);
+        LoaderoTestOptions updatedTestOptions = localClient.updateTestOptions(TEST_ID, newTestOptions);
+
+        logger.info("Before update: {}", currentTestOptions);
+        logger.info("After update: {}", updatedTestOptions);
+        // asserting that update did happen
+        assertEquals("New Test from testFunctionalityFlowWithAnotherScript",
+                updatedTestOptions.getName());
 
         // Checking polling function
         LoaderoRunInfo startAndPollTest = localClient.startTestAndPollInfo(TEST_ID, 20, 40);
