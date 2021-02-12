@@ -147,7 +147,7 @@ public class LoaderoClient {
                 + "/projects/"
                 + projectId
                 + "/tests/"
-                + id + "/";
+                + id;
     }
 
 
@@ -161,9 +161,8 @@ public class LoaderoClient {
     private String buildGroupURL(String testId, String groupId) {
         String testUrl = buildTestURLById(testId);
         return testUrl
-                + "groups/"
-                + groupId
-                + "/";
+                + "/groups/"
+                + groupId;
     }
 
     /**
@@ -173,9 +172,8 @@ public class LoaderoClient {
      */
     public String buildParticipantURL(String testId, String participantId) {
         return buildTestURLById(testId)
-                + "participants/"
-                + participantId
-                + "/";
+                + "/participants/"
+                + participantId;
     }
 
     public String buildScriptFileURL(String fileId) {
@@ -183,8 +181,7 @@ public class LoaderoClient {
                 + "/projects/"
                 + projectId
                 + "/files/"
-                + fileId
-                + "/";
+                + fileId;
     }
 
     public String buildRunResultsURL(String runId) {
