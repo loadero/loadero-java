@@ -34,7 +34,7 @@ public class LoaderoClient {
      * @return - LoaderoTestOptions object.
      */
     public LoaderoTestOptions getTestOptionsById(String id) {
-        String testUrl = buildTestURLById(id);
+        String testUrl = buildTestURLById(id) + "/";
         return (LoaderoTestOptions) restController.get(testUrl,
                 LoaderoType.LOADERO_TEST_OPTIONS);
     }
@@ -47,7 +47,7 @@ public class LoaderoClient {
      * @return               - Updated LoaderoTestOptions
      */
     public LoaderoTestOptions updateTestOptions(String id, LoaderoTestOptions newTestOptions) {
-        String testUrl = buildTestURLById(id);
+        String testUrl = buildTestURLById(id) + "/";
         LoaderoTestOptions currentOptions = getTestOptionsById(id);
 
         // If new script is not provided
@@ -74,7 +74,7 @@ public class LoaderoClient {
      */
     public String getFileScriptConent(String id) {
         String scriptFileid = String.valueOf(id);
-        String scriptFileUrl = buildScriptFileURL(scriptFileid);
+        String scriptFileUrl = buildScriptFileURL(scriptFileid) + "/";
         LoaderoScriptFileLoc scriptFile = (LoaderoScriptFileLoc) restController.get(
                     scriptFileUrl,
                     LoaderoType.LOADERO_SCRIPT_FILE_LOC);
@@ -88,7 +88,7 @@ public class LoaderoClient {
      * @return   - LoaderoGroup object.
      */
     public LoaderoModel getGroupById(String testId, String groupId) {
-        String groupUrl = buildGroupURL(testId, groupId);
+        String groupUrl = buildGroupURL(testId, groupId) + "/";
         return restController.get(groupUrl,
                 LoaderoType.LOADERO_GROUP);
     }
@@ -99,7 +99,7 @@ public class LoaderoClient {
      * @return              - LoaderoParticipant object
      */
     public LoaderoParticipant getParticipantById(String testId, String participantId) {
-        String particUrl = buildParticipantURL(testId, participantId);
+        String particUrl = buildParticipantURL(testId, participantId) + "/";
         return (LoaderoParticipant) restController.get(
                 particUrl, LoaderoType.LOADERO_PARTICIPANT
         );
@@ -114,7 +114,7 @@ public class LoaderoClient {
     public LoaderoParticipant updateTestParticipantById(String testId,
                                                         String participantId,
                                                     LoaderoParticipant newParticipant) {
-        String participnatUrl = buildParticipantURL(testId, participantId);
+        String participnatUrl = buildParticipantURL(testId, participantId) + "/";
         LoaderoParticipant currentParticInfo = getParticipantById(testId, participantId);
 
         LoaderoParticipant updatedParticipant = (LoaderoParticipant) LoaderoClientUtils
@@ -136,7 +136,7 @@ public class LoaderoClient {
      * @return
      */
     public LoaderoRunInfo startTestAndPollInfo(String testId, int interval, int timeout) {
-        String startRunsUrl = buildTestURLById(testId) + "runs/";
+        String startRunsUrl = buildTestURLById(testId) + "/runs/";
         return pollController
                 .startTestAndPoll(startRunsUrl, interval, timeout);
     }
