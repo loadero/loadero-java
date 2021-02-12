@@ -28,13 +28,7 @@ public class TestSimpleFunctionality {
     private static final String RUNS_ID = "94633";
     private static final LoaderoClient client = new LoaderoClient(baseUrl, token, PROJECT_ID);
 
-    private static final URI testUri = URI.create(
-            client.getBaseUrl()
-                    + "/projects/"
-                    + client.getProjectId()
-                    + "/tests/"
-                    + TEST_ID
-                    + "/");
+    private static final URI testUri = URI.create(client.buildTestURLById(TEST_ID));
 
     @BeforeAll
     public static void testIfApiIsUp() {
