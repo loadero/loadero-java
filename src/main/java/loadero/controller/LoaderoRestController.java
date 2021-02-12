@@ -16,7 +16,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 
 /**
  * REST controller class responsible for CRUD actions related to Loadero tests.
@@ -25,7 +24,7 @@ import java.io.UnsupportedEncodingException;
 @Getter
 public class LoaderoRestController {
     private final String loaderoApiToken;
-    private final LoaderoHttpClient   client;
+    private final LoaderoHttpClient client;
     private final LoaderoModelFactory factory = new LoaderoModelFactory();
     private static final Logger logger = LogManager.getLogger(LoaderoRestController.class);
 
@@ -65,7 +64,7 @@ public class LoaderoRestController {
      * @param uri      - URI of the API pointing to which LoaderoModel(test, group or participant) to update
      * @param type     - type of the model to be created by factory
      * @param newModel - new model that will replace old one
-     * @return         - Returns new LoaderoModel with updated parameters.
+     * @return - Returns new LoaderoModel with updated parameters.
      */
     public LoaderoModel update(String uri, LoaderoType type, LoaderoModel newModel) {
         LoaderoModel result = factory.getLoaderoModel(type);
@@ -81,22 +80,17 @@ public class LoaderoRestController {
                     .setEntity(entity)
                     .build();
 
-            try (CloseableHttpResponse res = client.build().execute(put)) {
-                if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK &&
-                        !(LoaderoClientUtils.isNull(res.getEntity()))) {
-
-                    result = LoaderoClientUtils.jsonToObject(
-                            res.getEntity(),
-                            type);
-
-                    logger.info("{}: {}", res.getStatusLine(), "Value updated");
-                } else {
-                    logger.error("{}", res.getStatusLine());
-                }
-            } catch (UnsupportedEncodingException e) {
-                logger.error("{}", e.getMessage());
+            CloseableHttpResponse res = client.build().execute(put);
+            if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK &&
+                    !(LoaderoClientUtils.isNull(res.getEntity()))) {
+                result = LoaderoClientUtils.jsonToObject(
+                        res.getEntity(),
+                        type);
+                logger.info("{}: {}", res.getStatusLine(), "Value updated");
+            } else {
+                logger.error("{}", res.getStatusLine());
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             logger.error("{}", e.getMessage());
         }
         return result;
