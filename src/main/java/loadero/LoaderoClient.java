@@ -14,7 +14,6 @@ import java.util.Objects;
 public class LoaderoClient {
     private final String baseUrl;  // = "https://api.loadero.com/v2";
     private final String projectId;// = "5040";
-//    private final String testId;   // = "6866";
     private final String loaderoApiToken;
     private final LoaderoRestController restController;
     private final LoaderoPollController pollController;
@@ -23,7 +22,6 @@ public class LoaderoClient {
                          String projectId) {
         this.baseUrl = baseUrl;
         this.projectId = projectId;
-//        this.testId    = testId;
         this.loaderoApiToken = loaderApiToken;
         restController = new LoaderoRestController(loaderApiToken);
         pollController = new LoaderoPollController(loaderApiToken);
@@ -111,9 +109,8 @@ public class LoaderoClient {
      * @param newParticipant      - LoaderoParticipant object with new params.
      * @return LoaderoParticipant - updated LoaderoParticipant object.
      */
-    public LoaderoParticipant updateTestParticipantById(String testId,
-                                                        String participantId,
-                                                    LoaderoParticipant newParticipant) {
+    public LoaderoParticipant updateTestParticipantById(String testId, String participantId,
+                                                        LoaderoParticipant newParticipant) {
         String participnatUrl = buildParticipantURL(testId, participantId) + "/";
         LoaderoParticipant currentParticInfo = getParticipantById(testId, participantId);
 
@@ -150,15 +147,12 @@ public class LoaderoClient {
                 + id;
     }
 
-
-    // Private methods
-
     /**
      * Builds URL for Loadero groups based on given ID.
      * @param groupId - ID of the desired group
      * @return        - String of url pointing to group.
      */
-    private String buildGroupURL(String testId, String groupId) {
+    public String buildGroupURL(String testId, String groupId) {
         String testUrl = buildTestURLById(testId);
         return testUrl
                 + "/groups/"
