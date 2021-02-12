@@ -28,11 +28,11 @@ public class LoaderoPollController {
         this.restController = new LoaderoRestController(loaderoApiToken);
     }
 
-    public LoaderoModel startTestAndPoll(String uri, int interval, int timeout) {
+    public LoaderoRunInfo startTestAndPoll(String uri, int interval, int timeout) {
         LoaderoRunInfo startTestRun = startTestRun(uri);
         logger.info("Test {} is now running.", startTestRun.getTestId());
         logger.info("Run ID {}", startTestRun.getId());
-        return startPolling(uri,
+        return (LoaderoRunInfo) startPolling(uri,
                 String.valueOf(startTestRun.getId()),
                 interval, timeout);
     }

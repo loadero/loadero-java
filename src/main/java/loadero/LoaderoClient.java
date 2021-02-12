@@ -131,7 +131,7 @@ public class LoaderoClient {
      * @param timeout  - how long should polling for information. In seconds.
      * @return
      */
-    public LoaderoModel startTestAndPollInfo(int interval, int timeout) {
+    public LoaderoRunInfo startTestAndPollInfo(int interval, int timeout) {
         String startRunsUrl = buildTestURL() + "runs/";
         return pollController
                 .startTestAndPoll(startRunsUrl, interval, timeout);

@@ -212,15 +212,15 @@ public class TestWithWireMock {
 
         assertEquals(HttpStatus.SC_OK, stub.getResponse().getStatus());
         // Checking that client is able to update test
-        LoaderoTestOptions currentTestOptions = (LoaderoTestOptions) loaderoClient.getTestOptions();
+        LoaderoTestOptions currentTestOptions = loaderoClient.getTestOptions();
         LoaderoTestOptions newTestOptions = new LoaderoTestOptions();
         newTestOptions.setName("New Test Name from @Test");
         // Setting script through path using URI
-        newTestOptions.setScript(URI.create("src/main/resources/loadero/scripts/testui/LoaderoScriptJava.java"));
+        newTestOptions.setScript(
+                URI.create("src/main/resources/loadero/scripts/testui/LoaderoScriptJava.java"));
         newTestOptions.setMode("performance");
         newTestOptions.setStartInterval(30);
-        LoaderoTestOptions updatedTestOptions = (LoaderoTestOptions)
-                localClient.updateTestOptions(newTestOptions);
+        LoaderoTestOptions updatedTestOptions = localClient.updateTestOptions(newTestOptions);
 
         logger.info("Before update: {}", currentTestOptions);
         logger.info("After update: {}", updatedTestOptions);
@@ -228,8 +228,7 @@ public class TestWithWireMock {
         assertEquals("New Test Name from @Test", updatedTestOptions.getName());
 
         // Checking polling function
-        LoaderoRunInfo startAndPollTest = (LoaderoRunInfo)
-                    loaderoClient.startTestAndPollInfo(20, 40);
+        LoaderoRunInfo startAndPollTest = loaderoClient.startTestAndPollInfo(20, 40);
         assertEquals("done", startAndPollTest.getStatus());
     }
 }
