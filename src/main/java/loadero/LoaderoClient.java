@@ -12,14 +12,16 @@ import java.util.Objects;
 // TODO: abstract heavy logic into service
 @Getter
 public class LoaderoClient {
-    private final String BASE_URL = "https://api.loadero.com/v2";
+    private final String baseUrl;  // = "https://api.loadero.com/v2";
     private final String projectId;// = "5040";
-    private final String testId;// = "6866";
+    private final String testId;   // = "6866";
     private final String loaderoApiToken;
     private final LoaderoRestController restController;
     private final LoaderoPollController pollController;
 
-    public LoaderoClient(String loaderApiToken, String projectId, String testId) {
+    public LoaderoClient(String baseUrl, String loaderApiToken,
+                         String projectId, String testId) {
+        this.baseUrl = baseUrl;
         this.projectId = projectId;
         this.testId    = testId;
         this.loaderoApiToken = loaderApiToken;
