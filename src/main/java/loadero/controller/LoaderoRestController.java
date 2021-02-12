@@ -52,7 +52,6 @@ public class LoaderoRestController {
                 HttpEntity entity = res.getEntity();
                 result = LoaderoClientUtils.jsonToObject(entity, type);
                 logger.info("{}", res.getStatusLine());
-                logger.info("{}", result);
             }
         } catch (NullPointerException | IOException e) {
             logger.error("{}", e.getMessage());
@@ -85,10 +84,12 @@ public class LoaderoRestController {
             try (CloseableHttpResponse res = client.build().execute(put)) {
                 if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK &&
                         !(LoaderoClientUtils.isNull(res.getEntity()))) {
+
                     result = LoaderoClientUtils.jsonToObject(
                             res.getEntity(),
                             type);
-                    logger.info("{}:\nUpdated value: {}", res.getStatusLine(), result);
+
+                    logger.info("{}: {}", res.getStatusLine(), "Value updated");
                 } else {
                     logger.error("{}", res.getStatusLine());
                 }
