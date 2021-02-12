@@ -16,7 +16,7 @@ import java.net.URI;
 @Data
 @NoArgsConstructor
 public class LoaderoTestOptions implements LoaderoModel {
-//    private long id;
+    private long id = 0L;
     private String name = "";
     @SerializedName("start_interval")
     private int startInterval = 0;
@@ -27,7 +27,7 @@ public class LoaderoTestOptions implements LoaderoModel {
     private String incrementStrategy = "";
     private String script = ""; // Path to script
     @SerializedName("script_file_id")
-    private long scriptFileId;
+    private long scriptFileId = 0L;
 
     /**
      * When given URI as argument, threats this argument as path
