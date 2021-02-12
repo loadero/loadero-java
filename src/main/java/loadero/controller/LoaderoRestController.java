@@ -76,11 +76,9 @@ public class LoaderoRestController {
         try {
             String testToJson = LoaderoClientUtils.modelToJson(newModel);
             HttpEntity entity = new StringEntity(testToJson);
-            HttpUriRequest put = RequestBuilder.put(uri)
-                    .setEntity(entity)
-                    .build();
-
+            HttpUriRequest put = RequestBuilder.put(uri).setEntity(entity).build();
             CloseableHttpResponse res = client.build().execute(put);
+
             if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK &&
                     !(LoaderoClientUtils.isNull(res.getEntity()))) {
                 result = LoaderoClientUtils.jsonToObject(
@@ -90,6 +88,7 @@ public class LoaderoRestController {
             } else {
                 logger.error("{}", res.getStatusLine());
             }
+            res.close();
         } catch (IOException e) {
             logger.error("{}", e.getMessage());
         }
