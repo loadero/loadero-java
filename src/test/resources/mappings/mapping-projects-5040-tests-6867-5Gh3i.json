@@ -1,0 +1,23 @@
+{
+  "id" : "947c46e8-9624-3627-97ae-cd604a20629d",
+  "request" : {
+    "url" : "/projects/5040/tests/6867/",
+    "method" : "PUT",
+    "bodyPatterns" : [ {
+      "equalToJson" : "{\n    \"name\": \"newname 12\",\n    \"start_interval\": 50,\n    \"participant_timeout\": 20,\n    \"mode\": 0,\n    \"increment_strategy\": \"random\",\n    \"script\": \"public void test() {\\n        open(\\\"https://appr.tc/\\\").setElement(byCssSelector(\\\"body\\\"))\\n                                .waitFor(10)\\n                                .untilIsVisible()\\n                                .setElement(byId(\\\"join-button\\\"))\\n                                .click();\\n        sleep(10 * 1000);\\n    }\"\n}",
+      "ignoreArrayOrder" : true,
+      "ignoreExtraElements" : true
+    } ]
+  },
+  "response" : {
+    "status" : 400,
+    "bodyFileName" : "body-projects-5040-tests-6867-5Gh3i.json",
+    "headers" : {
+      "Server" : "nginx/1.18.0 (Ubuntu)",
+      "Date" : "Fri, 12 Feb 2021 06:38:44 GMT",
+      "Content-Type" : "application/json; charset=UTF-8",
+      "Strict-Transport-Security" : "max-age=15768000; includeSubDomains"
+    }
+  },
+  "uuid" : "947c46e8-9624-3627-97ae-cd604a20629d"
+}

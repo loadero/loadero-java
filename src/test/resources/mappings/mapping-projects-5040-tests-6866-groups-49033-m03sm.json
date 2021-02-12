@@ -1,0 +1,24 @@
+{
+  "id" : "ea8b9044-766a-35d7-93a4-a3e7fbb962a2",
+  "request" : {
+    "url" : "/projects/5040/tests/6866/groups/49033/",
+    "method" : "PUT",
+    "bodyPatterns" : [ {
+      "equalToJson" : "{\n    \"count\": 3,\n    \"name\": \"Updated name 9\"\n}",
+      "ignoreArrayOrder" : true,
+      "ignoreExtraElements" : true
+    } ]
+  },
+  "response" : {
+    "status" : 200,
+    "bodyFileName" : "body-projects-5040-tests-6866-groups-49033-m03sm.json",
+    "headers" : {
+      "Server" : "nginx/1.18.0 (Ubuntu)",
+      "Date" : "Fri, 12 Feb 2021 06:29:22 GMT",
+      "Content-Type" : "application/json; charset=UTF-8",
+      "Vary" : "Accept-Encoding",
+      "Strict-Transport-Security" : "max-age=15768000; includeSubDomains"
+    }
+  },
+  "uuid" : "ea8b9044-766a-35d7-93a4-a3e7fbb962a2"
+}
