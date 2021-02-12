@@ -1,21 +1,14 @@
 package loadero;
 
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import com.github.tomakehurst.wiremock.http.ResponseDefinition;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import com.github.tomakehurst.wiremock.stubbing.StubMapping;
-import loadero.controller.LoaderoRestController;
 import loadero.model.LoaderoParticipant;
 import loadero.model.LoaderoRunInfo;
 import loadero.model.LoaderoTestOptions;
-import loadero.model.LoaderoType;
-import loadero.utils.LoaderoClientUtils;
 import loadero.utils.LoaderoHttpClient;
-import org.apache.http.HttpHeaders;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPut;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
@@ -27,8 +20,8 @@ import org.junit.jupiter.api.*;
 import java.io.IOException;
 import java.net.URI;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TestWithWireMock {
