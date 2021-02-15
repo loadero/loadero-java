@@ -207,8 +207,7 @@ public class TestWithWireMock {
         LoaderoTestOptions currentTestOptions = localClient.getTestOptionsById(TEST_ID);
         LoaderoTestOptions newTestOptions = new LoaderoTestOptions();
         newTestOptions.setName("New Test from testFunctionalityFlowWithAnotherScript");
-        // Setting script through path using URI
-        // Another script
+        // Setting different script through path using URI
         newTestOptions.setScript(
                 URI.create("src/main/resources/loadero/scripts/testui/LoaderoScript.java"));
         newTestOptions.setMode("load");
