@@ -29,10 +29,11 @@ public class LoaderoClient {
 
     /**
      * Returns information about test as LoaderoTestOptions.
-     * @return - LoaderoTestOptions object.
+     * @param testId - ID of desired test.
+     * @return       - LoaderoTestOptions object.
      */
-    public LoaderoTestOptions getTestOptionsById(String id) {
-        String testUrl = buildTestURLById(id) + "/";
+    public LoaderoTestOptions getTestOptionsById(String testId) {
+        String testUrl = buildTestURLById(testId) + "/";
         return (LoaderoTestOptions) restController.get(testUrl,
                 LoaderoType.LOADERO_TEST_OPTIONS);
     }
@@ -40,13 +41,14 @@ public class LoaderoClient {
     /**
      * Updates the existing Loadero test description based on the
      * parameters provided in new LoaderoTestOptions() object.
-     *
+     * @param testId         - ID of test to be updated.
      * @param newTestOptions - new LoaderoTestOptions object with parameters that you wish to change
      * @return               - Updated LoaderoTestOptions
      */
-    public LoaderoTestOptions updateTestOptions(String id, LoaderoTestOptions newTestOptions) {
-        String testUrl = buildTestURLById(id) + "/";
-        LoaderoTestOptions currentOptions = getTestOptionsById(id);
+    public LoaderoTestOptions updateTestOptions(String testId,
+                                                LoaderoTestOptions newTestOptions) {
+        String testUrl = buildTestURLById(testId) + "/";
+        LoaderoTestOptions currentOptions = getTestOptionsById(testId);
 
         // If new script is not provided
         // We get the old script from Loadero API endpoint /files/fileId
@@ -61,17 +63,18 @@ public class LoaderoClient {
                 currentOptions,
                 newTestOptions,
                 LoaderoType.LOADERO_TEST_OPTIONS);
+
         return (LoaderoTestOptions) restController.update(testUrl,
                 LoaderoType.LOADERO_TEST_OPTIONS, updatedOptions);
     }
 
     /**
      * Retrieves content of the script file from Loadero API
-     * @param id - ID of the script file
-     * @return   - String containing script content.
+     * @param fileId - ID of the script file
+     * @return       - String containing script content.
      */
-    public String getFileScriptConent(String id) {
-        String scriptFileid = String.valueOf(id);
+    public String getFileScriptConent(String fileId) {
+        String scriptFileid = String.valueOf(fileId);
         String scriptFileUrl = buildScriptFileURL(scriptFileid) + "/";
         LoaderoScriptFileLoc scriptFile = (LoaderoScriptFileLoc) restController.get(
                     scriptFileUrl,
@@ -93,6 +96,7 @@ public class LoaderoClient {
 
     /**
      * Returns participant's information from Loadero as LoaderoParticipant object.
+     * @param testId        - ID of the test that contains participant.
      * @param participantId - desired participant.
      * @return              - LoaderoParticipant object
      */
@@ -105,6 +109,7 @@ public class LoaderoClient {
 
     /**
      * Updates Loadero Participant by it's ID.
+     * @param testId              - ID of the test that contains participant.
      * @param participantId       - ID of desired participant.
      * @param newParticipant      - LoaderoParticipant object with new params.
      * @return LoaderoParticipant - updated LoaderoParticipant object.
@@ -128,9 +133,10 @@ public class LoaderoClient {
      * Start test run by sending POST command underneath to /runs url.
      * After which starts activly polling for information about test run.
      * Returns run info when test is done or time of the polling run out.
+     * @param testId   - ID of the test that is going to run.
      * @param interval - how often check for information. In seconds.
      * @param timeout  - how long should polling for information. In seconds.
-     * @return
+     * @return         - LoaderoRunInfo containing information about test run.
      */
     public LoaderoRunInfo startTestAndPollInfo(String testId, int interval, int timeout) {
         String startRunsUrl = buildTestURLById(testId) + "/runs/";
@@ -139,16 +145,17 @@ public class LoaderoClient {
     }
 
     // Public for testing purposes. May make it private later
-    public String buildTestURLById(String id) {
+    public String buildTestURLById(String testId) {
         return baseUrl
                 + "/projects/"
                 + projectId
                 + "/tests/"
-                + id;
+                + testId;
     }
 
     /**
      * Builds URL for Loadero groups based on given ID.
+     * @param testId  - ID of the test.
      * @param groupId - ID of the desired group
      * @return        - String of url pointing to group.
      */
@@ -161,6 +168,7 @@ public class LoaderoClient {
 
     /**
      * Builds URL to for specific participant of specific group.
+     * @param testId        - ID of the test.
      * @param participantId - ID of desired participant.
      * @return              - String url pointing to participant.
      */
