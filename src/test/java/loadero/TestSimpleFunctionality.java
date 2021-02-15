@@ -68,7 +68,7 @@ public class TestSimpleFunctionality {
 
     @Test
     public void testGetParticipantById() {
-        LoaderoModel participant = client.getParticipantById(TEST_ID,
+        LoaderoModel participant = client.getParticipantById(TEST_ID, GROUP_ID,
                 PARTICIPANT_ID);
         assertEquals(participant.getClass().getSimpleName(),
                 LoaderoParticipant.class.getSimpleName());

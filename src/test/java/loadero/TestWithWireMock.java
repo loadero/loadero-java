@@ -29,7 +29,7 @@ public class TestWithWireMock {
     private static final String PROJECT_ID      = "5040";
     private static final String TEST_ID         = "6866";
     private static final String PARTICIPANT_ID  = "94633";
-    private static final String GROUP_ID        = "";
+    private static final String GROUP_ID        = "48797";
     private static final String BASE_URL        = "https://api.loadero.com/v2";
     private static String localhost             = "http://localhost:";
     private static final String loaderoTokenStr = "LoaderoAuth " + token;
@@ -132,9 +132,10 @@ public class TestWithWireMock {
     @Test
     @Order(7)
     public void testGetParticipantById() {
-        String url = loaderoClient.buildParticipantURL(TEST_ID, PARTICIPANT_ID) + "/";
+        String url = loaderoClient.buildParticipantURL(TEST_ID, GROUP_ID, PARTICIPANT_ID) + "/";
 
-        LoaderoParticipant participant = loaderoClient.getParticipantById(TEST_ID, PARTICIPANT_ID);
+        LoaderoParticipant participant = loaderoClient.getParticipantById(TEST_ID, GROUP_ID,
+                PARTICIPANT_ID);
         makeGetRequest(url);
 
         assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
