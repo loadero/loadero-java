@@ -52,7 +52,6 @@ public class TestWithWireMock {
         }
     }
 
-
     @Rule
     public static WireMockRule wmRule = new WireMockRule(
             WireMockConfiguration.wireMockConfig().dynamicPort()
@@ -162,7 +161,7 @@ public class TestWithWireMock {
                 token,
                 PROJECT_ID);
         String testClientInitUrl = localClient.buildProjectURL() + "/";
-
+        logger.info(token);
         // Checking that client can establish connection and make requests
         makeGetRequest(testClientInitUrl);
         assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
