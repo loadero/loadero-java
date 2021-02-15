@@ -289,6 +289,7 @@ double successRate = testRunInfo.getSuccessRate();
 ```
 
 <h3>Unit tests</h3>
+<hr>
 <p>Package provides some predefined set of unit tests that can be run with Maven.</p>
 <p>Some unit tests are run using environment variable called <b>LOADERO_API_TOKEN</b>. <br>
 Set this variable somewhere in your project if you wish to run tests against actual Loadero API service. 
@@ -328,17 +329,25 @@ For more options please refer to StackOverflow
 </build>
 ```
 
-
-
+<p>Maven unit tests can be run in to modes.<br>
+First one is in the <b>mock</b> mode(default). This mode will run tests only against mocked/saved/predifined data. <br>
+Second mode can be activating with <b>-Denv=live</b> flag. In this mode unit tests will be run 
+against real Loadero API service using your Loadero API token provided from <b>environment variables</b>.
+</p>
 
 <b>To run all tests in /test directory.</b>
 ```
 mvm test
 ```
 
-<b>To run a specific set of tests.</b>
+<b>To run a specific set of tests against mocked data.</b>
 ```
 mvn -DTest=TestWithWiremock test
+```
+
+<b>To run a specific set of tests with real credentials(eg. API toke, real IDs etc.).</b>
+```
+mvn -DTest=TestWithWiremock -Denv=live test
 ```
 
 <b>To run a specific test method inside test class.</b>
