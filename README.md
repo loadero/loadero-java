@@ -144,12 +144,14 @@ retrieves information about existing test. Takes no arguments. Returns data as L
 
 ```java
  LoaderoTestOptions updateTestOptions
-        (LoaderoTestOptions newOptions)
+        (String testId, LoaderoTestOptions newOptions)
 ```
 </td>
 <td>
 <b>LoaderoTestOptions newOptions</b> - Required parameter that is used to set new test options
 in Loadero via API call.
+
+<b>String testId</b> - ID of the test we wish to update.
 </td>
 <td>Makes PUT request to <b>/projects/{projectID}/tests/{testID}</b> and updates existing test options 
 in Loadero. 
@@ -160,11 +162,11 @@ Takes in LoaderoTestOptions object with desired params set through setter method
 <td>
 
 ```java
- String getFileScriptConent(String id)
+ String getFileScriptConent(String fileId)
 ```
 </td>
 <td>
-<b>String id</b> - ID that is pointing to the script file on Loadero.
+<b>String fileId</b> - ID that is pointing to the script file on Loadero.
 </td>
 <td>Makes GET request to <b>/projects/{projectID}/files/{fileID}/</b> and retrieves the content
 of the script used for testing.
@@ -174,11 +176,13 @@ of the script used for testing.
 <td>
 
 ```java
- LoaderoGroup getGroupById(String id)
+ LoaderoGroup getGroupById
+        (String testId,String groupId)
 ```
 </td>
 <td>
-<b>String id</b> - ID of the group that is used to retrieve information about Loadero Group.
+<b>String testId</b>  - ID of the test that contains desired group.<br/>
+<b>String groupId</b> - ID of the group that is used to retrieve information about Loadero Group.
 </td>
 <td>Makes GET request to <b>/projects/{projectID}/tests/{testID}/groups/{groupID}/</b> 
 and retrieves information about group.
@@ -188,11 +192,13 @@ and retrieves information about group.
 <td>
 
 ```java
- LoaderoGroup getParticipantById(String groupId)
+ LoaderoGroup getParticipantById
+        (String testId, String participnatId)
 ```
 </td>
 <td>
-<b>String id</b> - ID of the participant that is used to retrieve information.
+<b>String testId</b> - ID of the test containing participant.<br>
+<b>String participantId</b> - ID of the participant that is used to retrieve information.
 </td>
 <td>Makes GET request to <b> /projects/{projectID}/tests/{testID}/participants/{participantID}/</b> 
 and retrieves information about participant.
@@ -203,13 +209,13 @@ and retrieves information about participant.
 
 ```java
   LoaderoModel startTestAndPollInfo
-        (int interval, int timeout)
+        (String testId, int interval, int timeout)
 ```
 </td>
 <td>
-<b>int interval</b> - Specifying how often should be method poll for information. In seconds.
-
-<b>int timeout</b>  - Total amount of time that should be spending polling information. In seconds.
+<b>String testId</b> - ID of the test we wish to start and poll information from.<br>
+<b>int interval</b> - Specifying in <b>seconds</b> how often should be method poll for information.<br>
+<b>int timeout</b>  - Total amount of time in <b>seconds</b> that should be spending polling information.
 </td>
 <td>Starts test run by sending POST command to <b>/projects/{projectID}/tests/{testID}/runs/</b>.
 After which starts with specified interval within given timeout sending GET request to retrieve information
@@ -228,10 +234,13 @@ Also, will give link to results.
 
 ```java
 // Initiating client through which we will be iterating with Loadero API.
-LoaderoClient client = new LoaderoClient(loaderoToken, projectId, testId);
+LoaderoClient client = new LoaderoClient(loaderoToken, projectId);
+
+// ID of the test we are interested in.
+String testId = "sometestId"; // Usually some numeric value
 
 // Retrieving current test description, if needed.
-LaoderoTestOptions currentTestOptions = client.getTestOptions();
+LaoderoTestOptions currentTestOptions = client.getTestOptions(testId);
 
 // Initiating new test options.
 // New options are...well...optional. Those options that wasn't specified
@@ -253,7 +262,7 @@ newTestOptions.setScript(new String("your script here"));
 
 // After that you can call updateTestOptions() method and store result
 // of the operation for later usage if needed.       
-LoaderoTestOptions updatedOptions = (LoaderoTestOptions) client.updateTestOptions(newTestOptions);
+LoaderoTestOptions updatedOptions = client.updateTestOptions(testId, newTestOptions);
 ```
 
 <h3>Basic polling usage</h3>
@@ -267,11 +276,51 @@ LoaderoTestOptions updatedOptions = (LoaderoTestOptions) client.updateTestOption
 // you guessed it! Poll the information about the state of the running test!
 // When test is done the method will return LoaderoRunInfo object with
 // all the information you need to retrieve results of the test later.        
-LoaderoRunInfo testRunInfo = (LoaderoRunInfo) client.startTestAndPollInfo(15, 100);
+LoaderoRunInfo testRunInfo = client.startTestAndPollInfo(testId, 15, 100);
 ```
 
 <h3>Unit tests</h3>
 <p>Package provides some predefined set of unit tests that can be run with Maven.</p>
+<p>Some unit tests are run using environment variable called <b>LOADERO_API_TOKEN</b>. <br>
+Set this variable somewhere in your project if you wish to run tests against actual Loadero API service. 
+</p>
+
+<b>For exmaple:</b>
+<p>Use <b>System.getenv()</b> to get value for Loader token from your environment variables<br> and assign to <b>token</b>
+variable inside <b>TestWithWireMock</b> class.</p>
+
+
+```java
+private static final String token = System.getenv("LOADERO_API_TOKEN");
+```
+
+<p>Another option is to set variable in your <b>pom.xml</b>. But for that you would need to install <b>maven-sunfire-plugin</b>.<br>
+For more options please refer to StackOverflow
+<a href="https://stackoverflow.com/questions/5510690/environment-variable-with-maven"> thread</a>.
+</p>
+
+
+```
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.22.0</version>
+            <configuration>
+                <systemPropertyVariables>
+                    <LOADERO_API_TOKEN>
+                        ${env.PATH}
+                    </LOADERO_API_TOKEN>
+                </systemPropertyVariables>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
+```
+
+
+
 
 <b>To run all tests in /test directory.</b>
 ```
