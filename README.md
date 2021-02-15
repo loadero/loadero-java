@@ -271,14 +271,21 @@ LoaderoTestOptions updatedOptions = client.updateTestOptions(testId, newTestOpti
 
 ```java
 // Another currently popular feature is to poll your test 
-// results while running the test itself!
-// And this wrapper can give you just that!
+// results while running the test itself! And this wrapper can give you just that!
         
 // With method startTestAndPollInfo(interval, timeout) you can start test and...
 // you guessed it! Poll the information about the state of the running test!
 // When test is done the method will return LoaderoRunInfo object with
 // all the information you need to retrieve results of the test later.        
 LoaderoRunInfo testRunInfo = client.startTestAndPollInfo(testId, 15, 100);
+
+// For example you going to need test run ID field to get results
+// about this test run.
+long testRunId = testRunInfo.getId();
+
+// Or if you would like to know success rate you can retrieve it with
+// getter method respectively.
+double successRate = testRunInfo.getSuccessRate();
 ```
 
 <h3>Unit tests</h3>
