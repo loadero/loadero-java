@@ -6,3 +6,4 @@ src/test/resources/wiremock-standalone-2.27.2.jar
 src/.DS_Store
 src/main/.DS_Store
 src/main/resources/.DS_Store
+loadero-rest-api-wrapper.iml
