@@ -28,6 +28,9 @@ public class TestWithWireMock {
     private static final String token           = System.getenv("LOADERO_API_TOKEN");
     private static final String PROJECT_ID      = "5040";
     private static final String TEST_ID         = "6866";
+    private static final String PARTICIPANT_ID  = "94633";
+    private static final String GROUP_ID        = "";
+    private static final String BASE_URL        = "https://api.loadero.com/v2";
     private static String localhost             = "http://localhost:";
     private static final String loaderoTokenStr = "LoaderoAuth " + token;
     private final LoaderoHttpClient httpClient  = new LoaderoHttpClient(token);
@@ -129,14 +132,13 @@ public class TestWithWireMock {
     @Test
     @Order(7)
     public void testGetParticipantById() {
-        String participantId = "94633";
-        String url = loaderoClient.buildParticipantURL(TEST_ID, participantId) + "/";
+        String url = loaderoClient.buildParticipantURL(TEST_ID, PARTICIPANT_ID) + "/";
 
-        LoaderoParticipant participant = loaderoClient.getParticipantById(TEST_ID, participantId);
+        LoaderoParticipant participant = loaderoClient.getParticipantById(TEST_ID, PARTICIPANT_ID);
         makeGetRequest(url);
 
         assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
-        assertEquals(participantId, String.valueOf(participant.getId()));
+        assertEquals(PARTICIPANT_ID, String.valueOf(participant.getId()));
         assertEquals(TEST_ID, String.valueOf(participant.getTestId()));
     }
 
@@ -144,8 +146,7 @@ public class TestWithWireMock {
     @Test
     @Order(8)
     @Disabled
-    public void testUpdateParticipantById() throws IOException {
-        String participantId = "94633";
+    public void testUpdateParticipantById() {
     }
 
     // Add new tests before this comment
@@ -155,9 +156,9 @@ public class TestWithWireMock {
     @Disabled
     @Order(9)
     public void testFullFunctionalityFlow() {
-        String baseUrl = "https://api.loadero.com/v2";
         LoaderoClient localClient = new LoaderoClient(
-                baseUrl, token,
+                BASE_URL,
+                token,
                 PROJECT_ID);
         String testClientInitUrl = localClient.buildProjectURL() + "/";
 
@@ -191,9 +192,9 @@ public class TestWithWireMock {
     @Disabled
     @Order(10)
     public void testFullFunctionalityFlowWithAnotherScript() {
-        String baseUrl = "https://api.loadero.com/v2";
         LoaderoClient localClient = new LoaderoClient(
-                baseUrl, token,
+                BASE_URL,
+                token,
                 PROJECT_ID);
         String testClientInitUrl = localClient.buildProjectURL() + "/";
 
