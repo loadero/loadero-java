@@ -177,7 +177,7 @@ of the script used for testing.
 
 ```java
  LoaderoGroup getGroupById
-        (String testId,String groupId)
+        (String testId, String groupId)
 ```
 </td>
 <td>
@@ -193,14 +193,16 @@ and retrieves information about group.
 
 ```java
  LoaderoGroup getParticipantById
-        (String testId, String participnatId)
+        (String testId, String groupId, String participnatId)
 ```
 </td>
 <td>
 <b>String testId</b> - ID of the test containing participant.<br>
+<b>String groupId</b> - ID of the group containing participant.<br>
 <b>String participantId</b> - ID of the participant that is used to retrieve information.
 </td>
-<td>Makes GET request to <b> /projects/{projectID}/tests/{testID}/participants/{participantID}/</b> 
+<td>Makes GET request to <b>/projects/{projectID}/tests/{testID}/groups/{groupID}/participants/{participantID}
+</b> 
 and retrieves information about participant.
 </td>
 </tr>
