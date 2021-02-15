@@ -1,0 +1,19 @@
+{
+  "id" : "3586dfec-c272-379b-80a7-9663ccc2073d",
+  "request" : {
+    "url" : "/projects/",
+    "method" : "GET"
+  },
+  "response" : {
+    "status" : 403,
+    "bodyFileName" : "body-projects-NyqBC.json",
+    "headers" : {
+      "Server" : "nginx/1.18.0 (Ubuntu)",
+      "Date" : "Fri, 12 Feb 2021 06:36:32 GMT",
+      "Content-Type" : "application/json; charset=UTF-8",
+      "Vary" : "Accept-Encoding",
+      "Strict-Transport-Security" : "max-age=15768000; includeSubDomains"
+    }
+  },
+  "uuid" : "3586dfec-c272-379b-80a7-9663ccc2073d"
+}

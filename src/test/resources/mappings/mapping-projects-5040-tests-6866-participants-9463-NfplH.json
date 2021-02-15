@@ -1,0 +1,24 @@
+{
+  "id" : "87b104de-c8c1-322c-80c0-dffb2b273485",
+  "request" : {
+    "url" : "/projects/5040/tests/6866/participants/9463/",
+    "method" : "PUT",
+    "bodyPatterns" : [ {
+      "equalToJson" : "{\n    \"group_id\": 48797,\n    \"name\": \"Updated Test participant 80\",\n    \"count\": 5,\n    \"browser\": \"chromeLatest\"\n}",
+      "ignoreArrayOrder" : true,
+      "ignoreExtraElements" : true
+    } ]
+  },
+  "response" : {
+    "status" : 404,
+    "bodyFileName" : "body-projects-5040-tests-6866-participants-9463-NfplH.json",
+    "headers" : {
+      "Server" : "nginx/1.18.0 (Ubuntu)",
+      "Date" : "Fri, 12 Feb 2021 09:39:29 GMT",
+      "Content-Type" : "application/json; charset=UTF-8",
+      "Vary" : "Accept-Encoding",
+      "Strict-Transport-Security" : "max-age=15768000; includeSubDomains"
+    }
+  },
+  "uuid" : "87b104de-c8c1-322c-80c0-dffb2b273485"
+}

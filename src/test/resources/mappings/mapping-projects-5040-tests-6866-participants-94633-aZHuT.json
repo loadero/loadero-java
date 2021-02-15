@@ -1,0 +1,24 @@
+{
+  "id" : "0c124478-3688-3f03-bba9-dae51b5877e2",
+  "request" : {
+    "url" : "/projects/5040/tests/6866/participants/94633/",
+    "method" : "PUT",
+    "bodyPatterns" : [ {
+      "equalToJson" : "{\n    \"name\": \"Updated Test participant 9\",\n    \"group_id\": 48797,\n    \"count\": 4,\n    \"browser\": \"chromeLatest\"\n}",
+      "ignoreArrayOrder" : true,
+      "ignoreExtraElements" : true
+    } ]
+  },
+  "response" : {
+    "status" : 200,
+    "bodyFileName" : "body-projects-5040-tests-6866-participants-94633-aZHuT.json",
+    "headers" : {
+      "Server" : "nginx/1.18.0 (Ubuntu)",
+      "Date" : "Fri, 12 Feb 2021 06:21:58 GMT",
+      "Content-Type" : "application/json; charset=UTF-8",
+      "Vary" : "Accept-Encoding",
+      "Strict-Transport-Security" : "max-age=15768000; includeSubDomains"
+    }
+  },
+  "uuid" : "0c124478-3688-3f03-bba9-dae51b5877e2"
+}

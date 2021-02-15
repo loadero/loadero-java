@@ -1,0 +1,19 @@
+{
+  "id" : "c79c7ded-a891-377e-8f61-9137320af2a1",
+  "request" : {
+    "url" : "/v2/projects/5040/",
+    "method" : "GET"
+  },
+  "response" : {
+    "status" : 404,
+    "bodyFileName" : "body-v2-projects-5040-iECG6.txt",
+    "headers" : {
+      "Server" : "nginx/1.18.0 (Ubuntu)",
+      "Date" : "Fri, 12 Feb 2021 06:32:04 GMT",
+      "Content-Type" : "text/plain; charset=utf-8",
+      "X-Content-Type-Options" : "nosniff",
+      "Strict-Transport-Security" : "max-age=15768000; includeSubDomains"
+    }
+  },
+  "uuid" : "c79c7ded-a891-377e-8f61-9137320af2a1"
+}

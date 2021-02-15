@@ -1,5 +1,7 @@
 package loadero.utils;
 
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import loadero.model.*;
@@ -11,7 +13,21 @@ import java.util.Objects;
 
 public class LoaderoClientUtils {
     private static final LoaderoModelFactory factory = new LoaderoModelFactory();
-    private static final Gson gson = new GsonBuilder().create();
+    private static final Gson gson = new GsonBuilder()
+            .addSerializationExclusionStrategy(new ExclusionStrategy() {
+        @Override
+        public boolean shouldSkipField(FieldAttributes fieldAttributes) {
+            return fieldAttributes.getName().equals("id") ||
+                    fieldAttributes.getName().equals("scriptFileId");
+        }
+
+        @Override
+        public boolean shouldSkipClass(Class<?> aClass) {
+            return false;
+        }
+    })
+            .create();
+
 
     public static boolean isNull(Object test) {
         return Objects.isNull(test);
@@ -52,26 +68,29 @@ public class LoaderoClientUtils {
     // Does nothing if no difference.
     // Slightly modified version of code from SO.
     // source: https://stackoverflow.com/a/20366149
-    public static LoaderoTestOptions copyUncommonFields(LoaderoTestOptions currentObj, LoaderoTestOptions newObject) {
-        LoaderoTestOptions results = new LoaderoTestOptions();
-        for(Field field : LoaderoTestOptions.class.getDeclaredFields()){
+    public static LoaderoModel copyUncommonFields(LoaderoModel currentObj,
+                                                  LoaderoModel newObject,
+                                                  LoaderoType type) {
+        LoaderoModel result = factory.getLoaderoModel(type);
+        Field[] fieldsArr = result.getClass().getDeclaredFields();
+
+        for(Field field : fieldsArr){
             // make private fields accessible
             field.setAccessible(true);
             try {
-                if(Objects.equals(field.get(currentObj), field.get(newObject)) |
-                Objects.equals(field.get(newObject), "") |
-                Objects.equals(field.get(newObject), 0)){
-                    field.set(results, field.get(currentObj));
+                if (Objects.equals(field.get(currentObj), field.get(newObject))
+                        || Objects.equals(field.get(newObject), "")
+                        || Objects.equals(field.get(newObject), 0)
+                        || Objects.equals(field.get(newObject), 0L)) {
+                    field.set(result, field.get(currentObj));
                 } else {
-                    field.set(results, field.get(newObject));
+                    field.set(result, field.get(newObject));
                 }
             } catch (IllegalArgumentException | IllegalAccessException e) {
                 e.printStackTrace();
-            } finally {
-                // remove access to private fields just in case
-                field.setAccessible(false);
             }
+            field.setAccessible(false);
         }
-        return results;
+        return result;
     }
 }
