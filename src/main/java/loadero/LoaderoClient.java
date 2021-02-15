@@ -100,8 +100,9 @@ public class LoaderoClient {
      * @param participantId - desired participant.
      * @return              - LoaderoParticipant object
      */
-    public LoaderoParticipant getParticipantById(String testId, String participantId) {
-        String particUrl = buildParticipantURL(testId, participantId) + "/";
+    public LoaderoParticipant getParticipantById(String testId, String groupId,
+                                                 String participantId) {
+        String particUrl = buildParticipantURL(testId, groupId, participantId) + "/";
         return (LoaderoParticipant) restController.get(
                 particUrl, LoaderoType.LOADERO_PARTICIPANT
         );
@@ -110,14 +111,17 @@ public class LoaderoClient {
     /**
      * Updates Loadero Participant by it's ID.
      * @param testId              - ID of the test that contains participant.
+     * @param groupId             - ID of the group that contains participant.
      * @param participantId       - ID of desired participant.
      * @param newParticipant      - LoaderoParticipant object with new params.
      * @return LoaderoParticipant - updated LoaderoParticipant object.
      */
-    public LoaderoParticipant updateTestParticipantById(String testId, String participantId,
+    public LoaderoParticipant updateTestParticipantById(String testId,
+                                                        String groupId,
+                                                        String participantId,
                                                         LoaderoParticipant newParticipant) {
-        String participnatUrl = buildParticipantURL(testId, participantId) + "/";
-        LoaderoParticipant currentParticInfo = getParticipantById(testId, participantId);
+        String participnatUrl = buildParticipantURL(testId, groupId, participantId) + "/";
+        LoaderoParticipant currentParticInfo = getParticipantById(testId, groupId, participantId);
 
         LoaderoParticipant updatedParticipant = (LoaderoParticipant) LoaderoClientUtils
                 .copyUncommonFields(
@@ -169,11 +173,14 @@ public class LoaderoClient {
     /**
      * Builds URL to for specific participant of specific group.
      * @param testId        - ID of the test.
+     * @param groupId       - ID of the group that contains participant.
      * @param participantId - ID of desired participant.
      * @return              - String url pointing to participant.
      */
-    public String buildParticipantURL(String testId, String participantId) {
-        return buildTestURLById(testId)
+    public String buildParticipantURL(String testId, String groupId,
+                                      String participantId) {
+        // /projects/{projectID}/tests/{testID}/groups/{groupID}/participants/{participantID}
+        return buildGroupURL(testId, groupId)
                 + "/participants/"
                 + participantId;
     }
