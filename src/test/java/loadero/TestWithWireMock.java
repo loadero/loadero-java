@@ -2,9 +2,7 @@ package loadero;
 
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import loadero.model.LoaderoParticipant;
-import loadero.model.LoaderoRunInfo;
-import loadero.model.LoaderoTestOptions;
+import loadero.model.*;
 import loadero.utils.LoaderoHttpClient;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -20,8 +18,7 @@ import org.junit.jupiter.api.*;
 import java.io.IOException;
 import java.net.URI;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TestWithWireMock {
@@ -30,6 +27,8 @@ public class TestWithWireMock {
     private static final String TEST_ID         = "6866";
     private static final String PARTICIPANT_ID  = "94633";
     private static final String GROUP_ID        = "48797";
+    private static final String RUN_ID          = "33328";
+    private static final String RESULT_ID       = "930397";
     private static final String BASE_URL        = "https://api.loadero.com/v2";
     private static String localhost             = "http://localhost:";
     private static final String loaderoTokenStr = "LoaderoAuth " + token;
@@ -142,19 +141,42 @@ public class TestWithWireMock {
         assertEquals(TEST_ID, String.valueOf(participant.getTestId()));
     }
 
-    // TODO
     @Test
     @Order(8)
-    @Disabled
-    public void testUpdateParticipantById() {
+    public void testGetAllResults() {
+        LoaderoClient localClient = new LoaderoClient(
+                BASE_URL,
+                token,
+                PROJECT_ID);
+
+        LoaderoAllTestRunResults results = localClient.getAllTestRunResults(TEST_ID, RUN_ID);
+        logger.info(results.getResults());
+
     }
+
+    @Test
+    @Order(9)
+    public void testGetSingleRunResults() {
+        LoaderoClient localClient = new LoaderoClient(
+                BASE_URL,
+                token,
+                PROJECT_ID);
+        LoaderoSingleTestRunResult result = localClient.getSingleRunResults(TEST_ID, RUN_ID, RESULT_ID);
+        // log_paths shouldn't be null
+        assertNotNull(result.getLogPaths());
+        // log_paths fields shouldn't be null
+        assertNotNull(result.getLogPaths().get("browser"));
+        assertNotNull(result.getLogPaths().get("webrtc"));
+        assertNotNull(result.getLogPaths().get("selenium"));
+        assertNotNull(result.getLogPaths().get("rru"));
+    }
+
 
     // Add new tests before this comment
     // Don't forget to change order!
 
     @Test
     @Disabled
-    @Order(9)
     public void testFullFunctionalityFlow() {
         LoaderoClient localClient = new LoaderoClient(
                 BASE_URL,
@@ -184,13 +206,12 @@ public class TestWithWireMock {
                 updatedTestOptions.getName());
 
         // Checking polling function
-        LoaderoRunInfo startAndPollTest = localClient.startTestAndPollInfo(TEST_ID, 20, 40);
+        LoaderoRunInfo startAndPollTest = localClient.startTestAndPollInfo(TEST_ID, 2, 40);
         assertEquals("done", startAndPollTest.getStatus());
     }
 
     @Test
     @Disabled
-    @Order(10)
     public void testFullFunctionalityFlowWithAnotherScript() {
         LoaderoClient localClient = new LoaderoClient(
                 BASE_URL,
