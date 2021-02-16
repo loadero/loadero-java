@@ -12,8 +12,8 @@ import java.util.Objects;
 // TODO: abstract heavy logic into service
 @Getter
 public class LoaderoClient {
-    private final String baseUrl;  // = "https://api.loadero.com/v2";
-    private final String projectId;// = "5040";
+    private final String baseUrl;
+    private final String projectId;
     private final String loaderoApiToken;
     private final LoaderoRestController restController;
     private final LoaderoPollController pollController;
@@ -206,7 +206,6 @@ public class LoaderoClient {
      */
     public String buildParticipantURL(String testId, String groupId,
                                       String participantId) {
-        // /projects/{projectID}/tests/{testID}/groups/{groupID}/participants/{participantID}
         return buildGroupURL(testId, groupId)
                 + "/participants/"
                 + participantId;
