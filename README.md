@@ -109,6 +109,24 @@ class LoaderoModelFactory(){}
 </td>
 <td>Factory that is used to create concrete classes of LoaderoModel interface.</td>
 </tr>
+<tr>
+<td>
+
+```java
+class LoaderoAllTestRunResults(){}
+```
+</td>
+<td>Class that is responsible for storing information about all test run results.</td>
+</tr>
+<tr>
+<td>
+
+```java
+class LoaderoSingleTestRunResult(){}
+```
+</td>
+<td>Class that is responsible for storing information about single test run result.</td>
+</tr>
 
 </tbody>
 </table>
@@ -129,11 +147,11 @@ Public methods that is used to interact with Loadero API.
 <td>
 
 ```java
- LoaderoTestOptions getTestOptions()
+LoaderoTestOptions getTestOptionsById(String testId)
 ```
 </td>
 <td>
--
+<b>String testId</b> - ID of the test we would like to get.
 </td>
 <td>
 Makes GET request to <b>/projects/{projectID}/tests/{testID}</b> endpoint and
@@ -192,7 +210,7 @@ and retrieves information about group.
 <td>
 
 ```java
- LoaderoGroup getParticipantById
+ LoaderoParticipant getParticipantById
         (String testId, String groupId, String participnatId)
 ```
 </td>
@@ -210,7 +228,40 @@ and retrieves information about participant.
 <td>
 
 ```java
-  LoaderoModel startTestAndPollInfo
+ LoaderoAllTestRunResults getAllTestRunResults
+        (String testId, String runId)
+```
+</td>
+<td>
+<b>String testId</b> - ID of the test containing info about test runs.<br>
+<b>String runId</b> -  ID of the test run.<br>
+</td>
+<td>Makes GET request to <b>projects/{projectID}/tests/{testID}/runs/{runID}/results/</b>
+and retrieves information about <b>all</b> test run results.
+</td>
+</tr>
+<tr>
+<td>
+
+```java
+LoaderoSingleTestRunResult getSingleRunResults
+        (String testId, String runId, String resultId) 
+```
+</td>
+<td>
+<b>String testId</b> - ID of the test containing info about test runs.<br>
+<b>String runId</b> -  ID of the test run.<br>
+<b>String resultId</b> - ID of the specific result.
+</td>
+<td>Makes GET request to <b>projects/{projectID}/tests/{testID}/runs/{runID}/results/{resultId}/</b>
+and retrieves information about <b>specific</b> test run result.
+</td>
+</tr>
+<tr>
+<td>
+
+```java
+  LoaderoRunInfo startTestAndPollInfo
         (String testId, int interval, int timeout)
 ```
 </td>
@@ -221,7 +272,7 @@ and retrieves information about participant.
 </td>
 <td>Starts test run by sending POST command to <b>/projects/{projectID}/tests/{testID}/runs/</b>.
 After which starts with specified interval within given timeout sending GET request to retrieve information
-about test run state. If test run is completed, will return LoaderoModel object with test run result. 
+about test run state. If test run is completed, will return LoaderoRunInfo object with test run result. 
 Also, will give link to results.
 </td>
 </tr>
@@ -288,20 +339,39 @@ long testRunId = testRunInfo.getId();
 double successRate = testRunInfo.getSuccessRate();
 ```
 
+<h3>Getting test run results</h3>
+
+```java
+// After successfully run of polling function you can retrieve results of the
+// test runs that were made.
+// You can use testRunId defined earlier to get all information about test run results
+// This will give you a List<LoaderoSingleTestRunResult> object.
+LoaderoAllTestRunResults results = client.getAllTestRunResults(testId, testRunId);
+// This object contains an individual IDs of each test run result that you can
+// retrieve later with the next function:
+LoaderoSingleTestRunResult singleResult = client
+        .getSingleRunResults(String testId, String testRunId, String resultId);
+
+// And then, with getters, retrieve all the necessary information about single test run results,
+// that you may need.
+```
+
 <h3>Unit tests</h3>
 <hr>
 <p>Package provides some predefined set of unit tests that can be run with Maven.</p>
-<p>Some unit tests are run using environment variable called <b>LOADERO_API_TOKEN</b>. <br>
-Set this variable somewhere in your project if you wish to run tests against actual Loadero API service. 
+<p>Unit tests are run using two environment variables called <b>LOADERO_API_TOKEN</b> 
+and <b>LOADERO_BASE_URL</b>, respectively. <br>
+Set this variables somewhere in your project if you wish to run tests against actual Loadero API service. Otherwise, tests will be run against
+mock data on localhost.
 </p>
 
 <b>For exmaple:</b>
-<p>Use <b>System.getenv()</b> to get value for Loader token from your environment variables<br> and assign to <b>token</b>
-variable inside <b>TestWithWireMock</b> class.</p>
-
+<p>Use <b>System.getenv()</b> to get values for Loader token and base url from your environment variables<br>
+and assign them accordingly inside <b>TestWithWireMock</b> class.</p>
 
 ```java
 private static final String token = System.getenv("LOADERO_API_TOKEN");
+private static final String baseUrl = System.getenv("LOADERO_BASE_URL");
 ```
 
 <br>
