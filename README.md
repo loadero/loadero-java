@@ -304,31 +304,7 @@ variable inside <b>TestWithWireMock</b> class.</p>
 private static final String token = System.getenv("LOADERO_API_TOKEN");
 ```
 
-<p>Another option is to set variable in your <b>pom.xml</b>. But for that you would need to install <b>maven-sunfire-plugin</b>.<br>
-For more options please refer to StackOverflow
-<a href="https://stackoverflow.com/questions/5510690/environment-variable-with-maven"> thread</a>.
-</p>
-
-
-```
-<build>
-    <plugins>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>2.22.0</version>
-            <configuration>
-                <systemPropertyVariables>
-                    <LOADERO_API_TOKEN>
-                        ${env.PATH}
-                    </LOADERO_API_TOKEN>
-                </systemPropertyVariables>
-            </configuration>
-        </plugin>
-    </plugins>
-</build>
-```
-
+<br>
 <p>Maven unit tests can be run in to modes.<br>
 First one is in the <b>mock</b> mode(default). This mode will run tests only against mocked/saved/predifined data. <br>
 Second mode can be activating with <b>-Denv=live</b> flag. In this mode unit tests will be run 
