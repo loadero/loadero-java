@@ -1,10 +1,9 @@
 package loadero.model;
 
-import lombok.Getter;
-
+import lombok.Data;
 import java.util.List;
 
-@Getter
+@Data
 public class LoaderoAllTestRunResults implements LoaderoModel {
     private List<LoaderoSingleTestRunResult> results;
 }
