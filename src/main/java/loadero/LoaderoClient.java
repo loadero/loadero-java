@@ -140,7 +140,7 @@ public class LoaderoClient {
      * @return       - LoaderoAllTestRunResults object, that contains list of LoaderoSingleTestRunResult objects.
      */
     public LoaderoAllTestRunResults getAllTestRunResults(String testId, String runId) {
-        String resultsUrl = buildTestURLById(testId) + "/runs/" + runId + "/results/";
+        String resultsUrl = buildRunResultsURL(testId, runId);
         return (LoaderoAllTestRunResults) restController.get(resultsUrl,
                 LoaderoType.LOADERO_ALL_RUN_RESULTS);
     }
@@ -154,7 +154,7 @@ public class LoaderoClient {
      *                    selenium_status, log paths, asserts and artifacts.
      */
     public LoaderoSingleTestRunResult getSingleRunResults(String testId, String runId, String resultId) {
-        String resultsUrl = buildTestURLById(testId) + "/runs/" + runId + "/results/" + resultId + "/";
+        String resultsUrl = buildRunResultsURL(testId, runId) + resultId + "/";
         return (LoaderoSingleTestRunResult) restController.get(resultsUrl,
                 LoaderoType.LOADERO_SINGLE_RUN_RESULTS);
     }
@@ -220,10 +220,8 @@ public class LoaderoClient {
                 + fileId;
     }
 
-    public String buildRunResultsURL(String runId) {
-        return baseUrl
-                + "/projects/"
-                + projectId
+    public String buildRunResultsURL(String testId, String runId) {
+        return buildTestURLById(testId)
                 + "/runs/"
                 + runId
                 + "/results/";
