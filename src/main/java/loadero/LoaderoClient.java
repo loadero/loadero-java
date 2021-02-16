@@ -134,6 +134,33 @@ public class LoaderoClient {
     }
 
     /**
+     * Gets information about all test run results from Loadero API.
+     * @param testId - ID of the desired test to get results from.
+     * @param runId  - ID of the test run.
+     * @return       - LoaderoAllTestRunResults object, that contains list of LoaderoSingleTestRunResult objects.
+     */
+    public LoaderoAllTestRunResults getAllTestRunResults(String testId, String runId) {
+        String resultsUrl = buildTestURLById(testId) + "/runs/" + runId + "/results/";
+        return (LoaderoAllTestRunResults) restController.get(resultsUrl,
+                LoaderoType.LOADERO_ALL_RUN_RESULTS);
+    }
+
+    /**
+     * Gets information about specific results.
+     * @param testId    - ID of the test we wish to get results.
+     * @param runId     - ID of the test run.
+     * @param resultId  - ID of the result.
+     * @return          - LoaderoSingleTestRunResult object containing information such as ID, status,
+     *                    selenium_status, log paths, asserts and artifacts.
+     */
+    public LoaderoSingleTestRunResult getSingleRunResults(String testId, String runId, String resultId) {
+        String resultsUrl = buildTestURLById(testId) + "/runs/" + runId + "/results/" + resultId + "/";
+        return (LoaderoSingleTestRunResult) restController.get(resultsUrl,
+                LoaderoType.LOADERO_SINGLE_RUN_RESULTS);
+    }
+
+
+    /**
      * Start test run by sending POST command underneath to /runs url.
      * After which starts activly polling for information about test run.
      * Returns run info when test is done or time of the polling run out.
