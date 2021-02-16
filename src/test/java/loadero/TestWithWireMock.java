@@ -168,6 +168,12 @@ public class TestWithWireMock {
     }
 
     @Test
+    @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
+    public void testGetAllTestResultsLive() {
+        LoaderoAllTestRunResults results = loaderoClient.getAllTestRunResults(TEST_ID, RUN_ID);
+        assertNotNull(results.getResults());
+    }
+    @Test
     @Order(9)
     @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
     public void testGetSingleRunResults() {
