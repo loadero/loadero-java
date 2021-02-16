@@ -150,8 +150,8 @@ public class TestWithWireMock {
                 PROJECT_ID);
 
         LoaderoAllTestRunResults results = localClient.getAllTestRunResults(TEST_ID, RUN_ID);
-        logger.info(results.getResults());
-
+        // Making sure we are getting something back
+        assertNotNull(results.getResults());
     }
 
     @Test
