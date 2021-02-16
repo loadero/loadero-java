@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TestWithWireMock {
     private static final String token           = System.getenv("LOADERO_API_TOKEN");
-    private static String BASE_URL        = System.getenv("LOADERO_BASE_URL");
+    private static final String BASE_URL        = System.getenv("LOADERO_BASE_URL");
     private static final String PROJECT_ID      = "5040";
     private static final String TEST_ID         = "6866";
     private static final String PARTICIPANT_ID  = "94633";
