@@ -33,8 +33,6 @@ public class TestWithWireMock {
     private static final String GROUP_ID        = "48797";
     private static final String RUN_ID          = "33328";
     private static final String RESULT_ID       = "930397";
-    private static String localhost             = "http://localhost";
-    private static final String loaderoTokenStr = "LoaderoAuth " + token;
     private final LoaderoHttpClient httpClient  = new LoaderoHttpClient(token);
     private static final Logger logger = LogManager.getLogger(TestWithWireMock.class);
     private CloseableHttpResponse response;
