@@ -11,7 +11,6 @@ public class LoaderoModelFactory implements LoaderoModel {
             case LOADERO_TEST_RESULT:       return new LoaderoSingleTestRunResult();
             case LOADERO_SCRIPT_FILE_LOC:   return new LoaderoScriptFileLoc();
             case LOADERO_ALL_RUN_RESULTS:   return new LoaderoAllTestRunResults();
-            case LOADERO_SINGLE_RUN_RESULT: return new LoaderoSingleTestRunResult();
             default:                        return null;
         }
     }
