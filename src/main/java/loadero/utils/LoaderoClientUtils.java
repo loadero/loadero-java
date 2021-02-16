@@ -47,7 +47,7 @@ public class LoaderoClientUtils {
                     return gson.fromJson(content, LoaderoParticipant.class);
                 case LOADERO_RUN_INFO:
                     return gson.fromJson(content, LoaderoRunInfo.class);
-                case LOADERO_TEST_RESULT:
+                case LOADERO_SINGLE_RUN_RESULTS:
                     return gson.fromJson(content, LoaderoSingleTestRunResult.class);
                 case LOADERO_SCRIPT_FILE_LOC:
                     return gson.fromJson(content, LoaderoScriptFileLoc.class);
