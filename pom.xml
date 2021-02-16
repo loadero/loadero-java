@@ -24,6 +24,9 @@
                 <loadero.token>
                     FakeRandomApiToken
                 </loadero.token>
+                <loadero.baseurl>
+                    http://localhost
+                </loadero.baseurl>
             </properties>
         </profile>
         <profile>
@@ -39,6 +42,9 @@
                 <loadero.token>
                     ${env.LOADERO_API_TOKEN}
                 </loadero.token>
+                <loadero.baseurl>
+                    https://api.loadero.com/v2
+                </loadero.baseurl>
             </properties>
         </profile>
     </profiles>
@@ -52,6 +58,7 @@
                     <environmentVariables>
                         <!--suppress UnresolvedMavenProperty -->
                         <LOADERO_API_TOKEN>${loadero.token}</LOADERO_API_TOKEN>
+                        <LOADERO_BASE_URL>${loadero.baseurl}</LOADERO_BASE_URL>
                     </environmentVariables>
                 </configuration>
             </plugin>
