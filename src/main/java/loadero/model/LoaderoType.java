@@ -1,5 +1,8 @@
 package loadero.model;
 
+/**
+ * Enum types are used for creation/validation of concrete LoaderoModel classes.
+ */
 public enum LoaderoType {
     LOADERO_TEST_OPTIONS,
     LOADERO_GROUP,

@@ -5,6 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * LoaderoGroup class is responsible for representing information retrieved
+ * from Loadero API /groups/groupId endpoint.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

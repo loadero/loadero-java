@@ -11,8 +11,10 @@ import java.net.URI;
 /**
  * LoaderoTestDescription object is a configuration profile to specify
  * test parameters for creation of Loadero tests.
- * Class will be created using Builder pattern so we can add
- * optional parameters to it. Params that are not specified is just empty String.
+ *
+ * Due to Loadero API design, fields have to have default values and field ID doesn't
+ * need to be serialized when sending LoaderoTestOptions object as JSON to update test description
+ * on Loadero.
  */
 @Data
 @NoArgsConstructor

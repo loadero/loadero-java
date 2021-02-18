@@ -6,6 +6,10 @@ import lombok.Data;
 
 import java.util.Map;
 
+/**
+ * LoaderoTestRunParticipantResult represents the information about single participant
+ * test run result.
+ */
 @Data
 public class LoaderoTestRunParticipantResult implements LoaderoModel {
     private long id;

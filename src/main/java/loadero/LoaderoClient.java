@@ -9,7 +9,8 @@ import lombok.Getter;
 import java.util.Objects;
 
 
-// TODO: abstract heavy logic into service
+// TODO: abstract heavy logic into separate class
+// TODO: some sort of link builder for Loadero endpoints
 @Getter
 public class LoaderoClient {
     private final String baseUrl;
@@ -74,8 +75,7 @@ public class LoaderoClient {
      * @return       - String containing script content.
      */
     public String getTestScript(String fileId) {
-        String scriptFileid = String.valueOf(fileId);
-        String scriptFileUrl = buildScriptFileURL(scriptFileid) + "/";
+        String scriptFileUrl = String.format("%s/", buildScriptFileURL(fileId));
         LoaderoScriptFileLoc scriptFile = (LoaderoScriptFileLoc) restController.get(
                     scriptFileUrl,
                     LoaderoType.LOADERO_SCRIPT_FILE_LOC);
@@ -89,7 +89,7 @@ public class LoaderoClient {
      * @return   - LoaderoGroup object.
      */
     public LoaderoModel getGroupById(String testId, String groupId) {
-        String groupUrl = buildGroupURL(testId, groupId) + "/";
+        String groupUrl = String.format("%s/", buildGroupURL(testId, groupId));
         return restController.get(groupUrl,
                 LoaderoType.LOADERO_GROUP);
     }
@@ -102,7 +102,7 @@ public class LoaderoClient {
      */
     public LoaderoParticipant getParticipantById(String testId, String groupId,
                                                  String participantId) {
-        String particUrl = buildParticipantURL(testId, groupId, participantId) + "/";
+        String particUrl = String.format("%s/", buildParticipantURL(testId, groupId, participantId));
         return (LoaderoParticipant) restController.get(
                 particUrl, LoaderoType.LOADERO_PARTICIPANT
         );
@@ -120,7 +120,8 @@ public class LoaderoClient {
                                                         String groupId,
                                                         String participantId,
                                                         LoaderoParticipant newParticipant) {
-        String participnatUrl = buildParticipantURL(testId, groupId, participantId) + "/";
+
+        String participantUrl = String.format("%s/", buildParticipantURL(testId, groupId, participantId));
         LoaderoParticipant currentParticInfo = getParticipantById(testId, groupId, participantId);
 
         LoaderoParticipant updatedParticipant = (LoaderoParticipant) LoaderoClientUtils
@@ -130,7 +131,7 @@ public class LoaderoClient {
                 LoaderoType.LOADERO_PARTICIPANT);
 
         return (LoaderoParticipant) restController
-                .update(participnatUrl, LoaderoType.LOADERO_PARTICIPANT, updatedParticipant);
+                .update(participantUrl, LoaderoType.LOADERO_PARTICIPANT, updatedParticipant);
     }
 
     /**
@@ -140,7 +141,7 @@ public class LoaderoClient {
      * @return       - LoaderoAllTestRunResults object, that contains list of LoaderoSingleTestRunResult objects.
      */
     public LoaderoTestRunResult getTestRunResult(String testId, String runId) {
-        String resultsUrl = buildRunResultsURL(testId, runId);
+        String resultsUrl = String.format("%s",buildRunResultsURL(testId, runId));
         return (LoaderoTestRunResult) restController.get(resultsUrl,
                 LoaderoType.LOADERO_RUN_RESULT);
     }
@@ -153,8 +154,12 @@ public class LoaderoClient {
      * @return          - LoaderoSingleTestRunResult object containing information such as ID, status,
      *                    selenium_status, log paths, asserts and artifacts.
      */
-    public LoaderoTestRunParticipantResult getTestRunParticipantResult(String testId, String runId, String resultId) {
-        String resultsUrl = buildRunResultsURL(testId, runId) + resultId + "/";
+    public LoaderoTestRunParticipantResult getTestRunParticipantResult(String testId,
+                                                                       String runId,
+                                                                       String resultId) {
+        String resultsUrl = String.format("%s/%s/",
+                buildRunResultsURL(testId, runId),
+                resultId);
         return (LoaderoTestRunParticipantResult) restController.get(resultsUrl,
                 LoaderoType.LOADERO_TEST_RUN_PARTICIPANT_RESULT);
     }
@@ -170,18 +175,18 @@ public class LoaderoClient {
      * @return         - LoaderoRunInfo containing information about test run.
      */
     public LoaderoRunInfo startTestAndPollInfo(String testId, int interval, int timeout) {
-        String startRunsUrl = buildTestURLById(testId) + "/runs/";
+        String startRunsUrl = String.format("%s/runs/", buildTestURLById(testId));
         return pollController
                 .startTestAndPoll(startRunsUrl, interval, timeout);
     }
 
     // Public for testing purposes. May make it private later
     public String buildTestURLById(String testId) {
-        return baseUrl
-                + "/projects/"
-                + projectId
-                + "/tests/"
-                + testId;
+        return String.format(
+                "%s/projects/%s/tests/%s",
+                baseUrl,
+                projectId,
+                testId);
     }
 
     /**
@@ -192,9 +197,7 @@ public class LoaderoClient {
      */
     public String buildGroupURL(String testId, String groupId) {
         String testUrl = buildTestURLById(testId);
-        return testUrl
-                + "/groups/"
-                + groupId;
+        return String.format("%s/groups/%s", testUrl, groupId);
     }
 
     /**
@@ -206,30 +209,26 @@ public class LoaderoClient {
      */
     public String buildParticipantURL(String testId, String groupId,
                                       String participantId) {
-        return buildGroupURL(testId, groupId)
-                + "/participants/"
-                + participantId;
+        return String.format("%s/participants/%s",
+                buildGroupURL(testId, groupId),
+                participantId);
     }
 
     public String buildScriptFileURL(String fileId) {
-        return baseUrl
-                + "/projects/"
-                + projectId
-                + "/files/"
-                + fileId;
+        return String.format("%s/projects/%s/files/%s",
+                baseUrl,
+                projectId,
+                fileId );
     }
 
     public String buildRunResultsURL(String testId, String runId) {
-        return buildTestURLById(testId)
-                + "/runs/"
-                + runId
-                + "/results/";
+        return String.format("%s/runs/%s/results",
+                buildTestURLById(testId),
+                runId);
     }
 
     public String buildProjectURL() {
-        return baseUrl
-                + "/projects/"
-                + projectId;
+        return String.format("%s/projects/%s", baseUrl, projectId);
     }
 }
 

@@ -5,6 +5,10 @@ import cucumber.api.java.eo.Se;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * LoaderoRunInfo class is responsible for representing retrieved information during and after
+ * test runs.
+ */
 @Data
 @NoArgsConstructor
 public class LoaderoRunInfo implements LoaderoModel {

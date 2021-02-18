@@ -1,5 +1,9 @@
 package loadero.model;
 
+/**
+ * LoaderoModelFactory is a simple implementation of a Factory method pattern
+ * with intend to abstract creation of concrete LoaderoModels.
+ */
 public class LoaderoModelFactory implements LoaderoModel {
 
     public LoaderoModel getLoaderoModel(LoaderoType type) {

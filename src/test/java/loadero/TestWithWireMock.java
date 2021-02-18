@@ -158,7 +158,7 @@ public class TestWithWireMock {
                 .willReturn(aResponse()
                 .withStatus(HttpStatus.SC_OK)));
 
-        makeGetRequest(loaderoClient.buildRunResultsURL(TEST_ID, RUN_ID));
+        makeGetRequest(loaderoClient.buildRunResultsURL(TEST_ID, RUN_ID) + "/");
 
         wmRule.verify(getRequestedFor(urlPathMatching(allResultsUrl)));
 
