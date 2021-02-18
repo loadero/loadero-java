@@ -4,6 +4,6 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class LoaderoAllTestRunResults implements LoaderoModel {
+public class LoaderoTestRunResult implements LoaderoModel {
     private List<LoaderoSingleTestRunResult> results;
 }
