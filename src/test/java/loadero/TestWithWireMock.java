@@ -104,6 +104,7 @@ public class TestWithWireMock {
 
     @Test
     @Order(4)
+    @EnabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
     public void negativeTokenAccess() throws IOException {
         String url = "/projects/";
         HttpGet request = new HttpGet(BASE_URL + url);
@@ -123,6 +124,7 @@ public class TestWithWireMock {
 
     @Test
     @Order(6)
+    @EnabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
     public void negativeTestGettingProjectFromSavedMappings() {
         makeGetRequest(BASE_URL + "/projects/" + "0" + "/");
         assertEquals(HttpStatus.SC_NOT_FOUND, response.getStatusLine().getStatusCode());
