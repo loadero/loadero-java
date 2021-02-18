@@ -71,7 +71,7 @@ public class LoaderoPollController {
      * @param uri - Link pointing to concrete testID
      */
     private void stopTestRun(String uri) {
-        String stopURI = uri + "stop/";
+        String stopURI = String.format("%sstop/", uri);
         HttpUriRequest stopRun = RequestBuilder.post(stopURI).build();
         try {
             client.build().execute(stopRun);

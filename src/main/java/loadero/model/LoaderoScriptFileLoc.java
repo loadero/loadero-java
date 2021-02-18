@@ -4,6 +4,10 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * LoaderoScriptFileLoc purpose is to store information about Loadero test script,
+ * that is used to run tests.
+ */
 @Data
 @NoArgsConstructor
 public class LoaderoScriptFileLoc implements LoaderoModel{

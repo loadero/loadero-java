@@ -3,6 +3,13 @@ package loadero.model;
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 
+/**
+ * LoaderoParticipant class is responsible to represent information retrieved/updated
+ * from/to Loadero API /participants/participantId endpoint.
+ *
+ * Due to nature of Loadero API design, this class requires to have default values
+ * in order to behave as expected.
+ */
 @Data
 public class LoaderoParticipant implements LoaderoModel {
     private long id = 0;

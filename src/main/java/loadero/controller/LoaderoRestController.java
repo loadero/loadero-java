@@ -50,7 +50,7 @@ public class LoaderoRestController {
             if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 HttpEntity entity = res.getEntity();
                 result = LoaderoClientUtils.jsonToObject(entity, type);
-                logger.info("{}", res.getStatusLine());
+                logger.info("{} : {}", res.getStatusLine(), uri);
             }
         } catch (NullPointerException | IOException e) {
             logger.error("{}", e.getMessage());
@@ -85,8 +85,9 @@ public class LoaderoRestController {
                         res.getEntity(),
                         type);
                 logger.info("{}: {}", res.getStatusLine(), "Value updated");
+                logger.info("Updated value url: {}", uri);
             } else {
-                logger.error("{}", res.getStatusLine());
+                logger.error("{} : {}", res.getStatusLine(), uri);
             }
             res.close();
         } catch (IOException e) {

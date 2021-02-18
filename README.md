@@ -109,6 +109,24 @@ class LoaderoModelFactory(){}
 </td>
 <td>Factory that is used to create concrete classes of LoaderoModel interface.</td>
 </tr>
+<tr>
+<td>
+
+```java
+class LoaderoTestRunResult(){}
+```
+</td>
+<td>Class that is responsible for storing information about all test run results.</td>
+</tr>
+<tr>
+<td>
+
+```java
+class LoaderoSingleTestRunResult(){}
+```
+</td>
+<td>Class that is responsible to represent information about single participant test run result.</td>
+</tr>
 
 </tbody>
 </table>
@@ -129,11 +147,11 @@ Public methods that is used to interact with Loadero API.
 <td>
 
 ```java
- LoaderoTestOptions getTestOptions()
+LoaderoTestOptions getTestOptionsById(String testId)
 ```
 </td>
 <td>
--
+<b>String testId</b> - ID of the test we would like to get.
 </td>
 <td>
 Makes GET request to <b>/projects/{projectID}/tests/{testID}</b> endpoint and
@@ -144,12 +162,14 @@ retrieves information about existing test. Takes no arguments. Returns data as L
 
 ```java
  LoaderoTestOptions updateTestOptions
-        (LoaderoTestOptions newOptions)
+        (String testId, LoaderoTestOptions newOptions)
 ```
 </td>
 <td>
 <b>LoaderoTestOptions newOptions</b> - Required parameter that is used to set new test options
 in Loadero via API call.
+
+<b>String testId</b> - ID of the test we wish to update.
 </td>
 <td>Makes PUT request to <b>/projects/{projectID}/tests/{testID}</b> and updates existing test options 
 in Loadero. 
@@ -160,11 +180,11 @@ Takes in LoaderoTestOptions object with desired params set through setter method
 <td>
 
 ```java
- String getFileScriptConent(String id)
+ String getTestScript(String fileId)
 ```
 </td>
 <td>
-<b>String id</b> - ID that is pointing to the script file on Loadero.
+<b>String fileId</b> - ID that is pointing to the script file on Loadero.
 </td>
 <td>Makes GET request to <b>/projects/{projectID}/files/{fileID}/</b> and retrieves the content
 of the script used for testing.
@@ -174,11 +194,13 @@ of the script used for testing.
 <td>
 
 ```java
- LoaderoGroup getGroupById(String id)
+ LoaderoGroup getGroupById
+        (String testId, String groupId)
 ```
 </td>
 <td>
-<b>String id</b> - ID of the group that is used to retrieve information about Loadero Group.
+<b>String testId</b>  - ID of the test that contains desired group.<br/>
+<b>String groupId</b> - ID of the group that is used to retrieve information about Loadero Group.
 </td>
 <td>Makes GET request to <b>/projects/{projectID}/tests/{testID}/groups/{groupID}/</b> 
 and retrieves information about group.
@@ -188,13 +210,17 @@ and retrieves information about group.
 <td>
 
 ```java
- LoaderoGroup getParticipantById(String groupId)
+ LoaderoParticipant getParticipantById
+        (String testId, String groupId, String participnatId)
 ```
 </td>
 <td>
-<b>String id</b> - ID of the participant that is used to retrieve information.
+<b>String testId</b> - ID of the test containing participant.<br>
+<b>String groupId</b> - ID of the group containing participant.<br>
+<b>String participantId</b> - ID of the participant that is used to retrieve information.
 </td>
-<td>Makes GET request to <b> /projects/{projectID}/tests/{testID}/participants/{participantID}/</b> 
+<td>Makes GET request to <b>/projects/{projectID}/tests/{testID}/groups/{groupID}/participants/{participantID}
+</b> 
 and retrieves information about participant.
 </td>
 </tr>
@@ -202,18 +228,51 @@ and retrieves information about participant.
 <td>
 
 ```java
-  LoaderoModel startTestAndPollInfo
-        (int interval, int timeout)
+ LoaderoTestRunResult getTestRunResult
+        (String testId, String runId)
 ```
 </td>
 <td>
-<b>int interval</b> - Specifying how often should be method poll for information. In seconds.
+<b>String testId</b> - ID of the test containing info about test runs.<br>
+<b>String runId</b> -  ID of the test run.<br>
+</td>
+<td>Makes GET request to <b>projects/{projectID}/tests/{testID}/runs/{runID}/results/</b>
+and retrieves information about <b>all</b> test run results.
+</td>
+</tr>
+<tr>
+<td>
 
-<b>int timeout</b>  - Total amount of time that should be spending polling information. In seconds.
+```java
+LoaderoTestRunParticipantResult getTestRunParticipantResult
+        (String testId, String runId, String resultId) 
+```
+</td>
+<td>
+<b>String testId</b> - ID of the test containing info about test runs.<br>
+<b>String runId</b> -  ID of the test run.<br>
+<b>String resultId</b> - ID of the specific result.
+</td>
+<td>Makes GET request to <b>projects/{projectID}/tests/{testID}/runs/{runID}/results/{resultId}/</b>
+and retrieves information about <b>specific</b> test run result.
+</td>
+</tr>
+<tr>
+<td>
+
+```java
+  LoaderoRunInfo startTestAndPollInfo
+        (String testId, int interval, int timeout)
+```
+</td>
+<td>
+<b>String testId</b> - ID of the test we wish to start and poll information from.<br>
+<b>int interval</b> - Specifying in <b>seconds</b> how often should be method poll for information.<br>
+<b>int timeout</b>  - Total amount of time in <b>seconds</b> that should be spending polling information.
 </td>
 <td>Starts test run by sending POST command to <b>/projects/{projectID}/tests/{testID}/runs/</b>.
 After which starts with specified interval within given timeout sending GET request to retrieve information
-about test run state. If test run is completed, will return LoaderoModel object with test run result. 
+about test run state. If test run is completed, will return LoaderoRunInfo object with test run result. 
 Also, will give link to results.
 </td>
 </tr>
@@ -228,10 +287,13 @@ Also, will give link to results.
 
 ```java
 // Initiating client through which we will be iterating with Loadero API.
-LoaderoClient client = new LoaderoClient(loaderoToken, projectId, testId);
+LoaderoClient client = new LoaderoClient(loaderoToken, projectId);
+
+// ID of the test we are interested in.
+String testId = "sometestId"; // Usually some numeric value
 
 // Retrieving current test description, if needed.
-LaoderoTestOptions currentTestOptions = client.getTestOptions();
+LaoderoTestOptions currentTestOptions = client.getTestOptions(testId);
 
 // Initiating new test options.
 // New options are...well...optional. Those options that wasn't specified
@@ -253,34 +315,85 @@ newTestOptions.setScript(new String("your script here"));
 
 // After that you can call updateTestOptions() method and store result
 // of the operation for later usage if needed.       
-LoaderoTestOptions updatedOptions = (LoaderoTestOptions) client.updateTestOptions(newTestOptions);
+LoaderoTestOptions updatedOptions = client.updateTestOptions(testId, newTestOptions);
 ```
 
 <h3>Basic polling usage</h3>
 
 ```java
 // Another currently popular feature is to poll your test 
-// results while running the test itself!
-// And this wrapper can give you just that!
+// results while running the test itself! And this wrapper can give you just that!
         
 // With method startTestAndPollInfo(interval, timeout) you can start test and...
 // you guessed it! Poll the information about the state of the running test!
 // When test is done the method will return LoaderoRunInfo object with
 // all the information you need to retrieve results of the test later.        
-LoaderoRunInfo testRunInfo = (LoaderoRunInfo) client.startTestAndPollInfo(15, 100);
+LoaderoRunInfo testRunInfo = client.startTestAndPollInfo(testId, 15, 100);
+
+// For example you going to need test run ID field to get results
+// about this test run.
+long testRunId = testRunInfo.getId();
+
+// Or if you would like to know success rate you can retrieve it with
+// getter method respectively.
+double successRate = testRunInfo.getSuccessRate();
+```
+
+<h3>Getting test run results</h3>
+
+```java
+// After successfully run of polling function you can retrieve results of the
+// test runs that were made.
+// You can use testRunId defined earlier to get all information about test run results
+// This will give you a List<LoaderoSingleTestRunResult> object.
+LoaderoTestRunResult results = client.getTestRunResult(testId, testRunId);
+// This object contains an individual IDs of each test run result that you can
+// retrieve later with the next method
+LoaderoTestRunParticipantResult singleResult = client
+        .getTestRunParticipantResult(String testId, String testRunId, String resultId);
+
+// And then, with getters, retrieve all the necessary information about single test run results,
+// that you may need.
 ```
 
 <h3>Unit tests</h3>
+<hr>
 <p>Package provides some predefined set of unit tests that can be run with Maven.</p>
+<p>Unit tests are run using two environment variables called <b>LOADERO_API_TOKEN</b> 
+and <b>LOADERO_BASE_URL</b>, respectively. <br>
+Set this variables somewhere in your project if you wish to run tests against actual Loadero API service. Otherwise, tests will be run against
+mock data on localhost.
+</p>
+
+<b>For exmaple:</b>
+<p>Use <b>System.getenv()</b> to get values for Loader token and base url from your environment variables<br>
+and assign them accordingly inside <b>TestWithWireMock</b> class.</p>
+
+```java
+private static final String token = System.getenv("LOADERO_API_TOKEN");
+private static final String baseUrl = System.getenv("LOADERO_BASE_URL");
+```
+
+<br>
+<p>Maven unit tests can be run in to modes.<br>
+First one is in the <b>mock</b> mode(default). This mode will run tests only against mocked/saved/predifined data. <br>
+Second mode can be activating with <b>-Denv=live</b> flag. In this mode unit tests will be run 
+against real Loadero API service using your Loadero API token provided from <b>environment variables</b>.
+</p>
 
 <b>To run all tests in /test directory.</b>
 ```
 mvm test
 ```
 
-<b>To run a specific set of tests.</b>
+<b>To run a specific set of tests against mocked data.</b>
 ```
 mvn -DTest=TestWithWiremock test
+```
+
+<b>To run a specific set of tests with real credentials(eg. API toke, real IDs etc.).</b>
+```
+mvn -DTest=TestWithWiremock -Denv=live test
 ```
 
 <b>To run a specific test method inside test class.</b>
