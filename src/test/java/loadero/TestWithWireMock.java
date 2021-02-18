@@ -109,7 +109,7 @@ public class TestWithWireMock {
         HttpGet request = new HttpGet(BASE_URL + url);
         CloseableHttpClient client = HttpClients.createDefault();
         response = client.execute(request);
-        assertEquals(HttpStatus.SC_UNAUTHORIZED, response.getStatusLine().getStatusCode());
+        assertEquals(HttpStatus.SC_FORBIDDEN, response.getStatusLine().getStatusCode());
     }
 
     @Test
@@ -125,7 +125,7 @@ public class TestWithWireMock {
     @Order(6)
     public void negativeTestGettingProjectFromSavedMappings() {
         makeGetRequest(BASE_URL + "/projects/" + "0" + "/");
-        assertEquals(HttpStatus.SC_FORBIDDEN, response.getStatusLine().getStatusCode());
+        assertEquals(HttpStatus.SC_NOT_FOUND, response.getStatusLine().getStatusCode());
     }
 
     @Test
@@ -170,14 +170,14 @@ public class TestWithWireMock {
     @Test
     @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
     public void testGetAllTestResultsLive() {
-        LoaderoAllTestRunResults results = loaderoClient.getAllTestRunResults(TEST_ID, RUN_ID);
+        LoaderoTestRunResult results = loaderoClient.getTestRunResult(TEST_ID, RUN_ID);
         assertNotNull(results.getResults());
     }
     @Test
     @Order(9)
     @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
     public void testGetSingleRunResults() {
-        LoaderoSingleTestRunResult result = loaderoClient.getSingleRunResults(TEST_ID, RUN_ID, RESULT_ID);
+        LoaderoTestRunParticipantResult result = loaderoClient.getTestRunParticipantResult(TEST_ID, RUN_ID, RESULT_ID);
         // log_paths shouldn't be null
         assertNotNull(result.getLogPaths());
         // log_paths fields shouldn't be null

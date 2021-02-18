@@ -54,7 +54,7 @@ public class LoaderoClient {
         // We get the old script from Loadero API endpoint /files/fileId
         // And update accordingly.
         if (Objects.equals(newTestOptions.getScript(), "")) {
-            String scriptContent = getFileScriptConent(
+            String scriptContent = getTestScript(
                     String.valueOf(currentOptions.getScriptFileId()));
             currentOptions.setScript(scriptContent);
         }
@@ -73,7 +73,7 @@ public class LoaderoClient {
      * @param fileId - ID of the script file
      * @return       - String containing script content.
      */
-    public String getFileScriptConent(String fileId) {
+    public String getTestScript(String fileId) {
         String scriptFileid = String.valueOf(fileId);
         String scriptFileUrl = buildScriptFileURL(scriptFileid) + "/";
         LoaderoScriptFileLoc scriptFile = (LoaderoScriptFileLoc) restController.get(
@@ -139,10 +139,10 @@ public class LoaderoClient {
      * @param runId  - ID of the test run.
      * @return       - LoaderoAllTestRunResults object, that contains list of LoaderoSingleTestRunResult objects.
      */
-    public LoaderoAllTestRunResults getAllTestRunResults(String testId, String runId) {
+    public LoaderoTestRunResult getTestRunResult(String testId, String runId) {
         String resultsUrl = buildRunResultsURL(testId, runId);
-        return (LoaderoAllTestRunResults) restController.get(resultsUrl,
-                LoaderoType.LOADERO_ALL_RUN_RESULTS);
+        return (LoaderoTestRunResult) restController.get(resultsUrl,
+                LoaderoType.LOADERO_RUN_RESULT);
     }
 
     /**
@@ -153,10 +153,10 @@ public class LoaderoClient {
      * @return          - LoaderoSingleTestRunResult object containing information such as ID, status,
      *                    selenium_status, log paths, asserts and artifacts.
      */
-    public LoaderoSingleTestRunResult getSingleRunResults(String testId, String runId, String resultId) {
+    public LoaderoTestRunParticipantResult getTestRunParticipantResult(String testId, String runId, String resultId) {
         String resultsUrl = buildRunResultsURL(testId, runId) + resultId + "/";
-        return (LoaderoSingleTestRunResult) restController.get(resultsUrl,
-                LoaderoType.LOADERO_SINGLE_RUN_RESULTS);
+        return (LoaderoTestRunParticipantResult) restController.get(resultsUrl,
+                LoaderoType.LOADERO_TEST_RUN_PARTICIPANT_RESULT);
     }
 
 

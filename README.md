@@ -113,7 +113,7 @@ class LoaderoModelFactory(){}
 <td>
 
 ```java
-class LoaderoAllTestRunResults(){}
+class LoaderoTestRunResult(){}
 ```
 </td>
 <td>Class that is responsible for storing information about all test run results.</td>
@@ -125,7 +125,7 @@ class LoaderoAllTestRunResults(){}
 class LoaderoSingleTestRunResult(){}
 ```
 </td>
-<td>Class that is responsible for storing information about single test run result.</td>
+<td>Class that is responsible to represent information about single participant test run result.</td>
 </tr>
 
 </tbody>
@@ -180,7 +180,7 @@ Takes in LoaderoTestOptions object with desired params set through setter method
 <td>
 
 ```java
- String getFileScriptConent(String fileId)
+ String getTestScript(String fileId)
 ```
 </td>
 <td>
@@ -228,7 +228,7 @@ and retrieves information about participant.
 <td>
 
 ```java
- LoaderoAllTestRunResults getAllTestRunResults
+ LoaderoTestRunResult getTestRunResult
         (String testId, String runId)
 ```
 </td>
@@ -244,7 +244,7 @@ and retrieves information about <b>all</b> test run results.
 <td>
 
 ```java
-LoaderoSingleTestRunResult getSingleRunResults
+LoaderoTestRunParticipantResult getTestRunParticipantResult
         (String testId, String runId, String resultId) 
 ```
 </td>
@@ -346,11 +346,11 @@ double successRate = testRunInfo.getSuccessRate();
 // test runs that were made.
 // You can use testRunId defined earlier to get all information about test run results
 // This will give you a List<LoaderoSingleTestRunResult> object.
-LoaderoAllTestRunResults results = client.getAllTestRunResults(testId, testRunId);
+LoaderoTestRunResult results = client.getTestRunResult(testId, testRunId);
 // This object contains an individual IDs of each test run result that you can
-// retrieve later with the next function:
-LoaderoSingleTestRunResult singleResult = client
-        .getSingleRunResults(String testId, String testRunId, String resultId);
+// retrieve later with the next method
+LoaderoTestRunParticipantResult singleResult = client
+        .getTestRunParticipantResult(String testId, String testRunId, String resultId);
 
 // And then, with getters, retrieve all the necessary information about single test run results,
 // that you may need.
