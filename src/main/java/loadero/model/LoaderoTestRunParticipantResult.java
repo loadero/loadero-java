@@ -7,7 +7,7 @@ import lombok.Data;
 import java.util.Map;
 
 @Data
-public class LoaderoSingleTestRunResult implements LoaderoModel {
+public class LoaderoTestRunParticipantResult implements LoaderoModel {
     private long id;
     private String status;
     @SerializedName("selenium_result")
