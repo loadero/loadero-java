@@ -88,10 +88,29 @@ public class LoaderoClient {
      * @param groupId - ID of the group.
      * @return   - LoaderoGroup object.
      */
-    public LoaderoModel getGroupById(String testId, String groupId) {
+    public LoaderoGroup getGroupById(String testId, String groupId) {
         String groupUrl = String.format("%s/", buildGroupURL(testId, groupId));
-        return restController.get(groupUrl,
+        return (LoaderoGroup) restController.get(groupUrl,
                 LoaderoType.LOADERO_GROUP);
+    }
+
+    /**
+     *
+     * @param testId
+     * @param groupId
+     * @param newGroup
+     * @return
+     */
+    public LoaderoGroup updateGroupById(String testId, String groupId, LoaderoGroup newGroup) {
+        String groupUrl = buildGroupURL(testId, groupId) + "/";
+        LoaderoGroup currentGroup = getGroupById(testId, groupId);
+        LoaderoGroup updatedGroup = (LoaderoGroup) LoaderoClientUtils.copyUncommonFields(
+                currentGroup,
+                newGroup,
+                LoaderoType.LOADERO_GROUP
+        );
+
+        return (LoaderoGroup) restController.update(groupUrl, LoaderoType.LOADERO_GROUP, updatedGroup);
     }
 
     /**
