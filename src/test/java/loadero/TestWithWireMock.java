@@ -209,7 +209,7 @@ public class TestWithWireMock {
         newTestOptions.setName("New test name from testFullFunctionalityFlow");
         // Setting script through path using URI
         newTestOptions.setScript(
-                URI.create("src/main/resources/loadero/scripts/testui/LoaderoScriptJava.java"));
+                URI.create("src/main/resources/loadero/scripts/testui/CallOneOnOne.java"));
         newTestOptions.setMode("performance");
         newTestOptions.setStartInterval(30);
         LoaderoTestOptions updatedTestOptions = loaderoClient.updateTestOptions(TEST_ID, newTestOptions);
@@ -223,5 +223,14 @@ public class TestWithWireMock {
         // Checking polling function
         LoaderoRunInfo startAndPollTest = loaderoClient.startTestAndPollInfo(TEST_ID, 2, 40);
         assertEquals("done", startAndPollTest.getStatus());
+    }
+
+    @Test
+    @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
+    public void testUpdateGroup() {
+        LoaderoGroup newGroup = new LoaderoGroup();
+        newGroup.setCount(3);
+        LoaderoGroup updatedGroup = loaderoClient.updateGroupById(TEST_ID, GROUP_ID, newGroup);
+        assertEquals(3, updatedGroup.getCount());
     }
 }
