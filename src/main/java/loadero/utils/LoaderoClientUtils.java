@@ -18,7 +18,8 @@ public class LoaderoClientUtils {
         @Override
         public boolean shouldSkipField(FieldAttributes fieldAttributes) {
             return fieldAttributes.getName().equals("id") ||
-                    fieldAttributes.getName().equals("scriptFileId");
+                    fieldAttributes.getName().equals("scriptFileId") ||
+                    fieldAttributes.getName().equals("testId");
         }
 
         @Override
