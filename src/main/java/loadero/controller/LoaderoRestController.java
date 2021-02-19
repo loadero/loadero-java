@@ -74,8 +74,8 @@ public class LoaderoRestController {
         }
 
         try {
-            String testToJson = LoaderoClientUtils.modelToJson(newModel);
-            HttpEntity entity = new StringEntity(testToJson);
+            String modelToJson = LoaderoClientUtils.modelToJson(newModel);
+            HttpEntity entity = new StringEntity(modelToJson);
             HttpUriRequest put = RequestBuilder.put(uri).setEntity(entity).build();
             CloseableHttpResponse res = client.build().execute(put);
 
@@ -88,6 +88,7 @@ public class LoaderoRestController {
                 logger.info("Updated value url: {}", uri);
             } else {
                 logger.error("{} : {}", res.getStatusLine(), uri);
+                logger.error("{}", modelToJson);
             }
             res.close();
         } catch (IOException e) {
