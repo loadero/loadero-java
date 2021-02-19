@@ -95,11 +95,11 @@ public class LoaderoClient {
     }
 
     /**
-     *
-     * @param testId
-     * @param groupId
-     * @param newGroup
-     * @return
+     * Updates Loadero group parameters by given group ID.
+     * @param testId    - ID of the test containing the group.
+     * @param groupId   - ID of the group to be updated.
+     * @param newGroup  - LoaderoGroup object with new parameters.
+     * @return          - LoaderoGroup object with updated parameters.
      */
     public LoaderoGroup updateGroupById(String testId, String groupId, LoaderoGroup newGroup) {
         String groupUrl = buildGroupURL(testId, groupId) + "/";
