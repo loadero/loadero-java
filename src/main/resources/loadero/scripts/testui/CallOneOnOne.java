@@ -6,28 +6,26 @@ public void test() {
         int elTimeout = 10;
 
         if (particId % 2 == 0) {
-            String caller = String.format("%s%s", appUrl, identity);
-            String toCall = String.format("Participant%d", particId+1);
+        String caller = String.format("%s%s", appUrl, identity);
+        String toCall = String.format("Participant%d", particId+1);
+        UIElement element = E(byId("button-hangup"));
 
-            open(caller)
-                .setElement(byCssSelector("body")).waitFor(elTimeout).untilIsVisible().shouldBe().visible()
-                .setElement(byId("phone-number")).waitFor(elTimeout).untilIsVisible().shouldBe().visible()
-                .setElement(byId("call-controls")).waitFor(elTimeout).untilIsVisible().shouldBe().visible()
-                .setElement(byId("phone-number")).waitFor(elTimeout).untilIsVisible()
-                .sendKeys(toCall)
-                .setElement(byId("button-call")).waitFor(elTimeout).untilIsVisible().click()
-                .setElement(byId("button-hangup")).waitFor(elTimeout).untilIsVisible()
-                .setElement(byId("log")).shouldHave().containNoCaseSensitiveText("Successfully established call!")
-                .setElement(byId("button-hangup")).waitFor(callDuration*1000).click();
+        open(caller)
+        .setElement(byCssSelector("body")).waitFor(elTimeout).untilIsVisible()
+        .setElement(byId("call-controls")).waitFor(elTimeout).untilIsVisible()
+        .setElement(byId("phone-number")).waitFor(elTimeout).untilIsVisible().then().sendKeys(toCall)
+        .setElement(byId("button-call")).waitFor(elTimeout).untilIsVisible().then().click()
+        .setElement(byId("log")).waitFor(elTimeout).untilHasText("Successfully established call!");
+        sleep(callDuration * 1000);
+        element.waitFor(callDuration * 1000).untilIsVisible().then().click();
+
         } else {
-            String callee = String.format("%s%s", appUrl, toCall);
-            open(callee)
-                .setElement(byCssSelector("body")).waitFor(elTimeout).untilIsVisible()
-                .setElement(byId("phone-number")).waitFor(elTimeout).untilIsVisible()
-                .click("phone-number")
-                .setElement(byId("log")).waitFor(elTimeout).untilIsVisible().shouldHave().containNoCaseSensitiveText("Ready")
-                .setElement(byId("button-hangup")).waitFor(elTimeout).untilIsVisible()
-                .setElement(byId("log")).waitFor(callDuration*1000).shouldHave().containNoCaseSensitiveText("Call ended");
+        String callee = String.format("%s%s", appUrl, identity);
+        open(callee)
+        .setElement(byCssSelector("body")).waitFor(elTimeout).untilIsVisible()
+        .setElement(byId("call-controls")).waitFor(elTimeout).untilIsVisible()
+        .setElement(byId("log")).waitFor(elTimeout).untilHasText("Ready")
+        .setElement(byId("log")).waitFor(callDuration*1000).untilHasText("Call ended");
         }
 }
 
