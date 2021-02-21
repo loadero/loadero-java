@@ -11,7 +11,6 @@ import java.util.Objects;
 
 
 // TODO: abstract heavy logic into separate class
-// TODO: some sort of link builder for Loadero endpoints
 @Getter
 public class LoaderoClient {
     private final String baseUrl;
