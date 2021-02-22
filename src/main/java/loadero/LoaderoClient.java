@@ -144,7 +144,7 @@ public class LoaderoClient {
      * @return       - LoaderoAllTestRunResults object, that contains list of LoaderoSingleTestRunResult objects.
      */
     public LoaderoTestRunResult getTestRunResult(String testId, String runId) {
-        String resultsUrl = String.format("%s",buildRunResultsURL(testId, runId));
+        String resultsUrl = String.format("%s/",buildRunResultsURL(testId, runId));
         return (LoaderoTestRunResult) restController.get(resultsUrl,
                 LoaderoType.LOADERO_RUN_RESULT);
     }

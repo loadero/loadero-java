@@ -1,0 +1,19 @@
+{
+  "id" : "363201e2-aa43-3e6a-9bcc-ad21a877f1d1",
+  "request" : {
+    "url" : "/projects/5040/tests/6866/groups/49033/",
+    "method" : "GET"
+  },
+  "response" : {
+    "status" : 200,
+    "bodyFileName" : "body-projects-5040-tests-6866-groups-49033-BHJJk.json",
+    "headers" : {
+      "Server" : "nginx/1.18.0 (Ubuntu)",
+      "Date" : "Fri, 12 Feb 2021 06:28:29 GMT",
+      "Content-Type" : "application/json; charset=UTF-8",
+      "Vary" : "Accept-Encoding",
+      "Strict-Transport-Security" : "max-age=15768000; includeSubDomains"
+    }
+  },
+  "uuid" : "363201e2-aa43-3e6a-9bcc-ad21a877f1d1"
+}
