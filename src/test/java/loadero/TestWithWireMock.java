@@ -3,8 +3,11 @@ package loadero;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
+
+import loadero.controller.LoaderoRestController;
 import loadero.model.*;
 import loadero.utils.FunctionBodyParser;
+import loadero.utils.LoaderoClientUtils;
 import loadero.utils.LoaderoHttpClient;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -170,7 +173,6 @@ public class TestWithWireMock {
     @Test
     public void testGetParticipantById() {
         String url = loaderoClient.buildParticipantURL(TEST_ID, GROUP_ID, PARTICIPANT_ID) + "/";
-
         LoaderoParticipant participant = loaderoClient.getParticipantById(TEST_ID, GROUP_ID,
                 PARTICIPANT_ID);
         makeGetRequest(url);
@@ -178,6 +180,12 @@ public class TestWithWireMock {
         assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
         assertEquals(PARTICIPANT_ID, String.valueOf(participant.getId()));
         assertEquals(TEST_ID, String.valueOf(participant.getTestId()));
+    }
+
+    @Test
+    public void negativeGetParticipant() {
+        LoaderoParticipant participant = loaderoClient.getParticipantById("2311", GROUP_ID, PARTICIPANT_ID);
+        assertEquals(0, participant.getId());
     }
 
     @Test
@@ -195,8 +203,6 @@ public class TestWithWireMock {
         assertEquals(2, updatedPartic.getCount());
         assertEquals("g2", updatedPartic.getComputeUnit());
     }
-
-
 
     @Test
     @EnabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
@@ -239,6 +245,65 @@ public class TestWithWireMock {
         assertNotNull(result.getLogPaths().get("webrtc"));
         assertNotNull(result.getLogPaths().get("selenium"));
         assertNotNull(result.getLogPaths().get("rru"));
+    }
+
+    @Test
+    public void negativetestFunctionParser() {
+        String str = FunctionBodyParser.getBody("");
+        assertNull(str);
+    }
+
+    @Test
+    public void testJsonToObject() {
+        String groupUrl = loaderoClient.buildGroupURL(TEST_ID, GROUP_ID);
+        makeGetRequest(groupUrl);
+        LoaderoModel model = LoaderoClientUtils.jsonToObject(
+                response.getEntity(), LoaderoType.LOADERO_GROUP);
+        assertEquals(LoaderoGroup.class, model.getClass());
+    }
+
+    @Test
+    public void testModelToJson() {
+        LoaderoGroup group = loaderoClient.getGroupById(TEST_ID, GROUP_ID);
+        String json = LoaderoClientUtils.modelToJson(group);
+        assertTrue(json.contains(group.getName()));
+    }
+
+    @Test
+    public void testCopyCommonFields() {
+        LoaderoTestOptions currentTest = loaderoClient.getTestOptionsById(TEST_ID);
+        LoaderoTestOptions newTest     = new LoaderoTestOptions();
+
+        LoaderoTestOptions updatedTest = (LoaderoTestOptions) LoaderoClientUtils.copyUncommonFields(
+                currentTest,
+                newTest,
+                LoaderoType.LOADERO_TEST_OPTIONS
+        );
+        // Comparing different fields against each other. Should be the same
+        assertAll("Test currentTest with updatedTest. Should be the same.",
+                () -> assertEquals(currentTest.getId(), updatedTest.getId()),
+                () -> assertEquals(currentTest.getName(), updatedTest.getName()),
+                () -> assertEquals(currentTest.getScriptFileId(), updatedTest.getScriptFileId()));
+    }
+
+    @Test
+    public void negativeTestJsonToObject() {
+        LoaderoModel model = LoaderoClientUtils.jsonToObject(null, null);
+        assertNull(model);
+    }
+
+    @Test
+    public void negativeRESTUpdate() {
+        LoaderoRestController restController = new LoaderoRestController(loaderoClient.getLoaderoApiToken());
+        LoaderoModel model = restController.update(loaderoClient.buildTestURLById(TEST_ID),
+                LoaderoType.LOADERO_TEST_OPTIONS, null);
+        assertNull(model);
+    }
+
+    @Test
+    public void negativePollingFunction() {
+        LoaderoRunInfo startAndPollTest = loaderoClient.startTestAndPollInfo(TEST_ID, 2, 40);
+
     }
 
     @Test

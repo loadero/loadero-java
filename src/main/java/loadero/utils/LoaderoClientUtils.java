@@ -57,7 +57,7 @@ public class LoaderoClientUtils {
                     return gson.fromJson(content, LoaderoTestRunResult.class);
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         return result;
     }

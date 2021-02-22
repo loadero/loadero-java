@@ -16,6 +16,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * REST controller class responsible for CRUD actions related to Loadero tests.
@@ -67,11 +68,12 @@ public class LoaderoRestController {
      * @return - Returns new LoaderoModel with updated parameters.
      */
     public LoaderoModel update(String uri, LoaderoType type, LoaderoModel newModel) {
-        LoaderoModel result = factory.getLoaderoModel(type);
-
-        if (LoaderoClientUtils.isNull(newModel)) {
-            logger.error("newModel parameter can't be null.");
+        if (LoaderoClientUtils.isNull(newModel) || LoaderoClientUtils.isNull(type)) {
+            logger.error("Parameter can't be null.");
+            return null;
         }
+
+        LoaderoModel result = factory.getLoaderoModel(type);
 
         try {
             String testToJson = LoaderoClientUtils.modelToJson(newModel);
@@ -93,6 +95,7 @@ public class LoaderoRestController {
             res.close();
         } catch (IOException e) {
             logger.error("{}", e.getMessage());
+            result = null;
         }
         return result;
     }
