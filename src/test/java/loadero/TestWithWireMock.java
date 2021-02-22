@@ -336,6 +336,12 @@ public class TestWithWireMock {
     }
 
     @Test
+    public void negativePollingTest() {
+        LoaderoRunInfo info = loaderoClient.startTestAndPollInfo("111", 2, 40);
+        assertNull(info);
+    }
+
+    @Test
     @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
     @Disabled
     public void testFullFunctionalityFlow() {
