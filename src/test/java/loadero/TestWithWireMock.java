@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import loadero.model.*;
+import loadero.utils.FunctionBodyParser;
 import loadero.utils.LoaderoHttpClient;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -23,7 +24,6 @@ import java.net.URI;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TestWithWireMock {
     private static final String token           = System.getenv("LOADERO_API_TOKEN");
     private static String BASE_URL              = System.getenv("LOADERO_BASE_URL");
@@ -72,7 +72,6 @@ public class TestWithWireMock {
     }
 
     @Test
-    @Order(1)
     public void testGetTestOptions() throws IOException {
         // Make GET request to url on localhost to get status code
         makeGetRequest(loaderoClient.buildTestURLById(TEST_ID) + "/");
@@ -86,7 +85,41 @@ public class TestWithWireMock {
     }
 
     @Test
-    @Order(2)
+    @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
+    public void testUpdateTestOptions() {
+        LoaderoTestOptions newTest = new LoaderoTestOptions();
+        newTest.setMode("load");
+        newTest.setName("unit test 1");
+        newTest.setParticipantTimeout(150);
+        newTest.setStartInterval(5);
+        LoaderoTestOptions updatedTest = loaderoClient.updateTestOptions(TEST_ID, newTest);
+
+        assertEquals(150, updatedTest.getParticipantTimeout());
+        assertEquals("unit test 1", updatedTest.getName());
+        assertEquals("load", updatedTest.getMode());
+    }
+
+    @Test
+    @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
+    public void testUpdateTestOptionsWithNewScript() {
+        LoaderoTestOptions newTest = new LoaderoTestOptions();
+        newTest.setName("unit test 2");
+        newTest.setScript(URI.create("src/main/resources/loadero/scripts/testui/LoaderoScript.java"));
+        // Updating some random test
+        LoaderoTestOptions updatedTest = loaderoClient.updateTestOptions("7193", newTest);
+        // Retrieving ID pointing to script file
+        long scriptId = updatedTest.getScriptFileId();
+        // Getting content of the script from Loadero
+        String actualScript = loaderoClient.getTestScript(String.valueOf(scriptId));
+        String expectedScript = FunctionBodyParser
+                .getBody("src/main/resources/loadero/scripts/testui/LoaderoScript.java");
+
+        assertEquals("unit test 2", updatedTest.getName());
+        // Comparing script from Loadero and local script
+        assertEquals(expectedScript, actualScript);
+    }
+
+    @Test
     public void negativeGetTestOptionsByUrl() {
         String url = loaderoClient.buildTestURLById("0");
         makeGetRequest(url);
@@ -94,7 +127,14 @@ public class TestWithWireMock {
     }
 
     @Test
-    @Order(3)
+    public void testGetGroupById() {
+        LoaderoGroup group = loaderoClient.getGroupById(TEST_ID, GROUP_ID);
+        assertEquals(3, group.getCount());
+    }
+
+
+
+    @Test
     public void testTokenAccessByUrl() {
         String url = loaderoClient.buildProjectURL() + "/";
 
@@ -103,7 +143,6 @@ public class TestWithWireMock {
     }
 
     @Test
-    @Order(4)
     @EnabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
     public void negativeTokenAccess() throws IOException {
         String url = "/projects/";
@@ -114,7 +153,6 @@ public class TestWithWireMock {
     }
 
     @Test
-    @Order(5)
     public void testGettingProjectFromSavedMappings() throws IOException {
         makeGetRequest(loaderoClient.buildProjectURL() + "/");
         String jsonRes = EntityUtils.toString(response.getEntity());
@@ -123,7 +161,6 @@ public class TestWithWireMock {
     }
 
     @Test
-    @Order(6)
     @EnabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
     public void negativeTestGettingProjectFromSavedMappings() {
         makeGetRequest(BASE_URL + "/projects/" + "0" + "/");
@@ -131,7 +168,6 @@ public class TestWithWireMock {
     }
 
     @Test
-    @Order(7)
     public void testGetParticipantById() {
         String url = loaderoClient.buildParticipantURL(TEST_ID, GROUP_ID, PARTICIPANT_ID) + "/";
 
@@ -145,7 +181,24 @@ public class TestWithWireMock {
     }
 
     @Test
-    @Order(8)
+    public void testUpdateParticipant() {
+        LoaderoParticipant newParticipant = new LoaderoParticipant();
+        newParticipant.setName("unit test partic");
+        newParticipant.setCount(2);
+        newParticipant.setComputeUnit("g2");
+
+        LoaderoParticipant updatedPartic = loaderoClient.
+                updateTestParticipantById(TEST_ID, GROUP_ID, PARTICIPANT_ID,newParticipant);
+        logger.info(updatedPartic);
+
+        assertEquals("unit test partic", updatedPartic.getName());
+        assertEquals(2, updatedPartic.getCount());
+        assertEquals("g2", updatedPartic.getComputeUnit());
+    }
+
+
+
+    @Test
     @EnabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
     public void testGetAllResults() {
         String allResultsUrl = "/projects/"
@@ -176,7 +229,6 @@ public class TestWithWireMock {
         assertNotNull(results.getResults());
     }
     @Test
-    @Order(9)
     @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
     public void testGetSingleRunResults() {
         LoaderoTestRunParticipantResult result = loaderoClient.getTestRunParticipantResult(TEST_ID, RUN_ID, RESULT_ID);
@@ -188,9 +240,6 @@ public class TestWithWireMock {
         assertNotNull(result.getLogPaths().get("selenium"));
         assertNotNull(result.getLogPaths().get("rru"));
     }
-
-    // Add new tests before this comment
-    // Don't forget to change order!
 
     @Test
     @Disabled

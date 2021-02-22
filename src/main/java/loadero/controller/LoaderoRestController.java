@@ -88,6 +88,7 @@ public class LoaderoRestController {
                 logger.info("Updated value url: {}", uri);
             } else {
                 logger.error("{} : {}", res.getStatusLine(), uri);
+                logger.error("{}", testToJson);
             }
             res.close();
         } catch (IOException e) {

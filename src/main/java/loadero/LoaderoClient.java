@@ -88,9 +88,9 @@ public class LoaderoClient {
      * @param groupId - ID of the group.
      * @return   - LoaderoGroup object.
      */
-    public LoaderoModel getGroupById(String testId, String groupId) {
+    public LoaderoGroup getGroupById(String testId, String groupId) {
         String groupUrl = String.format("%s/", buildGroupURL(testId, groupId));
-        return restController.get(groupUrl,
+        return (LoaderoGroup) restController.get(groupUrl,
                 LoaderoType.LOADERO_GROUP);
     }
 
