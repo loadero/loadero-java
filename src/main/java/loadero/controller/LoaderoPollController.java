@@ -104,7 +104,7 @@ public class LoaderoPollController {
         while (!done | System.currentTimeMillis() < end) {
             if (tries <= 0) {
                 logger.info("Number of tries expired.");
-                break;
+                return result;
             }
 
             while (!done) {
@@ -121,9 +121,9 @@ public class LoaderoPollController {
                         Thread.sleep(interval);
                     }
                 } catch (Exception e) {
-                    done = true;
                     logger.warn("{}", e.getMessage());
                     stopTestRun(uri);
+                    return result;
                 }
                 tries--;
             }
