@@ -51,6 +51,9 @@ public class LoaderoClient {
         String testUrl = buildTestURLById(testId) + "/";
         LoaderoTestOptions currentOptions = getTestOptionsById(testId);
 
+        if (currentOptions == null) {
+            return null;
+        }
         // If new script is not provided
         // We get the old script from Loadero API endpoint /files/fileId
         // And update accordingly.

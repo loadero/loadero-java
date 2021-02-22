@@ -68,12 +68,13 @@ public class LoaderoRestController {
      * @return - Returns new LoaderoModel with updated parameters.
      */
     public LoaderoModel update(String uri, LoaderoType type, LoaderoModel newModel) {
+
+        LoaderoModel result = null;
+
         if (LoaderoClientUtils.isNull(newModel) || LoaderoClientUtils.isNull(type)) {
             logger.error("Parameter can't be null.");
-            return null;
+            return result;
         }
-
-        LoaderoModel result = factory.getLoaderoModel(type);
 
         try {
             String testToJson = LoaderoClientUtils.modelToJson(newModel);
@@ -95,7 +96,6 @@ public class LoaderoRestController {
             res.close();
         } catch (IOException e) {
             logger.error("{}", e.getMessage());
-            result = null;
         }
         return result;
     }
