@@ -185,7 +185,7 @@ public class TestWithWireMock {
     @Test
     public void negativeGetParticipant() {
         LoaderoParticipant participant = loaderoClient.getParticipantById("2311", GROUP_ID, PARTICIPANT_ID);
-        assertEquals(0, participant.getId());
+        assertNull(participant);
     }
 
     @Test
@@ -197,8 +197,6 @@ public class TestWithWireMock {
 
         LoaderoParticipant updatedPartic = loaderoClient.
                 updateTestParticipantById(TEST_ID, GROUP_ID, PARTICIPANT_ID,newParticipant);
-        logger.info(updatedPartic);
-
         assertEquals("unit test partic", updatedPartic.getName());
         assertEquals(2, updatedPartic.getCount());
         assertEquals("g2", updatedPartic.getComputeUnit());
@@ -302,8 +300,8 @@ public class TestWithWireMock {
 
     @Test
     public void negativePollingFunction() {
-        LoaderoRunInfo startAndPollTest = loaderoClient.startTestAndPollInfo(TEST_ID, 2, 40);
-
+        LoaderoRunInfo startAndPollTest = loaderoClient.startTestAndPollInfo("2342", 2, 40);
+        assertNull(startAndPollTest);
     }
 
     @Test
