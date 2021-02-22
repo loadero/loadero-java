@@ -3,6 +3,7 @@ package loadero.model;
 import com.google.gson.annotations.SerializedName;
 import cucumber.api.java.eo.Se;
 import lombok.Data;
+import lombok.Generated;
 import lombok.NoArgsConstructor;
 
 /**
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
+@Generated // Need this for JaCoco to ignore getters and setters
 public class LoaderoRunInfo implements LoaderoModel {
     private long id;
     @SerializedName("test_id")

@@ -3,6 +3,7 @@ package loadero.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
+import lombok.Generated;
 
 /**
  * LoaderoParticipant class is responsible to represent information retrieved/updated
@@ -12,6 +13,7 @@ import lombok.Data;
  * in order to behave as expected.
  */
 @Data
+@Generated // Need this for JaCoco to ignore getters and setters
 public class LoaderoParticipant implements LoaderoModel {
     private long id = 0;
     @Expose(serialize = false)

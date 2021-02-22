@@ -2,6 +2,7 @@ package loadero.model;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
+import lombok.Generated;
 import lombok.NoArgsConstructor;
 
 /**
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
+@Generated // Need this for JaCoco to ignore getters and setters
 public class LoaderoScriptFileLoc implements LoaderoModel{
     private long id;
     @SerializedName("project_id")

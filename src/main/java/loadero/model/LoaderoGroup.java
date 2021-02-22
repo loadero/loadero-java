@@ -3,6 +3,7 @@ package loadero.model;
 import com.google.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Generated;
 import lombok.NoArgsConstructor;
 
 /**
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Generated // Need this for JaCoco to ignore getters and setters
 public class LoaderoGroup implements LoaderoModel {
     private long id;
     @SerializedName("test_id")
