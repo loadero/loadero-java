@@ -15,7 +15,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.Objects;
 
 public class LoaderoPollController {
     private final LoaderoHttpClient     client;
