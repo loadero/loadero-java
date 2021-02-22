@@ -15,21 +15,26 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Objects;
 
 public class LoaderoPollController {
     private final LoaderoHttpClient     client;
-    private final LoaderoModelFactory   factory;
     private final LoaderoRestController restController;
+    private final LoaderoModelFactory factory = new LoaderoModelFactory();
     private final Logger logger = LogManager.getLogger(LoaderoPollController.class);
 
     public LoaderoPollController(String loaderoApiToken) {
-        this.factory = new LoaderoModelFactory();
         this.client  = new LoaderoHttpClient(loaderoApiToken);
         this.restController = new LoaderoRestController(loaderoApiToken);
     }
 
     public LoaderoRunInfo startTestAndPoll(String uri, int interval, int timeout) {
         LoaderoRunInfo startTestRun = startTestRun(uri);
+
+        if (startTestRun == null) {
+            return null;
+        }
+
         logger.info("Test {} is now running.", startTestRun.getTestId());
         logger.info("Run ID {}", startTestRun.getId());
         return (LoaderoRunInfo) startPolling(uri,
@@ -44,13 +49,12 @@ public class LoaderoPollController {
      */
     private LoaderoRunInfo startTestRun(String uri) {
         logger.info("Starting test...");
-        LoaderoModel result = factory.getLoaderoModel(LoaderoType.LOADERO_RUN_INFO);
+        logger.info("Run url: {}", uri);
+        LoaderoModel result = null;
         try {
             HttpUriRequest postRun = RequestBuilder.post(uri).build();
-
             try (CloseableHttpResponse res = client.build().execute(postRun)) {
-                if (res.getStatusLine().getStatusCode() == HttpStatus.SC_ACCEPTED &&
-                        !LoaderoClientUtils.isNull(res.getEntity())) {
+                if (res.getStatusLine().getStatusCode() == HttpStatus.SC_ACCEPTED) {
                     result = LoaderoClientUtils.jsonToObject(
                             res.getEntity(),
                             LoaderoType.LOADERO_RUN_INFO
@@ -58,6 +62,8 @@ public class LoaderoPollController {
                     logger.info("Test successfully started.");
                 } else {
                     stopTestRun(uri);
+                    logger.info("Test stopped with value: {}", result);
+                    return (LoaderoRunInfo) result;
                 }
             }
         } catch (IOException e) {
@@ -91,6 +97,7 @@ public class LoaderoPollController {
                                       int interval, int timeout) {
         LoaderoRunInfo result = null;
         URI getRunsURI = URI.create(uri + runId + "/");
+        logger.info("Run URL: {}", getRunsURI);
         // converting seconds into ms
         interval = interval * 1000;
         timeout = timeout * 1000;
