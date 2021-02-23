@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import loadero.model.*;
 import org.apache.http.HttpEntity;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.util.EntityUtils;
 
 import java.lang.reflect.Field;
@@ -18,7 +19,8 @@ public class LoaderoClientUtils {
         @Override
         public boolean shouldSkipField(FieldAttributes fieldAttributes) {
             return fieldAttributes.getName().equals("id") ||
-                    fieldAttributes.getName().equals("scriptFileId");
+                    fieldAttributes.getName().equals("scriptFileId") ||
+                    fieldAttributes.getName().equals("testId");
         }
 
         @Override

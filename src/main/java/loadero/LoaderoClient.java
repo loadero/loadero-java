@@ -4,13 +4,13 @@ import loadero.controller.LoaderoPollController;
 import loadero.controller.LoaderoRestController;
 import loadero.model.*;
 import loadero.utils.LoaderoClientUtils;
+import loadero.utils.LoaderoUrlBuilder;
 import lombok.Getter;
 
 import java.util.Objects;
 
 
 // TODO: abstract heavy logic into separate class
-// TODO: some sort of link builder for Loadero endpoints
 @Getter
 public class LoaderoClient {
     private final String baseUrl;
@@ -18,12 +18,14 @@ public class LoaderoClient {
     private final String loaderoApiToken;
     private final LoaderoRestController restController;
     private final LoaderoPollController pollController;
+    private final LoaderoUrlBuilder urlBuilder;
 
     public LoaderoClient(String baseUrl, String loaderApiToken,
                          String projectId) {
         this.baseUrl = baseUrl;
         this.projectId = projectId;
         this.loaderoApiToken = loaderApiToken;
+        this.urlBuilder = new LoaderoUrlBuilder(baseUrl, projectId);
         restController = new LoaderoRestController(loaderApiToken);
         pollController = new LoaderoPollController(loaderApiToken);
     }
@@ -34,7 +36,7 @@ public class LoaderoClient {
      * @return       - LoaderoTestOptions object.
      */
     public LoaderoTestOptions getTestOptionsById(String testId) {
-        String testUrl = buildTestURLById(testId) + "/";
+        String testUrl = urlBuilder.buildTestURLById(testId) + "/";
         return (LoaderoTestOptions) restController.get(testUrl,
                 LoaderoType.LOADERO_TEST_OPTIONS);
     }
@@ -48,7 +50,7 @@ public class LoaderoClient {
      */
     public LoaderoTestOptions updateTestOptions(String testId,
                                                 LoaderoTestOptions newTestOptions) {
-        String testUrl = buildTestURLById(testId) + "/";
+        String testUrl = urlBuilder.buildTestURLById(testId) + "/";
         LoaderoTestOptions currentOptions = getTestOptionsById(testId);
 
         // If new script is not provided
@@ -75,7 +77,7 @@ public class LoaderoClient {
      * @return       - String containing script content.
      */
     public String getTestScript(String fileId) {
-        String scriptFileUrl = String.format("%s/", buildScriptFileURL(fileId));
+        String scriptFileUrl = String.format("%s/", urlBuilder.buildScriptFileURL(fileId));
         LoaderoScriptFileLoc scriptFile = (LoaderoScriptFileLoc) restController.get(
                     scriptFileUrl,
                     LoaderoType.LOADERO_SCRIPT_FILE_LOC);
@@ -88,10 +90,29 @@ public class LoaderoClient {
      * @param groupId - ID of the group.
      * @return   - LoaderoGroup object.
      */
-    public LoaderoModel getGroupById(String testId, String groupId) {
-        String groupUrl = String.format("%s/", buildGroupURL(testId, groupId));
-        return restController.get(groupUrl,
+    public LoaderoGroup getGroupById(String testId, String groupId) {
+        String groupUrl = String.format("%s/", urlBuilder.buildGroupURL(testId, groupId));
+        return (LoaderoGroup) restController.get(groupUrl,
                 LoaderoType.LOADERO_GROUP);
+    }
+
+    /**
+     * Updates Loadero group parameters by given group ID.
+     * @param testId    - ID of the test containing the group.
+     * @param groupId   - ID of the group to be updated.
+     * @param newGroup  - LoaderoGroup object with new parameters.
+     * @return          - LoaderoGroup object with updated parameters.
+     */
+    public LoaderoGroup updateGroupById(String testId, String groupId, LoaderoGroup newGroup) {
+        String groupUrl = urlBuilder.buildGroupURL(testId, groupId) + "/";
+        LoaderoGroup currentGroup = getGroupById(testId, groupId);
+        LoaderoGroup updatedGroup = (LoaderoGroup) LoaderoClientUtils.copyUncommonFields(
+                currentGroup,
+                newGroup,
+                LoaderoType.LOADERO_GROUP
+        );
+
+        return (LoaderoGroup) restController.update(groupUrl, LoaderoType.LOADERO_GROUP, updatedGroup);
     }
 
     /**
@@ -102,7 +123,7 @@ public class LoaderoClient {
      */
     public LoaderoParticipant getParticipantById(String testId, String groupId,
                                                  String participantId) {
-        String particUrl = String.format("%s/", buildParticipantURL(testId, groupId, participantId));
+        String particUrl = String.format("%s/", urlBuilder.buildParticipantURL(testId, groupId, participantId));
         return (LoaderoParticipant) restController.get(
                 particUrl, LoaderoType.LOADERO_PARTICIPANT
         );
@@ -121,7 +142,7 @@ public class LoaderoClient {
                                                         String participantId,
                                                         LoaderoParticipant newParticipant) {
 
-        String participantUrl = String.format("%s/", buildParticipantURL(testId, groupId, participantId));
+        String participantUrl = String.format("%s/", urlBuilder.buildParticipantURL(testId, groupId, participantId));
         LoaderoParticipant currentParticInfo = getParticipantById(testId, groupId, participantId);
 
         LoaderoParticipant updatedParticipant = (LoaderoParticipant) LoaderoClientUtils
@@ -141,7 +162,7 @@ public class LoaderoClient {
      * @return       - LoaderoAllTestRunResults object, that contains list of LoaderoSingleTestRunResult objects.
      */
     public LoaderoTestRunResult getTestRunResult(String testId, String runId) {
-        String resultsUrl = String.format("%s",buildRunResultsURL(testId, runId));
+        String resultsUrl = String.format("%s",urlBuilder.buildRunResultsURL(testId, runId));
         return (LoaderoTestRunResult) restController.get(resultsUrl,
                 LoaderoType.LOADERO_RUN_RESULT);
     }
@@ -158,7 +179,7 @@ public class LoaderoClient {
                                                                        String runId,
                                                                        String resultId) {
         String resultsUrl = String.format("%s/%s/",
-                buildRunResultsURL(testId, runId),
+                urlBuilder.buildRunResultsURL(testId, runId),
                 resultId);
         return (LoaderoTestRunParticipantResult) restController.get(resultsUrl,
                 LoaderoType.LOADERO_TEST_RUN_PARTICIPANT_RESULT);
@@ -175,60 +196,9 @@ public class LoaderoClient {
      * @return         - LoaderoRunInfo containing information about test run.
      */
     public LoaderoRunInfo startTestAndPollInfo(String testId, int interval, int timeout) {
-        String startRunsUrl = String.format("%s/runs/", buildTestURLById(testId));
+        String startRunsUrl = String.format("%s/runs/", urlBuilder.buildTestURLById(testId));
         return pollController
                 .startTestAndPoll(startRunsUrl, interval, timeout);
-    }
-
-    // Public for testing purposes. May make it private later
-    public String buildTestURLById(String testId) {
-        return String.format(
-                "%s/projects/%s/tests/%s",
-                baseUrl,
-                projectId,
-                testId);
-    }
-
-    /**
-     * Builds URL for Loadero groups based on given ID.
-     * @param testId  - ID of the test.
-     * @param groupId - ID of the desired group
-     * @return        - String of url pointing to group.
-     */
-    public String buildGroupURL(String testId, String groupId) {
-        String testUrl = buildTestURLById(testId);
-        return String.format("%s/groups/%s", testUrl, groupId);
-    }
-
-    /**
-     * Builds URL to for specific participant of specific group.
-     * @param testId        - ID of the test.
-     * @param groupId       - ID of the group that contains participant.
-     * @param participantId - ID of desired participant.
-     * @return              - String url pointing to participant.
-     */
-    public String buildParticipantURL(String testId, String groupId,
-                                      String participantId) {
-        return String.format("%s/participants/%s",
-                buildGroupURL(testId, groupId),
-                participantId);
-    }
-
-    public String buildScriptFileURL(String fileId) {
-        return String.format("%s/projects/%s/files/%s",
-                baseUrl,
-                projectId,
-                fileId );
-    }
-
-    public String buildRunResultsURL(String testId, String runId) {
-        return String.format("%s/runs/%s/results",
-                buildTestURLById(testId),
-                runId);
-    }
-
-    public String buildProjectURL() {
-        return String.format("%s/projects/%s", baseUrl, projectId);
     }
 }
 

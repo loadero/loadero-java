@@ -5,6 +5,7 @@ import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import loadero.model.*;
 import loadero.utils.LoaderoHttpClient;
+import loadero.utils.LoaderoUrlBuilder;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -37,6 +38,7 @@ public class TestWithWireMock {
     private static final Logger logger = LogManager.getLogger(TestWithWireMock.class);
     private CloseableHttpResponse response;
     private static LoaderoClient loaderoClient;
+    private final LoaderoUrlBuilder urlBuilder = new LoaderoUrlBuilder(BASE_URL, TEST_ID);
 
     /**
      * Makes GET request to specified url and saves response to
@@ -75,7 +77,7 @@ public class TestWithWireMock {
     @Order(1)
     public void testGetTestOptions() throws IOException {
         // Make GET request to url on localhost to get status code
-        makeGetRequest(loaderoClient.buildTestURLById(TEST_ID) + "/");
+        makeGetRequest(urlBuilder.buildTestURLById(TEST_ID) + "/");
         LoaderoTestOptions test = loaderoClient.getTestOptionsById(TEST_ID);
         String jsonRes = EntityUtils.toString(response.getEntity());
 
@@ -88,7 +90,7 @@ public class TestWithWireMock {
     @Test
     @Order(2)
     public void negativeGetTestOptionsByUrl() {
-        String url = loaderoClient.buildTestURLById("0");
+        String url = urlBuilder.buildTestURLById("0");
         makeGetRequest(url);
         assertEquals(HttpStatus.SC_NOT_FOUND, response.getStatusLine().getStatusCode());
     }
@@ -96,7 +98,7 @@ public class TestWithWireMock {
     @Test
     @Order(3)
     public void testTokenAccessByUrl() {
-        String url = loaderoClient.buildProjectURL() + "/";
+        String url = urlBuilder.buildProjectURL() + "/";
 
         makeGetRequest(url);
         assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
@@ -116,7 +118,7 @@ public class TestWithWireMock {
     @Test
     @Order(5)
     public void testGettingProjectFromSavedMappings() throws IOException {
-        makeGetRequest(loaderoClient.buildProjectURL() + "/");
+        makeGetRequest(urlBuilder.buildProjectURL() + "/");
         String jsonRes = EntityUtils.toString(response.getEntity());
         assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
         assertTrue(jsonRes.contains(loaderoClient.getProjectId()));
@@ -133,7 +135,7 @@ public class TestWithWireMock {
     @Test
     @Order(7)
     public void testGetParticipantById() {
-        String url = loaderoClient.buildParticipantURL(TEST_ID, GROUP_ID, PARTICIPANT_ID) + "/";
+        String url = urlBuilder.buildParticipantURL(TEST_ID, GROUP_ID, PARTICIPANT_ID) + "/";
 
         LoaderoParticipant participant = loaderoClient.getParticipantById(TEST_ID, GROUP_ID,
                 PARTICIPANT_ID);
@@ -160,7 +162,7 @@ public class TestWithWireMock {
                 .willReturn(aResponse()
                 .withStatus(HttpStatus.SC_OK)));
 
-        makeGetRequest(loaderoClient.buildRunResultsURL(TEST_ID, RUN_ID) + "/");
+        makeGetRequest(urlBuilder.buildRunResultsURL(TEST_ID, RUN_ID) + "/");
 
         wmRule.verify(getRequestedFor(urlPathMatching(allResultsUrl)));
 
@@ -197,7 +199,7 @@ public class TestWithWireMock {
     @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*",
             disabledReason="Should be run against Loadero live API")
     public void testFullFunctionalityFlow() {
-        String testClientInitUrl = loaderoClient.buildProjectURL() + "/";
+        String testClientInitUrl = urlBuilder.buildProjectURL() + "/";
         logger.info(token);
         // Checking that client can establish connection and make requests
         makeGetRequest(testClientInitUrl);
@@ -209,7 +211,7 @@ public class TestWithWireMock {
         newTestOptions.setName("New test name from testFullFunctionalityFlow");
         // Setting script through path using URI
         newTestOptions.setScript(
-                URI.create("src/main/resources/loadero/scripts/testui/LoaderoScriptJava.java"));
+                URI.create("src/main/resources/loadero/scripts/testui/CallOneOnOne.java"));
         newTestOptions.setMode("performance");
         newTestOptions.setStartInterval(30);
         LoaderoTestOptions updatedTestOptions = loaderoClient.updateTestOptions(TEST_ID, newTestOptions);
@@ -223,5 +225,14 @@ public class TestWithWireMock {
         // Checking polling function
         LoaderoRunInfo startAndPollTest = loaderoClient.startTestAndPollInfo(TEST_ID, 2, 40);
         assertEquals("done", startAndPollTest.getStatus());
+    }
+
+    @Test
+    @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
+    public void testUpdateGroup() {
+        LoaderoGroup newGroup = new LoaderoGroup();
+        newGroup.setCount(3);
+        LoaderoGroup updatedGroup = loaderoClient.updateGroupById(TEST_ID, GROUP_ID, newGroup);
+        assertEquals(3, updatedGroup.getCount());
     }
 }

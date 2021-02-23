@@ -210,6 +210,23 @@ and retrieves information about group.
 <td>
 
 ```java
+ LoaderoGroup updateGroupById
+        (String testId, String groupId, LoaderoGroup newGroup)
+```
+</td>
+<td>
+<b>String testId</b>  - ID of the test that contains desired group.<br/>
+<b>String groupId</b> - ID of the group that is wish to be updated.<br>
+<b>LoaderoGroup newGroup</b> - LoaderoGroup object with new params.
+</td>
+<td>Makes PUT request to <b>/projects/{projectID}/tests/{testID}/groups/{groupID}/</b> 
+and updates information about group.
+</td>
+</tr>
+<tr>
+<td>
+
+```java
  LoaderoParticipant getParticipantById
         (String testId, String groupId, String participnatId)
 ```
@@ -222,6 +239,25 @@ and retrieves information about group.
 <td>Makes GET request to <b>/projects/{projectID}/tests/{testID}/groups/{groupID}/participants/{participantID}
 </b> 
 and retrieves information about participant.
+</td>
+</tr>
+<tr>
+<td>
+
+```java
+LoaderoParticipant updateTestParticipantById
+        (String testId,String groupId,String participantId,
+        LoaderoParticipant newParticipant)
+```
+</td>
+<td>
+<b>String testId</b>  - ID of the test that contains desired group.<br/>
+<b>String groupId</b> - ID of the group that contains participant.<br>
+<b>String participantId</b> - ID of the participant to be updated.<br>
+<b>LoaderoParticipant newParticipant</b> - LoaderoParticipant object with new params.
+</td>
+<td>Makes PUT request to <b>/projects/{projectID}/tests/{testID}/groups/{groupID}/participants/{participanatID}</b> 
+and updates information about specific participant.
 </td>
 </tr>
 <tr>
