@@ -42,7 +42,7 @@ public class LoaderoTestOptions implements LoaderoModel {
      * @param scriptPath - URI pointing to script location.
      */
     public void setScript(URI scriptPath) {
-        this.script = FunctionBodyParser.getBody(scriptPath.toString());
+        this.script = FunctionBodyParser.getScriptContent(scriptPath.toString());
     }
 
     /**
