@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Generated
 public class LoaderoTestScriptParams {
-    private int callDuration     = 10;
-    private int elementTimeout   = 10;
+    private int callDuration     = 60; // in seconds
+    private int elementTimeout   = 10; // in seconds
     private String appUrl        = "https://voice-webapp-3026-dev.twil.io/index.html?identity=";
     private String participantId = "globalConfig.getParticipant().getId()";
 }
