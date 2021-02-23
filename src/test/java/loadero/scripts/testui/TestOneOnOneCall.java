@@ -16,10 +16,10 @@ public class TestOneOnOneCall {
     @Test
     public void testScript() {
         int particId = 0;
-        String identity = String.format("Participant%d", particId);
         int callDuration = 0;
         String appUrl = "";
         int elementTimeout = 0;
+        String identity = String.format("Participant%d", particId);
 
         if (particId % 2 == 0) {
             String caller = String.format("%s%s", appUrl, identity);
