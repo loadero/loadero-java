@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import loadero.model.*;
 import org.apache.http.HttpEntity;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.util.EntityUtils;
 
 import java.lang.reflect.Field;
