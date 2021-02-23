@@ -2,8 +2,7 @@ package loadero.model;
 
 import lombok.Data;
 import lombok.Generated;
-
-import java.util.Random;
+import lombok.NoArgsConstructor;
 
 /*
     LoaderoTestScriptParams class should only be used when we would like to
@@ -11,17 +10,11 @@ import java.util.Random;
     If none of new parameters are set, the default values will be used.
  */
 @Data
+@NoArgsConstructor
 @Generated
 public class LoaderoTestScriptParams {
-    private int callDuration    = 10;
-    private int elementTimeout  = 10;
-    private String appUrl       = "https://voice-webapp-3026-dev.twil.io/index.html?identity=";
-    private int participantId;
-
-    public LoaderoTestScriptParams() {
-        Random rand = new Random();
-        int max = 10;
-        int min = 1;
-        this.participantId = rand.nextInt((max - min) + 1) + min;
-    }
+    private int callDuration     = 10;
+    private int elementTimeout   = 10;
+    private String appUrl        = "https://voice-webapp-3026-dev.twil.io/index.html?identity=";
+    private String participantId = "globalConfig.getParticipant().getId()";
 }
