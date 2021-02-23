@@ -2,10 +2,10 @@ package loadero.scripts.testui;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import testUI.Utils.AppiumHelps;
 import testUI.elements.UIElement;
 
 import static testUI.UIOpen.open;
+import static testUI.Utils.AppiumHelps.sleep;
 import static testUI.Utils.By.byCssSelector;
 import static testUI.Utils.By.byId;
 import static testUI.elements.TestUI.E;
@@ -32,7 +32,7 @@ public class TestOneOnOneCall {
                     .setElement(byId("phone-number")).waitFor(elementTimeout).untilIsVisible().then().sendKeys(toCall)
                     .setElement(byId("button-call")).waitFor(elementTimeout).untilIsVisible().then().click()
                     .setElement(byId("log")).waitFor(elementTimeout).untilHasText("Successfully established call!");
-            AppiumHelps.sleep(callDuration * 1000);
+            sleep(callDuration * 1000);
             element.waitFor(callDuration * 1000).untilIsVisible().then().click();
 
         } else {

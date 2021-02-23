@@ -180,18 +180,17 @@ public class TestWithWireMock {
     @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
     public void testUpdateLoaderoTestScriptWithNewParams() {
         LoaderoTestOptions newTestOptions = new LoaderoTestOptions();
+        // New parameters for a test script
         LoaderoTestScriptParams newScriptParams = new LoaderoTestScriptParams();
         newScriptParams.setCallDuration(15);
         newScriptParams.setElementTimeout(15);
-        String scriptWithNewParamms = FunctionBodyParser
-                .applyParamsToScript("src/test/java/loadero/TestWithWireMock.java", newScriptParams);
-
         // Setting script with new params
-        newTestOptions.setScript(scriptWithNewParamms);
+        newTestOptions.setScript("src/test/java/loadero/scripts/testui/TestOneOnOneCall.java", newScriptParams);
         LoaderoTestOptions updatedTestOptions = loaderoClient.updateTestOptions(TEST_ID, newTestOptions);
         assertNotNull(updatedTestOptions);
         String actualScript = loaderoClient.getTestScript(String.valueOf(updatedTestOptions.getScriptFileId()));
-        String expectedScript = FunctionBodyParser.getScriptContent("src/test/java/loadero/TestWithWireMock.java");
+        String expectedScript = FunctionBodyParser
+                .applyParamsToScript("src/test/java/loadero/scripts/testui/TestOneOnOneCall.java", newScriptParams);
         assertEquals(expectedScript, actualScript);
     }
 

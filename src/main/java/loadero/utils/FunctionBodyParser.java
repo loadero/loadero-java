@@ -61,24 +61,24 @@ public class FunctionBodyParser {
 
         String result              = getScriptContent(path);
         String callDurParam        = String.valueOf(scriptParams.getCallDuration());
-        String participantIdParam  = String.valueOf(scriptParams.getParticipantId());
+        String participantIdParam  = scriptParams.getParticipantId();
         String elementTimeoutParam = String.valueOf(scriptParams.getElementTimeout());
         String appUrlParam         = scriptParams.getAppUrl();
 
-        result = replaceNumericParametrValue(result, callDurParam, REPLACE_CALL_DURATION);
-        result = replaceNumericParametrValue(result, participantIdParam, REPLACE_PARTICIPANT_ID);
-        result = replaceNumericParametrValue(result, elementTimeoutParam, REPLACE_ELEMENT_TIMEOUT);
-        result = replaceUrlParameterValue(result, appUrlParam, REPLACE_APP_URL);
+        result = replaceParamValueWithoutQuotes(result, callDurParam, REPLACE_CALL_DURATION);
+        result = replaceParamValueWithoutQuotes(result, participantIdParam, REPLACE_PARTICIPANT_ID);
+        result = replaceParamValueWithoutQuotes(result, elementTimeoutParam, REPLACE_ELEMENT_TIMEOUT);
+        result = replaceParamValueWithQuotes(result, appUrlParam, REPLACE_APP_URL);
         return result;
     }
 
-    private static String replaceNumericParametrValue(String value,
-                                                      String newValue,
-                                                      Pattern pattern) {
+    private static String replaceParamValueWithoutQuotes(String value,
+                                                         String newValue,
+                                                         Pattern pattern) {
         return pattern.matcher(value).replaceAll("$1" + newValue + "$3");
     }
 
-    private static String replaceUrlParameterValue(String value, String newValue, Pattern pattern) {
+    private static String replaceParamValueWithQuotes(String value, String newValue, Pattern pattern) {
         return pattern.matcher(value).replaceAll("$1\"" + newValue + "\"$3");
     }
 }
