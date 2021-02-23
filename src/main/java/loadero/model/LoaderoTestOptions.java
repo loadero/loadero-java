@@ -37,8 +37,9 @@ public class LoaderoTestOptions implements LoaderoModel {
     private long scriptFileId = 0L;
 
     /**
-     * When given URI as argument, threats this argument as path
+     * When given only URI as argument, threats this argument as path
      * in where to look for a script, then parses it to string.
+     * Assumed, that script is already fully functional.
      * @param scriptPath - URI pointing to script location.
      */
     public void setScript(URI scriptPath) {
@@ -46,7 +47,18 @@ public class LoaderoTestOptions implements LoaderoModel {
     }
 
     /**
+     * When provided String path and LoaderoTestScriptParams, then it uses params
+     * from the LoaderoTestScriptParams object to apply them to script in the given path.
+     * @param path         - Location of script.
+     * @param scriptParams - LoaderoTestScriptParams to be applied.
+     */
+    public void setScript(String path, LoaderoTestScriptParams scriptParams) {
+        this.script = FunctionBodyParser.applyParamsToScript(path, scriptParams);
+    }
+
+    /**
      * When given String as argument, threats it as script.
+     * Assumed that script is already fully functional.
      * @param script - Script given as string.
      */
     public void setScript(String script) {
