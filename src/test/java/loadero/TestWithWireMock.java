@@ -8,6 +8,7 @@ import loadero.utils.FunctionBodyParser;
 import loadero.utils.LoaderoClientUtils;
 import loadero.utils.LoaderoHttpClient;
 import loadero.utils.LoaderoUrlBuilder;
+import org.apache.http.HttpHeaders;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -44,7 +45,7 @@ public class TestWithWireMock {
     private static final Logger logger = LogManager.getLogger(TestWithWireMock.class);
     private CloseableHttpResponse response;
     private static LoaderoClient loaderoClient;
-    private final LoaderoUrlBuilder urlBuilder = new LoaderoUrlBuilder(BASE_URL, TEST_ID);
+    private final LoaderoUrlBuilder urlBuilder = new LoaderoUrlBuilder(BASE_URL, PROJECT_ID);
 
     /**
      * Makes GET request to specified url and saves response to
@@ -82,7 +83,7 @@ public class TestWithWireMock {
     @Test
     @Order(1)
     public void testTokenAccess() {
-        String url = loaderoClient.buildProjectURL() + "/";
+        String url = urlBuilder.buildProjectURL() + "/";
         makeGetRequest(url);
         assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
     }
@@ -91,7 +92,7 @@ public class TestWithWireMock {
     @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
     public void negativeTokenAccess() {
         try {
-            String url = loaderoClient.buildProjectURL() + "/";
+            String url = urlBuilder.buildProjectURL() + "/";
             CloseableHttpClient client = HttpClientBuilder.create().build();
             HttpUriRequest get = RequestBuilder.get(url).build();
             get.addHeader(new BasicHeader(HttpHeaders.AUTHORIZATION, "random token value"));
@@ -165,8 +166,12 @@ public class TestWithWireMock {
         LoaderoTestOptions test = new LoaderoTestOptions();
         test.setMode("performance");
         test.setName("negative test");
-        LoaderoTestOptions updatedTest = loaderoClient.updateTestOptions("23423", test);
-        assertNull(updatedTest);
+        assertThrows(NullPointerException.class, () -> {
+            LoaderoTestOptions updatedTest = loaderoClient.updateTestOptions("23423", test);
+        });
+        assertThrows(NullPointerException.class, () -> {
+            LoaderoTestOptions updatedTest = loaderoClient.updateTestOptions("23423", null);
+        });
     }
 
     @Test
@@ -224,7 +229,11 @@ public class TestWithWireMock {
 
     @Test
     public void negativeUpdateParticipant() {
-        // TODO
+        // Should throw null pointer exception
+        assertThrows(NullPointerException.class, () -> {
+            LoaderoParticipant updatedPartic = loaderoClient.
+                    updateTestParticipantById(TEST_ID, GROUP_ID, PARTICIPANT_ID, null);
+        });
     }
 
     @Test
@@ -291,7 +300,7 @@ public class TestWithWireMock {
 
     @Test
     public void testJsonToObject() {
-        String testUrl = loaderoClient.buildTestURLById(TEST_ID) + "/";
+        String testUrl = urlBuilder.buildTestURLById(TEST_ID) + "/";
         makeGetRequest(testUrl);
         LoaderoModel model = LoaderoClientUtils.jsonToObject(
                 response.getEntity(), LoaderoType.LOADERO_TEST_OPTIONS);
@@ -331,7 +340,7 @@ public class TestWithWireMock {
     @Test
     public void negativeRESTUpdate() {
         LoaderoRestController restController = new LoaderoRestController(loaderoClient.getLoaderoApiToken());
-        LoaderoModel model = restController.update(loaderoClient.buildTestURLById(TEST_ID),
+        LoaderoModel model = restController.update(urlBuilder.buildTestURLById(TEST_ID),
                 LoaderoType.LOADERO_TEST_OPTIONS, null);
         assertNull(model);
     }

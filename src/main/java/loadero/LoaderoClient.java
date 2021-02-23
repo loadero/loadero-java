@@ -50,12 +50,9 @@ public class LoaderoClient {
      */
     public LoaderoTestOptions updateTestOptions(String testId,
                                                 LoaderoTestOptions newTestOptions) {
+        Objects.requireNonNull(newTestOptions, "newTestOptions cannot be null");
         String testUrl = urlBuilder.buildTestURLById(testId) + "/";
         LoaderoTestOptions currentOptions = getTestOptionsById(testId);
-
-        if (currentOptions == null) {
-            return null;
-        }
         // If new script is not provided
         // We get the old script from Loadero API endpoint /files/fileId
         // And update accordingly.
@@ -144,6 +141,7 @@ public class LoaderoClient {
                                                         String groupId,
                                                         String participantId,
                                                         LoaderoParticipant newParticipant) {
+        Objects.requireNonNull(newParticipant, "newParticipant can't be null");
 
         String participantUrl = String.format("%s/", urlBuilder.buildParticipantURL(testId, groupId, participantId));
         LoaderoParticipant currentParticInfo = getParticipantById(testId, groupId, participantId);
