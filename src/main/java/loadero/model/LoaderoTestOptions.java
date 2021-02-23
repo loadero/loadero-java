@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import loadero.utils.FunctionBodyParser;
 import lombok.Data;
+import lombok.Generated;
 import lombok.NoArgsConstructor;
 
 import java.net.URI;
@@ -18,6 +19,7 @@ import java.net.URI;
  */
 @Data
 @NoArgsConstructor
+@Generated // Need this for JaCoco to ignore getters and setters
 public class LoaderoTestOptions implements LoaderoModel {
     @Expose(serialize = false)
     private long id = 0L;

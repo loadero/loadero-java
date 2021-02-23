@@ -1,6 +1,8 @@
 package loadero.model;
 
 import lombok.Data;
+import lombok.Generated;
+
 import java.util.List;
 
 /**
@@ -11,6 +13,7 @@ import java.util.List;
  * stored fields for our purposes.
  */
 @Data
+@Generated // Need this for JaCoco to ignore getters and setters
 public class LoaderoTestRunResult implements LoaderoModel {
     private List<LoaderoTestRunParticipantResult> results;
 }

@@ -3,6 +3,7 @@ package loadero.model;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
+import lombok.Generated;
 
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import java.util.Map;
  * test run result.
  */
 @Data
+@Generated // Need this for JaCoco to ignore getters and setters
 public class LoaderoTestRunParticipantResult implements LoaderoModel {
     private long id;
     private String status;

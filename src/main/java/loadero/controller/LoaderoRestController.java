@@ -41,7 +41,7 @@ public class LoaderoRestController {
      * @param type - type of the returned data
      */
     public LoaderoModel get(String uri, LoaderoType type) {
-        LoaderoModel result = factory.getLoaderoModel(type);
+        LoaderoModel result = null;
         HttpUriRequest get = RequestBuilder.get(uri).build();
 
         // Try-catch with resources statement that will close
@@ -67,10 +67,12 @@ public class LoaderoRestController {
      * @return - Returns new LoaderoModel with updated parameters.
      */
     public LoaderoModel update(String uri, LoaderoType type, LoaderoModel newModel) {
-        LoaderoModel result = factory.getLoaderoModel(type);
 
-        if (LoaderoClientUtils.isNull(newModel)) {
-            logger.error("newModel parameter can't be null.");
+        LoaderoModel result = null;
+
+        if (LoaderoClientUtils.isNull(newModel) || LoaderoClientUtils.isNull(type)) {
+            logger.error("Parameter can't be null.");
+            return result;
         }
 
         try {

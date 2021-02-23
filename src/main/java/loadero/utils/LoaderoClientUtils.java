@@ -20,7 +20,8 @@ public class LoaderoClientUtils {
         public boolean shouldSkipField(FieldAttributes fieldAttributes) {
             return fieldAttributes.getName().equals("id") ||
                     fieldAttributes.getName().equals("scriptFileId") ||
-                    fieldAttributes.getName().equals("testId");
+                    fieldAttributes.getName().equals("testId") ||
+                    fieldAttributes.getName().equals("groupId");
         }
 
         @Override
@@ -38,6 +39,9 @@ public class LoaderoClientUtils {
     // Converts JSON from response into according LoaderModel object
     public static LoaderoModel jsonToObject(HttpEntity entity, LoaderoType type) {
         LoaderoModel result = null;
+
+        if (entity == null) { return result; }
+
         try {
             String content = EntityUtils.toString(entity);
             switch (type) {
@@ -57,7 +61,7 @@ public class LoaderoClientUtils {
                     return gson.fromJson(content, LoaderoTestRunResult.class);
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         return result;
     }
