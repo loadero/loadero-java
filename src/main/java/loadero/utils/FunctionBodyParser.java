@@ -4,9 +4,9 @@ import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.printer.PrettyPrinter;
 import com.github.javaparser.printer.PrettyPrinterConfiguration;
-import loadero.model.LoaderoTestScriptParams;
 
 import java.io.File;
+import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -16,15 +16,6 @@ import java.util.regex.Pattern;
  * to later pass those snippets as part of JSON request.
  */
 public class FunctionBodyParser {
-    private static final Pattern REPLACE_PARTICIPANT_ID  =
-            Pattern.compile("(particId = )(\\d*)(;)");
-    private static final Pattern REPLACE_CALL_DURATION   =
-            Pattern.compile("(callDuration = )(\\d*)(;)");
-    private static final Pattern REPLACE_ELEMENT_TIMEOUT =
-            Pattern.compile("(elementTimeout = )(\\d*)(;)");
-    private static final Pattern REPLACE_APP_URL         =
-            Pattern.compile("(appUrl = )\"(.*)\"(;)");
-
     /**
      * Retrieves the content of the public void test(){}; method from .java file.
       * @param path - Path to the script.
@@ -51,34 +42,41 @@ public class FunctionBodyParser {
     }
 
     /**
-     * Applies new parameters provided by LoaderoTestScriptParams object to the script in .java file.
+     * Applies new parameters provided in Map<String, String> object to the script in .java file.
+     * If some parameters are not found in Map object, default values in template will be used.
      * @param path  - Path to the script.
-     * @param scriptParams - LoaderoTestScriptParams with parameters wish to apply.
+     * @param scriptParams - Map<String, String> object with parameters wish to apply.
      * @return  - Script content with new parameters as String.
      */
-    public static String applyParamsToScript(String path, LoaderoTestScriptParams scriptParams) {
+    public static String applyParamsToScript(String path, Map<String, String> scriptParams) {
         Objects.requireNonNull(scriptParams, "scriptParams cannot be null");
 
-        String result              = getScriptContent(path);
-        String callDurParam        = String.valueOf(scriptParams.getCallDuration());
-        String participantIdParam  = scriptParams.getParticipantId();
-        String elementTimeoutParam = String.valueOf(scriptParams.getElementTimeout());
-        String appUrlParam         = scriptParams.getAppUrl();
-
-        result = replaceParamValueWithoutQuotes(result, callDurParam, REPLACE_CALL_DURATION);
-        result = replaceParamValueWithoutQuotes(result, participantIdParam, REPLACE_PARTICIPANT_ID);
-        result = replaceParamValueWithoutQuotes(result, elementTimeoutParam, REPLACE_ELEMENT_TIMEOUT);
-        result = replaceParamValueWithQuotes(result, appUrlParam, REPLACE_APP_URL);
-        return result;
+        String script = getScriptContent(path);
+        for (Map.Entry<String, String> param: scriptParams.entrySet()) {
+            script = replaceParameters(script, param.getKey(), param.getValue());
+        }
+        return script;
     }
 
-    private static String replaceParamValueWithoutQuotes(String value,
-                                                         String newValue,
-                                                         Pattern pattern) {
-        return pattern.matcher(value).replaceAll("$1" + newValue + "$3");
+    private static String replaceParameters(String script, String replaceKey, String newValue) {
+        Pattern pattern;
+
+        if (newValue.matches("^\\d+$") ||
+            newValue.contains("globalConfig")) { // Loadero specific constant
+            pattern = getDigitValuePattern(replaceKey);
+            return pattern.matcher(script).replaceAll("$1" + newValue + "$3");
+        }
+        pattern = getStringValuePattern(replaceKey);
+        return pattern.matcher(script).replaceAll("$1\"" + newValue + "\"$3");
     }
 
-    private static String replaceParamValueWithQuotes(String value, String newValue, Pattern pattern) {
-        return pattern.matcher(value).replaceAll("$1\"" + newValue + "\"$3");
+    private static Pattern getDigitValuePattern(String val) {
+        String pattern = String.format("(%s = )(\\d*)(;)", val);
+        return Pattern.compile(pattern);
+    }
+
+    private static Pattern getStringValuePattern(String val) {
+        String pattern =  String.format("(%s = )\"(.*)\"(;)", val);
+        return Pattern.compile(pattern);
     }
 }
