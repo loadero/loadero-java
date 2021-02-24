@@ -8,6 +8,7 @@ import lombok.Generated;
 import lombok.NoArgsConstructor;
 
 import java.net.URI;
+import java.util.Map;
 
 /**
  * LoaderoTestDescription object is a configuration profile to specify
@@ -52,7 +53,7 @@ public class LoaderoTestOptions implements LoaderoModel {
      * @param path         - Location of script.
      * @param scriptParams - LoaderoTestScriptParams to be applied.
      */
-    public void setScript(String path, LoaderoTestScriptParams scriptParams) {
+    public void setScript(String path, Map<String, String> scriptParams) {
         this.script = FunctionBodyParser.applyParamsToScript(path, scriptParams);
     }
 
