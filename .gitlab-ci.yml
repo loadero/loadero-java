@@ -21,7 +21,7 @@ build:
 test:
     stage: test
     script:
-        - mvn jacoco:reports test
+        - mvn test
     allow_failure: true  
     tags:
         - docker
