@@ -341,8 +341,9 @@ LoaderoTestOptions newTestOptions = new LoaderoTestOptions();
 
 // Desired options can be get/set via getters and setters, respectively.
         
-// There is two possibilities of setting script content.
+// There is three(!) possibilities of setting script content.
 // First one is to provide path to location where script is stored.
+// Assumed that script is already fully functional in Loadero environment.        
 // This location will be parsed to string. 
 // Regardless, if this is .java or .js file.
 newTestOptions.setName("New name 1");
@@ -351,6 +352,17 @@ newTestOptions.setScript(URI.create("path/to/.java or .js"));
 
 // The second approach is to pass script as string directly.
 newTestOptions.setScript(new String("your script here"));
+// The third options is meant to be used to update existing test script template
+// for Loadero.
+// First we need to define which parameters we wish to set. For this we need to create
+// Map<String, String> object, where key is name of the variable and value is the value
+// we wish to replace in script.
+// Example:        
+Map<String, String> newParams = new HashMap<>();
+newParams.put("callDuration", "10");
+newParams.put("elementTimeout", "30");
+
+newTestOptions.setScript("path to script template", newParams);        
 
 // After that you can call updateTestOptions() method and store result
 // of the operation for later usage if needed.       
