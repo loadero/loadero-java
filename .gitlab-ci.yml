@@ -8,6 +8,7 @@ stages:
     - build
     - test
     - visualize_coverage
+    - publish_coverage
 
 variables:
     MAVEN_CLI_OPTS: "-B --errors --fail-at-end"
@@ -37,6 +38,7 @@ unit_tests:
         when: always
         paths:
             - target/site/jacoco/jacoco.xml
+            - target/site/jacoco/[loadero].*
         reports:
             junit:
                 - target/surefire-reports/TEST-*.xml    
@@ -60,3 +62,19 @@ visualize_tests:
     artifacts:
         reports:
             cobertura: target/site/cobertura.xml 
+
+pages:
+    stage: publish_coverage
+    dependencies:
+        - visualize_tests
+    script:
+        - mv target/site/jacoco/[loadero].* public/
+    artifacts:
+        paths:
+            - public
+        expire_in: 1 days
+    rules:
+        - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
+          allow_failure: true
+        - if: $CI_COMMIT_BRANCH
+          allow_failure: true 
