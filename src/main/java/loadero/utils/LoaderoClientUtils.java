@@ -31,7 +31,12 @@ public class LoaderoClientUtils {
     })
             .create();
 
-
+    public static void checkArgumentsForNull(Object...args) {
+        for (Object arg: args) {
+            Objects.requireNonNull(arg,
+                    String.format("%s cannot be null", arg.getClass().getSimpleName()));
+        }
+    }
     public static boolean isNull(Object test) {
         return Objects.isNull(test);
     }
