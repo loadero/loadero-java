@@ -50,4 +50,6 @@ visualize_tests:
         - unit_tests
     artifacts:
         reports:
-            cobertura: target/site/cobertura.xml        
+            cobertura: target/site/cobertura.xml 
+    tags:
+        - docker               
