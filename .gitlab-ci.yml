@@ -63,18 +63,16 @@ visualize_tests:
         reports:
             cobertura: target/site/cobertura.xml 
 
+# Generate public test coverage pages and host on Gitlab pages
 pages:
     stage: publish_coverage
     dependencies:
-        - visualize_tests
+        - unit_tests
     script:
-        - mv target/site/jacoco/[loadero].* public/
+        - mv target/site/jacoco/ public/
     artifacts:
         paths:
             - public
         expire_in: 1 days
-    rules:
-        - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
-          allow_failure: true
-        - if: $CI_COMMIT_BRANCH
-          allow_failure: true 
+    only:
+        - master
