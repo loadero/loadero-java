@@ -375,7 +375,6 @@ public class TestWithWireMock {
 
         String scriptLoc = "src/test/java/loadero/scripts/testui/TestOneOnOneCall.java";
         String scriptWithNewParams = FunctionBodyParser.applyParamsToScript(scriptLoc, scriptParams);
-        logger.info(scriptWithNewParams);
         assertTrue(scriptWithNewParams.contains("callDuration = 20"));
         assertTrue(scriptWithNewParams.contains(appUrl));
     }
@@ -388,8 +387,7 @@ public class TestWithWireMock {
         });
         assertThrows(NullPointerException.class, () -> {
             Map<String, String> scriptParams = new HashMap<>();
-            String scriptLoc = "";
-            String scriptWithNewParams = FunctionBodyParser.applyParamsToScript(scriptLoc, scriptParams);
+            String scriptWithNewParams = FunctionBodyParser.applyParamsToScript(null, scriptParams);
         });
     }
 
