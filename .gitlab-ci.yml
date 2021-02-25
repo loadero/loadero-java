@@ -1,27 +1,35 @@
 image: maven:3-jdk-11
 
 variables:
-    MVN_CLI_OPTS: "-B"
-    MVN_OPTS: "-Dmaven.repo.local=.m2/repository"
-
+    MAVEN_CLI_OPTS: "-B --errors --fail-at-end"
+    MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
 cache:
     paths:
         - .m2/repository/
         - target/
 
-build:
+# clean up output of previous compilations
+before_build:
+    stage: .pre
+    script:
+        - mvn $MAVEN_CLI_OPTS clean
+    tags:
+        - docker
+
+compile_build:
     stage: build
     script:
-        - mvn $MVN_CLI_OPTS validate
         - mvn $MVN_CLI_OPTS compile
     allow_failure: true
     tags:
         - docker
 
-test:
+unit_tests:
     stage: test
     script:
-        - mvn test
-    allow_failure: true  
+        - mvn $MAVEN_CLI_OPTS test
+    rules:
+        - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
+          allow_failure: true  
     tags:
         - docker
