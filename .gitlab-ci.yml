@@ -30,6 +30,7 @@ compile_build:
         - mvn $MVN_CLI_OPTS compile
     allow_failure: true
 
+# Run unit tests and generate test coverage reports
 unit_tests:
     stage: test
     script:
@@ -48,7 +49,7 @@ unit_tests:
         - if: $CI_COMMIT_BRANCH
           allow_failure: true 
 
-# converting JaCoCo tests into Cobertura format for visualizing        
+# Convert JaCoCo test coverage reports into Cobertura format and visualize        
 # source: https://docs.gitlab.com/ee/user/project/merge_requests/test_coverage_visualization.html#maven-example
 visualize_tests:
     stage: visualize_coverage
@@ -63,7 +64,7 @@ visualize_tests:
         reports:
             cobertura: target/site/cobertura.xml 
 
-# Generate public test coverage pages and host on Gitlab pages
+# Publish test coverage results on Gitlab Pages
 pages:
     stage: publish_coverage
     dependencies:
