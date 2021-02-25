@@ -49,7 +49,7 @@ public class FunctionBodyParser {
      * @return  - Script content with new parameters as String.
      */
     public static String applyParamsToScript(String path, Map<String, String> scriptParams) {
-        Objects.requireNonNull(scriptParams, "scriptParams cannot be null");
+        LoaderoClientUtils.checkArgumentsForNull(path, scriptParams);
 
         String script = getScriptContent(path);
         for (Map.Entry<String, String> param: scriptParams.entrySet()) {
