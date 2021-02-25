@@ -1,9 +1,27 @@
 image: maven:3-jdk-11
 
+variables:
+    MVN_CLI_OPTS: "-B"
+    MVN_OPTS: "-Dmaven.repo.local=.m2/repository"
+
+cache:
+    paths:
+        - .m2/repository/
+        - target/
+
+build:
+    stage: build
+    script:
+        - mvn $MVN_CLI_OPTS validate
+        - mvn $MVN_CLI_OPTS compile
+    allow_failure: true
+    tags:
+        - docker
+
 test:
-  stage: test
-  script:
-    - "ls -la"
-    - "mvn -v"
-  tags:
-    - docker
+    stage: test
+    script:
+        - mvn jacoco:reports test
+    allow_failure: true  
+    tags:
+        - docker
