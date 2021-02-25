@@ -1,5 +1,9 @@
 image: maven:3-jdk-11
 
+default:
+    tags:
+        - docker
+
 variables:
     MAVEN_CLI_OPTS: "-B --errors --fail-at-end"
     MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
@@ -13,29 +17,27 @@ before_build:
     stage: .pre
     script:
         - mvn $MAVEN_CLI_OPTS clean
-    tags:
-        - docker
 
 compile_build:
     stage: build
     script:
         - mvn $MVN_CLI_OPTS compile
     allow_failure: true
-    tags:
-        - docker
 
 unit_tests:
     stage: test
     script:
         - mvn $MAVEN_CLI_OPTS org.jacoco:jacoco-maven-plugin:prepare-agent test jacoco:report
     artifacts:
+        when: always
         paths:
             - target/site/jacoco/jacoco.xml
+        reports:
+            junit:
+                - target/surefire-reports/TEST-*.xml    
  #   rules:
  #       - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
  #         allow_failure: true  
-    tags:
-        - docker
 
 # converting JaCoCo tests into Cobertura format for visualizing        
 # source: https://docs.gitlab.com/ee/user/project/merge_requests/test_coverage_visualization.html#maven-example
@@ -51,5 +53,3 @@ visualize_tests:
     artifacts:
         reports:
             cobertura: target/site/cobertura.xml 
-    tags:
-        - docker               
