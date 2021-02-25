@@ -1,5 +1,8 @@
 <h2>Java wrapper for Loadero API</h2>
 
+<a href="https://code.tdlbox.com/mihhail.matisinets/loader-rest-api-wrapper/-/commits/master"><img alt="pipeline status" src="https://code.tdlbox.com/mihhail.matisinets/loader-rest-api-wrapper/badges/master/pipeline.svg" /></a>
+<a href="https://code.tdlbox.com/mihhail.matisinets/loader-rest-api-wrapper/-/commits/master"><img alt="coverage report" src="https://code.tdlbox.com/mihhail.matisinets/loader-rest-api-wrapper/badges/master/coverage.svg" /></a>
+
 <h3>Description</h3>
 <hr>
 <p>This is a small java library that can be used as a wrapper to interact with Loadero API.</p>
