@@ -1,0 +1,9 @@
+image: maven:3-jdk-11
+
+test:
+  stage: test
+  script:
+    - "ls -la"
+    - "mvn -v"
+  tags:
+    - docker
