@@ -1,33 +1,26 @@
 package loadero;
 
-import loadero.controller.LoaderoPollController;
-import loadero.controller.LoaderoRestController;
 import loadero.model.*;
-import loadero.utils.LoaderoClientUtils;
-import loadero.utils.LoaderoUrlBuilder;
+import loadero.service.*;
 import lombok.Getter;
 
-import java.util.Objects;
 
-
-// TODO: abstract heavy logic into separate class
+/**
+ * Main entry point of the interaction with the Loadero API.
+ */
 @Getter
 public class LoaderoClient {
     private final String baseUrl;
     private final String projectId;
     private final String loaderoApiToken;
-    private final LoaderoRestController restController;
-    private final LoaderoPollController pollController;
-    private final LoaderoUrlBuilder urlBuilder;
+    private final LoaderoServiceFactory serviceFactory;
 
     public LoaderoClient(String baseUrl, String loaderApiToken,
                          String projectId) {
         this.baseUrl = baseUrl;
         this.projectId = projectId;
         this.loaderoApiToken = loaderApiToken;
-        this.urlBuilder = new LoaderoUrlBuilder(baseUrl, projectId);
-        restController = new LoaderoRestController(loaderApiToken);
-        pollController = new LoaderoPollController(loaderApiToken);
+        this.serviceFactory = new LoaderoServiceFactory(loaderApiToken, baseUrl, projectId);
     }
 
     /**
@@ -36,9 +29,9 @@ public class LoaderoClient {
      * @return       - LoaderoTestOptions object.
      */
     public LoaderoTestOptions getTestOptionsById(String testId) {
-        String testUrl = urlBuilder.buildTestURLById(testId) + "/";
-        return (LoaderoTestOptions) restController.get(testUrl,
-                LoaderoType.LOADERO_TEST_OPTIONS);
+        return (LoaderoTestOptions) serviceFactory
+                .getLoaderoService(LoaderoType.LOADERO_TEST_OPTIONS)
+                .getById(testId);
     }
 
     /**
@@ -50,38 +43,21 @@ public class LoaderoClient {
      */
     public LoaderoTestOptions updateTestOptions(String testId,
                                                 LoaderoTestOptions newTestOptions) {
-        Objects.requireNonNull(newTestOptions, "newTestOptions cannot be null");
-        String testUrl = urlBuilder.buildTestURLById(testId) + "/";
-        LoaderoTestOptions currentOptions = getTestOptionsById(testId);
-        // If new script is not provided
-        // We get the old script from Loadero API endpoint /files/fileId
-        // And update accordingly.
-        if (Objects.equals(newTestOptions.getScript(), "")) {
-            String scriptContent = getTestScript(
-                    String.valueOf(currentOptions.getScriptFileId()));
-            currentOptions.setScript(scriptContent);
-        }
-
-        LoaderoModel updatedOptions = LoaderoClientUtils.copyUncommonFields(
-                currentOptions,
-                newTestOptions,
-                LoaderoType.LOADERO_TEST_OPTIONS);
-
-        return (LoaderoTestOptions) restController.update(testUrl,
-                LoaderoType.LOADERO_TEST_OPTIONS, updatedOptions);
+        LoaderoTestOptionsService testOptionsService = (LoaderoTestOptionsService)
+                serviceFactory.getLoaderoService(LoaderoType.LOADERO_TEST_OPTIONS);
+        return testOptionsService.updateById(newTestOptions, testId);
     }
 
     /**
-     * Retrieves content of the script file from Loadero API
+     * Retrieves content of the script file from Loadero API and returns as LoaderoScriptFileLoc object.
+     * Use toString() to convert into actual script.
      * @param fileId - ID of the script file
-     * @return       - String containing script content.
+     * @return       - LoaderoScriptFileLoc information about script content.
      */
-    public String getTestScript(String fileId) {
-        String scriptFileUrl = String.format("%s/", urlBuilder.buildScriptFileURL(fileId));
-        LoaderoScriptFileLoc scriptFile = (LoaderoScriptFileLoc) restController.get(
-                    scriptFileUrl,
-                    LoaderoType.LOADERO_SCRIPT_FILE_LOC);
-        return scriptFile.getContent();
+    public LoaderoScriptFileLoc getTestScript(String fileId) {
+        return (LoaderoScriptFileLoc) serviceFactory
+                .getLoaderoService(LoaderoType.LOADERO_SCRIPT_FILE_LOC)
+                .getById(fileId);
     }
 
     /**
@@ -91,9 +67,9 @@ public class LoaderoClient {
      * @return   - LoaderoGroup object.
      */
     public LoaderoGroup getGroupById(String testId, String groupId) {
-        String groupUrl = String.format("%s/", urlBuilder.buildGroupURL(testId, groupId));
-        return (LoaderoGroup) restController.get(groupUrl,
-                LoaderoType.LOADERO_GROUP);
+        return (LoaderoGroup) serviceFactory
+                .getLoaderoService(LoaderoType.LOADERO_GROUP)
+                .getById(testId, groupId);
     }
 
     /**
@@ -104,15 +80,9 @@ public class LoaderoClient {
      * @return          - LoaderoGroup object with updated parameters.
      */
     public LoaderoGroup updateGroupById(String testId, String groupId, LoaderoGroup newGroup) {
-        String groupUrl = urlBuilder.buildGroupURL(testId, groupId) + "/";
-        LoaderoGroup currentGroup = getGroupById(testId, groupId);
-        LoaderoGroup updatedGroup = (LoaderoGroup) LoaderoClientUtils.copyUncommonFields(
-                currentGroup,
-                newGroup,
-                LoaderoType.LOADERO_GROUP
-        );
-
-        return (LoaderoGroup) restController.update(groupUrl, LoaderoType.LOADERO_GROUP, updatedGroup);
+        LoaderoGroupService groupService = (LoaderoGroupService)
+                serviceFactory.getLoaderoService(LoaderoType.LOADERO_GROUP);
+        return groupService.updateById(newGroup, testId, groupId);
     }
 
     /**
@@ -123,10 +93,9 @@ public class LoaderoClient {
      */
     public LoaderoParticipant getParticipantById(String testId, String groupId,
                                                  String participantId) {
-        String particUrl = String.format("%s/", urlBuilder.buildParticipantURL(testId, groupId, participantId));
-        return (LoaderoParticipant) restController.get(
-                particUrl, LoaderoType.LOADERO_PARTICIPANT
-        );
+        return (LoaderoParticipant) serviceFactory
+                .getLoaderoService(LoaderoType.LOADERO_PARTICIPANT)
+                .getById(testId, groupId, participantId);
     }
 
     /**
@@ -141,19 +110,10 @@ public class LoaderoClient {
                                                         String groupId,
                                                         String participantId,
                                                         LoaderoParticipant newParticipant) {
-        Objects.requireNonNull(newParticipant, "newParticipant can't be null");
 
-        String participantUrl = String.format("%s/", urlBuilder.buildParticipantURL(testId, groupId, participantId));
-        LoaderoParticipant currentParticInfo = getParticipantById(testId, groupId, participantId);
-
-        LoaderoParticipant updatedParticipant = (LoaderoParticipant) LoaderoClientUtils
-                .copyUncommonFields(
-                currentParticInfo,
-                newParticipant,
-                LoaderoType.LOADERO_PARTICIPANT);
-
-        return (LoaderoParticipant) restController
-                .update(participantUrl, LoaderoType.LOADERO_PARTICIPANT, updatedParticipant);
+        LoaderoParticipantService participantService = (LoaderoParticipantService)
+                serviceFactory.getLoaderoService(LoaderoType.LOADERO_PARTICIPANT);
+        return participantService.updateById(newParticipant, testId, groupId, participantId);
     }
 
     /**
@@ -163,9 +123,9 @@ public class LoaderoClient {
      * @return       - LoaderoAllTestRunResults object, that contains list of LoaderoSingleTestRunResult objects.
      */
     public LoaderoTestRunResult getTestRunResult(String testId, String runId) {
-        String resultsUrl = String.format("%s",urlBuilder.buildRunResultsURL(testId, runId));
-        return (LoaderoTestRunResult) restController.get(resultsUrl,
-                LoaderoType.LOADERO_RUN_RESULT);
+        return (LoaderoTestRunResult) serviceFactory
+                .getLoaderoService(LoaderoType.LOADERO_RUN_RESULT)
+                .getById(testId, runId);
     }
 
     /**
@@ -179,27 +139,24 @@ public class LoaderoClient {
     public LoaderoTestRunParticipantResult getTestRunParticipantResult(String testId,
                                                                        String runId,
                                                                        String resultId) {
-        String resultsUrl = String.format("%s/%s/",
-                urlBuilder.buildRunResultsURL(testId, runId),
-                resultId);
-        return (LoaderoTestRunParticipantResult) restController.get(resultsUrl,
-                LoaderoType.LOADERO_TEST_RUN_PARTICIPANT_RESULT);
+        return (LoaderoTestRunParticipantResult) serviceFactory
+                .getLoaderoService(LoaderoType.LOADERO_TEST_RUN_PARTICIPANT_RESULT)
+                .getById(testId, runId, resultId);
     }
 
-
     /**
-     * Start test run by sending POST command underneath to /runs url.
-     * After which starts activly polling for information about test run.
-     * Returns run info when test is done or time of the polling run out.
+     * Start test run by sending POST command underneath to tests/testId/runs endpoint.
+     * After which actively starts polling for information about test run.
+     * Returns run info when test is done or time of the polling runs out.
      * @param testId   - ID of the test that is going to run.
      * @param interval - how often check for information. In seconds.
      * @param timeout  - how long should polling for information. In seconds.
      * @return         - LoaderoRunInfo containing information about test run.
      */
     public LoaderoRunInfo startTestAndPollInfo(String testId, int interval, int timeout) {
-        String startRunsUrl = String.format("%s/runs/", urlBuilder.buildTestURLById(testId));
-        return pollController
-                .startTestAndPoll(startRunsUrl, interval, timeout);
+        LoaderoPollingService pollingService = (LoaderoPollingService) serviceFactory
+                .getLoaderoService(LoaderoType.LOADERO_RUN_INFO);
+        return pollingService.startTestAndPoll(testId, interval, timeout);
     }
 }
 

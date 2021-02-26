@@ -6,12 +6,14 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import loadero.model.*;
 import org.apache.http.HttpEntity;
-import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.util.EntityUtils;
 
 import java.lang.reflect.Field;
 import java.util.Objects;
 
+/**
+ * This class provides some utility/helper functions for the package.
+ */
 public class LoaderoClientUtils {
     private static final LoaderoModelFactory factory = new LoaderoModelFactory();
     private static final Gson gson = new GsonBuilder()
@@ -31,12 +33,19 @@ public class LoaderoClientUtils {
     })
             .create();
 
+    // Checks if provided arguments are null.
+    // If object is a type of String, additionally checks for emptiness.
     public static void checkArgumentsForNull(Object...args) {
         for (Object arg: args) {
             Objects.requireNonNull(arg,
                     String.format("%s cannot be null", arg.getClass().getSimpleName()));
+            if (arg instanceof String) {
+                boolean isBlank = ((String) arg).isBlank();
+                if (isBlank) throw new NullPointerException("String argument is empty or null");
+            }
         }
     }
+
     public static boolean isNull(Object test) {
         return Objects.isNull(test);
     }

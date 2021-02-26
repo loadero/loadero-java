@@ -12,7 +12,12 @@ stages:
 
 variables:
     MAVEN_CLI_OPTS: "-B --errors --fail-at-end"
-    MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
+    MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2
+     -Dmaven.repo.local=.m2/repository
+     -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN
+     -Dorg.slf4j.simpleLogger.showDateTime=true
+     -Djava.awt.headless=true"
+
 cache:
     paths:
         - .m2/repository/
@@ -31,6 +36,8 @@ compile_build:
     allow_failure: true
 
 # Run unit tests and generate test coverage reports
+# At this stage all unit tests are run against Wiremock instance
+# which immitates live Loadero API
 unit_tests:
     stage: test
     script:
@@ -47,8 +54,6 @@ unit_tests:
     rules:
         - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
           allow_failure: true
-        - if: $CI_COMMIT_BRANCH
-          allow_failure: true 
 
 # Convert JaCoCo test coverage reports into Cobertura format and visualize        
 # source: https://docs.gitlab.com/ee/user/project/merge_requests/test_coverage_visualization.html#maven-example

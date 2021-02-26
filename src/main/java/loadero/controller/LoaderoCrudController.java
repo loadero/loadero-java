@@ -1,7 +1,6 @@
 package loadero.controller;
 
 import loadero.model.LoaderoModel;
-import loadero.model.LoaderoModelFactory;
 import loadero.model.LoaderoType;
 import loadero.utils.LoaderoClientUtils;
 import loadero.utils.LoaderoHttpClient;
@@ -22,13 +21,12 @@ import java.io.IOException;
  * Meaning here is defined logic for creating, updetaing, retrieving and deleting Loadero tests.
  */
 @Getter
-public class LoaderoRestController {
+public class LoaderoCrudController {
     private final String loaderoApiToken;
     private final LoaderoHttpClient client;
-    private final LoaderoModelFactory factory = new LoaderoModelFactory();
-    private static final Logger logger = LogManager.getLogger(LoaderoRestController.class);
+    private static final Logger log = LogManager.getLogger(LoaderoCrudController.class);
 
-    public LoaderoRestController(String loaderoApiToken) {
+    public LoaderoCrudController(String loaderoApiToken) {
         this.loaderoApiToken = loaderoApiToken;
         this.client = new LoaderoHttpClient(loaderoApiToken);
     }
@@ -50,10 +48,10 @@ public class LoaderoRestController {
             if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 HttpEntity entity = res.getEntity();
                 result = LoaderoClientUtils.jsonToObject(entity, type);
-                logger.info("{} : {}", res.getStatusLine(), uri);
+                log.info("{} : {}", res.getStatusLine(), uri);
             }
         } catch (NullPointerException | IOException e) {
-            logger.error("{}", e.getMessage());
+            log.error("{}", e.getMessage());
         }
         return result;
     }
@@ -67,13 +65,8 @@ public class LoaderoRestController {
      * @return - Returns new LoaderoModel with updated parameters.
      */
     public LoaderoModel update(String uri, LoaderoType type, LoaderoModel newModel) {
-
         LoaderoModel result = null;
-
-        if (LoaderoClientUtils.isNull(newModel) || LoaderoClientUtils.isNull(type)) {
-            logger.error("Parameter can't be null.");
-            return result;
-        }
+        LoaderoClientUtils.checkArgumentsForNull(uri, type, newModel);
 
         try {
             String modelToJson = LoaderoClientUtils.modelToJson(newModel);
@@ -86,15 +79,15 @@ public class LoaderoRestController {
                 result = LoaderoClientUtils.jsonToObject(
                         res.getEntity(),
                         type);
-                logger.info("{}: {}", res.getStatusLine(), "Value updated");
-                logger.info("Updated value url: {}", uri);
+                log.info("{}: {}", res.getStatusLine(), "Value updated");
+                log.info("Updated value url: {}", uri);
             } else {
-                logger.error("{} : {}", res.getStatusLine(), uri);
-                logger.error("{}", modelToJson);
+                log.error("{} : {}", res.getStatusLine(), uri);
+                log.error("{}", modelToJson);
             }
             res.close();
         } catch (IOException e) {
-            logger.error("{}", e.getMessage());
+            log.error("{}", e.getMessage());
         }
         return result;
     }

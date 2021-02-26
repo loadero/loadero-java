@@ -8,6 +8,10 @@ import org.apache.http.message.BasicHeader;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementation of HttpClientBuilder for interacting with Loadero API.
+ * Basically, applies some common headers/traits that is later used to send requests.
+ */
 public class LoaderoHttpClient extends HttpClientBuilder {
 
     public LoaderoHttpClient(String loaderoApiToken) {

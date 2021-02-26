@@ -4,10 +4,11 @@ import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.printer.PrettyPrinter;
 import com.github.javaparser.printer.PrettyPrinterConfiguration;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.Map;
-import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
@@ -16,6 +17,7 @@ import java.util.regex.Pattern;
  * to later pass those snippets as part of JSON request.
  */
 public class FunctionBodyParser {
+    private static final Logger log = LogManager.getLogger(FunctionBodyParser.class);
     /**
      * Retrieves the content of the public void test(){}; method from .java file.
       * @param path - Path to the script.
@@ -36,7 +38,7 @@ public class FunctionBodyParser {
             result = result.substring(0, result.lastIndexOf('}'));
         } catch (Exception e) {
             result = null;
-            e.printStackTrace();
+            log.error("{}", e.getMessage());
         }
         return result;
     }
