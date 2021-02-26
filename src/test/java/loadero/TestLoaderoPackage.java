@@ -159,7 +159,7 @@ public class TestLoaderoPackage {
         // Getting content of the script from Loadero
         String actualScript = loaderoClient
                 .getTestScript(String.valueOf(scriptId))
-                .toString();
+                .getContent();
         String expectedScript = FunctionBodyParser
                 .getScriptContent("src/main/resources/loadero/scripts/testui/LoaderoScript.java");
 
@@ -203,7 +203,7 @@ public class TestLoaderoPackage {
         // Comparing script updated script with script on local machine
         String actualScript = loaderoClient
                 .getTestScript(String.valueOf(updatedTestOptions.getScriptFileId()))
-                .toString();
+                .getContent();
         String expectedScript = FunctionBodyParser
                 .applyParamsToScript(
                         "src/test/java/loadero/scripts/testui/TestOneOnOneCall.java",
