@@ -125,7 +125,7 @@ class LoaderoTestRunResult(){}
 <td>
 
 ```java
-class LoaderoSingleTestRunResult(){}
+class LoaderoTestRunParticipantResult(){}
 ```
 </td>
 <td>Class that is responsible to represent information about single participant test run result.</td>
@@ -277,6 +277,20 @@ and updates information about specific participant.
 </td>
 <td>Makes GET request to <b>projects/{projectID}/tests/{testID}/runs/{runID}/results/</b>
 and retrieves information about <b>all</b> test run results.
+</td>
+</tr>
+<tr>
+<td>
+
+```java
+LoaderoScriptFileLoc getTestScript(String fileId)
+```
+</td>
+<td>
+<b>String fileId</b> - ID of the test script file.<br>
+</td>
+<td>Makes GET request to <b>/projects/{projectId}/files/{fileId}"</b>
+and retrieves test script.
 </td>
 </tr>
 <tr>
