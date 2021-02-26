@@ -34,7 +34,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class TestWithWireMock {
+public class TestLoaderoPackage {
     private static final String token           = System.getenv("LOADERO_API_TOKEN");
     private static String BASE_URL              = System.getenv("LOADERO_BASE_URL");
     private static final String PROJECT_ID      = "5040";
@@ -44,7 +44,7 @@ public class TestWithWireMock {
     private static final String RUN_ID          = "33328";
     private static final String RESULT_ID       = "930397";
     private final LoaderoHttpClient httpClient  = new LoaderoHttpClient(token);
-    private static final Logger logger = LogManager.getLogger(TestWithWireMock.class);
+    private static final Logger logger = LogManager.getLogger(TestLoaderoPackage.class);
     private CloseableHttpResponse response;
     private static LoaderoClient loaderoClient;
     private final LoaderoUrlBuilder urlBuilder = new LoaderoUrlBuilder(BASE_URL, PROJECT_ID);
@@ -110,7 +110,7 @@ public class TestWithWireMock {
     }
 
     @Test
-    public void testGetTestOptions() throws IOException {
+    public void testGetTestOptionsById() throws IOException {
         // Make GET request to url on localhost to get status code
         makeGetRequest(urlBuilder.buildTestURLById(TEST_ID) + "/");
         LoaderoTestOptions test = loaderoClient.getTestOptionsById(TEST_ID);
@@ -156,7 +156,9 @@ public class TestWithWireMock {
         // Retrieving ID pointing to script file
         long scriptId = updatedTest.getScriptFileId();
         // Getting content of the script from Loadero
-        String actualScript = loaderoClient.getTestScript(String.valueOf(scriptId));
+        String actualScript = loaderoClient
+                .getTestScript(String.valueOf(scriptId))
+                .toString();
         String expectedScript = FunctionBodyParser
                 .getScriptContent("src/main/resources/loadero/scripts/testui/LoaderoScript.java");
 
@@ -198,7 +200,9 @@ public class TestWithWireMock {
         assertNotNull(updatedTestOptions);
 
         // Comparing script updated script with script on local machine
-        String actualScript = loaderoClient.getTestScript(String.valueOf(updatedTestOptions.getScriptFileId()));
+        String actualScript = loaderoClient
+                .getTestScript(String.valueOf(updatedTestOptions.getScriptFileId()))
+                .toString();
         String expectedScript = FunctionBodyParser
                 .applyParamsToScript(
                         "src/test/java/loadero/scripts/testui/TestOneOnOneCall.java",
@@ -413,7 +417,7 @@ public class TestWithWireMock {
 
     @Test
     @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
-    @Disabled
+//    @Disabled
     public void testFullFunctionalityFlow() {
         String testClientInitUrl = urlBuilder.buildProjectURL() + "/";
         logger.info(token);
@@ -427,7 +431,7 @@ public class TestWithWireMock {
         newTestOptions.setName("New test name from testFullFunctionalityFlow");
         // Setting script through path using URI
         newTestOptions.setScript(
-                URI.create("src/main/resources/loadero/scripts/testui/CallOneOnOne.java"));
+                URI.create("src/main/resources/loadero/scripts/testui/LoaderoScript.java"));
         newTestOptions.setMode("performance");
         newTestOptions.setStartInterval(30);
         LoaderoTestOptions updatedTestOptions = loaderoClient.updateTestOptions(TEST_ID, newTestOptions);
