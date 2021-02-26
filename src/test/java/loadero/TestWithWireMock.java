@@ -27,6 +27,8 @@ import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -145,7 +147,9 @@ public class TestWithWireMock {
     @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
     public void testUpdateTestOptionsWithNewScript() {
         LoaderoTestOptions newTest = new LoaderoTestOptions();
+        // New params for test
         newTest.setName("unit test 2");
+        // New test script params
         newTest.setScript(URI.create("src/main/resources/loadero/scripts/testui/LoaderoScript.java"));
         // Updating some random test
         LoaderoTestOptions updatedTest = loaderoClient.updateTestOptions("7193", newTest);
@@ -154,7 +158,7 @@ public class TestWithWireMock {
         // Getting content of the script from Loadero
         String actualScript = loaderoClient.getTestScript(String.valueOf(scriptId));
         String expectedScript = FunctionBodyParser
-                .getBody("src/main/resources/loadero/scripts/testui/LoaderoScript.java");
+                .getScriptContent("src/main/resources/loadero/scripts/testui/LoaderoScript.java");
 
         assertEquals("unit test 2", updatedTest.getName());
         // Comparing script from Loadero and local script
@@ -172,6 +176,35 @@ public class TestWithWireMock {
         assertThrows(NullPointerException.class, () -> {
             LoaderoTestOptions updatedTest = loaderoClient.updateTestOptions("23423", null);
         });
+    }
+
+    @Test
+    @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
+    public void testUpdateLoaderoTestScriptWithNewParams() {
+        LoaderoTestOptions newTestOptions = new LoaderoTestOptions();
+
+        // New parameters for a test script
+        // If new value parameter is not set, default provided in template will be used.
+        Map<String, String> newScriptParams = new HashMap<>();
+        newScriptParams.put("callDuration", "15");
+        newScriptParams.put("elementTimeout","15");
+
+        // Setting script with new params
+        // Setting path where script "template" is stored and new script parameters for this "template"
+        newTestOptions.setScript(
+                "src/test/java/loadero/scripts/testui/TestOneOnOneCall.java",
+                newScriptParams);
+        LoaderoTestOptions updatedTestOptions = loaderoClient.updateTestOptions(TEST_ID, newTestOptions);
+        assertNotNull(updatedTestOptions);
+
+        // Comparing script updated script with script on local machine
+        String actualScript = loaderoClient.getTestScript(String.valueOf(updatedTestOptions.getScriptFileId()));
+        String expectedScript = FunctionBodyParser
+                .applyParamsToScript(
+                        "src/test/java/loadero/scripts/testui/TestOneOnOneCall.java",
+                        newScriptParams);
+
+        assertEquals(expectedScript, actualScript);
     }
 
     @Test
@@ -294,7 +327,7 @@ public class TestWithWireMock {
 
     @Test
     public void negativetestFunctionParser() {
-        String str = FunctionBodyParser.getBody("");
+        String str = FunctionBodyParser.getScriptContent("");
         assertNull(str);
     }
 
@@ -329,6 +362,33 @@ public class TestWithWireMock {
                 () -> assertEquals(currentTest.getId(), updatedTest.getId()),
                 () -> assertEquals(currentTest.getName(), updatedTest.getName()),
                 () -> assertEquals(currentTest.getScriptFileId(), updatedTest.getScriptFileId()));
+    }
+
+    @Test
+    public void testApplyNewParamsToScript() {
+        Map<String, String> scriptParams = new HashMap<>();
+        String appUrl = "https://voice-webapp-3026-dev.twil.io/index.html?identity=";
+
+        scriptParams.put("callDuration", "20");
+        scriptParams.put("particId", "globalConfig.getParticipant().getId()");
+        scriptParams.put("appUrl", appUrl);
+
+        String scriptLoc = "src/test/java/loadero/scripts/testui/TestOneOnOneCall.java";
+        String scriptWithNewParams = FunctionBodyParser.applyParamsToScript(scriptLoc, scriptParams);
+        assertTrue(scriptWithNewParams.contains("callDuration = 20"));
+        assertTrue(scriptWithNewParams.contains(appUrl));
+    }
+
+    @Test
+    public void negativeApplyNewParamsToScript() {
+        assertThrows(NullPointerException.class, () -> {
+            String scriptLoc = "src/test/java/loadero/scripts/testui/TestOneOnOneCall.java";
+            String scriptWithNewParams = FunctionBodyParser.applyParamsToScript(scriptLoc, null);
+        });
+        assertThrows(NullPointerException.class, () -> {
+            Map<String, String> scriptParams = new HashMap<>();
+            String scriptWithNewParams = FunctionBodyParser.applyParamsToScript(null, scriptParams);
+        });
     }
 
     @Test
@@ -390,5 +450,12 @@ public class TestWithWireMock {
         newGroup.setCount(3);
         LoaderoGroup updatedGroup = loaderoClient.updateGroupById(TEST_ID, GROUP_ID, newGroup);
         assertEquals(3, updatedGroup.getCount());
+    }
+
+    @Test
+    public void negativeUpdateGroup() {
+        assertThrows(NullPointerException.class, () -> {
+            LoaderoGroup updatedGroup = loaderoClient.updateGroupById(TEST_ID, GROUP_ID, null);
+        });
     }
 }
