@@ -18,13 +18,13 @@ import java.net.URI;
 
 public class LoaderoPollController {
     private final LoaderoHttpClient     client;
-    private final LoaderoRestController restController;
+    private final LoaderoCrudController restController;
     private final LoaderoModelFactory factory = new LoaderoModelFactory();
     private final Logger logger = LogManager.getLogger(LoaderoPollController.class);
 
     public LoaderoPollController(String loaderoApiToken) {
         this.client  = new LoaderoHttpClient(loaderoApiToken);
-        this.restController = new LoaderoRestController(loaderoApiToken);
+        this.restController = new LoaderoCrudController(loaderoApiToken);
     }
 
     public LoaderoRunInfo startTestAndPoll(String uri, int interval, int timeout) {

@@ -22,13 +22,13 @@ import java.io.IOException;
  * Meaning here is defined logic for creating, updetaing, retrieving and deleting Loadero tests.
  */
 @Getter
-public class LoaderoRestController {
+public class LoaderoCrudController {
     private final String loaderoApiToken;
     private final LoaderoHttpClient client;
     private final LoaderoModelFactory factory = new LoaderoModelFactory();
-    private static final Logger logger = LogManager.getLogger(LoaderoRestController.class);
+    private static final Logger logger = LogManager.getLogger(LoaderoCrudController.class);
 
-    public LoaderoRestController(String loaderoApiToken) {
+    public LoaderoCrudController(String loaderoApiToken) {
         this.loaderoApiToken = loaderoApiToken;
         this.client = new LoaderoHttpClient(loaderoApiToken);
     }

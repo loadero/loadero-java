@@ -1,7 +1,7 @@
 package loadero;
 
 import loadero.controller.LoaderoPollController;
-import loadero.controller.LoaderoRestController;
+import loadero.controller.LoaderoCrudController;
 import loadero.model.*;
 import loadero.utils.LoaderoClientUtils;
 import loadero.utils.LoaderoUrlBuilder;
@@ -16,7 +16,7 @@ public class LoaderoClient {
     private final String baseUrl;
     private final String projectId;
     private final String loaderoApiToken;
-    private final LoaderoRestController restController;
+    private final LoaderoCrudController restController;
     private final LoaderoPollController pollController;
     private final LoaderoUrlBuilder urlBuilder;
 
@@ -26,7 +26,7 @@ public class LoaderoClient {
         this.projectId = projectId;
         this.loaderoApiToken = loaderApiToken;
         this.urlBuilder = new LoaderoUrlBuilder(baseUrl, projectId);
-        restController = new LoaderoRestController(loaderApiToken);
+        restController = new LoaderoCrudController(loaderApiToken);
         pollController = new LoaderoPollController(loaderApiToken);
     }
 

@@ -2,7 +2,7 @@ package loadero;
 
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import loadero.controller.LoaderoRestController;
+import loadero.controller.LoaderoCrudController;
 import loadero.model.*;
 import loadero.utils.FunctionBodyParser;
 import loadero.utils.LoaderoClientUtils;
@@ -399,7 +399,7 @@ public class TestWithWireMock {
 
     @Test
     public void negativeRESTUpdate() {
-        LoaderoRestController restController = new LoaderoRestController(loaderoClient.getLoaderoApiToken());
+        LoaderoCrudController restController = new LoaderoCrudController(loaderoClient.getLoaderoApiToken());
         LoaderoModel model = restController.update(urlBuilder.buildTestURLById(TEST_ID),
                 LoaderoType.LOADERO_TEST_OPTIONS, null);
         assertNull(model);
