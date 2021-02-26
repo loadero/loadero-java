@@ -6,7 +6,7 @@ default:
 stages:
     - .pre
     - build
-    - local_test
+    - test
     - visualize_coverage
     - publish_coverage
 
@@ -37,9 +37,9 @@ compile_build:
 
 # Run unit tests and generate test coverage reports
 # At this stage all unit tests are run against Wiremock instance
-# which imitates live Loadero API
-local_unit_tests:
-    stage: local_test
+# which immitates live Loadero API
+unit_tests:
+    stage: test
     script:
         - mvn $MAVEN_CLI_OPTS org.jacoco:jacoco-maven-plugin:prepare-agent test jacoco:report
         - cat target/site/jacoco/index.html
@@ -52,7 +52,8 @@ local_unit_tests:
             junit:
                 - target/surefire-reports/TEST-*.xml    
     rules:
-        - if: '$CI_PIPELINE_SOURCE == "push"'
+        - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
+          allow_failure: true
         - if: $CI_COMMIT_BRANCH
           allow_failure: true 
 
@@ -64,9 +65,9 @@ visualize_tests:
     script:
         - 'python /opt/cover2cover.py target/site/jacoco/jacoco.xml src/main/java > target/site/cobertura.xml'
         - 'python /opt/source2filename.py target/site/cobertura.xml'
-    needs: ["local_unit_tests"]
+    needs: ["unit_tests"]
     dependencies:
-        - local_unit_tests
+        - unit_tests
     artifacts:
         reports:
             cobertura: target/site/cobertura.xml 
@@ -75,7 +76,7 @@ visualize_tests:
 pages:
     stage: publish_coverage
     dependencies:
-        - local_unit_tests
+        - unit_tests
     script:
         - mv target/site/jacoco/ public/
     artifacts:
