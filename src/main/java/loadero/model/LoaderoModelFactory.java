@@ -1,9 +1,12 @@
 package loadero.model;
 
+import lombok.Generated;
+
 /**
  * LoaderoModelFactory is a simple implementation of a Factory method pattern
  * with intend to abstract creation of concrete LoaderoModels.
  */
+@Generated
 public class LoaderoModelFactory implements LoaderoModel {
 
     public LoaderoModel getLoaderoModel(LoaderoType type) {
