@@ -18,4 +18,5 @@ public abstract class AbstractLoaderoService<T extends LoaderoModel> {
 
     public abstract T getById(String...id);
     public abstract T updateById(T newModel, String...id);
+    protected abstract String buildUrl(String...id);
 }

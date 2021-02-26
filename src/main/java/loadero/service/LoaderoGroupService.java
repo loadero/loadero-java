@@ -2,11 +2,14 @@ package loadero.service;
 
 import loadero.controller.LoaderoCrudController;
 import loadero.model.LoaderoGroup;
+import loadero.model.LoaderoModel;
 import loadero.model.LoaderoType;
+import loadero.utils.LoaderoClientUtils;
 import loadero.utils.LoaderoUrlBuilder;
 
 public class LoaderoGroupService extends AbstractLoaderoService<LoaderoGroup> {
     private final LoaderoUrlBuilder urlBuilder = super.getUrlBuilder();
+    private final LoaderoCrudController crudController = super.getCrudController();
 
     public LoaderoGroupService(LoaderoCrudController crudController,
                                LoaderoUrlBuilder urlBuilder) {
@@ -17,14 +20,30 @@ public class LoaderoGroupService extends AbstractLoaderoService<LoaderoGroup> {
     public LoaderoGroup getById(String...id) {
         String testId = id[0];
         String groupId = id[1];
-        String groupUrl = String.format("%s/", urlBuilder.buildGroupURL(testId, groupId));
-        return (LoaderoGroup) super.getCrudController().get(groupUrl,
+        LoaderoClientUtils.checkArgumentsForNull(testId, groupId);
+        String groupUrl = buildUrl(testId, groupId);
+        return (LoaderoGroup) crudController.get(groupUrl,
                 LoaderoType.LOADERO_GROUP);
-//        return null;
     }
 
     @Override
     public LoaderoGroup updateById(LoaderoGroup newModel, String... id) {
-        return null;
+        String testId = id[0];
+        String groupId = id[1];
+        LoaderoClientUtils.checkArgumentsForNull(newModel, testId, groupId);
+
+        String groupUrl = buildUrl(testId, groupId);
+        LoaderoGroup currentGroup = getById(testId, groupId);
+        LoaderoModel updatedGroup = LoaderoClientUtils.copyUncommonFields(
+                currentGroup,
+                newModel,
+                LoaderoType.LOADERO_GROUP
+        );
+        return (LoaderoGroup) crudController.update(groupUrl, LoaderoType.LOADERO_GROUP, updatedGroup);
+    }
+
+    @Override
+    protected String buildUrl(String...id) {
+        return String.format("%s/", urlBuilder.buildGroupURL(id[0], id[1]));
     }
 }
