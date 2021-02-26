@@ -1,7 +1,6 @@
 package loadero.controller;
 
 import loadero.model.LoaderoModel;
-import loadero.model.LoaderoModelFactory;
 import loadero.model.LoaderoType;
 import loadero.utils.LoaderoClientUtils;
 import loadero.utils.LoaderoHttpClient;
@@ -25,7 +24,6 @@ import java.io.IOException;
 public class LoaderoCrudController {
     private final String loaderoApiToken;
     private final LoaderoHttpClient client;
-    private final LoaderoModelFactory factory = new LoaderoModelFactory();
     private static final Logger logger = LogManager.getLogger(LoaderoCrudController.class);
 
     public LoaderoCrudController(String loaderoApiToken) {
@@ -67,13 +65,8 @@ public class LoaderoCrudController {
      * @return - Returns new LoaderoModel with updated parameters.
      */
     public LoaderoModel update(String uri, LoaderoType type, LoaderoModel newModel) {
-
         LoaderoModel result = null;
-
-        if (LoaderoClientUtils.isNull(newModel) || LoaderoClientUtils.isNull(type)) {
-            logger.error("Parameter can't be null.");
-            return result;
-        }
+        LoaderoClientUtils.checkArgumentsForNull(uri, type, newModel);
 
         try {
             String modelToJson = LoaderoClientUtils.modelToJson(newModel);
