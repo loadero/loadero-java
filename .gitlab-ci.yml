@@ -54,8 +54,6 @@ unit_tests:
     rules:
         - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
           allow_failure: true
-        - if: $CI_COMMIT_BRANCH
-          allow_failure: true 
 
 # Convert JaCoCo test coverage reports into Cobertura format and visualize        
 # source: https://docs.gitlab.com/ee/user/project/merge_requests/test_coverage_visualization.html#maven-example
