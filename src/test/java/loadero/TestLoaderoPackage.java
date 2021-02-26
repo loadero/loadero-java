@@ -2,7 +2,6 @@ package loadero;
 
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import com.github.tomakehurst.wiremock.stubbing.Scenario;
 import loadero.controller.LoaderoCrudController;
 import loadero.model.*;
 import loadero.utils.FunctionBodyParser;
@@ -45,7 +44,7 @@ public class TestLoaderoPackage {
     private static final String RUN_ID          = "33328";
     private static final String RESULT_ID       = "930397";
     private final LoaderoHttpClient httpClient  = new LoaderoHttpClient(token);
-    private static final Logger logger = LogManager.getLogger(TestLoaderoPackage.class);
+    private static final Logger LOGGER = LogManager.getLogger(TestLoaderoPackage.class);
     private CloseableHttpResponse response;
     private static LoaderoClient loaderoClient;
     private final LoaderoUrlBuilder urlBuilder = new LoaderoUrlBuilder(BASE_URL, PROJECT_ID);
@@ -60,7 +59,7 @@ public class TestLoaderoPackage {
             HttpGet get = new HttpGet(url);
             response = httpClient.build().execute(get);
         } catch (IOException ex) {
-            logger.error("{}", ex.getMessage());
+            LOGGER.error("{}", ex.getMessage());
         }
     }
 
@@ -79,7 +78,7 @@ public class TestLoaderoPackage {
     }
 
     @AfterAll
-    public static void teardown() {
+    public static void teardownWM() {
         wmRule.stop();
     }
 
@@ -422,7 +421,6 @@ public class TestLoaderoPackage {
     @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
     public void testFullFunctionalityFlow() {
         String testClientInitUrl = urlBuilder.buildProjectURL() + "/";
-        logger.info(token);
         // Checking that client can establish connection and make requests
         makeGetRequest(testClientInitUrl);
         assertEquals(HttpStatus.SC_OK, response.getStatusLine().getStatusCode());
@@ -438,8 +436,8 @@ public class TestLoaderoPackage {
         newTestOptions.setStartInterval(30);
         LoaderoTestOptions updatedTestOptions = loaderoClient.updateTestOptions(TEST_ID, newTestOptions);
 
-        logger.info("Before update: {}", currentTestOptions);
-        logger.info("After update: {}", updatedTestOptions);
+        LOGGER.info("Before update: {}", currentTestOptions);
+        LOGGER.info("After update: {}", updatedTestOptions);
         // asserting that update did happen
         assertEquals("New test name from testFullFunctionalityFlow",
                 updatedTestOptions.getName());
