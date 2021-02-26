@@ -30,12 +30,19 @@ public class LoaderoClientUtils {
     })
             .create();
 
+    // Checks if provided arguments are null.
+    // If object is a type of String, additionally checks for emptiness.
     public static void checkArgumentsForNull(Object...args) {
         for (Object arg: args) {
             Objects.requireNonNull(arg,
                     String.format("%s cannot be null", arg.getClass().getSimpleName()));
+            if (arg instanceof String) {
+                boolean isBlank = ((String) arg).isBlank();
+                if (isBlank) throw new NullPointerException("String argument is empty or null");
+            }
         }
     }
+
     public static boolean isNull(Object test) {
         return Objects.isNull(test);
     }
