@@ -35,6 +35,7 @@ unit_tests:
     stage: test
     script:
         - mvn $MAVEN_CLI_OPTS org.jacoco:jacoco-maven-plugin:prepare-agent test jacoco:report
+        - cat target/site/jacoco/index.html
     artifacts:
         when: always
         paths:
