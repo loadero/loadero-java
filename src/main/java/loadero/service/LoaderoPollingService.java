@@ -16,6 +16,9 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
+/**
+ * Implementation of AbstractLoaderoService that is responsible for polling operation.
+ */
 public class LoaderoPollingService extends AbstractLoaderoService<LoaderoRunInfo> {
     private final LoaderoHttpClient     client;
     private final LoaderoCrudController crudController = super.getCrudController();

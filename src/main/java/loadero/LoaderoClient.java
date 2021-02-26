@@ -4,6 +4,10 @@ import loadero.model.*;
 import loadero.service.*;
 import lombok.Getter;
 
+
+/**
+ * Main entry point of the interaction with the Loadero API.
+ */
 @Getter
 public class LoaderoClient {
     private final String baseUrl;

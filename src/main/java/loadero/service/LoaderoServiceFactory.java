@@ -5,6 +5,10 @@ import loadero.model.LoaderoModel;
 import loadero.model.LoaderoType;
 import loadero.utils.LoaderoUrlBuilder;
 
+/**
+ * Factory class that contains method that returns required service layer based on the
+ * provided LoaderoType.
+ */
 public class LoaderoServiceFactory {
     private final LoaderoCrudController crudController;
     private final LoaderoUrlBuilder urlBuilder;

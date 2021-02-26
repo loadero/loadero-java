@@ -6,6 +6,10 @@ import loadero.model.LoaderoType;
 import loadero.utils.LoaderoClientUtils;
 import loadero.utils.LoaderoUrlBuilder;
 
+/**
+ * Implementation of AbstractLoaderoService that is responsible for CRUD operation
+ * related to LoaderoTestRunParticipantResult object.
+ */
 public class LoaderoTestRunParticipantResultService extends
         AbstractLoaderoService<LoaderoTestRunParticipantResult> {
 

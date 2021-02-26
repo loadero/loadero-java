@@ -24,7 +24,7 @@ import java.io.IOException;
 public class LoaderoCrudController {
     private final String loaderoApiToken;
     private final LoaderoHttpClient client;
-    private static final Logger logger = LogManager.getLogger(LoaderoCrudController.class);
+    private static final Logger log = LogManager.getLogger(LoaderoCrudController.class);
 
     public LoaderoCrudController(String loaderoApiToken) {
         this.loaderoApiToken = loaderoApiToken;
@@ -48,10 +48,10 @@ public class LoaderoCrudController {
             if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 HttpEntity entity = res.getEntity();
                 result = LoaderoClientUtils.jsonToObject(entity, type);
-                logger.info("{} : {}", res.getStatusLine(), uri);
+                log.info("{} : {}", res.getStatusLine(), uri);
             }
         } catch (NullPointerException | IOException e) {
-            logger.error("{}", e.getMessage());
+            log.error("{}", e.getMessage());
         }
         return result;
     }
@@ -79,15 +79,15 @@ public class LoaderoCrudController {
                 result = LoaderoClientUtils.jsonToObject(
                         res.getEntity(),
                         type);
-                logger.info("{}: {}", res.getStatusLine(), "Value updated");
-                logger.info("Updated value url: {}", uri);
+                log.info("{}: {}", res.getStatusLine(), "Value updated");
+                log.info("Updated value url: {}", uri);
             } else {
-                logger.error("{} : {}", res.getStatusLine(), uri);
-                logger.error("{}", modelToJson);
+                log.error("{} : {}", res.getStatusLine(), uri);
+                log.error("{}", modelToJson);
             }
             res.close();
         } catch (IOException e) {
-            logger.error("{}", e.getMessage());
+            log.error("{}", e.getMessage());
         }
         return result;
     }

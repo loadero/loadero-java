@@ -9,6 +9,10 @@ import loadero.utils.LoaderoUrlBuilder;
 
 import java.util.Objects;
 
+/**
+ * Implementation of AbstractLoaderoService that is responsible for CRUD operation
+ * related to LoaderoTestOptions object.
+ */
 public class LoaderoTestOptionsService extends AbstractLoaderoService<LoaderoTestOptions> {
     private final LoaderoCrudController crudController = super.getCrudController();
     private final LoaderoUrlBuilder urlBuilder = super.getUrlBuilder();

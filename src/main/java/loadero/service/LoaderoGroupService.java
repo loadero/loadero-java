@@ -7,6 +7,10 @@ import loadero.model.LoaderoType;
 import loadero.utils.LoaderoClientUtils;
 import loadero.utils.LoaderoUrlBuilder;
 
+/**
+ * Implementation of AbstractLoaderoService that is responsible for CRUD operation
+ * related to LoaderoGroup object.
+ */
 public class LoaderoGroupService extends AbstractLoaderoService<LoaderoGroup> {
     private final LoaderoUrlBuilder urlBuilder = super.getUrlBuilder();
     private final LoaderoCrudController crudController = super.getCrudController();

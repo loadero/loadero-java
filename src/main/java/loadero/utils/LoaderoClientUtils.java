@@ -11,6 +11,9 @@ import org.apache.http.util.EntityUtils;
 import java.lang.reflect.Field;
 import java.util.Objects;
 
+/**
+ * This class provides some utility/helper functions for the package.
+ */
 public class LoaderoClientUtils {
     private static final LoaderoModelFactory factory = new LoaderoModelFactory();
     private static final Gson gson = new GsonBuilder()

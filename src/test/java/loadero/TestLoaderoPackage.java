@@ -44,7 +44,7 @@ public class TestLoaderoPackage {
     private static final String RUN_ID          = "33328";
     private static final String RESULT_ID       = "930397";
     private final LoaderoHttpClient httpClient  = new LoaderoHttpClient(token);
-    private static final Logger LOGGER = LogManager.getLogger(TestLoaderoPackage.class);
+    private static final Logger log = LogManager.getLogger(TestLoaderoPackage.class);
     private CloseableHttpResponse response;
     private static LoaderoClient loaderoClient;
     private final LoaderoUrlBuilder urlBuilder = new LoaderoUrlBuilder(BASE_URL, PROJECT_ID);
@@ -59,7 +59,7 @@ public class TestLoaderoPackage {
             HttpGet get = new HttpGet(url);
             response = httpClient.build().execute(get);
         } catch (IOException ex) {
-            LOGGER.error("{}", ex.getMessage());
+            log.error("{}", ex.getMessage());
         }
     }
 
@@ -436,8 +436,8 @@ public class TestLoaderoPackage {
         newTestOptions.setStartInterval(30);
         LoaderoTestOptions updatedTestOptions = loaderoClient.updateTestOptions(TEST_ID, newTestOptions);
 
-        LOGGER.info("Before update: {}", currentTestOptions);
-        LOGGER.info("After update: {}", updatedTestOptions);
+        log.info("Before update: {}", currentTestOptions);
+        log.info("After update: {}", updatedTestOptions);
         // asserting that update did happen
         assertEquals("New test name from testFullFunctionalityFlow",
                 updatedTestOptions.getName());
