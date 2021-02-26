@@ -8,7 +8,6 @@ stages:
     - build
     - test
     - visualize_coverage
-    - publish_coverage
 
 variables:
     MAVEN_CLI_OPTS: "-B --errors --fail-at-end"
@@ -52,7 +51,7 @@ unit_tests:
             junit:
                 - target/surefire-reports/TEST-*.xml    
     rules:
-        - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
+        - if: '$CI_PIPELINE_SOURCE == "push"'
           allow_failure: true
 
 # Convert JaCoCo test coverage reports into Cobertura format and visualize        
@@ -68,18 +67,4 @@ visualize_tests:
         - unit_tests
     artifacts:
         reports:
-            cobertura: target/site/cobertura.xml 
-
-# Publish test coverage results on Gitlab Pages
-pages:
-    stage: publish_coverage
-    dependencies:
-        - unit_tests
-    script:
-        - mv target/site/jacoco/ public/
-    artifacts:
-        paths:
-            - public
-        expire_in: 1 days
-    only:
-        - master
+            cobertura: target/site/cobertura.xml
