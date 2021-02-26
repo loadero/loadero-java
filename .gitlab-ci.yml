@@ -6,13 +6,18 @@ default:
 stages:
     - .pre
     - build
-    - test
+    - local_test
     - visualize_coverage
     - publish_coverage
 
 variables:
     MAVEN_CLI_OPTS: "-B --errors --fail-at-end"
-    MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
+    MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2
+     -Dmaven.repo.local=.m2/repository
+     -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN
+     -Dorg.slf4j.simpleLogger.showDateTime=true
+     -Djava.awt.headless=true"
+
 cache:
     paths:
         - .m2/repository/
@@ -31,8 +36,10 @@ compile_build:
     allow_failure: true
 
 # Run unit tests and generate test coverage reports
-unit_tests:
-    stage: test
+# At this stage all unit tests are run against Wiremock instance
+# which imitates live Loadero API
+local_unit_tests:
+    stage: local_test
     script:
         - mvn $MAVEN_CLI_OPTS org.jacoco:jacoco-maven-plugin:prepare-agent test jacoco:report
         - cat target/site/jacoco/index.html
@@ -45,8 +52,7 @@ unit_tests:
             junit:
                 - target/surefire-reports/TEST-*.xml    
     rules:
-        - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
-          allow_failure: true
+        - if: '$CI_PIPELINE_SOURCE == "push"'
         - if: $CI_COMMIT_BRANCH
           allow_failure: true 
 
@@ -58,9 +64,9 @@ visualize_tests:
     script:
         - 'python /opt/cover2cover.py target/site/jacoco/jacoco.xml src/main/java > target/site/cobertura.xml'
         - 'python /opt/source2filename.py target/site/cobertura.xml'
-    needs: ["unit_tests"]
+    needs: ["local_unit_tests"]
     dependencies:
-        - unit_tests
+        - local_unit_tests
     artifacts:
         reports:
             cobertura: target/site/cobertura.xml 
@@ -69,7 +75,7 @@ visualize_tests:
 pages:
     stage: publish_coverage
     dependencies:
-        - unit_tests
+        - local_unit_tests
     script:
         - mv target/site/jacoco/ public/
     artifacts:
