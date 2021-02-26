@@ -68,12 +68,6 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.6</version>
-                <configuration>
-                    <excludes>
-                        <exclude>src/main/java/loadero/exceptions/**/*</exclude>
-                        <exclude>src/main/java/loadero/model/**/*</exclude>
-                    </excludes>
-                </configuration>
                 <executions>
                     <execution>
                         <goals>
@@ -82,7 +76,7 @@
                     </execution>
                     <execution>
                         <id>report</id>
-                        <phase>prepare-package</phase>
+                        <phase>test</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
@@ -96,12 +90,16 @@
                         <configuration>
                             <rules>
                                 <rule>
-                                    <element>CLASS</element>
+                                    <element>BUNDLE</element>
+                                    <excludes>
+                                        <exclude>src/main/java/loadero/exceptions/**/*</exclude>
+                                        <exclude>src/main/java/loadero/model/**/*</exclude>
+                                    </excludes>
                                     <limits>
                                         <limit>
-                                            <counter>LINE</counter>
+                                            <counter>INSTRUCTION</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.70</minimum>
+                                            <minimum>0.7</minimum>
                                         </limit>
                                     </limits>
                                 </rule>
