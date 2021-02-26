@@ -2,6 +2,7 @@ package loadero;
 
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.github.tomakehurst.wiremock.stubbing.Scenario;
 import loadero.controller.LoaderoCrudController;
 import loadero.model.*;
 import loadero.utils.FunctionBodyParser;
@@ -402,22 +403,23 @@ public class TestLoaderoPackage {
     }
 
     @Test
-    public void negativeRESTUpdate() {
-        LoaderoCrudController restController = new LoaderoCrudController(loaderoClient.getLoaderoApiToken());
-        LoaderoModel model = restController.update(urlBuilder.buildTestURLById(TEST_ID),
-                LoaderoType.LOADERO_TEST_OPTIONS, null);
-        assertNull(model);
+    public void negativeCrudUpdate() {
+        assertThrows(NullPointerException.class, () -> {
+            LoaderoCrudController crudController = new LoaderoCrudController(loaderoClient.getLoaderoApiToken());
+            LoaderoModel model = crudController.update(urlBuilder.buildTestURLById(TEST_ID),
+                    LoaderoType.LOADERO_TEST_OPTIONS, null);
+        });
     }
 
     @Test
     public void negativePollingTest() {
-        LoaderoRunInfo info = loaderoClient.startTestAndPollInfo("111", 2, 40);
-        assertNull(info);
+        assertThrows(NullPointerException.class, () -> {
+            LoaderoRunInfo info = loaderoClient.startTestAndPollInfo("111", 2, 40);
+        });
     }
 
     @Test
     @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
-//    @Disabled
     public void testFullFunctionalityFlow() {
         String testClientInitUrl = urlBuilder.buildProjectURL() + "/";
         logger.info(token);
