@@ -2,14 +2,18 @@ package loadero.service;
 
 import loadero.controller.LoaderoCrudController;
 import loadero.model.LoaderoModel;
+import loadero.utils.LoaderoUrlBuilder;
 import lombok.Getter;
 
 @Getter
 public abstract class AbstractLoaderoService<T extends LoaderoModel> {
     private final LoaderoCrudController crudController;
+    private final LoaderoUrlBuilder urlBuilder;
 
-    public AbstractLoaderoService(String apiToken) {
-        this.crudController = new LoaderoCrudController(apiToken);
+    public AbstractLoaderoService(LoaderoCrudController crudController,
+                                  LoaderoUrlBuilder urlBuilder) {
+        this.crudController = crudController;
+        this.urlBuilder = urlBuilder;
     }
 
     public abstract T getById(String...id);

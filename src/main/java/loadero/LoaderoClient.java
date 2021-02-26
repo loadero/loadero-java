@@ -3,6 +3,7 @@ package loadero;
 import loadero.controller.LoaderoPollController;
 import loadero.controller.LoaderoCrudController;
 import loadero.model.*;
+import loadero.service.LoaderoServiceFactory;
 import loadero.utils.LoaderoClientUtils;
 import loadero.utils.LoaderoUrlBuilder;
 import lombok.Getter;
@@ -16,7 +17,8 @@ public class LoaderoClient {
     private final String baseUrl;
     private final String projectId;
     private final String loaderoApiToken;
-    private final LoaderoCrudController restController;
+    private final LoaderoServiceFactory serviceFactory;
+    private final LoaderoCrudController crudController;
     private final LoaderoPollController pollController;
     private final LoaderoUrlBuilder urlBuilder;
 
@@ -25,8 +27,9 @@ public class LoaderoClient {
         this.baseUrl = baseUrl;
         this.projectId = projectId;
         this.loaderoApiToken = loaderApiToken;
+        this.serviceFactory = new LoaderoServiceFactory(loaderApiToken, baseUrl, projectId);
         this.urlBuilder = new LoaderoUrlBuilder(baseUrl, projectId);
-        restController = new LoaderoCrudController(loaderApiToken);
+        crudController = new LoaderoCrudController(loaderApiToken);
         pollController = new LoaderoPollController(loaderApiToken);
     }
 
@@ -37,7 +40,7 @@ public class LoaderoClient {
      */
     public LoaderoTestOptions getTestOptionsById(String testId) {
         String testUrl = urlBuilder.buildTestURLById(testId) + "/";
-        return (LoaderoTestOptions) restController.get(testUrl,
+        return (LoaderoTestOptions) crudController.get(testUrl,
                 LoaderoType.LOADERO_TEST_OPTIONS);
     }
 
@@ -67,7 +70,7 @@ public class LoaderoClient {
                 newTestOptions,
                 LoaderoType.LOADERO_TEST_OPTIONS);
 
-        return (LoaderoTestOptions) restController.update(testUrl,
+        return (LoaderoTestOptions) crudController.update(testUrl,
                 LoaderoType.LOADERO_TEST_OPTIONS, updatedOptions);
     }
 
@@ -78,7 +81,7 @@ public class LoaderoClient {
      */
     public String getTestScript(String fileId) {
         String scriptFileUrl = String.format("%s/", urlBuilder.buildScriptFileURL(fileId));
-        LoaderoScriptFileLoc scriptFile = (LoaderoScriptFileLoc) restController.get(
+        LoaderoScriptFileLoc scriptFile = (LoaderoScriptFileLoc) crudController.get(
                     scriptFileUrl,
                     LoaderoType.LOADERO_SCRIPT_FILE_LOC);
         return scriptFile.getContent();
@@ -91,9 +94,9 @@ public class LoaderoClient {
      * @return   - LoaderoGroup object.
      */
     public LoaderoGroup getGroupById(String testId, String groupId) {
-        String groupUrl = String.format("%s/", urlBuilder.buildGroupURL(testId, groupId));
-        return (LoaderoGroup) restController.get(groupUrl,
-                LoaderoType.LOADERO_GROUP);
+        return (LoaderoGroup) serviceFactory
+                .getLoaderoService(LoaderoType.LOADERO_GROUP)
+                .getById(testId, groupId);
     }
 
     /**
@@ -112,7 +115,7 @@ public class LoaderoClient {
                 LoaderoType.LOADERO_GROUP
         );
 
-        return (LoaderoGroup) restController.update(groupUrl, LoaderoType.LOADERO_GROUP, updatedGroup);
+        return (LoaderoGroup) crudController.update(groupUrl, LoaderoType.LOADERO_GROUP, updatedGroup);
     }
 
     /**
@@ -124,7 +127,7 @@ public class LoaderoClient {
     public LoaderoParticipant getParticipantById(String testId, String groupId,
                                                  String participantId) {
         String particUrl = String.format("%s/", urlBuilder.buildParticipantURL(testId, groupId, participantId));
-        return (LoaderoParticipant) restController.get(
+        return (LoaderoParticipant) crudController.get(
                 particUrl, LoaderoType.LOADERO_PARTICIPANT
         );
     }
@@ -152,7 +155,7 @@ public class LoaderoClient {
                 newParticipant,
                 LoaderoType.LOADERO_PARTICIPANT);
 
-        return (LoaderoParticipant) restController
+        return (LoaderoParticipant) crudController
                 .update(participantUrl, LoaderoType.LOADERO_PARTICIPANT, updatedParticipant);
     }
 
@@ -164,7 +167,7 @@ public class LoaderoClient {
      */
     public LoaderoTestRunResult getTestRunResult(String testId, String runId) {
         String resultsUrl = String.format("%s",urlBuilder.buildRunResultsURL(testId, runId));
-        return (LoaderoTestRunResult) restController.get(resultsUrl,
+        return (LoaderoTestRunResult) crudController.get(resultsUrl,
                 LoaderoType.LOADERO_RUN_RESULT);
     }
 
@@ -182,7 +185,7 @@ public class LoaderoClient {
         String resultsUrl = String.format("%s/%s/",
                 urlBuilder.buildRunResultsURL(testId, runId),
                 resultId);
-        return (LoaderoTestRunParticipantResult) restController.get(resultsUrl,
+        return (LoaderoTestRunParticipantResult) crudController.get(resultsUrl,
                 LoaderoType.LOADERO_TEST_RUN_PARTICIPANT_RESULT);
     }
 
