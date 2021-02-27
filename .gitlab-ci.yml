@@ -34,7 +34,7 @@ compile_build:
 unit_tests:
     stage: test
     script:
-        - mvn $MAVEN_CLI_OPTS clean test jacoco:report
+        - mvn $MAVEN_CLI_OPTS clean test
         - cat target/site/jacoco/index.html
     artifacts:
         when: always
