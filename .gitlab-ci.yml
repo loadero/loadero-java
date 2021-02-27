@@ -27,6 +27,7 @@ before_build:
     stage: .pre
     script:
         - mvn $MAVEN_CLI_OPTS clean
+        - rm target/surefire-reports/TEST-*.xml
 
 compile_build:
     stage: build
