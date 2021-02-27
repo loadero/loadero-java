@@ -22,6 +22,11 @@ cache:
         - .m2/repository/
         - target/
 
+before:
+    stage: .pre
+    script:
+        - mvn clean
+
 compile_build:
     stage: build
     script:
@@ -34,7 +39,6 @@ compile_build:
 unit_tests:
     stage: test
     script:
-        - mvn clean
         - mvn $MAVEN_CLI_OPTS test
         - cat target/site/jacoco/index.html
     artifacts:
