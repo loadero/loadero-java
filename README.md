@@ -453,15 +453,15 @@ mvm test
 
 <b>To run a specific set of tests against mocked data.</b>
 ```
-mvn -DTest=TestWithWiremock test
+mvn -DTest=TestLoaderoPackage test
 ```
 
 <b>To run a specific set of tests with real credentials(eg. API toke, real IDs etc.).</b>
 ```
-mvn -DTest=TestWithWiremock -Denv=live test
+mvn -DTest=TestLoaderoPackage -Denv=live test
 ```
 
 <b>To run a specific test method inside test class.</b>
 ```
-mvn -DTest=TestWithWiremock#getTestOptions test
+mvn -DTest=TestLoaderoPackage#testGetTestOptionsById test
 ```
