@@ -1,0 +1,33 @@
+{
+  "id": 930397,
+  "created": "2021-02-16T10:25:56Z",
+  "updated": "2021-02-16T10:25:56Z",
+  "start": "2021-02-16T10:24:43Z",
+  "end": "2021-02-16T10:25:55Z",
+  "status": "pass",
+  "selenium_result": "pass",
+  "log_paths": {
+    "id": 796496,
+    "created": "2021-02-16T10:25:56Z",
+    "result_id": 930397,
+    "webrtc": "https://loadero-logs.s3.us-west-2.amazonaws.com/webrtc/5a0a3517-7041-11eb-8532-02695e8a968f.txt",
+    "selenium": "https://loadero-logs.s3.us-west-2.amazonaws.com/selenium/59f26e6d-7041-11eb-8532-02695e8a968f.txt",
+    "browser": "https://loadero-logs.s3.us-west-2.amazonaws.com/browser/59e7154d-7041-11eb-8532-02695e8a968f.txt",
+    "rru": "https://loadero-logs.s3.us-west-2.amazonaws.com/rru/5a18c9a2-7041-11eb-8532-02695e8a968f.json"
+  },
+  "asserts": null,
+  "artifacts": {
+    "audio": {
+      "paths": null
+    },
+    "downloads": {
+      "paths": null
+    },
+    "screenshots": {
+      "paths": null
+    },
+    "video": {
+      "paths": null
+    }
+  }
+}

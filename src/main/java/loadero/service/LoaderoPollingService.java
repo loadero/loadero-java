@@ -23,7 +23,7 @@ public class LoaderoPollingService extends AbstractLoaderoService<LoaderoRunInfo
     private final LoaderoHttpClient     client;
     private final LoaderoCrudController crudController = super.getCrudController();
     private final LoaderoUrlBuilder     urlBuilder     = super.getUrlBuilder();
-    private final Logger                LOGGER = LogManager.getLogger(LoaderoPollingService.class);
+    private final Logger log = LogManager.getLogger(LoaderoPollingService.class);
 
     public LoaderoPollingService(LoaderoCrudController crudController,
                                  LoaderoUrlBuilder urlBuilder) {
@@ -60,8 +60,8 @@ public class LoaderoPollingService extends AbstractLoaderoService<LoaderoRunInfo
         LoaderoRunInfo startTestRun = startTestRun(testId);
         LoaderoClientUtils.checkArgumentsForNull(startTestRun, testId, interval, timeout);
 
-        LOGGER.info("Test {} is now running.", testId);
-        LOGGER.info("Run ID {}", startTestRun.getId());
+        log.info("Test {} is now running.", testId);
+        log.info("Run ID {}", startTestRun.getId());
         return (LoaderoRunInfo) startPolling(
                 testId, String.valueOf(startTestRun.getId()),
                 interval, timeout);
@@ -75,19 +75,19 @@ public class LoaderoPollingService extends AbstractLoaderoService<LoaderoRunInfo
     private LoaderoRunInfo startTestRun(String testId) {
         String startTestRunUrl = String.format("%s/runs/", urlBuilder.buildTestURLById(testId));
 
-        LOGGER.info("Starting test on {}", startTestRunUrl);
+        log.info("Starting test on {}", startTestRunUrl);
         LoaderoRunInfo result = null;
         try {
             HttpUriRequest postRun = RequestBuilder.post(startTestRunUrl).build();
             try (CloseableHttpResponse res = client.build().execute(postRun)) {
                 if (res.getStatusLine().getStatusCode() == HttpStatus.SC_ACCEPTED) {
-                    result = (LoaderoRunInfo) LoaderoClientUtils.jsonToObject(
+                    result = (LoaderoRunInfo) LoaderoClientUtils.httpEntityToModel(
                             res.getEntity(),
                             LoaderoType.LOADERO_RUN_INFO
                     );
-                    LOGGER.info("Test successfully started.");
+                    log.info("Test successfully started.");
                 } else {
-                    LOGGER.info("Test stopped with value: {}", result);
+                    log.info("Test stopped with value: {}", result);
                     return result;
                 }
             }
@@ -106,7 +106,7 @@ public class LoaderoPollingService extends AbstractLoaderoService<LoaderoRunInfo
                                       int interval, int timeout) {
         LoaderoRunInfo result = null;
         String getRunInfo = buildUrl(testId, runId);
-        LOGGER.info("Run URL: {}", getRunInfo);
+        log.info("Run URL: {}", getRunInfo);
         // converting seconds into ms
         interval = interval * 1000;
         timeout = timeout * 1000;
@@ -117,9 +117,10 @@ public class LoaderoPollingService extends AbstractLoaderoService<LoaderoRunInfo
         long start = System.currentTimeMillis();
         long end = start + timeout;
 
-        while (!done | System.currentTimeMillis() < end) {
+        while (!done || System.currentTimeMillis() < end) {
+            log.info(tries);
             if (tries <= 0) {
-                LOGGER.info("Number of tries expired.");
+                log.info("Number of tries expired.");
                 return result;
             }
 
@@ -128,15 +129,15 @@ public class LoaderoPollingService extends AbstractLoaderoService<LoaderoRunInfo
                     result = getById(testId, runId);
                     if (result.getStatus().equals("done")) {
                         done = true;
-                        LOGGER.info("Test run is done.");
-                        LOGGER.info("Test run information available at {}",
+                        log.info("Test run is done.");
+                        log.info("Test run information available at {}",
                                 getRunInfo + "results/");
                     } else {
-                        LOGGER.info("Test status: {}", result.getStatus());
+                        log.info("Test status: {}", result.getStatus());
                         Thread.sleep(interval);
                     }
                 } catch (Exception e) {
-                    LOGGER.warn("{}", e.getMessage());
+                    log.warn("{}", e.getMessage());
                     stopTestRun(testId, runId);
                     return result;
                 }
@@ -154,7 +155,7 @@ public class LoaderoPollingService extends AbstractLoaderoService<LoaderoRunInfo
         HttpUriRequest stopRun = RequestBuilder.post(stopURI).build();
         try {
             client.build().execute(stopRun);
-            LOGGER.error("Something went wrong. Test run has stopped.");
+            log.error("Something went wrong. Test run has stopped.");
         } catch (IOException e) {
             e.printStackTrace();
         }

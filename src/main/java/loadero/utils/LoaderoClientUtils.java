@@ -51,7 +51,7 @@ public class LoaderoClientUtils {
     }
 
     // Converts JSON from response into according LoaderModel object
-    public static LoaderoModel jsonToObject(HttpEntity entity, LoaderoType type) {
+    public static LoaderoModel httpEntityToModel(HttpEntity entity, LoaderoType type) {
         LoaderoModel result = null;
 
         if (entity == null) { return result; }
