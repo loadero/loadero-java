@@ -23,13 +23,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Rule;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
-import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -44,8 +40,6 @@ public class TestLoaderoPackage {
     private static final String GROUP_ID        = "48797";
     private static final String RUN_ID          = "33328";
     private static final String RESULT_ID       = "930397";
-    private static final String DISABLED_ENABLED_IF_NAME = "LOADERO_BASE_URL";
-    private static final String DISABLED_ENABLED_IF_MATCH = ".*localhost.*";
     private final LoaderoHttpClient httpClient  = new LoaderoHttpClient(token);
     private static final Logger log = LogManager.getLogger(TestLoaderoPackage.class);
     private CloseableHttpResponse response;
@@ -142,8 +136,6 @@ public class TestLoaderoPackage {
 
     @Test
     public void testGetTestOptionsById() {
-        // Make GET request to url on localhost to get status code
-        
         wmRule.stubFor(get(urlMatching(".*/tests/" + TEST_ID + "/"))
                 .willReturn(aResponse()
                         .withStatus(HttpStatus.SC_OK)
