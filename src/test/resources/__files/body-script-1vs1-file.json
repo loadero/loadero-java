@@ -1,0 +1,8 @@
+{
+  "id": 57737,
+  "created": "2021-02-02T11:59:50Z",
+  "updated": "2021-02-26T14:35:32Z",
+  "project_id": 5040,
+  "file_type": "test_script",
+  "content": "public void test() {\n        open(\"https://appr.tc/\").setElement(byCssSelector(\"body\"))\n                                .waitFor(10)\n                                .untilIsVisible()\n                                .setElement(byId(\"join-button\"))\n                                .click();\n        sleep(10 * 1000);\n    }\n"
+}
