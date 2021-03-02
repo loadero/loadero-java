@@ -31,7 +31,7 @@ public class LoaderoTestRunResultService extends AbstractLoaderoService<LoaderoT
     }
 
     /**
-     * Not defined.
+     * Not needed.
      * @param newModel
      * @param id
      * @return
@@ -43,6 +43,6 @@ public class LoaderoTestRunResultService extends AbstractLoaderoService<LoaderoT
 
     @Override
     protected String buildUrl(String... id) {
-        return String.format("%s",urlBuilder.buildRunResultsURL(id[0], id[1]));
+        return String.format("%s/",urlBuilder.buildRunResultsURL(id[0], id[1]));
     }
 }
