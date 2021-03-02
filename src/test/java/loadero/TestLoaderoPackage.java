@@ -327,12 +327,6 @@ public class TestLoaderoPackage {
         LoaderoTestRunResult results = loaderoClient.getTestRunResult("2323", RUN_ID);
         assertNull(results);
     }
-    
-    @Test
-    public void negativeGetAllTestResultsInvalidRunId() {
-        LoaderoTestRunResult results = loaderoClient.getTestRunResult(TEST_ID, "2342");
-        assertNull(results.getResults());
-    }
 
     @Test
     public void testGetSingleRunResultsFromWireMock() {
