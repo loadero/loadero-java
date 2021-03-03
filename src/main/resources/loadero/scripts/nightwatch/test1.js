@@ -3,7 +3,7 @@ function test(client) {
     var particId = globalConfig.participant.id;
     var identity = "Participant" + particId;
     var callDuration = 60; // in seconds
-    var appUrl = "https://voice-webapp-3026-dev.twil.io/index.html?identity=";
+    var appUrl = "";
     var elementTimeout = 10*1000;
 
     if (particId % 2 == 0) {
