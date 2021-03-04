@@ -17,10 +17,10 @@ import lombok.NoArgsConstructor;
 @Generated // Need this for JaCoco to ignore getters and setters
 public class LoaderoGroup implements LoaderoModel {
     @Expose(serialize = false)
-    private long id = 0L;
+    private int id = 0;
     @Expose(serialize = false)
     @SerializedName("test_id")
-    private long testId = 0L;
+    private int testId = 0;
     private String name = "";
     private int count = 0;
 }

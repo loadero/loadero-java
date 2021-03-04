@@ -5,17 +5,17 @@ package loadero.utils;
  */
 public class LoaderoUrlBuilder {
     private final String baseUrl;
-    private final String projectId;
+    private final int projectId;
 
-    public LoaderoUrlBuilder(String baseUrl, String projectId) {
+    public LoaderoUrlBuilder(String baseUrl, int projectId) {
         this.baseUrl = baseUrl;
         this.projectId = projectId;
     }
 
     // Public for testing purposes. May make it private later
-    public String buildTestURLById(String testId) {
+    public String buildTestURLById(int testId) {
         return String.format(
-                "%s/projects/%s/tests/%s",
+                "%s/projects/%s/tests/%d",
                 baseUrl,
                 projectId,
                 testId);
@@ -27,9 +27,9 @@ public class LoaderoUrlBuilder {
      * @param groupId - ID of the desired group
      * @return        - String of url pointing to group.
      */
-    public String buildGroupURL(String testId, String groupId) {
+    public String buildGroupURL(int testId, int groupId) {
         String testUrl = buildTestURLById(testId);
-        return String.format("%s/groups/%s", testUrl, groupId);
+        return String.format("%s/groups/%d", testUrl, groupId);
     }
 
     /**
@@ -39,27 +39,26 @@ public class LoaderoUrlBuilder {
      * @param participantId - ID of desired participant.
      * @return              - String url pointing to participant.
      */
-    public String buildParticipantURL(String testId, String groupId,
-                                      String participantId) {
-        return String.format("%s/participants/%s",
+    public String buildParticipantURL(int testId, int groupId, int participantId) {
+        return String.format("%s/participants/%d",
                 buildGroupURL(testId, groupId),
                 participantId);
     }
 
-    public String buildScriptFileURL(String fileId) {
-        return String.format("%s/projects/%s/files/%s",
+    public String buildScriptFileURL(int fileId) {
+        return String.format("%s/projects/%d/files/%d",
                 baseUrl,
                 projectId,
                 fileId );
     }
 
-    public String buildRunResultsURL(String testId, String runId) {
-        return String.format("%s/runs/%s/results",
+    public String buildRunResultsURL(int testId, int runId) {
+        return String.format("%s/runs/%d/results",
                 buildTestURLById(testId),
                 runId);
     }
 
     public String buildProjectURL() {
-        return String.format("%s/projects/%s", baseUrl, projectId);
+        return String.format("%s/projects/%d", baseUrl, projectId);
     }
 }

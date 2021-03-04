@@ -28,7 +28,7 @@ public abstract class AbstractLoaderoService<T extends LoaderoModel> {
      * @param id - Array of IDs.
      * @return
      */
-    public abstract T getById(String...id);
+    public abstract T getById(int...id);
 
     /**
      * Updates information by ID about newModel object on Loadero API endpoint.
@@ -36,12 +36,12 @@ public abstract class AbstractLoaderoService<T extends LoaderoModel> {
      * @param id       - Necessary IDs for update.
      * @return         - concrete implementation of LoaderoModel object.
      */
-    public abstract T updateById(T newModel, String...id);
+    public abstract T updateById(T newModel, int...id);
 
     /**
      * Common method used by every service to build url for itself.
      * @param id - ID of the specific object endpoint.
      * @return   - URL pointing to the object.
      */
-    protected abstract String buildUrl(String...id);
+    protected abstract String buildUrl(int...id);
 }

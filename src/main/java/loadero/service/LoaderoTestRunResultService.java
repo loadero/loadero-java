@@ -20,9 +20,9 @@ public class LoaderoTestRunResultService extends AbstractLoaderoService<LoaderoT
     }
 
     @Override
-    public LoaderoTestRunResult getById(String... id) {
-        String testId = id[0];
-        String runId = id[1];
+    public LoaderoTestRunResult getById(int... id) {
+        int testId = id[0];
+        int runId = id[1];
         LoaderoClientUtils.checkArgumentsForNull(testId, runId);
 
         String resultsUrl = buildUrl(testId, runId);
@@ -37,12 +37,12 @@ public class LoaderoTestRunResultService extends AbstractLoaderoService<LoaderoT
      * @return
      */
     @Override
-    public LoaderoTestRunResult updateById(LoaderoTestRunResult newModel, String... id) {
+    public LoaderoTestRunResult updateById(LoaderoTestRunResult newModel, int... id) {
         return null;
     }
 
     @Override
-    protected String buildUrl(String... id) {
+    protected String buildUrl(int... id) {
         return String.format("%s/",urlBuilder.buildRunResultsURL(id[0], id[1]));
     }
 }

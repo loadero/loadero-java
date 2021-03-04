@@ -23,7 +23,7 @@ import java.util.Map;
 @Generated // Need this for JaCoco to ignore getters and setters
 public class LoaderoTestOptions implements LoaderoModel {
     @Expose(serialize = false)
-    private long id = 0L;
+    private int id = 0;
     private String name = "";
     @SerializedName("start_interval")
     private int startInterval = 0;
@@ -35,7 +35,7 @@ public class LoaderoTestOptions implements LoaderoModel {
     private String script = ""; // Path to script
     @SerializedName("script_file_id")
     @Expose(serialize = false)
-    private long scriptFileId = 0L;
+    private int scriptFileId = 0;
 
     /**
      * When given only URI as argument, threats this argument as path

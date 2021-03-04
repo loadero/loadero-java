@@ -32,9 +32,9 @@ public class LoaderoPollingService extends AbstractLoaderoService<LoaderoRunInfo
     }
 
     @Override
-    public LoaderoRunInfo getById(String... id) {
-        String testId = id[0];
-        String runId  = id[1];
+    public LoaderoRunInfo getById(int... id) {
+        int testId = id[0];
+        int runId  = id[1];
         LoaderoClientUtils.checkArgumentsForNull(testId, runId);
 
         String getRunsUrl = buildUrl(testId, runId);
@@ -44,26 +44,26 @@ public class LoaderoPollingService extends AbstractLoaderoService<LoaderoRunInfo
 
     // Not needed.
     @Override
-    public LoaderoRunInfo updateById(LoaderoRunInfo newModel, String... id) {
+    public LoaderoRunInfo updateById(LoaderoRunInfo newModel, int... id) {
         return null;
     }
 
     // Building url for tests/testId/runs/runId/ endpoint.
     @Override
-    protected String buildUrl(String...id) {
+    protected String buildUrl(int...id) {
         return String.format("%s/runs/%s/",
                 urlBuilder.buildTestURLById(id[0]),
                 id[1]);
     }
 
-    public LoaderoRunInfo startTestAndPoll(String testId, int interval, int timeout) {
+    public LoaderoRunInfo startTestAndPoll(int testId, int interval, int timeout) {
         LoaderoRunInfo startTestRun = startTestRun(testId);
         LoaderoClientUtils.checkArgumentsForNull(startTestRun, testId, interval, timeout);
 
         log.info("Test {} is now running.", testId);
         log.info("Run ID {}", startTestRun.getId());
         return (LoaderoRunInfo) startPolling(
-                testId, String.valueOf(startTestRun.getId()),
+                testId, startTestRun.getId(),
                 interval, timeout);
     }
 
@@ -72,7 +72,7 @@ public class LoaderoPollingService extends AbstractLoaderoService<LoaderoRunInfo
      * @param testId - ID of the test we want to start.
      * @return       - Returns LoaderoRunInfo object with information about test run.
      */
-    private LoaderoRunInfo startTestRun(String testId) {
+    private LoaderoRunInfo startTestRun(int testId) {
         String startTestRunUrl = String.format("%s/runs/", urlBuilder.buildTestURLById(testId));
 
         log.info("Starting test on {}", startTestRunUrl);
@@ -102,7 +102,7 @@ public class LoaderoPollingService extends AbstractLoaderoService<LoaderoRunInfo
      * @param timeout  - maximum amount of time in seconds should spend polling
      * @return         - On success will return LoaderoRunInfo object, otherwise null.
      */
-    private LoaderoModel startPolling(String testId, String runId,
+    private LoaderoModel startPolling(int testId, int runId,
                                       int interval, int timeout) {
         LoaderoRunInfo result = null;
         String getRunInfo = buildUrl(testId, runId);
@@ -150,7 +150,7 @@ public class LoaderoPollingService extends AbstractLoaderoService<LoaderoRunInfo
     /**
      * Stops test run by calling GET on runs/rundId/stop/
      */
-    private void stopTestRun(String testId, String runId) {
+    private void stopTestRun(int testId, int runId) {
         String stopURI = buildUrl(testId, runId);
         HttpUriRequest stopRun = RequestBuilder.post(stopURI).build();
         try {

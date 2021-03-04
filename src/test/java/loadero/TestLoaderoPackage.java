@@ -32,14 +32,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TestLoaderoPackage {
-    private static final String token           = System.getenv("LOADERO_API_TOKEN");
-    private static String BASE_URL              = System.getenv("LOADERO_BASE_URL");
-    private static final String PROJECT_ID      = "5040";
-    private static final String TEST_ID         = "6866";
-    private static final String PARTICIPANT_ID  = "94633";
-    private static final String GROUP_ID        = "48797";
-    private static final String RUN_ID          = "33328";
-    private static final String RESULT_ID       = "930397";
+    private static final String token        = System.getenv("LOADERO_API_TOKEN");
+    private static String BASE_URL           = System.getenv("LOADERO_BASE_URL");
+    private static final int PROJECT_ID      = 5040;
+    private static final int TEST_ID         = 6866;
+    private static final int PARTICIPANT_ID  = 94633;
+    private static final int GROUP_ID        = 48797;
+    private static final int RUN_ID          = 33328;
+    private static final int RESULT_ID       = 930397;
     private final LoaderoHttpClient httpClient  = new LoaderoHttpClient(token);
     private static final Logger log = LogManager.getLogger(TestLoaderoPackage.class);
     private CloseableHttpResponse response;
@@ -143,12 +143,12 @@ public class TestLoaderoPackage {
         
         LoaderoTestOptions test = loaderoClient.getTestOptionsById(TEST_ID);
         assertNotNull(test);
-        assertEquals(TEST_ID, String.valueOf(test.getId()));
+        assertEquals(TEST_ID, test.getId());
     }
 
     @Test
     public void negativeGetTestOptionsById() {
-        LoaderoTestOptions test = loaderoClient.getTestOptionsById("0");
+        LoaderoTestOptions test = loaderoClient.getTestOptionsById(0);
         assertNull(test);
     }
 
@@ -163,7 +163,7 @@ public class TestLoaderoPackage {
         
         testOptionsHelper(jsonRes);
         
-        LoaderoTestOptions updatedTest = loaderoClient.updateTestOptions(TEST_ID, newTest);
+        LoaderoTestOptions updatedTest = loaderoClient.updateTestOptionsById(TEST_ID, newTest);
         assertNotNull(updatedTest);
         assertEquals(150, updatedTest.getParticipantTimeout());
         assertEquals("unit test 1", updatedTest.getName());
@@ -182,11 +182,11 @@ public class TestLoaderoPackage {
         testOptionsHelper(jsonRes);
         
         // Updating some random test
-        LoaderoTestOptions updatedTest = loaderoClient.updateTestOptions("7193", newTest);
+        LoaderoTestOptions updatedTest = loaderoClient.updateTestOptionsById(7193, newTest);
         // Retrieving ID pointing to script file
-        long scriptId = updatedTest.getScriptFileId();
+        int scriptId = updatedTest.getScriptFileId();
         // Getting content of the script from Loadero
-        String actualScript = loaderoClient.getTestScript(String.valueOf(scriptId))
+        String actualScript = loaderoClient.getTestScriptById(scriptId)
                 .getContent();
         String expectedScript = FunctionBodyParser
                 .getScriptContent("src/main/resources/loadero/scripts/testui/LoaderoScript.java");
@@ -202,10 +202,10 @@ public class TestLoaderoPackage {
         test.setMode("performance");
         test.setName("negative test");
         assertThrows(NullPointerException.class, () -> {
-            loaderoClient.updateTestOptions("23423", test);
+            loaderoClient.updateTestOptionsById(23423, test);
         });
         assertThrows(NullPointerException.class, () -> {
-            loaderoClient.updateTestOptions("23423", null);
+            loaderoClient.updateTestOptionsById(23423, null);
         });
     }
     
@@ -220,12 +220,12 @@ public class TestLoaderoPackage {
         
         LoaderoGroup group = loaderoClient.getGroupById(TEST_ID, GROUP_ID);
         assertNotNull(group);
-        assertEquals(GROUP_ID, String.valueOf(group.getId()));
+        assertEquals(GROUP_ID, group.getId());
     }
 
     @Test
     public void negativeGetGroupById() {
-        LoaderoGroup group = loaderoClient.getGroupById(TEST_ID, "2342");
+        LoaderoGroup group = loaderoClient.getGroupById(TEST_ID, 2342);
         assertNull(group);
     }
 
@@ -240,18 +240,18 @@ public class TestLoaderoPackage {
         
         LoaderoParticipant participant = loaderoClient.getParticipantById(TEST_ID, GROUP_ID, PARTICIPANT_ID);
         assertNotNull(participant);
-        assertEquals(PARTICIPANT_ID, String.valueOf(participant.getId()));
+        assertEquals(PARTICIPANT_ID, participant.getId());
     }
 
     @Test
     public void negativeGetParticipantWrongTestId() {
-        LoaderoParticipant participant = loaderoClient.getParticipantById("234", GROUP_ID, PARTICIPANT_ID);
+        LoaderoParticipant participant = loaderoClient.getParticipantById(234, GROUP_ID, PARTICIPANT_ID);
         assertNull(participant);
     }
 
     @Test
     public void negativeGetParticipantWrongParticipantId() {
-        LoaderoParticipant participant = loaderoClient.getParticipantById(TEST_ID, GROUP_ID, "2312");
+        LoaderoParticipant participant = loaderoClient.getParticipantById(TEST_ID, GROUP_ID, 2312);
         assertNull(participant);
     }
 
@@ -296,7 +296,7 @@ public class TestLoaderoPackage {
         // Should throw null pointer exception
         assertThrows(NullPointerException.class, () ->
             loaderoClient.
-                    updateTestParticipantById(TEST_ID, GROUP_ID, null, null)
+                    updateTestParticipantById(TEST_ID, GROUP_ID, 0, null)
         );
     }
     
@@ -305,7 +305,7 @@ public class TestLoaderoPackage {
         // Should throw null pointer exception
         assertThrows(NullPointerException.class, () ->
             loaderoClient.
-                    updateTestParticipantById("3eqq", GROUP_ID, PARTICIPANT_ID, null)
+                    updateTestParticipantById(1, GROUP_ID, PARTICIPANT_ID, null)
         );
     }
 
@@ -318,13 +318,13 @@ public class TestLoaderoPackage {
                         .withStatus(HttpStatus.SC_OK)
                         .withBodyFile("body-run-results-NyqBC.json")));
         
-        LoaderoTestRunResult testRunResult = loaderoClient.getTestRunResult(TEST_ID, RUN_ID);
+        LoaderoTestRunResult testRunResult = loaderoClient.getTestRunResultById(TEST_ID, RUN_ID);
         assertNotNull(testRunResult);
     }
     
     @Test
     public void negativeGetAllTestResultsInvalidTestId() {
-        LoaderoTestRunResult results = loaderoClient.getTestRunResult("2323", RUN_ID);
+        LoaderoTestRunResult results = loaderoClient.getTestRunResultById(2323, RUN_ID);
         assertNull(results);
     }
 
@@ -339,7 +339,7 @@ public class TestLoaderoPackage {
                         .withBodyFile("body-projects-5040-tests-6866-participant-results-iHbtF.json")));
         
         LoaderoTestRunParticipantResult result = loaderoClient
-                .getTestRunParticipantResult(TEST_ID, RUN_ID, RESULT_ID);
+                .getTestRunParticipantResultById(TEST_ID, RUN_ID, RESULT_ID);
         assertNotNull(result);
         assertNotNull(result.getLogPaths());
         assertNotNull(result.getArtifacts());
@@ -354,14 +354,14 @@ public class TestLoaderoPackage {
     public void negativeGetSingleRunResultsInvalidResultId() {
         wmRule.resetMappings();
         LoaderoTestRunParticipantResult result = loaderoClient
-                .getTestRunParticipantResult(TEST_ID, RUN_ID, "2341");
+                .getTestRunParticipantResultById(TEST_ID, RUN_ID, 2341);
         assertNull(result);
     }
     
     @Test
     public void negativeGetSingleRunResultsInvalidRunId() {
         LoaderoTestRunParticipantResult result = loaderoClient
-                .getTestRunParticipantResult(TEST_ID, "RUN_ID", RESULT_ID);
+                .getTestRunParticipantResultById(TEST_ID, 2, RESULT_ID);
         assertNull(result);
     }
 
@@ -437,7 +437,7 @@ public class TestLoaderoPackage {
     @Test
     public void negativePollingTestInvalidTestId() {
         assertThrows(NullPointerException.class, () -> {
-            loaderoClient.startTestAndPollInfo("111", 2, 40);
+            loaderoClient.startTestAndPollInfo(111, 2, 40);
         });
     }
 

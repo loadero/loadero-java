@@ -21,10 +21,10 @@ public class LoaderoParticipantService extends AbstractLoaderoService<LoaderoPar
     }
 
     @Override
-    public LoaderoParticipant getById(String... id) {
-        String testId = id[0];
-        String groupId = id[1];
-        String participantId = id[2];
+    public LoaderoParticipant getById(int... id) {
+        int testId = id[0];
+        int groupId = id[1];
+        int participantId = id[2];
         LoaderoClientUtils.checkArgumentsForNull(testId, groupId, participantId);
 
         String particUrl = buildUrl(testId, groupId, participantId);
@@ -34,10 +34,10 @@ public class LoaderoParticipantService extends AbstractLoaderoService<LoaderoPar
     }
 
     @Override
-    public LoaderoParticipant updateById(LoaderoParticipant newModel, String... id) {
-        String testId = id[0];
-        String groupId = id[1];
-        String participantId = id[2];
+    public LoaderoParticipant updateById(LoaderoParticipant newModel, int... id) {
+        int testId = id[0];
+        int groupId = id[1];
+        int participantId = id[2];
 
         LoaderoClientUtils.checkArgumentsForNull(newModel, testId, groupId, participantId);
 
@@ -54,7 +54,7 @@ public class LoaderoParticipantService extends AbstractLoaderoService<LoaderoPar
     }
 
     @Override
-    protected String buildUrl(String... id) {
+    protected String buildUrl(int... id) {
         return String.format("%s/", urlBuilder.buildParticipantURL(id[0], id[1], id[2]));
     }
 }

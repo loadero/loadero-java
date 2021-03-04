@@ -13,7 +13,7 @@ public class LoaderoServiceFactory {
     private final LoaderoCrudController crudController;
     private final LoaderoUrlBuilder urlBuilder;
 
-    public LoaderoServiceFactory(String apiToken, String baseUrl, String projectId) {
+    public LoaderoServiceFactory(String apiToken, String baseUrl, int projectId) {
         this.crudController = new LoaderoCrudController(apiToken);
         this.urlBuilder = new LoaderoUrlBuilder(baseUrl, projectId);
     }

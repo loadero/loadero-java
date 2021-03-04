@@ -15,13 +15,13 @@ import lombok.Generated;
 @Data
 @Generated // Need this for JaCoco to ignore getters and setters
 public class LoaderoParticipant implements LoaderoModel {
-    private long id = 0;
+    private int id = 0;
     @Expose(serialize = false)
     @SerializedName("group_id")
-    private long groupId = 0;
+    private int groupId = 0;
     @Expose(serialize = false)
     @SerializedName("test_id")
-    private long testId = 0;
+    private int testId = 0;
     private String name = "";
     private int count = 0;
     @SerializedName("compute_unit")

@@ -13,9 +13,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Generated // Need this for JaCoco to ignore getters and setters
 public class LoaderoScriptFileLoc implements LoaderoModel{
-    private long id;
+    private int id;
     @SerializedName("project_id")
-    private long projectId;
+    private int projectId;
     @SerializedName("file_type")
     private String fileType;
     private String content;

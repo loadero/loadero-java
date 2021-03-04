@@ -22,10 +22,10 @@ public class LoaderoTestRunParticipantResultService extends
     }
 
     @Override
-    public LoaderoTestRunParticipantResult getById(String... id) {
-        String testId = id[0];
-        String runId = id[1];
-        String resultId = id[2];
+    public LoaderoTestRunParticipantResult getById(int... id) {
+        int testId = id[0];
+        int runId = id[1];
+        int resultId = id[2];
         LoaderoClientUtils.checkArgumentsForNull(testId, runId, resultId);
 
         String resultsUrl = buildUrl(testId, runId, resultId);
@@ -34,19 +34,19 @@ public class LoaderoTestRunParticipantResultService extends
     }
 
     /**
-     * Not defined.
+     * Not needed.
      * @param newModel
      * @param id
      * @return
      */
     @Override
     public LoaderoTestRunParticipantResult updateById(LoaderoTestRunParticipantResult newModel,
-                                                      String... id) {
+                                                      int... id) {
         return null;
     }
 
     @Override
-    protected String buildUrl(String... id) {
+    protected String buildUrl(int... id) {
         return  String.format("%s/%s/", urlBuilder.buildRunResultsURL(id[0], id[1]), id[2]);
     }
 }

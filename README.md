@@ -5,9 +5,9 @@
 
 <h3>Description</h3>
 <hr>
-<p>This is a small java library that can be used as a wrapper to interact with Loadero API.</p>
+<p>This is a small java library that can be used as a client to interact with Loadero API service.</p>
 <p>For now only a small portion of functionality is covered such as getting or updating information about 
-existing tests, updating information about Loadero group and participants.
+existing tests, groups and participants. In addition it is possible to launch tests and poll for the results.
 </p>
 
 <h3>Plans</h3>
@@ -150,11 +150,11 @@ Public methods that is used to interact with Loadero API.
 <td>
 
 ```java
-LoaderoTestOptions getTestOptionsById(String testId)
+LoaderoTestOptions getTestOptionsById(int testId)
 ```
 </td>
 <td>
-<b>String testId</b> - ID of the test we would like to get.
+<b>int testId</b> - ID of the test we would like to get.
 </td>
 <td>
 Makes GET request to <b>/projects/{projectID}/tests/{testID}</b> endpoint and
@@ -164,15 +164,15 @@ retrieves information about existing test. Takes no arguments. Returns data as L
 <td>
 
 ```java
- LoaderoTestOptions updateTestOptions
-        (String testId, LoaderoTestOptions newOptions)
+ LoaderoTestOptions updateTestOptionsById
+        (int testId, LoaderoTestOptions newOptions)
 ```
 </td>
 <td>
 <b>LoaderoTestOptions newOptions</b> - Required parameter that is used to set new test options
 in Loadero via API call.
 
-<b>String testId</b> - ID of the test we wish to update.
+<b>int testId</b> - ID of the test we wish to update.
 </td>
 <td>Makes PUT request to <b>/projects/{projectID}/tests/{testID}</b> and updates existing test options 
 in Loadero. 
@@ -183,11 +183,11 @@ Takes in LoaderoTestOptions object with desired params set through setter method
 <td>
 
 ```java
- String getTestScript(String fileId)
+ String getTestScript(int fileId)
 ```
 </td>
 <td>
-<b>String fileId</b> - ID that is pointing to the script file on Loadero.
+<b>int fileId</b> - ID that is pointing to the script file on Loadero.
 </td>
 <td>Makes GET request to <b>/projects/{projectID}/files/{fileID}/</b> and retrieves the content
 of the script used for testing.
@@ -198,12 +198,12 @@ of the script used for testing.
 
 ```java
  LoaderoGroup getGroupById
-        (String testId, String groupId)
+        (int testId, int groupId)
 ```
 </td>
 <td>
-<b>String testId</b>  - ID of the test that contains desired group.<br/>
-<b>String groupId</b> - ID of the group that is used to retrieve information about Loadero Group.
+<b>int testId</b>  - ID of the test that contains desired group.<br/>
+<b>int groupId</b> - ID of the group that is used to retrieve information about Loadero Group.
 </td>
 <td>Makes GET request to <b>/projects/{projectID}/tests/{testID}/groups/{groupID}/</b> 
 and retrieves information about group.
@@ -214,12 +214,12 @@ and retrieves information about group.
 
 ```java
  LoaderoGroup updateGroupById
-        (String testId, String groupId, LoaderoGroup newGroup)
+        (int testId, int groupId, LoaderoGroup newGroup)
 ```
 </td>
 <td>
-<b>String testId</b>  - ID of the test that contains desired group.<br/>
-<b>String groupId</b> - ID of the group that is wish to be updated.<br>
+<b>int testId</b>  - ID of the test that contains desired group.<br/>
+<b>int groupId</b> - ID of the group that is wish to be updated.<br>
 <b>LoaderoGroup newGroup</b> - LoaderoGroup object with new params.
 </td>
 <td>Makes PUT request to <b>/projects/{projectID}/tests/{testID}/groups/{groupID}/</b> 
@@ -231,13 +231,13 @@ and updates information about group.
 
 ```java
  LoaderoParticipant getParticipantById
-        (String testId, String groupId, String participnatId)
+        (int testId, int groupId, int participnatId)
 ```
 </td>
 <td>
-<b>String testId</b> - ID of the test containing participant.<br>
-<b>String groupId</b> - ID of the group containing participant.<br>
-<b>String participantId</b> - ID of the participant that is used to retrieve information.
+<b>int testId</b> - ID of the test containing participant.<br>
+<b>int groupId</b> - ID of the group containing participant.<br>
+<b>int participantId</b> - ID of the participant that is used to retrieve information.
 </td>
 <td>Makes GET request to <b>/projects/{projectID}/tests/{testID}/groups/{groupID}/participants/{participantID}
 </b> 
@@ -249,14 +249,14 @@ and retrieves information about participant.
 
 ```java
 LoaderoParticipant updateTestParticipantById
-        (String testId,String groupId,String participantId,
+        (int testId, int groupId, int participantId,
         LoaderoParticipant newParticipant)
 ```
 </td>
 <td>
-<b>String testId</b>  - ID of the test that contains desired group.<br/>
-<b>String groupId</b> - ID of the group that contains participant.<br>
-<b>String participantId</b> - ID of the participant to be updated.<br>
+<b>int testId</b>  - ID of the test that contains desired group.<br/>
+<b>int groupId</b> - ID of the group that contains participant.<br>
+<b>int participantId</b> - ID of the participant to be updated.<br>
 <b>LoaderoParticipant newParticipant</b> - LoaderoParticipant object with new params.
 </td>
 <td>Makes PUT request to <b>/projects/{projectID}/tests/{testID}/groups/{groupID}/participants/{participanatID}</b> 
@@ -267,13 +267,13 @@ and updates information about specific participant.
 <td>
 
 ```java
- LoaderoTestRunResult getTestRunResult
-        (String testId, String runId)
+ LoaderoTestRunResult getTestRunResultById
+        (int testId, int runId)
 ```
 </td>
 <td>
-<b>String testId</b> - ID of the test containing info about test runs.<br>
-<b>String runId</b> -  ID of the test run.<br>
+<b>int testId</b> - ID of the test containing info about test runs.<br>
+<b>int runId</b> -  ID of the test run.<br>
 </td>
 <td>Makes GET request to <b>projects/{projectID}/tests/{testID}/runs/{runID}/results/</b>
 and retrieves information about <b>all</b> test run results.
@@ -283,11 +283,11 @@ and retrieves information about <b>all</b> test run results.
 <td>
 
 ```java
-LoaderoScriptFileLoc getTestScript(String fileId)
+LoaderoScriptFileLoc getTestScriptById(int fileId)
 ```
 </td>
 <td>
-<b>String fileId</b> - ID of the test script file.<br>
+<b>int fileId</b> - ID of the test script file.<br>
 </td>
 <td>Makes GET request to <b>/projects/{projectId}/files/{fileId}"</b>
 and retrieves test script.
@@ -297,14 +297,14 @@ and retrieves test script.
 <td>
 
 ```java
-LoaderoTestRunParticipantResult getTestRunParticipantResult
-        (String testId, String runId, String resultId) 
+LoaderoTestRunParticipantResult getTestRunParticipantResultById
+        (int testId, int runId, int resultId) 
 ```
 </td>
 <td>
-<b>String testId</b> - ID of the test containing info about test runs.<br>
-<b>String runId</b> -  ID of the test run.<br>
-<b>String resultId</b> - ID of the specific result.
+<b>int testId</b> - ID of the test containing info about test runs.<br>
+<b>int runId</b> -  ID of the test run.<br>
+<b>int resultId</b> - ID of the specific result.
 </td>
 <td>Makes GET request to <b>projects/{projectID}/tests/{testID}/runs/{runID}/results/{resultId}/</b>
 and retrieves information about <b>specific</b> test run result.
@@ -315,11 +315,11 @@ and retrieves information about <b>specific</b> test run result.
 
 ```java
   LoaderoRunInfo startTestAndPollInfo
-        (String testId, int interval, int timeout)
+        (int testId, int interval, int timeout)
 ```
 </td>
 <td>
-<b>String testId</b> - ID of the test we wish to start and poll information from.<br>
+<b>int testId</b> - ID of the test we wish to start and poll information from.<br>
 <b>int interval</b> - Specifying in <b>seconds</b> how often should be method poll for information.<br>
 <b>int timeout</b>  - Total amount of time in <b>seconds</b> that should be spending polling information.
 </td>
@@ -340,13 +340,13 @@ Also, will give link to results.
 
 ```java
 // Initiating client through which we will be iterating with Loadero API.
-LoaderoClient client = new LoaderoClient(loaderoToken, projectId);
+LoaderoClient client = new LoaderoClient(baseUrl, loaderoToken, projectId);
 
 // ID of the test we are interested in.
-String testId = "sometestId"; // Usually some numeric value
+int testId = 2323;
 
 // Retrieving current test description, if needed.
-LaoderoTestOptions currentTestOptions = client.getTestOptions(testId);
+LoaderoTestOptions currentTestOptions = client.getTestOptionsById(testId);
 
 // Initiating new test options.
 // New options are...well...optional. Those options that wasn't specified
@@ -380,7 +380,7 @@ newTestOptions.setScript("path to script template", newParams);
 
 // After that you can call updateTestOptions() method and store result
 // of the operation for later usage if needed.       
-LoaderoTestOptions updatedOptions = client.updateTestOptions(testId, newTestOptions);
+LoaderoTestOptions updatedOptions = client.updateTestOptionsById(testId, newTestOptions);
 ```
 
 <h3>Basic polling usage</h3>
@@ -397,7 +397,7 @@ LoaderoRunInfo testRunInfo = client.startTestAndPollInfo(testId, 15, 100);
 
 // For example you going to need test run ID field to get results
 // about this test run.
-long testRunId = testRunInfo.getId();
+int testRunId = testRunInfo.getId();
 
 // Or if you would like to know success rate you can retrieve it with
 // getter method respectively.
@@ -411,11 +411,11 @@ double successRate = testRunInfo.getSuccessRate();
 // test runs that were made.
 // You can use testRunId defined earlier to get all information about test run results
 // This will give you a List<LoaderoSingleTestRunResult> object.
-LoaderoTestRunResult results = client.getTestRunResult(testId, testRunId);
+LoaderoTestRunResult results = client.getTestRunResultById(testId, testRunId);
 // This object contains an individual IDs of each test run result that you can
 // retrieve later with the next method
 LoaderoTestRunParticipantResult singleResult = client
-        .getTestRunParticipantResult(String testId, String testRunId, String resultId);
+        .getTestRunParticipantResultById(int testId, int testRunId, int resultId);
 
 // And then, with getters, retrieve all the necessary information about single test run results,
 // that you may need.

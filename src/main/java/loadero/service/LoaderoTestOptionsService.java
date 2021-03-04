@@ -25,7 +25,7 @@ public class LoaderoTestOptionsService extends AbstractLoaderoService<LoaderoTes
     }
 
     @Override
-    public LoaderoTestOptions getById(String... id) {
+    public LoaderoTestOptions getById(int... id) {
         String testUrl = buildUrl(id[0]);
         LoaderoClientUtils.checkArgumentsForNull(testUrl);
 
@@ -34,8 +34,8 @@ public class LoaderoTestOptionsService extends AbstractLoaderoService<LoaderoTes
     }
 
     @Override
-    public LoaderoTestOptions updateById(LoaderoTestOptions newModel, String... id) {
-        String testId = id[0];
+    public LoaderoTestOptions updateById(LoaderoTestOptions newModel, int... id) {
+        int testId = id[0];
         LoaderoClientUtils.checkArgumentsForNull(newModel, testId);
 
         String testUrl = urlBuilder.buildTestURLById(testId) + "/";
@@ -44,8 +44,7 @@ public class LoaderoTestOptionsService extends AbstractLoaderoService<LoaderoTes
         // We get the old script from Loadero API endpoint /files/fileId
         // And update accordingly.
         if (Objects.equals(newModel.getScript(), "")) {
-            String scriptContent = scriptFileService.getById(
-                    String.valueOf(currentOptions.getScriptFileId()))
+            String scriptContent = scriptFileService.getById(currentOptions.getScriptFileId())
                     .toString();
             currentOptions.setScript(scriptContent);
         }
@@ -59,7 +58,7 @@ public class LoaderoTestOptionsService extends AbstractLoaderoService<LoaderoTes
                 LoaderoType.LOADERO_TEST_OPTIONS, updatedOptions);    }
 
     @Override
-    protected String buildUrl(String... id) {
+    protected String buildUrl(int... id) {
         return String.format("%s/", urlBuilder.buildTestURLById(id[0]));
     }
 }

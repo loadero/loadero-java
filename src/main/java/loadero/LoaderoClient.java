@@ -11,12 +11,13 @@ import lombok.Getter;
 @Getter
 public class LoaderoClient {
     private final String baseUrl;
-    private final String projectId;
+    private final int projectId;
     private final String loaderoApiToken;
     private final LoaderoServiceFactory serviceFactory;
 
-    public LoaderoClient(String baseUrl, String loaderApiToken,
-                         String projectId) {
+    public LoaderoClient(String baseUrl,
+                         String loaderApiToken,
+                         int projectId) {
         this.baseUrl = baseUrl;
         this.projectId = projectId;
         this.loaderoApiToken = loaderApiToken;
@@ -28,7 +29,7 @@ public class LoaderoClient {
      * @param testId - ID of desired test.
      * @return       - LoaderoTestOptions object.
      */
-    public LoaderoTestOptions getTestOptionsById(String testId) {
+    public LoaderoTestOptions getTestOptionsById(int testId) {
         return (LoaderoTestOptions) serviceFactory
                 .getLoaderoService(LoaderoType.LOADERO_TEST_OPTIONS)
                 .getById(testId);
@@ -41,7 +42,7 @@ public class LoaderoClient {
      * @param newTestOptions - new LoaderoTestOptions object with parameters that you wish to change
      * @return               - Updated LoaderoTestOptions
      */
-    public LoaderoTestOptions updateTestOptions(String testId,
+    public LoaderoTestOptions updateTestOptionsById(int testId,
                                                 LoaderoTestOptions newTestOptions) {
         LoaderoTestOptionsService testOptionsService = (LoaderoTestOptionsService)
                 serviceFactory.getLoaderoService(LoaderoType.LOADERO_TEST_OPTIONS);
@@ -54,7 +55,7 @@ public class LoaderoClient {
      * @param fileId - ID of the script file
      * @return       - LoaderoScriptFileLoc information about script content.
      */
-    public LoaderoScriptFileLoc getTestScript(String fileId) {
+    public LoaderoScriptFileLoc getTestScriptById(int fileId) {
         return (LoaderoScriptFileLoc) serviceFactory
                 .getLoaderoService(LoaderoType.LOADERO_SCRIPT_FILE_LOC)
                 .getById(fileId);
@@ -66,7 +67,7 @@ public class LoaderoClient {
      * @param groupId - ID of the group.
      * @return   - LoaderoGroup object.
      */
-    public LoaderoGroup getGroupById(String testId, String groupId) {
+    public LoaderoGroup getGroupById(int testId, int groupId) {
         return (LoaderoGroup) serviceFactory
                 .getLoaderoService(LoaderoType.LOADERO_GROUP)
                 .getById(testId, groupId);
@@ -79,7 +80,7 @@ public class LoaderoClient {
      * @param newGroup  - LoaderoGroup object with new parameters.
      * @return          - LoaderoGroup object with updated parameters.
      */
-    public LoaderoGroup updateGroupById(String testId, String groupId, LoaderoGroup newGroup) {
+    public LoaderoGroup updateGroupById(int testId, int groupId, LoaderoGroup newGroup) {
         LoaderoGroupService groupService = (LoaderoGroupService)
                 serviceFactory.getLoaderoService(LoaderoType.LOADERO_GROUP);
         return groupService.updateById(newGroup, testId, groupId);
@@ -91,8 +92,8 @@ public class LoaderoClient {
      * @param participantId - desired participant.
      * @return              - LoaderoParticipant object
      */
-    public LoaderoParticipant getParticipantById(String testId, String groupId,
-                                                 String participantId) {
+    public LoaderoParticipant getParticipantById(int testId, int groupId,
+                                                 int participantId) {
         return (LoaderoParticipant) serviceFactory
                 .getLoaderoService(LoaderoType.LOADERO_PARTICIPANT)
                 .getById(testId, groupId, participantId);
@@ -106,11 +107,10 @@ public class LoaderoClient {
      * @param newParticipant      - LoaderoParticipant object with new params.
      * @return LoaderoParticipant - updated LoaderoParticipant object.
      */
-    public LoaderoParticipant updateTestParticipantById(String testId,
-                                                        String groupId,
-                                                        String participantId,
+    public LoaderoParticipant updateTestParticipantById(int testId,
+                                                        int groupId,
+                                                        int participantId,
                                                         LoaderoParticipant newParticipant) {
-
         LoaderoParticipantService participantService = (LoaderoParticipantService)
                 serviceFactory.getLoaderoService(LoaderoType.LOADERO_PARTICIPANT);
         return participantService.updateById(newParticipant, testId, groupId, participantId);
@@ -122,7 +122,7 @@ public class LoaderoClient {
      * @param runId  - ID of the test run.
      * @return       - LoaderoAllTestRunResults object, that contains list of LoaderoSingleTestRunResult objects.
      */
-    public LoaderoTestRunResult getTestRunResult(String testId, String runId) {
+    public LoaderoTestRunResult getTestRunResultById(int testId, int runId) {
         return (LoaderoTestRunResult) serviceFactory
                 .getLoaderoService(LoaderoType.LOADERO_RUN_RESULT)
                 .getById(testId, runId);
@@ -136,9 +136,9 @@ public class LoaderoClient {
      * @return          - LoaderoSingleTestRunResult object containing information such as ID, status,
      *                    selenium_status, log paths, asserts and artifacts.
      */
-    public LoaderoTestRunParticipantResult getTestRunParticipantResult(String testId,
-                                                                       String runId,
-                                                                       String resultId) {
+    public LoaderoTestRunParticipantResult getTestRunParticipantResultById(int testId,
+                                                                       int runId,
+                                                                       int resultId) {
         return (LoaderoTestRunParticipantResult) serviceFactory
                 .getLoaderoService(LoaderoType.LOADERO_TEST_RUN_PARTICIPANT_RESULT)
                 .getById(testId, runId, resultId);
@@ -153,7 +153,7 @@ public class LoaderoClient {
      * @param timeout  - how long should polling for information. In seconds.
      * @return         - LoaderoRunInfo containing information about test run.
      */
-    public LoaderoRunInfo startTestAndPollInfo(String testId, int interval, int timeout) {
+    public LoaderoRunInfo startTestAndPollInfo(int testId, int interval, int timeout) {
         LoaderoPollingService pollingService = (LoaderoPollingService) serviceFactory
                 .getLoaderoService(LoaderoType.LOADERO_RUN_INFO);
         return pollingService.startTestAndPoll(testId, interval, timeout);

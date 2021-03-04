@@ -13,16 +13,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Generated // Need this for JaCoco to ignore getters and setters
 public class LoaderoRunInfo implements LoaderoModel {
-    private long id;
+    private int id;
     @SerializedName("test_id")
-    private long testId;
+    private int testId;
     private String status;
     @SerializedName("test_mode")
     private String testMode;
     @SerializedName("increment_strategy")
     private String incrementStrategy;
     @SerializedName("script_file_id")
-    private long scriptFileId;
+    private int scriptFileId;
     @SerializedName("test_name")
     private String testName;
     @SerializedName("start_interval")
@@ -30,7 +30,7 @@ public class LoaderoRunInfo implements LoaderoModel {
     @SerializedName("participant_timeout")
     private int participantTimeout;
     @SerializedName("launching_account_id")
-    private long launchAccountId;
+    private int launchAccountId;
     @SerializedName("success_rate")
     private double successRate;
 }

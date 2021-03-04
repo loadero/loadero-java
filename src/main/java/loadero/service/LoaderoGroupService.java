@@ -21,9 +21,9 @@ public class LoaderoGroupService extends AbstractLoaderoService<LoaderoGroup> {
     }
 
     @Override
-    public LoaderoGroup getById(String...id) {
-        String testId = id[0];
-        String groupId = id[1];
+    public LoaderoGroup getById(int...id) {
+        int testId = id[0];
+        int groupId = id[1];
         LoaderoClientUtils.checkArgumentsForNull(testId, groupId);
         String groupUrl = buildUrl(testId, groupId);
         return (LoaderoGroup) crudController.get(groupUrl,
@@ -31,9 +31,9 @@ public class LoaderoGroupService extends AbstractLoaderoService<LoaderoGroup> {
     }
 
     @Override
-    public LoaderoGroup updateById(LoaderoGroup newModel, String... id) {
-        String testId = id[0];
-        String groupId = id[1];
+    public LoaderoGroup updateById(LoaderoGroup newModel, int... id) {
+        int testId = id[0];
+        int groupId = id[1];
         LoaderoClientUtils.checkArgumentsForNull(newModel, testId, groupId);
 
         String groupUrl = buildUrl(testId, groupId);
@@ -47,7 +47,7 @@ public class LoaderoGroupService extends AbstractLoaderoService<LoaderoGroup> {
     }
 
     @Override
-    protected String buildUrl(String...id) {
+    protected String buildUrl(int...id) {
         return String.format("%s/", urlBuilder.buildGroupURL(id[0], id[1]));
     }
 }

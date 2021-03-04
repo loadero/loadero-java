@@ -26,8 +26,8 @@ public class LoaderoScriptFileService extends AbstractLoaderoService<LoaderoScri
      * @return       - LoaderoScriptFileLoc information about script content.
      */
     @Override
-    public LoaderoScriptFileLoc getById(String... id) {
-        String fileId = id[0];
+    public LoaderoScriptFileLoc getById(int... id) {
+        int fileId = id[0];
         LoaderoClientUtils.checkArgumentsForNull(fileId);
 
         String scriptFileUrl = buildUrl(fileId);
@@ -37,18 +37,18 @@ public class LoaderoScriptFileService extends AbstractLoaderoService<LoaderoScri
     }
 
     /**
-     * Not defined.
+     * Not needed.
      * @param newModel
      * @param id
      * @return
      */
     @Override
-    public LoaderoScriptFileLoc updateById(LoaderoScriptFileLoc newModel, String... id) {
+    public LoaderoScriptFileLoc updateById(LoaderoScriptFileLoc newModel, int... id) {
         return null;
     }
 
     @Override
-    protected String buildUrl(String... id) {
+    protected String buildUrl(int... id) {
         return String.format("%s/", urlBuilder.buildScriptFileURL(id[0]));
     }
 }
