@@ -48,7 +48,7 @@ public class LoaderoCrudController {
             if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 HttpEntity entity = res.getEntity();
                 result = LoaderoClientUtils.httpEntityToModel(entity, type);
-                log.info("{} : {}", res.getStatusLine(), uri);
+                log.info("{} - {} - {}", get.getMethod(), res.getStatusLine(), uri);
             }
         } catch (NullPointerException | IOException e) {
             log.error("{}", e.getMessage());
@@ -79,11 +79,10 @@ public class LoaderoCrudController {
                 result = LoaderoClientUtils.httpEntityToModel(
                         res.getEntity(),
                         type);
-                log.info("{}: {}", res.getStatusLine(), "Value updated");
-                log.info("Updated value url: {}", uri);
+                log.info("{} - {} - Updated value: {}", put.getMethod(), res.getStatusLine(), uri);
             } else {
-                log.error("{} : {}", res.getStatusLine(), uri);
-                log.error("{}", modelToJson);
+                log.error("{} - {} - {}", put.getMethod(), res.getStatusLine(), uri);
+                log.error("Json sent: {}", modelToJson);
             }
             res.close();
         } catch (IOException e) {

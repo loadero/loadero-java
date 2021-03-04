@@ -42,6 +42,7 @@ public class LoaderoClientUtils {
             if (arg instanceof String) {
                 boolean isBlank = ((String) arg).isBlank();
                 if (isBlank) throw new NullPointerException("String argument is empty or null");
+                
             }
         }
     }
