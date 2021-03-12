@@ -3,7 +3,7 @@ package loadero.service;
 import loadero.controller.LoaderoCrudController;
 import loadero.model.LoaderoModel;
 import loadero.model.LoaderoTestOptions;
-import loadero.model.LoaderoType;
+import loadero.types.LoaderoModelType;
 import loadero.utils.LoaderoClientUtils;
 import loadero.utils.LoaderoUrlBuilder;
 
@@ -30,7 +30,7 @@ public class LoaderoTestOptionsService extends AbstractLoaderoService<LoaderoTes
         LoaderoClientUtils.checkArgumentsForNull(testUrl);
 
         return (LoaderoTestOptions) crudController.get(testUrl,
-                LoaderoType.LOADERO_TEST_OPTIONS);
+                LoaderoModelType.LOADERO_TEST_OPTIONS);
     }
 
     @Override
@@ -45,18 +45,32 @@ public class LoaderoTestOptionsService extends AbstractLoaderoService<LoaderoTes
         // And update accordingly.
         if (Objects.equals(newModel.getScript(), "")) {
             String scriptContent = scriptFileService.getById(currentOptions.getScriptFileId())
-                    .toString();
+                    .getContent();
             currentOptions.setScript(scriptContent);
         }
 
         LoaderoModel updatedOptions = LoaderoClientUtils.copyUncommonFields(
                 currentOptions,
                 newModel,
-                LoaderoType.LOADERO_TEST_OPTIONS);
-
+                LoaderoModelType.LOADERO_TEST_OPTIONS);
+        
         return (LoaderoTestOptions) crudController.update(testUrl,
-                LoaderoType.LOADERO_TEST_OPTIONS, updatedOptions);    }
+                LoaderoModelType.LOADERO_TEST_OPTIONS, updatedOptions);
+    }
 
+//    @Override
+    public LoaderoTestOptions createNew(LoaderoTestOptions model) {
+        String url = urlBuilder.buildProjectURL() + "/tests/";
+        return (LoaderoTestOptions) crudController
+                .post(url, LoaderoModelType.LOADERO_TEST_OPTIONS, model);
+    }
+    
+    @Override
+    public void deleteById(int...id) {
+        int testId = id[0];
+        crudController.delete(buildUrl(testId));
+    }
+    
     @Override
     protected String buildUrl(int... id) {
         return String.format("%s/", urlBuilder.buildTestURLById(id[0]));

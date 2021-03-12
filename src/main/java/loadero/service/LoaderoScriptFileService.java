@@ -2,7 +2,7 @@ package loadero.service;
 
 import loadero.controller.LoaderoCrudController;
 import loadero.model.LoaderoScriptFileLoc;
-import loadero.model.LoaderoType;
+import loadero.types.LoaderoModelType;
 import loadero.utils.LoaderoClientUtils;
 import loadero.utils.LoaderoUrlBuilder;
 
@@ -33,7 +33,7 @@ public class LoaderoScriptFileService extends AbstractLoaderoService<LoaderoScri
         String scriptFileUrl = buildUrl(fileId);
         return (LoaderoScriptFileLoc) crudController.get(
                 scriptFileUrl,
-                LoaderoType.LOADERO_SCRIPT_FILE_LOC);
+                LoaderoModelType.LOADERO_SCRIPT_FILE_LOC);
     }
 
     /**
@@ -46,7 +46,12 @@ public class LoaderoScriptFileService extends AbstractLoaderoService<LoaderoScri
     public LoaderoScriptFileLoc updateById(LoaderoScriptFileLoc newModel, int... id) {
         return null;
     }
-
+    
+    // Not supported yet.
+    @Override
+    public void deleteById(int... id) {
+    }
+    
     @Override
     protected String buildUrl(int... id) {
         return String.format("%s/", urlBuilder.buildScriptFileURL(id[0]));

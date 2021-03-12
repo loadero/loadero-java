@@ -1,1 +1,12 @@
-{"id":5040,"created":"2021-02-02T11:19:08Z","updated":"2021-02-05T07:43:07Z","name":"Loadero Practice (Mihhail)","member_count":2,"account_role":"","language":"java","subscription_id":73,"subscription":{"id":73,"created":"2021-02-02T12:59:13Z","updated":"2021-02-02T12:59:13Z","payment_plan":"single_basic","activation_date":"2021-02-02T12:59:13Z","payment_status":"success","billing_email":"mihhail.matisinets@testdevlab.com"},"compute_unit_usage":{"available":200000,"used":186}}
+{
+  "id": 7443,
+  "created": "2021-03-08T12:17:42Z",
+  "updated": "2021-03-08T12:17:42Z",
+  "project_id": 5040,
+  "name": "new test 4",
+  "script_file_id": 62035,
+  "start_interval": 5,
+  "participant_timeout": 150,
+  "mode": "load",
+  "increment_strategy": "linear"
+}

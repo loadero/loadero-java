@@ -2,6 +2,9 @@ package loadero.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import cucumber.api.java.eo.Se;
+import loadero.types.LoaderoIncrementStrategyType;
+import loadero.types.LoaderoTestModeType;
 import loadero.utils.FunctionBodyParser;
 import lombok.Data;
 import lombok.Generated;
@@ -29,9 +32,9 @@ public class LoaderoTestOptions implements LoaderoModel {
     private int startInterval = 0;
     @SerializedName("participant_timeout")
     private int participantTimeout = 0;
-    private String mode = "";
+    private LoaderoTestModeType mode;
     @SerializedName("increment_strategy")
-    private String incrementStrategy = "";
+    private LoaderoIncrementStrategyType incrementStrategy;
     private String script = ""; // Path to script
     @SerializedName("script_file_id")
     @Expose(serialize = false)

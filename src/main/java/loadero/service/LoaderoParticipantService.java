@@ -3,7 +3,7 @@ package loadero.service;
 import loadero.controller.LoaderoCrudController;
 import loadero.model.LoaderoModel;
 import loadero.model.LoaderoParticipant;
-import loadero.model.LoaderoType;
+import loadero.types.LoaderoModelType;
 import loadero.utils.LoaderoClientUtils;
 import loadero.utils.LoaderoUrlBuilder;
 
@@ -29,7 +29,7 @@ public class LoaderoParticipantService extends AbstractLoaderoService<LoaderoPar
 
         String particUrl = buildUrl(testId, groupId, participantId);
         return (LoaderoParticipant) crudController.get(
-                particUrl, LoaderoType.LOADERO_PARTICIPANT
+                particUrl, LoaderoModelType.LOADERO_PARTICIPANT
         );
     }
 
@@ -47,12 +47,21 @@ public class LoaderoParticipantService extends AbstractLoaderoService<LoaderoPar
                 .copyUncommonFields(
                         currentParticInfo,
                         newModel,
-                        LoaderoType.LOADERO_PARTICIPANT);
+                        LoaderoModelType.LOADERO_PARTICIPANT);
 
         return (LoaderoParticipant) crudController
-                .update(participantUrl, LoaderoType.LOADERO_PARTICIPANT, updatedParticipant);
+                .update(participantUrl, LoaderoModelType.LOADERO_PARTICIPANT, updatedParticipant);
     }
-
+    
+    @Override
+    public void deleteById(int... id) {
+        int testId = id[0];
+        int groupId = id[1];
+        int participantId = id[2];
+        
+        crudController.delete(buildUrl(testId, groupId, participantId));
+    }
+    
     @Override
     protected String buildUrl(int... id) {
         return String.format("%s/", urlBuilder.buildParticipantURL(id[0], id[1], id[2]));

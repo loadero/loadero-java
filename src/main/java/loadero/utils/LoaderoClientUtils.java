@@ -5,6 +5,7 @@ import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import loadero.model.*;
+import loadero.types.LoaderoModelType;
 import org.apache.http.HttpEntity;
 import org.apache.http.util.EntityUtils;
 
@@ -52,11 +53,10 @@ public class LoaderoClientUtils {
     }
 
     // Converts JSON from response into according LoaderModel object
-    public static LoaderoModel httpEntityToModel(HttpEntity entity, LoaderoType type) {
+    public static LoaderoModel httpEntityToModel(HttpEntity entity, LoaderoModelType type) {
         LoaderoModel result = null;
 
         if (entity == null) { return result; }
-
         try {
             String content = EntityUtils.toString(entity);
             switch (type) {
@@ -93,7 +93,7 @@ public class LoaderoClientUtils {
     // source: https://stackoverflow.com/a/20366149
     public static LoaderoModel copyUncommonFields(LoaderoModel currentObj,
                                                   LoaderoModel newObject,
-                                                  LoaderoType type) {
+                                                  LoaderoModelType type) {
         LoaderoModel result = factory.getLoaderoModel(type);
         Field[] fieldsArr = result.getClass().getDeclaredFields();
 
@@ -101,11 +101,13 @@ public class LoaderoClientUtils {
             // make private fields accessible
             field.setAccessible(true);
             try {
-                if (Objects.equals(field.get(currentObj), field.get(newObject))
+                if (field.get(currentObj) == field.get(newObject)
                         || Objects.equals(field.get(newObject), "")
                         || Objects.equals(field.get(newObject), 0)
-                        || Objects.equals(field.get(newObject), 0L)) {
+                        || Objects.equals(field.get(newObject), 0L)
+                        || field.get(newObject) == null) {
                     field.set(result, field.get(currentObj));
+                    
                 } else {
                     field.set(result, field.get(newObject));
                 }

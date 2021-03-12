@@ -1,0 +1,1 @@
+{"id":6866,"created":"2021-02-02T11:59:50Z","updated":"2021-02-11T11:47:48Z","project_id":5040,"name":"New Test Name from @Test","script_file_id":57737,"start_interval":30,"participant_timeout":20,"mode":"performance","increment_strategy":"random","group_count":4,"participant_count":3}

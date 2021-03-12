@@ -3,7 +3,7 @@ package loadero.service;
 import loadero.controller.LoaderoCrudController;
 import loadero.model.LoaderoGroup;
 import loadero.model.LoaderoModel;
-import loadero.model.LoaderoType;
+import loadero.types.LoaderoModelType;
 import loadero.utils.LoaderoClientUtils;
 import loadero.utils.LoaderoUrlBuilder;
 
@@ -27,7 +27,7 @@ public class LoaderoGroupService extends AbstractLoaderoService<LoaderoGroup> {
         LoaderoClientUtils.checkArgumentsForNull(testId, groupId);
         String groupUrl = buildUrl(testId, groupId);
         return (LoaderoGroup) crudController.get(groupUrl,
-                LoaderoType.LOADERO_GROUP);
+                LoaderoModelType.LOADERO_GROUP);
     }
 
     @Override
@@ -41,11 +41,18 @@ public class LoaderoGroupService extends AbstractLoaderoService<LoaderoGroup> {
         LoaderoModel updatedGroup = LoaderoClientUtils.copyUncommonFields(
                 currentGroup,
                 newModel,
-                LoaderoType.LOADERO_GROUP
+                LoaderoModelType.LOADERO_GROUP
         );
-        return (LoaderoGroup) crudController.update(groupUrl, LoaderoType.LOADERO_GROUP, updatedGroup);
+        return (LoaderoGroup) crudController.update(groupUrl, LoaderoModelType.LOADERO_GROUP, updatedGroup);
     }
-
+    
+    @Override
+    public void deleteById(int... id) {
+        int testId = id[0];
+        int groupId = id[1];
+        crudController.delete(buildUrl(testId, groupId));
+    }
+    
     @Override
     protected String buildUrl(int...id) {
         return String.format("%s/", urlBuilder.buildGroupURL(id[0], id[1]));

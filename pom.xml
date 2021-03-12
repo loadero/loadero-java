@@ -160,13 +160,13 @@
             <artifactId>javaparser-symbol-solver-core</artifactId>
             <version>3.18.0</version>
         </dependency>
-            <dependency>
-                <!-- TestUI dependency is used to create test scripts that are going to be used
-                by Loadero API -->
-                <groupId>com.github.testdevlab</groupId>
-                <artifactId>TestUI</artifactId>
-                <version>1.2.8</version>
-            </dependency>
+        <dependency>
+            <!-- TestUI dependency is used to create test scripts that are going to be used
+            by Loadero API -->
+            <groupId>com.github.testdevlab</groupId>
+            <artifactId>TestUI</artifactId>
+            <version>1.2.8</version>
+        </dependency>
         <dependency>
             <!-- Logging system -->
             <groupId>org.apache.logging.log4j</groupId>
