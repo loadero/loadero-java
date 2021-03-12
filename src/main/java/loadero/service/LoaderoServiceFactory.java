@@ -2,12 +2,12 @@ package loadero.service;
 
 import loadero.controller.LoaderoCrudController;
 import loadero.model.LoaderoModel;
-import loadero.model.LoaderoType;
+import loadero.types.LoaderoModelType;
 import loadero.utils.LoaderoUrlBuilder;
 
 /**
  * Factory class that contains method that returns required service layer based on the
- * provided LoaderoType.
+ * provided LoaderoModelType.
  */
 public class LoaderoServiceFactory {
     private final LoaderoCrudController crudController;
@@ -18,7 +18,7 @@ public class LoaderoServiceFactory {
         this.urlBuilder = new LoaderoUrlBuilder(baseUrl, projectId);
     }
 
-    public AbstractLoaderoService<? extends LoaderoModel> getLoaderoService(LoaderoType type) {
+    public AbstractLoaderoService<? extends LoaderoModel> getLoaderoService(LoaderoModelType type) {
         switch (type) {
             case LOADERO_GROUP:         return new LoaderoGroupService(crudController, urlBuilder);
             case LOADERO_TEST_OPTIONS:  return new LoaderoTestOptionsService(crudController, urlBuilder);

@@ -1,5 +1,6 @@
 package loadero.model;
 
+import loadero.types.LoaderoModelType;
 import lombok.Generated;
 
 /**
@@ -9,7 +10,7 @@ import lombok.Generated;
 @Generated
 public class LoaderoModelFactory implements LoaderoModel {
 
-    public LoaderoModel getLoaderoModel(LoaderoType type) {
+    public LoaderoModel getLoaderoModel(LoaderoModelType type) {
         switch (type) {
             case LOADERO_TEST_OPTIONS:                  return new LoaderoTestOptions();
             case LOADERO_GROUP:                         return new LoaderoGroup();

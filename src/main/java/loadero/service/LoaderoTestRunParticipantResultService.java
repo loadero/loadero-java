@@ -2,7 +2,7 @@ package loadero.service;
 
 import loadero.controller.LoaderoCrudController;
 import loadero.model.LoaderoTestRunParticipantResult;
-import loadero.model.LoaderoType;
+import loadero.types.LoaderoModelType;
 import loadero.utils.LoaderoClientUtils;
 import loadero.utils.LoaderoUrlBuilder;
 
@@ -30,7 +30,7 @@ public class LoaderoTestRunParticipantResultService extends
 
         String resultsUrl = buildUrl(testId, runId, resultId);
         return (LoaderoTestRunParticipantResult) crudController.get(resultsUrl,
-                LoaderoType.LOADERO_TEST_RUN_PARTICIPANT_RESULT);
+                LoaderoModelType.LOADERO_TEST_RUN_PARTICIPANT_RESULT);
     }
 
     /**
@@ -44,7 +44,12 @@ public class LoaderoTestRunParticipantResultService extends
                                                       int... id) {
         return null;
     }
-
+    
+    // Not supported yet.
+    @Override
+    public void deleteById(int... id) {
+    }
+    
     @Override
     protected String buildUrl(int... id) {
         return  String.format("%s/%s/", urlBuilder.buildRunResultsURL(id[0], id[1]), id[2]);

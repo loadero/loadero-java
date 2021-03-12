@@ -1,7 +1,9 @@
 package loadero;
 
+import loadero.exceptions.LoaderoException;
 import loadero.model.*;
 import loadero.service.*;
+import loadero.types.LoaderoModelType;
 import lombok.Getter;
 
 
@@ -14,7 +16,7 @@ public class LoaderoClient {
     private final int projectId;
     private final String loaderoApiToken;
     private final LoaderoServiceFactory serviceFactory;
-
+    
     public LoaderoClient(String baseUrl,
                          String loaderApiToken,
                          int projectId) {
@@ -23,7 +25,7 @@ public class LoaderoClient {
         this.loaderoApiToken = loaderApiToken;
         this.serviceFactory = new LoaderoServiceFactory(loaderApiToken, baseUrl, projectId);
     }
-
+    
     /**
      * Returns information about test as LoaderoTestOptions.
      * @param testId - ID of desired test.
@@ -31,7 +33,7 @@ public class LoaderoClient {
      */
     public LoaderoTestOptions getTestOptionsById(int testId) {
         return (LoaderoTestOptions) serviceFactory
-                .getLoaderoService(LoaderoType.LOADERO_TEST_OPTIONS)
+                .getLoaderoService(LoaderoModelType.LOADERO_TEST_OPTIONS)
                 .getById(testId);
     }
 
@@ -45,8 +47,29 @@ public class LoaderoClient {
     public LoaderoTestOptions updateTestOptionsById(int testId,
                                                 LoaderoTestOptions newTestOptions) {
         LoaderoTestOptionsService testOptionsService = (LoaderoTestOptionsService)
-                serviceFactory.getLoaderoService(LoaderoType.LOADERO_TEST_OPTIONS);
+                serviceFactory.getLoaderoService(LoaderoModelType.LOADERO_TEST_OPTIONS);
         return testOptionsService.updateById(newTestOptions, testId);
+    }
+    
+    /**
+     * Creates new test for Loadero.
+     * @param newTest - LoaderoTestOptions object.
+     * @return        - Newly created LoaderoTestOption object
+     */
+    public LoaderoTestOptions createNewTest(LoaderoTestOptions newTest) {
+        LoaderoTestOptionsService testOptionsService = (LoaderoTestOptionsService)
+                serviceFactory.getLoaderoService(LoaderoModelType.LOADERO_TEST_OPTIONS);
+        return testOptionsService.createNew(newTest);
+    }
+    
+    /**
+     * Deletes test with given ID from Loadero.
+     * @param id - ID of the test to be removed.
+     */
+    public void deleteTestById(int id) {
+        LoaderoTestOptionsService service = (LoaderoTestOptionsService)
+                serviceFactory.getLoaderoService(LoaderoModelType.LOADERO_TEST_OPTIONS);
+        service.deleteById(id);
     }
 
     /**
@@ -57,7 +80,7 @@ public class LoaderoClient {
      */
     public LoaderoScriptFileLoc getTestScriptById(int fileId) {
         return (LoaderoScriptFileLoc) serviceFactory
-                .getLoaderoService(LoaderoType.LOADERO_SCRIPT_FILE_LOC)
+                .getLoaderoService(LoaderoModelType.LOADERO_SCRIPT_FILE_LOC)
                 .getById(fileId);
     }
 
@@ -69,7 +92,7 @@ public class LoaderoClient {
      */
     public LoaderoGroup getGroupById(int testId, int groupId) {
         return (LoaderoGroup) serviceFactory
-                .getLoaderoService(LoaderoType.LOADERO_GROUP)
+                .getLoaderoService(LoaderoModelType.LOADERO_GROUP)
                 .getById(testId, groupId);
     }
 
@@ -82,7 +105,7 @@ public class LoaderoClient {
      */
     public LoaderoGroup updateGroupById(int testId, int groupId, LoaderoGroup newGroup) {
         LoaderoGroupService groupService = (LoaderoGroupService)
-                serviceFactory.getLoaderoService(LoaderoType.LOADERO_GROUP);
+                serviceFactory.getLoaderoService(LoaderoModelType.LOADERO_GROUP);
         return groupService.updateById(newGroup, testId, groupId);
     }
 
@@ -95,7 +118,7 @@ public class LoaderoClient {
     public LoaderoParticipant getParticipantById(int testId, int groupId,
                                                  int participantId) {
         return (LoaderoParticipant) serviceFactory
-                .getLoaderoService(LoaderoType.LOADERO_PARTICIPANT)
+                .getLoaderoService(LoaderoModelType.LOADERO_PARTICIPANT)
                 .getById(testId, groupId, participantId);
     }
 
@@ -112,7 +135,7 @@ public class LoaderoClient {
                                                         int participantId,
                                                         LoaderoParticipant newParticipant) {
         LoaderoParticipantService participantService = (LoaderoParticipantService)
-                serviceFactory.getLoaderoService(LoaderoType.LOADERO_PARTICIPANT);
+                serviceFactory.getLoaderoService(LoaderoModelType.LOADERO_PARTICIPANT);
         return participantService.updateById(newParticipant, testId, groupId, participantId);
     }
 
@@ -124,7 +147,7 @@ public class LoaderoClient {
      */
     public LoaderoTestRunResult getTestRunResultById(int testId, int runId) {
         return (LoaderoTestRunResult) serviceFactory
-                .getLoaderoService(LoaderoType.LOADERO_RUN_RESULT)
+                .getLoaderoService(LoaderoModelType.LOADERO_RUN_RESULT)
                 .getById(testId, runId);
     }
 
@@ -140,7 +163,7 @@ public class LoaderoClient {
                                                                        int runId,
                                                                        int resultId) {
         return (LoaderoTestRunParticipantResult) serviceFactory
-                .getLoaderoService(LoaderoType.LOADERO_TEST_RUN_PARTICIPANT_RESULT)
+                .getLoaderoService(LoaderoModelType.LOADERO_TEST_RUN_PARTICIPANT_RESULT)
                 .getById(testId, runId, resultId);
     }
 
@@ -150,12 +173,16 @@ public class LoaderoClient {
      * Returns run info when test is done or time of the polling runs out.
      * @param testId   - ID of the test that is going to run.
      * @param interval - how often check for information. In seconds.
-     * @param timeout  - how long should polling for information. In seconds.
+     * @param timeout  - how long should last polling for information. In seconds.
      * @return         - LoaderoRunInfo containing information about test run.
      */
     public LoaderoRunInfo startTestAndPollInfo(int testId, int interval, int timeout) {
+        if (interval < 5) {
+            throw new LoaderoException("Interval is too short. Should be at least 5 seconds.");
+        }
+        
         LoaderoPollingService pollingService = (LoaderoPollingService) serviceFactory
-                .getLoaderoService(LoaderoType.LOADERO_RUN_INFO);
+                .getLoaderoService(LoaderoModelType.LOADERO_RUN_INFO);
         return pollingService.startTestAndPoll(testId, interval, timeout);
     }
 }

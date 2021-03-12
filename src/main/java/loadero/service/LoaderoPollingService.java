@@ -3,7 +3,7 @@ package loadero.service;
 import loadero.controller.LoaderoCrudController;
 import loadero.model.LoaderoModel;
 import loadero.model.LoaderoRunInfo;
-import loadero.model.LoaderoType;
+import loadero.types.LoaderoModelType;
 import loadero.utils.LoaderoClientUtils;
 import loadero.utils.LoaderoHttpClient;
 import loadero.utils.LoaderoUrlBuilder;
@@ -39,7 +39,7 @@ public class LoaderoPollingService extends AbstractLoaderoService<LoaderoRunInfo
 
         String getRunsUrl = buildUrl(testId, runId);
         return (LoaderoRunInfo) crudController
-                .get(getRunsUrl, LoaderoType.LOADERO_RUN_INFO);
+                .get(getRunsUrl, LoaderoModelType.LOADERO_RUN_INFO);
     }
 
     // Not needed.
@@ -47,7 +47,13 @@ public class LoaderoPollingService extends AbstractLoaderoService<LoaderoRunInfo
     public LoaderoRunInfo updateById(LoaderoRunInfo newModel, int... id) {
         return null;
     }
-
+    
+    // Not supported yet.
+    @Override
+    public void deleteById(int... id) {
+    
+    }
+    
     // Building url for tests/testId/runs/runId/ endpoint.
     @Override
     protected String buildUrl(int...id) {
@@ -82,7 +88,7 @@ public class LoaderoPollingService extends AbstractLoaderoService<LoaderoRunInfo
                 if (res.getStatusLine().getStatusCode() == HttpStatus.SC_ACCEPTED) {
                     result = (LoaderoRunInfo) LoaderoClientUtils.httpEntityToModel(
                             res.getEntity(),
-                            LoaderoType.LOADERO_RUN_INFO
+                            LoaderoModelType.LOADERO_RUN_INFO
                     );
                     log.info("{} - {} - Test successfully started",
                             postRun.getMethod(),

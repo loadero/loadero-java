@@ -1,6 +1,8 @@
 package loadero.model;
 
 import com.google.gson.annotations.SerializedName;
+import loadero.types.LoaderoIncrementStrategyType;
+import loadero.types.LoaderoTestModeType;
 import lombok.Data;
 import lombok.Generated;
 import lombok.NoArgsConstructor;
@@ -18,9 +20,9 @@ public class LoaderoRunInfo implements LoaderoModel {
     private int testId;
     private String status;
     @SerializedName("test_mode")
-    private String testMode;
+    private LoaderoTestModeType testMode;
     @SerializedName("increment_strategy")
-    private String incrementStrategy;
+    private LoaderoIncrementStrategyType incrementStrategy;
     @SerializedName("script_file_id")
     private int scriptFileId;
     @SerializedName("test_name")

@@ -2,6 +2,7 @@ package loadero.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import loadero.types.*;
 import lombok.Data;
 import lombok.Generated;
 
@@ -25,10 +26,10 @@ public class LoaderoParticipant implements LoaderoModel {
     private String name = "";
     private int count = 0;
     @SerializedName("compute_unit")
-    private String computeUnit = "";
-    private String browser = "";
-    private String network = "";
-    private String location = "";
+    private LoaderoComputeUnitsType computeUnit;
+    private LoaderoBrowserType browser;
+    private LoaderoNetworkType network;
+    private LoaderoLocationType location;
     @SerializedName("media_type")
-    private String mediaType = "";
+    private LoaderoMediaType mediaType;
 }

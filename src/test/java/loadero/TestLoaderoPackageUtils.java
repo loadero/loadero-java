@@ -3,7 +3,8 @@ package loadero;
 import loadero.model.LoaderoGroup;
 import loadero.model.LoaderoModel;
 import loadero.model.LoaderoTestOptions;
-import loadero.model.LoaderoType;
+import loadero.types.LoaderoModelType;
+import loadero.types.LoaderoTestModeType;
 import loadero.utils.FunctionBodyParser;
 import loadero.utils.LoaderoClientUtils;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,7 @@ public class TestLoaderoPackageUtils {
         LoaderoTestOptions currentTest = new LoaderoTestOptions();
         currentTest.setId(1);
         currentTest.setName("name");
-        currentTest.setMode("mode");
+        currentTest.setMode(LoaderoTestModeType.LOAD);
         currentTest.setScript("script");
 
         LoaderoTestOptions newTest = new LoaderoTestOptions();
@@ -28,8 +29,9 @@ public class TestLoaderoPackageUtils {
         LoaderoTestOptions updatedTest = (LoaderoTestOptions) LoaderoClientUtils.copyUncommonFields(
                 currentTest,
                 newTest,
-                LoaderoType.LOADERO_TEST_OPTIONS
+                LoaderoModelType.LOADERO_TEST_OPTIONS
         );
+        
         // Comparing different fields against each other. Should be the same
         assertAll("Test currentTest with updatedTest. Should be the same.",
                 () -> assertEquals(currentTest.getId(), updatedTest.getId()),

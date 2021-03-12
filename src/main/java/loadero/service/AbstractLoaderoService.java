@@ -37,6 +37,19 @@ public abstract class AbstractLoaderoService<T extends LoaderoModel> {
      * @return         - concrete implementation of LoaderoModel object.
      */
     public abstract T updateById(T newModel, int...id);
+    
+    /**
+     * Create new LoaderoModel on Loadero site.
+     * @param newModel - LoaderoModel to be created.
+     * @return         - Newly created concrete LoaderModel object.
+     */
+//    public abstract T createNew(T newModel);
+    
+    /**
+     * Deletes Loadero object from site based on provided id/ids.
+     * @param id - ID/IDs required for object deletion.
+     */
+    public abstract void deleteById(int...id);
 
     /**
      * Common method used by every service to build url for itself.

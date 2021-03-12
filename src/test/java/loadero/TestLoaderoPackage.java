@@ -4,8 +4,14 @@ import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.extension.responsetemplating.ResponseTemplateTransformer;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
+import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 import loadero.controller.LoaderoCrudController;
+import loadero.exceptions.LoaderoException;
 import loadero.model.*;
+import loadero.types.LoaderoComputeUnitsType;
+import loadero.types.LoaderoIncrementStrategyType;
+import loadero.types.LoaderoTestModeType;
+import loadero.types.LoaderoModelType;
 import loadero.utils.FunctionBodyParser;
 import loadero.utils.LoaderoClientUtils;
 import loadero.utils.LoaderoHttpClient;
@@ -148,15 +154,52 @@ public class TestLoaderoPackage {
 
     @Test
     public void negativeGetTestOptionsById() {
+        
         LoaderoTestOptions test = loaderoClient.getTestOptionsById(0);
         assertNull(test);
+    }
+    
+    @Test
+    public void testCreateNewTest() {
+        LoaderoTestOptions testOptions = new LoaderoTestOptions();
+        testOptions.setName("new test 5");
+        testOptions.setMode(LoaderoTestModeType.LOAD);
+        testOptions.setIncrementStrategy(LoaderoIncrementStrategyType.LINEAR_GROUP);
+        testOptions.setStartInterval(10);
+        testOptions.setParticipantTimeout(200);
+        testOptions.setScript(URI.create("/Users/mihhail.matisinets/Desktop/Projects/loadero-rest-api-wrapper" +
+                "/src/main/resources/loadero/scripts/testui/LoaderoScript.java"));
+        
+        String body = LoaderoClientUtils.modelToJson(testOptions);
+        
+        StubMapping stub = wmRule.stubFor(post(urlPathMatching(".*/tests/"))
+                .willReturn(aResponse()
+                        .withStatus(HttpStatus.SC_CREATED)
+                        .withBody(body)));
+        
+        
+        LoaderoTestOptions newTest = loaderoClient.createNewTest(testOptions);
+        assertEquals(HttpStatus.SC_CREATED, stub.getResponse().getStatus());
+        assertNotNull(newTest);
+    }
+    
+    @Test
+    public void testDeleteTestById() {
+        int testId = 7443;
+        StubMapping stub = wmRule.stubFor(delete(urlPathMatching(".*/tests/" + testId + "/"))
+                .willReturn(aResponse()
+                        .withStatus(HttpStatus.SC_NO_CONTENT)));
+        
+        loaderoClient.deleteTestById(testId);
+        // There should not be test with such id after deletion
+        assertEquals(HttpStatus.SC_NO_CONTENT, stub.getResponse().getStatus());
     }
 
     @Test
     public void testUpdateTestOptions() {
         LoaderoTestOptions newTest = new LoaderoTestOptions();
-        newTest.setMode("load");
-        newTest.setName("unit test 1");
+        newTest.setMode(LoaderoTestModeType.LOAD);
+        newTest.setIncrementStrategy(LoaderoIncrementStrategyType.LINEAR_GROUP);
         newTest.setParticipantTimeout(150);
         newTest.setStartInterval(5);
         String jsonRes = LoaderoClientUtils.modelToJson(newTest);
@@ -166,8 +209,24 @@ public class TestLoaderoPackage {
         LoaderoTestOptions updatedTest = loaderoClient.updateTestOptionsById(TEST_ID, newTest);
         assertNotNull(updatedTest);
         assertEquals(150, updatedTest.getParticipantTimeout());
-        assertEquals("unit test 1", updatedTest.getName());
-        assertEquals("load", updatedTest.getMode());
+        assertEquals(LoaderoTestModeType.LOAD, updatedTest.getMode());
+    }
+    
+    @Test
+    public void testUpdateTestOptionsWithEnums() {
+        LoaderoTestOptions newTest = new LoaderoTestOptions();
+        newTest.setMode(LoaderoTestModeType.PERFORMANCE);
+        newTest.setIncrementStrategy(LoaderoIncrementStrategyType.LINEAR_GROUP);
+        newTest.setParticipantTimeout(150);
+        newTest.setStartInterval(5);
+        String jsonRes = LoaderoClientUtils.modelToJson(newTest);
+        testOptionsHelper(jsonRes);
+        
+        LoaderoTestOptions updatedTest = loaderoClient.updateTestOptionsById(TEST_ID, newTest);
+        assertNotNull(updatedTest);
+        assertEquals(150, updatedTest.getParticipantTimeout());
+        assertEquals(LoaderoTestModeType.PERFORMANCE, updatedTest.getMode());
+        assertEquals(LoaderoIncrementStrategyType.LINEAR_GROUP, updatedTest.getIncrementStrategy());
     }
 
     @Test
@@ -199,7 +258,7 @@ public class TestLoaderoPackage {
     @Test
     public void negativeUpdateTestOptions() {
         LoaderoTestOptions test = new LoaderoTestOptions();
-        test.setMode("performance");
+        test.setMode(LoaderoTestModeType.PERFORMANCE);
         test.setName("negative test");
         assertThrows(NullPointerException.class, () -> {
             loaderoClient.updateTestOptionsById(23423, test);
@@ -261,7 +320,7 @@ public class TestLoaderoPackage {
         LoaderoParticipant newParticipant = new LoaderoParticipant();
         newParticipant.setName("unit test partic");
         newParticipant.setCount(2);
-        newParticipant.setComputeUnit("g2");
+        newParticipant.setComputeUnit(LoaderoComputeUnitsType.G2);
         String updateRes = LoaderoClientUtils.modelToJson(newParticipant);
         
         wmRule.stubFor(get(urlMatching(url))
@@ -279,7 +338,7 @@ public class TestLoaderoPackage {
         
         assertEquals("unit test partic", updatedPartic.getName());
         assertEquals(2, updatedPartic.getCount());
-        assertEquals("g2", updatedPartic.getComputeUnit());
+        assertEquals(LoaderoComputeUnitsType.G2, updatedPartic.getComputeUnit());
     }
 
     @Test
@@ -370,7 +429,7 @@ public class TestLoaderoPackage {
         assertThrows(NullPointerException.class, () -> {
             LoaderoCrudController crudController = new LoaderoCrudController(loaderoClient.getLoaderoApiToken());
             crudController.update(urlBuilder.buildTestURLById(TEST_ID),
-                    LoaderoType.LOADERO_TEST_OPTIONS, null);
+                    LoaderoModelType.LOADERO_TEST_OPTIONS, null);
         });
     }
 
@@ -436,9 +495,14 @@ public class TestLoaderoPackage {
 
     @Test
     public void negativePollingTestInvalidTestId() {
-        assertThrows(NullPointerException.class, () -> {
-            loaderoClient.startTestAndPollInfo(111, 2, 40);
-        });
+        assertThrows(NullPointerException.class, () ->
+                loaderoClient.startTestAndPollInfo(111, 6, 40));
+    }
+    
+    @Test
+    public void negativePollingTestInvalidInterval() {
+        assertThrows(LoaderoException.class, () ->
+                loaderoClient.startTestAndPollInfo(111, 3, 40));
     }
 
     @Test
@@ -473,5 +537,12 @@ public class TestLoaderoPackage {
     public void negativeLoaderoServiceFactory() {
         assertThrows(NullPointerException.class, () ->
             loaderoClient.getServiceFactory().getLoaderoService(null));
+    }
+    
+    @Test
+    public void testEnumsTypes() {
+        assertEquals("load", LoaderoTestModeType.LOAD.label());
+        assertEquals("performance", LoaderoTestModeType.PERFORMANCE.label());
+        assertEquals("session-record", LoaderoTestModeType.SESSION_RECORD.label());
     }
 }
