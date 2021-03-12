@@ -23,7 +23,7 @@ cache:
 
 # Run unit tests and generate test coverage reports
 # At this stage all unit tests are run against Wiremock instance
-# which immitates live Loadero API
+# which imitates live Loadero API
 unit_tests:
     stage: test
     script:

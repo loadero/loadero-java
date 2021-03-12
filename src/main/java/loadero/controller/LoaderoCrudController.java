@@ -37,7 +37,7 @@ public class LoaderoCrudController {
      * Retrieves LoaderoModel i.e test, participant or group description
      * from the specific URI.
      *
-     * @param uri  GET endpoint of data
+     * @param url  GET endpoint of data
      * @param type type of the returned data
      * @return LoaderoModel object with values from JSON response.
      */
@@ -63,7 +63,7 @@ public class LoaderoCrudController {
     /**
      * Update operation on existing LoaderoModel by supplying new LoaderoModel
      *
-     * @param uri      URI of the API pointing to which LoaderoModel(test, group or participant) to update
+     * @param url      URI of the API pointing to which LoaderoModel(test, group or participant) to update
      * @param type     type of the model to be created by factory
      * @param newModel new model that will replace old one
      * @return Returns new LoaderoModel with updated parameters.

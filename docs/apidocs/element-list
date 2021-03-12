@@ -3,4 +3,5 @@ loadero.controller
 loadero.exceptions
 loadero.model
 loadero.service
+loadero.types
 loadero.utils
