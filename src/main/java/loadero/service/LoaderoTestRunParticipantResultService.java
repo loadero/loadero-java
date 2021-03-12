@@ -33,12 +33,7 @@ public class LoaderoTestRunParticipantResultService extends
                 LoaderoModelType.LOADERO_TEST_RUN_PARTICIPANT_RESULT);
     }
 
-    /**
-     * Not needed.
-     * @param newModel
-     * @param id
-     * @return
-     */
+    // Not supported.
     @Override
     public LoaderoTestRunParticipantResult updateById(LoaderoTestRunParticipantResult newModel,
                                                       int... id) {

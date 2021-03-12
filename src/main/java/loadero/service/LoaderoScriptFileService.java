@@ -22,8 +22,8 @@ public class LoaderoScriptFileService extends AbstractLoaderoService<LoaderoScri
     /**
      * Retrieves content of the script file from Loadero API and returns as LoaderoScriptFileLoc object.
      * Use toString() to convert into actual script.
-     * @param id     - ID of the script file
-     * @return       - LoaderoScriptFileLoc information about script content.
+     * @param id     ID of the script file
+     * @return       LoaderoScriptFileLoc information about script content.
      */
     @Override
     public LoaderoScriptFileLoc getById(int... id) {
@@ -36,12 +36,7 @@ public class LoaderoScriptFileService extends AbstractLoaderoService<LoaderoScri
                 LoaderoModelType.LOADERO_SCRIPT_FILE_LOC);
     }
 
-    /**
-     * Not needed.
-     * @param newModel
-     * @param id
-     * @return
-     */
+    // Not needed.
     @Override
     public LoaderoScriptFileLoc updateById(LoaderoScriptFileLoc newModel, int... id) {
         return null;

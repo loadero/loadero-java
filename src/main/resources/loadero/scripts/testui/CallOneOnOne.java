@@ -3,7 +3,7 @@ public class CallOneOnOne {
         int particId = globalConfig.getParticipant().getId();
         String identity = String.format("Participant%d", particId);
         int callDuration = 60; // in seconds
-        String appUrl = ";
+        String appUrl = "";
         int elTimeout = 10;
         
         if (particId % 2 == 0) {

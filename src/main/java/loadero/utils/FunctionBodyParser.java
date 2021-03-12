@@ -20,8 +20,8 @@ public class FunctionBodyParser {
     private static final Logger log = LogManager.getLogger(FunctionBodyParser.class);
     /**
      * Retrieves the content of the public void test(){}; method from .java file.
-      * @param path - Path to the script.
-     * @return      - Content of the script as String.
+      * @param path  Path to the script.
+     * @return       Content of the script as String.
      */
     public static String getScriptContent(String path) {
         String result = "";
@@ -44,11 +44,11 @@ public class FunctionBodyParser {
     }
 
     /**
-     * Applies new parameters provided in Map<String, String> object to the script in .java file.
+     * Applies new parameters provided in Map String, String object to the script in .java file.
      * If some parameters are not found in Map object, default values in template will be used.
-     * @param path  - Path to the script.
-     * @param scriptParams - Map<String, String> object with parameters wish to apply.
-     * @return  - Script content with new parameters as String.
+     * @param path   Path to the script.
+     * @param scriptParams  Map of String, String object with parameters wish to apply.
+     * @return   Script content with new parameters as String.
      */
     public static String applyParamsToScript(String path, Map<String, String> scriptParams) {
         LoaderoClientUtils.checkArgumentsForNull(path, scriptParams);
