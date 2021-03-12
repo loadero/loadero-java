@@ -25,7 +25,7 @@ public class LoaderoGroupService
     public LoaderoGroup getById(int...ids) {
         int testId = ids[0];
         int groupId = ids[1];
-        LoaderoClientUtils.checkArgumentsForNull(testId, groupId);
+        LoaderoClientUtils.checkIfIntIsNegative(testId, groupId);
         String groupUrl = buildUrl(testId, groupId);
         return (LoaderoGroup) crudController.get(groupUrl,
                 LoaderoModelType.LOADERO_GROUP);
@@ -35,7 +35,8 @@ public class LoaderoGroupService
     public LoaderoGroup updateById(LoaderoGroup newModel, int... ids) {
         int testId = ids[0];
         int groupId = ids[1];
-        LoaderoClientUtils.checkArgumentsForNull(newModel, testId, groupId);
+        LoaderoClientUtils.checkArgumentsForNull(newModel);
+        LoaderoClientUtils.checkIfIntIsNegative(testId, groupId);
 
         String groupUrl = buildUrl(testId, groupId);
         LoaderoGroup currentGroup = getById(testId, groupId);
@@ -50,6 +51,9 @@ public class LoaderoGroupService
     @Override
     public LoaderoGroup createNewModel(LoaderoGroup newModel, int... ids) {
         int testId = ids[0];
+        LoaderoClientUtils.checkArgumentsForNull(newModel);
+        LoaderoClientUtils.checkIfIntIsNegative(testId);
+        
         String url = urlBuilder.buildTestURLById(testId) + "/groups/";
         return (LoaderoGroup) crudController
                 .post(url, LoaderoModelType.LOADERO_GROUP, newModel);
@@ -59,6 +63,7 @@ public class LoaderoGroupService
     public void deleteById(int... ids) {
         int testId = ids[0];
         int groupId = ids[1];
+        LoaderoClientUtils.checkIfIntIsNegative(testId, groupId);
         crudController.delete(buildUrl(testId, groupId));
     }
     

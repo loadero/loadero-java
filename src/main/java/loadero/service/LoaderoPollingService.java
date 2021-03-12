@@ -1,6 +1,7 @@
 package loadero.service;
 
 import loadero.controller.LoaderoCrudController;
+import loadero.exceptions.LoaderoException;
 import loadero.model.LoaderoModel;
 import loadero.model.LoaderoRunInfo;
 import loadero.types.LoaderoModelType;
@@ -32,10 +33,10 @@ public class LoaderoPollingService extends AbstractLoaderoService {
     }
 
     @Override
-    public LoaderoRunInfo getById(int... id) {
-        int testId = id[0];
-        int runId  = id[1];
-        LoaderoClientUtils.checkArgumentsForNull(testId, runId);
+    public LoaderoRunInfo getById(int... ids) {
+        int testId = ids[0];
+        int runId  = ids[1];
+        LoaderoClientUtils.checkIfIntIsNegative(testId, runId);
 
         String getRunsUrl = buildUrl(testId, runId);
         return (LoaderoRunInfo) crudController
@@ -49,10 +50,20 @@ public class LoaderoPollingService extends AbstractLoaderoService {
                 urlBuilder.buildTestURLById(id[0]),
                 id[1]);
     }
-
+    
+    /**
+     * Starts test and polls for information about state of the running test with specified interval.
+     * @param testId    ID of the test to start.
+     * @param interval  Interval in seconds specifies how often information should be polled.
+     * @param timeout   Timeout in seconds specifies for how long should be poll for information.
+     * @throws LoaderoException if testId, interval or timeout is negative.
+     * @throws NullPointerException if test couldn't be started.
+     * @return          LoaderoRunInfo object containing information about test run.
+     */
     public LoaderoRunInfo startTestAndPoll(int testId, int interval, int timeout) {
+        LoaderoClientUtils.checkIfIntIsNegative(testId, interval, timeout);
         LoaderoRunInfo startTestRun = startTestRun(testId);
-        LoaderoClientUtils.checkArgumentsForNull(startTestRun, testId, interval, timeout);
+        LoaderoClientUtils.checkArgumentsForNull(startTestRun);
 
         log.info("Test {} is now running.", testId);
         return (LoaderoRunInfo) startPolling(

@@ -3,6 +3,7 @@ package loadero.models;
 import loadero.model.LoaderoTestRunResult;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,11 +21,5 @@ public class TestLoaderoTestRunResult extends AbstractTestLoadero {
         
         LoaderoTestRunResult testRunResult = loaderoClient.getTestRunResultById(TEST_ID, RUN_ID);
         assertNotNull(testRunResult);
-    }
-    
-    @Test
-    public void negativeGetAllTestResultsInvalidTestId() {
-        LoaderoTestRunResult results = loaderoClient.getTestRunResultById(2323, RUN_ID);
-        assertNull(results);
     }
 }

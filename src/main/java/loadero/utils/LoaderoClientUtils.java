@@ -4,11 +4,16 @@ import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import loadero.controller.LoaderoCrudController;
+import loadero.exceptions.LoaderoException;
 import loadero.model.*;
 import loadero.types.LoaderoModelType;
 import org.apache.http.HttpEntity;
 import org.apache.http.util.EntityUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Objects;
 
@@ -17,6 +22,7 @@ import java.util.Objects;
  */
 public class LoaderoClientUtils {
     private static final LoaderoModelFactory factory = new LoaderoModelFactory();
+    private static final Logger log = LogManager.getLogger(LoaderoClientUtils.class);
     private static final Gson gson = new GsonBuilder()
             .addSerializationExclusionStrategy(new ExclusionStrategy() {
         @Override
@@ -33,30 +39,47 @@ public class LoaderoClientUtils {
         }
     })
             .create();
-
-    // Checks if provided arguments are null.
-    // If object is a type of String, additionally checks for emptiness.
+    
+    /**
+     * Checks if given arguments are null. String checks for emptiness with isBlank()
+     * @throws NullPointerException if argument is null or an empty String.
+     * @param args Comma separated arguments.
+     */
     public static void checkArgumentsForNull(Object...args) {
         for (Object arg: args) {
             Objects.requireNonNull(arg,
                     String.format("%s cannot be null", arg.getClass().getSimpleName()));
             if (arg instanceof String) {
                 boolean isBlank = ((String) arg).isBlank();
-                if (isBlank) throw new NullPointerException("String argument is empty or null");
-                
+                if (isBlank) throw new NullPointerException(arg + "is an empty String or null.");
             }
         }
     }
-
-    public static boolean isNull(Object test) {
-        return Objects.isNull(test);
+    
+    /**
+     * Check given comma separated int values, if they are negative.
+     * @param values Comma separated int arguments.
+     * @throws LoaderoException if value is negative.
+     */
+    public static void checkIfIntIsNegative(int...values) {
+        for (int arg: values) {
+            if (arg < 0) {
+                throw new LoaderoException(arg + "cannot be negative");
+            }
+        }
     }
-
-    // Converts JSON from response into according LoaderModel object
+    
+    /**
+     * Converts JSON from HttpEntity response into concrete LoaderModel object according to provided type.
+     * @param entity HttpEntity containing JSON body.
+     * @param type LoaderoModelType enum for the object we wish to get.
+     * @throws NullPointerException if any of the arguments are null.
+     * @return concrete class of LoaderoModel object.
+     */
     public static LoaderoModel httpEntityToModel(HttpEntity entity, LoaderoModelType type) {
+        checkArgumentsForNull(entity, type);
         LoaderoModel result = null;
-
-        if (entity == null) { return result; }
+    
         try {
             String content = EntityUtils.toString(entity);
             switch (type) {
@@ -75,25 +98,40 @@ public class LoaderoClientUtils {
                 case LOADERO_RUN_RESULT:
                     return gson.fromJson(content, LoaderoTestRunResult.class);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            log.error("{}", e.getMessage());
         }
         return result;
     }
-
-    // Serializes LoaderModel into JSON
+    
+    /**
+     * Serializes LoaderModel object into JSON.
+     * @param model LoaderoModel we want to serialize.
+     * @throws NullPointerException if model is null.
+     * @return JSON representation of LoaderoModel as String.
+     */
     public static String modelToJson(LoaderoModel model) {
+        checkArgumentsForNull(model);
         return gson.toJson(model);
     }
-
-    // Compares two LoaderModel object's fields values and copies fields from
-    // model1 into model2 if there is any difference.
-    // Does nothing if no difference.
-    // Slightly modified version of code from SO.
-    // source: https://stackoverflow.com/a/20366149
+    
+    /**
+     * Compares two LoaderModel objects field by field and copies field's values from
+     * currentObj into newObject if there are any differences detected. Does nothing if field's values are the same.
+     *
+     * Slightly modified version of code from SO: https://stackoverflow.com/a/20366149.
+     *
+     * @param currentObj LoaderoModel to compare against.
+     * @param newObject  LoaderoModel to be compared.
+     * @param type concrete type of objects to be compared.
+     * @throws NullPointerException if any of provided arguments are null.
+     * @exception IllegalArgumentException if Reflection API couldn't get value from the Field.
+     * @return new concrete LoaderoModel object.
+     */
     public static LoaderoModel copyUncommonFields(LoaderoModel currentObj,
                                                   LoaderoModel newObject,
                                                   LoaderoModelType type) {
+        checkArgumentsForNull(currentObj, newObject, type);
         LoaderoModel result = factory.getLoaderoModel(type);
         Field[] fieldsArr = result.getClass().getDeclaredFields();
 
@@ -112,7 +150,8 @@ public class LoaderoClientUtils {
                     field.set(result, field.get(newObject));
                 }
             } catch (IllegalArgumentException | IllegalAccessException e) {
-                e.printStackTrace();
+                log.error("Couldn't get access or an illegal argument was provided to {}",
+                        field.toGenericString());
             }
             field.setAccessible(false);
         }

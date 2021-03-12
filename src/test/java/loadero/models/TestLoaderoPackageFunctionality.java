@@ -124,12 +124,6 @@ public class TestLoaderoPackageFunctionality extends AbstractTestLoadero {
     }
     
     @Test
-    public void negativeLoaderoServiceFactory() {
-        assertThrows(NullPointerException.class, () ->
-                loaderoClient.getServiceFactory().getLoaderoService(null));
-    }
-    
-    @Test
     public void testEnumsTypes() {
         assertEquals("load", LoaderoTestModeType.LOAD.label());
         assertEquals("performance", LoaderoTestModeType.PERFORMANCE.label());

@@ -1,5 +1,6 @@
 package loadero.controller;
 
+import loadero.exceptions.LoaderoException;
 import loadero.model.LoaderoModel;
 import loadero.types.LoaderoModelType;
 import loadero.utils.LoaderoClientUtils;
@@ -19,26 +20,31 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 
 /**
- * REST controller class responsible for CRUD actions related to Loadero tests.
- * Meaning here is defined logic for creating, updetaing, retrieving and deleting Loadero tests.
+ * Class for defining low-level CRUD operations for Loadero API.
+ * Provides only getter. Cannot be extended.
  */
 @Getter
-public class LoaderoCrudController {
+public final class LoaderoCrudController {
     private final String loaderoApiToken;
     private final LoaderoHttpClient client;
     private static final Logger log = LogManager.getLogger(LoaderoCrudController.class);
-
+    
+    /**
+     * Main constructor. Needs Loadero Api token as String to be initiated.
+     * @param loaderoApiToken Loadero API token.
+     * @throws NullPointerException is loaderoApiToken parameter is null or an empty string.
+     */
     public LoaderoCrudController(String loaderoApiToken) {
+        LoaderoClientUtils.checkArgumentsForNull(loaderoApiToken);
+        
         this.loaderoApiToken = loaderoApiToken;
         this.client = new LoaderoHttpClient(loaderoApiToken);
     }
 
     /**
-     * Retrieves LoaderoModel i.e test, participant or group description
-     * from the specific URI.
-     *
-     * @param url  GET endpoint of data
-     * @param type type of the returned data
+     * Send GET request to Loadero endpoint to retrieve information.
+     * @param url  GET endpoint.
+     * @param type type of the returned data.
      * @return LoaderoModel object with values from JSON response.
      */
     public LoaderoModel get(String url, LoaderoModelType type) {
@@ -54,23 +60,25 @@ public class LoaderoCrudController {
             } else {
                 logError(get.getMethod(), res.getStatusLine(), url);
             }
-        } catch (NullPointerException | IOException ex) {
+        } catch (IOException ex) {
             logError(get.getMethod(), ex);
         }
         return result;
     }
 
     /**
-     * Update operation on existing LoaderoModel by supplying new LoaderoModel
+     * Send PUT request on existing Loadero test, group or participant.
      *
-     * @param url      URI of the API pointing to which LoaderoModel(test, group or participant) to update
-     * @param type     type of the model to be created by factory
-     * @param newModel new model that will replace old one
+     * @param url      API endpoint containing object to be updated.
+     * @param type     type of the model to be created by factory.
+     * @param newModel new LoaderoModel that will replace old one.
+     * @throws NullPointerException if any of the arguments are null or an empty String.
      * @return Returns new LoaderoModel with updated parameters.
      */
     public LoaderoModel update(String url, LoaderoModelType type, LoaderoModel newModel) {
-        LoaderoModel result = null;
         LoaderoClientUtils.checkArgumentsForNull(url, type, newModel);
+    
+        LoaderoModel result = null;
         String methodName = "";
         try {
             String modelToJson = LoaderoClientUtils.modelToJson(newModel);
@@ -80,8 +88,7 @@ public class LoaderoCrudController {
             methodName = put.getMethod();
             StatusLine statusLine = res.getStatusLine();
             
-            if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK &&
-                    !(LoaderoClientUtils.isNull(res.getEntity()))) {
+            if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 result = LoaderoClientUtils.httpEntityToModel(
                         res.getEntity(),
                         type);
@@ -98,15 +105,17 @@ public class LoaderoCrudController {
     }
     
     /**
-     * Creates an instance of the LoaderoModel type in Loadero.
-     * @param url   - POST endpoint.
-     * @param type  - LoaderoModelType to be created.
-     * @param model - LoaderModel object to be created on the Loadero endpoint.
-     * @return      - New LaoderoModel object created on Loadero site.
+     * Sends POST request to the Loadero endpoint.
+     * @param url   POST endpoint.
+     * @param type  LoaderoModelType to be created.
+     * @param model LoaderModel object to be created on the Loadero endpoint.
+     * @throws NullPointerException if any of the arguments are null of an empty String.
+     * @return New LoaderoModel object created on Loadero site.
      */
     public LoaderoModel post(String url, LoaderoModelType type, LoaderoModel model) {
-        LoaderoModel result = null;
         LoaderoClientUtils.checkArgumentsForNull(url, type, model);
+    
+        LoaderoModel result = null;
         String modelToJson = LoaderoClientUtils.modelToJson(model);
         String methodName = "";
         try {
@@ -133,6 +142,10 @@ public class LoaderoCrudController {
         return result;
     }
     
+    /**
+     * Send DELETE request to the Loadero endpoint.
+     * @param url DELETE endpoint.
+     */
     public void delete(String url) {
         HttpUriRequest delete = RequestBuilder.delete(url).build();
         try (CloseableHttpResponse res = client.build().execute(delete)) {

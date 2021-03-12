@@ -4,22 +4,34 @@ import loadero.exceptions.LoaderoException;
 import loadero.model.*;
 import loadero.service.*;
 import loadero.types.LoaderoModelType;
+import loadero.utils.LoaderoClientUtils;
 import lombok.Getter;
 
 
 /**
  * Main entry point of the interaction with the Loadero API.
+ * Cannot be extended.
  */
-@Getter
-public class LoaderoClient {
+public final class LoaderoClient {
+    @Getter
     private final String baseUrl;
+    @Getter
     private final int projectId;
+    @Getter
     private final String loaderoApiToken;
     private final LoaderoServiceFactory serviceFactory;
     
-    public LoaderoClient(String baseUrl,
-                         String loaderApiToken,
-                         int projectId) {
+    /**
+     * Constructs LoaderoClient object for a specific Loadero project.
+     * @param baseUrl        Base url of Loadero API i.e. https://api.loadero.com/v2
+     * @param loaderApiToken Loadero API token for your account.
+     * @param projectId      ID of the project we want to work with.
+     * @throws NullPointerException if baseUrl or loaderoApiToken is null or an empty String.
+     * @throws LoaderoException if projectId is a negative number.
+     */
+    public LoaderoClient(String baseUrl, String loaderApiToken, int projectId) {
+        LoaderoClientUtils.checkArgumentsForNull(baseUrl, loaderApiToken);
+        LoaderoClientUtils.checkIfIntIsNegative(projectId);
         this.baseUrl = baseUrl;
         this.projectId = projectId;
         this.loaderoApiToken = loaderApiToken;
@@ -226,6 +238,7 @@ public class LoaderoClient {
      * @param testId    ID of the test that is going to run.
      * @param interval  how often check for information. In seconds.
      * @param timeout   how long should polling for information. In seconds.
+     * @throws LoaderoException if interval is less than 5 seconds.
      * @return          LoaderoRunInfo containing information about test run.
      */
     public LoaderoRunInfo startTestAndPollInfo(int testId, int interval, int timeout) {
