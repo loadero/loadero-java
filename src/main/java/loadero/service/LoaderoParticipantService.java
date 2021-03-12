@@ -11,7 +11,8 @@ import loadero.utils.LoaderoUrlBuilder;
  * Implementation of AbstractLoaderoService that is responsible for CRUD operation
  * related to LoaderoParticipant object.
  */
-public class LoaderoParticipantService extends AbstractLoaderoService<LoaderoParticipant> {
+public class LoaderoParticipantService extends AbstractLoaderoService
+        implements LoaderoSpecialOperation<LoaderoParticipant> {
     private final LoaderoCrudController crudController = super.getCrudController();
     private final LoaderoUrlBuilder urlBuilder         = super.getUrlBuilder();
 
@@ -21,10 +22,10 @@ public class LoaderoParticipantService extends AbstractLoaderoService<LoaderoPar
     }
 
     @Override
-    public LoaderoParticipant getById(int... id) {
-        int testId = id[0];
-        int groupId = id[1];
-        int participantId = id[2];
+    public LoaderoParticipant getById(int... ids) {
+        int testId = ids[0];
+        int groupId = ids[1];
+        int participantId = ids[2];
         LoaderoClientUtils.checkArgumentsForNull(testId, groupId, participantId);
 
         String particUrl = buildUrl(testId, groupId, participantId);
@@ -34,10 +35,10 @@ public class LoaderoParticipantService extends AbstractLoaderoService<LoaderoPar
     }
 
     @Override
-    public LoaderoParticipant updateById(LoaderoParticipant newModel, int... id) {
-        int testId = id[0];
-        int groupId = id[1];
-        int participantId = id[2];
+    public LoaderoParticipant updateById(LoaderoParticipant newModel, int... ids) {
+        int testId = ids[0];
+        int groupId = ids[1];
+        int participantId = ids[2];
 
         LoaderoClientUtils.checkArgumentsForNull(newModel, testId, groupId, participantId);
 
@@ -54,16 +55,25 @@ public class LoaderoParticipantService extends AbstractLoaderoService<LoaderoPar
     }
     
     @Override
-    public void deleteById(int... id) {
-        int testId = id[0];
-        int groupId = id[1];
-        int participantId = id[2];
+    public LoaderoParticipant createNewModel(LoaderoParticipant newModel, int... ids) {
+        int testId = ids[0];
+        int groupId = ids[1];
+        String url = urlBuilder.buildGroupURL(testId, groupId) + "/participants/";
+        return (LoaderoParticipant) crudController
+                .post(url, LoaderoModelType.LOADERO_PARTICIPANT, newModel);
+    }
+    
+    @Override
+    public void deleteById(int... ids) {
+        int testId = ids[0];
+        int groupId = ids[1];
+        int participantId = ids[2];
         
         crudController.delete(buildUrl(testId, groupId, participantId));
     }
     
     @Override
-    protected String buildUrl(int... id) {
-        return String.format("%s/", urlBuilder.buildParticipantURL(id[0], id[1], id[2]));
+    public String buildUrl(int... ids) {
+        return String.format("%s/", urlBuilder.buildParticipantURL(ids[0], ids[1], ids[2]));
     }
 }

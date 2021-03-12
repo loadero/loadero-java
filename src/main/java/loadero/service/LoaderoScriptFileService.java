@@ -10,7 +10,7 @@ import loadero.utils.LoaderoUrlBuilder;
  * Implementation of AbstractLoaderoService that is responsible for CRUD operation
  * related to LoaderoScriptFileLoc object.
  */
-public class LoaderoScriptFileService extends AbstractLoaderoService<LoaderoScriptFileLoc> {
+public class LoaderoScriptFileService extends AbstractLoaderoService {
     private final LoaderoCrudController crudController = super.getCrudController();
     private final LoaderoUrlBuilder urlBuilder = super.getUrlBuilder();
 
@@ -35,20 +35,9 @@ public class LoaderoScriptFileService extends AbstractLoaderoService<LoaderoScri
                 scriptFileUrl,
                 LoaderoModelType.LOADERO_SCRIPT_FILE_LOC);
     }
-
-    // Not needed.
-    @Override
-    public LoaderoScriptFileLoc updateById(LoaderoScriptFileLoc newModel, int... id) {
-        return null;
-    }
-    
-    // Not supported yet.
-    @Override
-    public void deleteById(int... id) {
-    }
     
     @Override
-    protected String buildUrl(int... id) {
+    public String buildUrl(int... id) {
         return String.format("%s/", urlBuilder.buildScriptFileURL(id[0]));
     }
 }

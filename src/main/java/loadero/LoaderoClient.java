@@ -59,7 +59,7 @@ public class LoaderoClient {
     public LoaderoTestOptions createNewTest(LoaderoTestOptions newTest) {
         LoaderoTestOptionsService testOptionsService = (LoaderoTestOptionsService)
                 serviceFactory.getLoaderoService(LoaderoModelType.LOADERO_TEST_OPTIONS);
-        return testOptionsService.createNew(newTest);
+        return testOptionsService.createNewModel(newTest);
     }
     
     /**
@@ -108,7 +108,32 @@ public class LoaderoClient {
                 serviceFactory.getLoaderoService(LoaderoModelType.LOADERO_GROUP);
         return groupService.updateById(newGroup, testId, groupId);
     }
-
+    
+    /**
+     * Creates new group for specified Test.
+     * @param newGroup New LoaderoGroup object with provided parameters.
+     * @param testId   ID of the test for which we would like to create group.
+     * @return         Newly created LoaderoGroup object.
+     */
+    public LoaderoGroup createNewGroup(LoaderoGroup newGroup, int testId) {
+        LoaderoGroupService service = (LoaderoGroupService)
+                serviceFactory.getLoaderoService(LoaderoModelType.LOADERO_GROUP);
+        return service.createNewModel(newGroup, testId);
+    }
+    
+    /**
+     * Deletes specific group from Loadero for specific test.
+     * @param testId    ID of the test for which we want to delete group.
+     * @param groupId   ID of the group we want to delete.
+     */
+    public void deleteGroupById(int testId, int groupId) {
+        LoaderoGroupService service = (LoaderoGroupService)
+                serviceFactory.getLoaderoService(LoaderoModelType.LOADERO_GROUP);
+        
+        service.deleteById(testId, groupId);
+    }
+    
+    
     /**
      * Returns participant's information from Loadero as LoaderoParticipant object.
      * @param testId        ID of the test that contains participant.
@@ -139,7 +164,33 @@ public class LoaderoClient {
                 serviceFactory.getLoaderoService(LoaderoModelType.LOADERO_PARTICIPANT);
         return participantService.updateById(newParticipant, testId, groupId, participantId);
     }
-
+    
+    /**
+     * Creates new participant for specific group in specific test.
+     * @param testId            ID of the test where we want to create participant.
+     * @param groupId           ID of the group where we want to create participant.
+     * @param newParticipant    LoaderoParticipant object to be created on Loadero site.
+     * @return                  Newly created LoaderoParticipant object from Loadero.
+     */
+    public LoaderoParticipant createParticipantById(int testId, int groupId,
+                                                    LoaderoParticipant newParticipant) {
+        LoaderoParticipantService service = (LoaderoParticipantService)
+                serviceFactory.getLoaderoService(LoaderoModelType.LOADERO_PARTICIPANT);
+        return service.createNewModel(newParticipant, testId, groupId);
+    }
+    
+    /**
+     * Deletes specific participant.
+     * @param testId        ID of the test containing participant.
+     * @param groupId       ID of the group containing participant.
+     * @param participantId ID of the participant we want to delete.
+     */
+    public void deleteParticipantById(int testId, int groupId, int participantId) {
+        LoaderoParticipantService service = (LoaderoParticipantService) serviceFactory
+                .getLoaderoService(LoaderoModelType.LOADERO_PARTICIPANT);
+        service.deleteById(testId, groupId, participantId);
+    }
+    
     /**
      * Gets information about all test run results from Loadero API.
      * @param testId  ID of the desired test to get results from.

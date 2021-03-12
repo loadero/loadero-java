@@ -19,7 +19,7 @@ import java.io.IOException;
 /**
  * Implementation of AbstractLoaderoService that is responsible for polling operation.
  */
-public class LoaderoPollingService extends AbstractLoaderoService<LoaderoRunInfo> {
+public class LoaderoPollingService extends AbstractLoaderoService {
     private final LoaderoHttpClient     client;
     private final LoaderoCrudController crudController = super.getCrudController();
     private final LoaderoUrlBuilder     urlBuilder     = super.getUrlBuilder();
@@ -41,22 +41,10 @@ public class LoaderoPollingService extends AbstractLoaderoService<LoaderoRunInfo
         return (LoaderoRunInfo) crudController
                 .get(getRunsUrl, LoaderoModelType.LOADERO_RUN_INFO);
     }
-
-    // Not needed.
-    @Override
-    public LoaderoRunInfo updateById(LoaderoRunInfo newModel, int... id) {
-        return null;
-    }
-    
-    // Not supported yet.
-    @Override
-    public void deleteById(int... id) {
-    
-    }
     
     // Building url for tests/testId/runs/runId/ endpoint.
     @Override
-    protected String buildUrl(int...id) {
+    public String buildUrl(int...id) {
         return String.format("%s/runs/%s/",
                 urlBuilder.buildTestURLById(id[0]),
                 id[1]);
