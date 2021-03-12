@@ -18,7 +18,7 @@ public class LoaderoServiceFactory {
         this.urlBuilder = new LoaderoUrlBuilder(baseUrl, projectId);
     }
 
-    public AbstractLoaderoService<? extends LoaderoModel> getLoaderoService(LoaderoModelType type) {
+    public AbstractLoaderoService getLoaderoService(LoaderoModelType type) {
         switch (type) {
             case LOADERO_GROUP:         return new LoaderoGroupService(crudController, urlBuilder);
             case LOADERO_TEST_OPTIONS:  return new LoaderoTestOptionsService(crudController, urlBuilder);

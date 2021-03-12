@@ -11,7 +11,7 @@ import loadero.utils.LoaderoUrlBuilder;
  * related to LoaderoTestRunParticipantResult object.
  */
 public class LoaderoTestRunParticipantResultService extends
-        AbstractLoaderoService<LoaderoTestRunParticipantResult> {
+        AbstractLoaderoService {
 
     private final LoaderoCrudController crudController = super.getCrudController();
     private final LoaderoUrlBuilder urlBuilder = super.getUrlBuilder();
@@ -33,20 +33,8 @@ public class LoaderoTestRunParticipantResultService extends
                 LoaderoModelType.LOADERO_TEST_RUN_PARTICIPANT_RESULT);
     }
 
-    // Not supported.
     @Override
-    public LoaderoTestRunParticipantResult updateById(LoaderoTestRunParticipantResult newModel,
-                                                      int... id) {
-        return null;
-    }
-    
-    // Not supported yet.
-    @Override
-    public void deleteById(int... id) {
-    }
-    
-    @Override
-    protected String buildUrl(int... id) {
+    public String buildUrl(int... id) {
         return  String.format("%s/%s/", urlBuilder.buildRunResultsURL(id[0], id[1]), id[2]);
     }
 }

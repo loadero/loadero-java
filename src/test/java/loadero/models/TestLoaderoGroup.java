@@ -1,5 +1,7 @@
 package loadero.models;
 
+import com.github.tomakehurst.wiremock.stubbing.Scenario;
+import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 import loadero.model.LoaderoGroup;
 import loadero.utils.LoaderoClientUtils;
 import org.apache.http.HttpStatus;
@@ -23,6 +25,35 @@ public class TestLoaderoGroup extends AbstractTestLoadero {
         LoaderoGroup group = loaderoClient.getGroupById(TEST_ID, GROUP_ID);
         assertNotNull(group);
         assertEquals(GROUP_ID, group.getId());
+    }
+    
+    @Test
+    public void testCreateAndDeleteGroup() {
+        LoaderoGroup newGroup = new LoaderoGroup();
+        newGroup.setName("name");
+        newGroup.setCount(3);
+        String json = LoaderoClientUtils.modelToJson(newGroup);
+        
+        wmRule.stubFor(post(urlMatching( ".*/groups/"))
+                .inScenario("deleteCreate")
+                .whenScenarioStateIs(Scenario.STARTED)
+                .willReturn(aResponse()
+                        .withStatus(HttpStatus.SC_CREATED)
+                        .withBody(json))
+                .willSetStateTo("created"));
+            
+        
+        LoaderoGroup group = loaderoClient.createNewGroup(newGroup, TEST_ID);
+        assertNotNull(group);
+    
+        StubMapping deleteStub = wmRule.stubFor(delete(urlMatching(".*/groups/" + group.getId()))
+                .inScenario("deleteCreate")
+                .whenScenarioStateIs("created")
+                .willReturn(aResponse()
+                        .withStatus(HttpStatus.SC_NO_CONTENT)));
+    
+        loaderoClient.deleteGroupById(TEST_ID, group.getId());
+        assertEquals(HttpStatus.SC_NO_CONTENT, deleteStub.getResponse().getStatus());
     }
     
     @Test

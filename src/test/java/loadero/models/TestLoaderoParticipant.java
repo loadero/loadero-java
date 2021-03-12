@@ -1,7 +1,8 @@
 package loadero.models;
 
+import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 import loadero.model.LoaderoParticipant;
-import loadero.types.LoaderoComputeUnitsType;
+import loadero.types.*;
 import loadero.utils.LoaderoClientUtils;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
@@ -62,6 +63,34 @@ public class TestLoaderoParticipant extends AbstractTestLoadero {
         assertEquals("unit test partic", updatedPartic.getName());
         assertEquals(2, updatedPartic.getCount());
         assertEquals(LoaderoComputeUnitsType.G2, updatedPartic.getComputeUnit());
+    }
+    
+    @Test
+    public void testCreateAndDeleteParticipant() {
+        LoaderoParticipant participant = new LoaderoParticipant();
+        participant.setName("new participant");
+        participant.setCount(1);
+        participant.setComputeUnit(LoaderoComputeUnitsType.G2);
+        participant.setBrowser(LoaderoBrowserType.CHROME_LATEST);
+        participant.setLocation(LoaderoLocationType.EU_WEST_1);
+        participant.setNetwork(LoaderoNetworkType.DEFAULT);
+        participant.setMediaType(LoaderoMediaType.DEFAULT);
+        
+        String json = LoaderoClientUtils.modelToJson(participant);
+        
+        wmRule.stubFor(post(urlMatching(".*/participants/"))
+                .willReturn(aResponse()
+                        .withStatus(HttpStatus.SC_CREATED)
+                        .withBody(json)));
+        
+        LoaderoParticipant newParticipant = loaderoClient.createParticipantById(TEST_ID, GROUP_ID, participant);
+        assertNotNull(newParticipant);
+        
+        StubMapping deleteStub = wmRule.stubFor(delete(urlMatching(".*/participant/*."))
+                .willReturn(aResponse().withStatus(HttpStatus.SC_NO_CONTENT)));
+        
+        loaderoClient.deleteParticipantById(TEST_ID, GROUP_ID, newParticipant.getId());
+        assertEquals(HttpStatus.SC_NO_CONTENT, deleteStub.getResponse().getStatus());
     }
     
     @Test

@@ -10,7 +10,7 @@ import loadero.utils.LoaderoUrlBuilder;
  * Implementation of AbstractLoaderoService that is responsible for CRUD operation
  * related to LoaderoTestRunResult object.
  */
-public class LoaderoTestRunResultService extends AbstractLoaderoService<LoaderoTestRunResult> {
+public class LoaderoTestRunResultService extends AbstractLoaderoService {
     private final LoaderoCrudController crudController = super.getCrudController();
     private final LoaderoUrlBuilder urlBuilder = super.getUrlBuilder();
 
@@ -29,21 +29,9 @@ public class LoaderoTestRunResultService extends AbstractLoaderoService<LoaderoT
         return (LoaderoTestRunResult) crudController.get(resultsUrl,
                 LoaderoModelType.LOADERO_RUN_RESULT);
     }
-
-    // Not supported.
-    @Override
-    public LoaderoTestRunResult updateById(LoaderoTestRunResult newModel, int... id) {
-        return null;
-    }
-    
-    // Not supported yet.
-    @Override
-    public void deleteById(int... id) {
-    
-    }
     
     @Override
-    protected String buildUrl(int... id) {
+    public String buildUrl(int... id) {
         return String.format("%s/",urlBuilder.buildRunResultsURL(id[0], id[1]));
     }
 }

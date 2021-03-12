@@ -13,7 +13,8 @@ import java.util.Objects;
  * Implementation of AbstractLoaderoService that is responsible for CRUD operation
  * related to LoaderoTestOptions object.
  */
-public class LoaderoTestOptionsService extends AbstractLoaderoService<LoaderoTestOptions> {
+public class LoaderoTestOptionsService extends AbstractLoaderoService
+        implements LoaderoSpecialOperation<LoaderoTestOptions> {
     private final LoaderoCrudController crudController = super.getCrudController();
     private final LoaderoUrlBuilder urlBuilder = super.getUrlBuilder();
     private final LoaderoScriptFileService scriptFileService;
@@ -57,12 +58,12 @@ public class LoaderoTestOptionsService extends AbstractLoaderoService<LoaderoTes
         return (LoaderoTestOptions) crudController.update(testUrl,
                 LoaderoModelType.LOADERO_TEST_OPTIONS, updatedOptions);
     }
-
-//    @Override
-    public LoaderoTestOptions createNew(LoaderoTestOptions model) {
+    
+    @Override
+    public LoaderoTestOptions createNewModel(LoaderoTestOptions newModel, int... ids) {
         String url = urlBuilder.buildProjectURL() + "/tests/";
         return (LoaderoTestOptions) crudController
-                .post(url, LoaderoModelType.LOADERO_TEST_OPTIONS, model);
+                .post(url, LoaderoModelType.LOADERO_TEST_OPTIONS, newModel);
     }
     
     @Override
@@ -72,7 +73,7 @@ public class LoaderoTestOptionsService extends AbstractLoaderoService<LoaderoTes
     }
     
     @Override
-    protected String buildUrl(int... id) {
+    public String buildUrl(int... id) {
         return String.format("%s/", urlBuilder.buildTestURLById(id[0]));
     }
 }
