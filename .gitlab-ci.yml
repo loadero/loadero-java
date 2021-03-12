@@ -4,13 +4,11 @@ default:
         - docker
 
 stages:
-    - .pre
-    - build
     - test
     - visualize_coverage
 
 variables:
-    MAVEN_CLI_OPTS: "-B --errors --fail-at-end"
+    MAVEN_CLI_OPTS: "-B --errors --fail-fast"
     MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2
      -Dmaven.repo.local=.m2/repository
      -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN
@@ -21,12 +19,7 @@ cache:
     paths:
         - .m2/repository/
         - target/
-
-compile_build:
-    stage: build
-    script:
-        - mvn $MVN_CLI_OPTS compile
-    allow_failure: true
+        - docs/
 
 # Run unit tests and generate test coverage reports
 # At this stage all unit tests are run against Wiremock instance

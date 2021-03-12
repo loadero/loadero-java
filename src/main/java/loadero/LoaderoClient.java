@@ -28,8 +28,8 @@ public class LoaderoClient {
     
     /**
      * Returns information about test as LoaderoTestOptions.
-     * @param testId - ID of desired test.
-     * @return       - LoaderoTestOptions object.
+     * @param testId  ID of desired test.
+     * @return        LoaderoTestOptions object.
      */
     public LoaderoTestOptions getTestOptionsById(int testId) {
         return (LoaderoTestOptions) serviceFactory
@@ -40,9 +40,9 @@ public class LoaderoClient {
     /**
      * Updates the existing Loadero test description based on the
      * parameters provided in new LoaderoTestOptions() object.
-     * @param testId         - ID of test to be updated.
-     * @param newTestOptions - new LoaderoTestOptions object with parameters that you wish to change
-     * @return               - Updated LoaderoTestOptions
+     * @param testId          ID of test to be updated.
+     * @param newTestOptions  new LoaderoTestOptions object with parameters that you wish to change
+     * @return                Updated LoaderoTestOptions
      */
     public LoaderoTestOptions updateTestOptionsById(int testId,
                                                 LoaderoTestOptions newTestOptions) {
@@ -75,8 +75,8 @@ public class LoaderoClient {
     /**
      * Retrieves content of the script file from Loadero API and returns as LoaderoScriptFileLoc object.
      * Use toString() to convert into actual script.
-     * @param fileId - ID of the script file
-     * @return       - LoaderoScriptFileLoc information about script content.
+     * @param fileId  ID of the script file
+     * @return        LoaderoScriptFileLoc information about script content.
      */
     public LoaderoScriptFileLoc getTestScriptById(int fileId) {
         return (LoaderoScriptFileLoc) serviceFactory
@@ -86,9 +86,9 @@ public class LoaderoClient {
 
     /**
      * Returns group as LoaderoGroup object from Loadero with specified ID.
-     * @param testId - ID of the test.
-     * @param groupId - ID of the group.
-     * @return   - LoaderoGroup object.
+     * @param testId  ID of the test.
+     * @param groupId  ID of the group.
+     * @return    LoaderoGroup object.
      */
     public LoaderoGroup getGroupById(int testId, int groupId) {
         return (LoaderoGroup) serviceFactory
@@ -98,10 +98,10 @@ public class LoaderoClient {
 
     /**
      * Updates Loadero group parameters by given group ID.
-     * @param testId    - ID of the test containing the group.
-     * @param groupId   - ID of the group to be updated.
-     * @param newGroup  - LoaderoGroup object with new parameters.
-     * @return          - LoaderoGroup object with updated parameters.
+     * @param testId     ID of the test containing the group.
+     * @param groupId    ID of the group to be updated.
+     * @param newGroup   LoaderoGroup object with new parameters.
+     * @return           LoaderoGroup object with updated parameters.
      */
     public LoaderoGroup updateGroupById(int testId, int groupId, LoaderoGroup newGroup) {
         LoaderoGroupService groupService = (LoaderoGroupService)
@@ -111,9 +111,10 @@ public class LoaderoClient {
 
     /**
      * Returns participant's information from Loadero as LoaderoParticipant object.
-     * @param testId        - ID of the test that contains participant.
-     * @param participantId - desired participant.
-     * @return              - LoaderoParticipant object
+     * @param testId        ID of the test that contains participant.
+     * @param groupId       ID of the group containing participant
+     * @param participantId desired participant.
+     * @return              LoaderoParticipant object
      */
     public LoaderoParticipant getParticipantById(int testId, int groupId,
                                                  int participantId) {
@@ -124,11 +125,11 @@ public class LoaderoClient {
 
     /**
      * Updates Loadero Participant by it's ID.
-     * @param testId              - ID of the test that contains participant.
-     * @param groupId             - ID of the group that contains participant.
-     * @param participantId       - ID of desired participant.
-     * @param newParticipant      - LoaderoParticipant object with new params.
-     * @return LoaderoParticipant - updated LoaderoParticipant object.
+     * @param testId               ID of the test that contains participant.
+     * @param groupId              ID of the group that contains participant.
+     * @param participantId        ID of desired participant.
+     * @param newParticipant       LoaderoParticipant object with new params.
+     * @return LoaderoParticipant  updated LoaderoParticipant object.
      */
     public LoaderoParticipant updateTestParticipantById(int testId,
                                                         int groupId,
@@ -141,9 +142,9 @@ public class LoaderoClient {
 
     /**
      * Gets information about all test run results from Loadero API.
-     * @param testId - ID of the desired test to get results from.
-     * @param runId  - ID of the test run.
-     * @return       - LoaderoAllTestRunResults object, that contains list of LoaderoSingleTestRunResult objects.
+     * @param testId  ID of the desired test to get results from.
+     * @param runId   ID of the test run.
+     * @return        LoaderoAllTestRunResults object, that contains list of LoaderoSingleTestRunResult objects.
      */
     public LoaderoTestRunResult getTestRunResultById(int testId, int runId) {
         return (LoaderoTestRunResult) serviceFactory
@@ -153,10 +154,10 @@ public class LoaderoClient {
 
     /**
      * Gets information about specific results.
-     * @param testId    - ID of the test we wish to get results.
-     * @param runId     - ID of the test run.
-     * @param resultId  - ID of the result.
-     * @return          - LoaderoSingleTestRunResult object containing information such as ID, status,
+     * @param testId     ID of the test we wish to get results.
+     * @param runId      ID of the test run.
+     * @param resultId   ID of the result.
+     * @return           LoaderoSingleTestRunResult object containing information such as ID, status,
      *                    selenium_status, log paths, asserts and artifacts.
      */
     public LoaderoTestRunParticipantResult getTestRunParticipantResultById(int testId,
@@ -171,10 +172,10 @@ public class LoaderoClient {
      * Start test run by sending POST command underneath to tests/testId/runs endpoint.
      * After which actively starts polling for information about test run.
      * Returns run info when test is done or time of the polling runs out.
-     * @param testId   - ID of the test that is going to run.
-     * @param interval - how often check for information. In seconds.
-     * @param timeout  - how long should last polling for information. In seconds.
-     * @return         - LoaderoRunInfo containing information about test run.
+     * @param testId    ID of the test that is going to run.
+     * @param interval  how often check for information. In seconds.
+     * @param timeout   how long should polling for information. In seconds.
+     * @return          LoaderoRunInfo containing information about test run.
      */
     public LoaderoRunInfo startTestAndPollInfo(int testId, int interval, int timeout) {
         if (interval < 5) {

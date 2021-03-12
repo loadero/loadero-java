@@ -30,12 +30,7 @@ public class LoaderoTestRunResultService extends AbstractLoaderoService<LoaderoT
                 LoaderoModelType.LOADERO_RUN_RESULT);
     }
 
-    /**
-     * Not needed.
-     * @param newModel
-     * @param id
-     * @return
-     */
+    // Not supported.
     @Override
     public LoaderoTestRunResult updateById(LoaderoTestRunResult newModel, int... id) {
         return null;

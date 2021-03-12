@@ -25,16 +25,16 @@ public abstract class AbstractLoaderoService<T extends LoaderoModel> {
 
     /**
      * Make GET request to the endpoint and retrieves object/objects with specific ID.
-     * @param id - Array of IDs.
-     * @return
+     * @param id Array of IDs.
+     * @return   Concrete class of LoaderoModel object
      */
     public abstract T getById(int...id);
 
     /**
      * Updates information by ID about newModel object on Loadero API endpoint.
-     * @param newModel - LoaderoModel object with new parameters that we wish to update
-     * @param id       - Necessary IDs for update.
-     * @return         - concrete implementation of LoaderoModel object.
+     * @param newModel LoaderoModel object with new parameters that we wish to update
+     * @param id       Necessary IDs for update.
+     * @return         Concrete implementation of LoaderoModel object.
      */
     public abstract T updateById(T newModel, int...id);
     
@@ -53,8 +53,8 @@ public abstract class AbstractLoaderoService<T extends LoaderoModel> {
 
     /**
      * Common method used by every service to build url for itself.
-     * @param id - ID of the specific object endpoint.
-     * @return   - URL pointing to the object.
+     * @param id ID of the specific object endpoint.
+     * @return   URL pointing to the object.
      */
     protected abstract String buildUrl(int...id);
 }
