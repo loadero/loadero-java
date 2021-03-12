@@ -4,10 +4,12 @@ import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.printer.PrettyPrinter;
 import com.github.javaparser.printer.PrettyPrinterConfiguration;
+import loadero.exceptions.LoaderoException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -20,8 +22,9 @@ public class FunctionBodyParser {
     private static final Logger log = LogManager.getLogger(FunctionBodyParser.class);
     /**
      * Retrieves the content of the public void test(){}; method from .java file.
-      * @param path  Path to the script.
-     * @return       Content of the script as String.
+     * @param path  Path to the script.
+     * @throws  LoaderoException if any other exception occurs.
+     * @return    Content of the script as String.
      */
     public static String getScriptContent(String path) {
         String result = "";
@@ -36,7 +39,7 @@ public class FunctionBodyParser {
             result = printer.print(cu);
             result = result.substring(result.lastIndexOf("public void test"));
             result = result.substring(0, result.lastIndexOf('}'));
-        } catch (Exception e) {
+        } catch (FileNotFoundException | LoaderoException e) {
             result = null;
             log.error("{}", e.getMessage());
         }
@@ -48,6 +51,7 @@ public class FunctionBodyParser {
      * If some parameters are not found in Map object, default values in template will be used.
      * @param path   Path to the script.
      * @param scriptParams  Map of String, String object with parameters wish to apply.
+     * @throws NullPointerException if any of the parameters are null.
      * @return   Script content with new parameters as String.
      */
     public static String applyParamsToScript(String path, Map<String, String> scriptParams) {

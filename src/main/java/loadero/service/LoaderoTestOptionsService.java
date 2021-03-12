@@ -26,8 +26,8 @@ public class LoaderoTestOptionsService extends AbstractLoaderoService
     }
 
     @Override
-    public LoaderoTestOptions getById(int... id) {
-        String testUrl = buildUrl(id[0]);
+    public LoaderoTestOptions getById(int... ids) {
+        String testUrl = buildUrl(ids[0]);
         LoaderoClientUtils.checkArgumentsForNull(testUrl);
 
         return (LoaderoTestOptions) crudController.get(testUrl,
@@ -35,8 +35,8 @@ public class LoaderoTestOptionsService extends AbstractLoaderoService
     }
 
     @Override
-    public LoaderoTestOptions updateById(LoaderoTestOptions newModel, int... id) {
-        int testId = id[0];
+    public LoaderoTestOptions updateById(LoaderoTestOptions newModel, int... ids) {
+        int testId = ids[0];
         LoaderoClientUtils.checkArgumentsForNull(newModel, testId);
 
         String testUrl = urlBuilder.buildTestURLById(testId) + "/";
@@ -67,8 +67,8 @@ public class LoaderoTestOptionsService extends AbstractLoaderoService
     }
     
     @Override
-    public void deleteById(int...id) {
-        int testId = id[0];
+    public void deleteById(int...ids) {
+        int testId = ids[0];
         crudController.delete(buildUrl(testId));
     }
     

@@ -16,6 +16,8 @@ public interface LoaderoSpecialOperation<T extends LoaderoModel> {
      * Updates information by ID about newModel object on Loadero API endpoint.
      * @param updatedModel LoaderoModel object with new parameters that we wish to update
      * @param ids          Necessary IDs for update.
+     * @throws NullPointerException if updateModel is null.
+     * @throws loadero.exceptions.LoaderoException if any of ids are negative.
      * @return             Concrete implementation of LoaderoModel object.
      */
     T updateById(T updatedModel, int... ids);
@@ -24,6 +26,8 @@ public interface LoaderoSpecialOperation<T extends LoaderoModel> {
      * Create new LoaderoModel on Loadero site.
      * @param newModel LoaderoModel to be created.
      * @param ids      Optional - IDs required to create new model.
+     * @throws NullPointerException if newModel is null.
+     * @throws loadero.exceptions.LoaderoException if any of ids are negative.
      * @return         Newly created concrete LoaderModel object.
      */
     T createNewModel(T newModel, int... ids);
@@ -31,6 +35,7 @@ public interface LoaderoSpecialOperation<T extends LoaderoModel> {
     /**
      * Deletes Loadero object from site based on provided id/ids.
      * @param ids ID/IDs required for object deletion.
+     * @throws loadero.exceptions.LoaderoException if any of ids are negative.
      */
     void deleteById(int... ids);
 }

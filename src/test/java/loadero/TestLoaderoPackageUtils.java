@@ -68,8 +68,9 @@ public class TestLoaderoPackageUtils {
     
     @Test
     public void negativeTestJsonToObject() {
-        LoaderoModel model = LoaderoClientUtils.httpEntityToModel(null, null);
-        assertNull(model);
+        assertThrows(NullPointerException.class, () -> {
+            LoaderoModel model = LoaderoClientUtils.httpEntityToModel(null, null);
+        });
     }
     
     @Test

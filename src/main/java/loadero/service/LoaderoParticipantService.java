@@ -26,7 +26,7 @@ public class LoaderoParticipantService extends AbstractLoaderoService
         int testId = ids[0];
         int groupId = ids[1];
         int participantId = ids[2];
-        LoaderoClientUtils.checkArgumentsForNull(testId, groupId, participantId);
+        LoaderoClientUtils.checkIfIntIsNegative(testId, groupId, participantId);
 
         String particUrl = buildUrl(testId, groupId, participantId);
         return (LoaderoParticipant) crudController.get(
@@ -40,8 +40,9 @@ public class LoaderoParticipantService extends AbstractLoaderoService
         int groupId = ids[1];
         int participantId = ids[2];
 
-        LoaderoClientUtils.checkArgumentsForNull(newModel, testId, groupId, participantId);
-
+        LoaderoClientUtils.checkArgumentsForNull(newModel);
+        LoaderoClientUtils.checkIfIntIsNegative(testId, groupId, participantId);
+        
         String participantUrl = buildUrl(testId, groupId, participantId);
         LoaderoParticipant currentParticInfo = getById(testId, groupId, participantId);
         LoaderoModel updatedParticipant = LoaderoClientUtils
@@ -58,6 +59,9 @@ public class LoaderoParticipantService extends AbstractLoaderoService
     public LoaderoParticipant createNewModel(LoaderoParticipant newModel, int... ids) {
         int testId = ids[0];
         int groupId = ids[1];
+        LoaderoClientUtils.checkArgumentsForNull(newModel);
+        LoaderoClientUtils.checkIfIntIsNegative(testId, groupId);
+        
         String url = urlBuilder.buildGroupURL(testId, groupId) + "/participants/";
         return (LoaderoParticipant) crudController
                 .post(url, LoaderoModelType.LOADERO_PARTICIPANT, newModel);
@@ -68,7 +72,7 @@ public class LoaderoParticipantService extends AbstractLoaderoService
         int testId = ids[0];
         int groupId = ids[1];
         int participantId = ids[2];
-        
+        LoaderoClientUtils.checkIfIntIsNegative(testId, groupId, participantId);
         crudController.delete(buildUrl(testId, groupId, participantId));
     }
     

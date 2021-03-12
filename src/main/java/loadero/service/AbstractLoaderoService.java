@@ -2,6 +2,7 @@ package loadero.service;
 
 import loadero.controller.LoaderoCrudController;
 import loadero.model.LoaderoModel;
+import loadero.utils.LoaderoClientUtils;
 import loadero.utils.LoaderoUrlBuilder;
 import lombok.Generated;
 import lombok.Getter;
@@ -15,9 +16,16 @@ import lombok.Getter;
 public abstract class AbstractLoaderoService implements LoaderoCommonOperation<LoaderoModel> {
     private final LoaderoCrudController crudController;
     private final LoaderoUrlBuilder urlBuilder;
-
+    
+    /**
+     * Constructor for an AbstractLoaderoService.
+     * @param crudController LoaderoCrudController object.
+     * @param urlBuilder     LoaderoUrlBuilder object.
+     * @throws NullPointerException if any of given arguments are null.
+     */
     public AbstractLoaderoService(LoaderoCrudController crudController,
                                   LoaderoUrlBuilder urlBuilder) {
+        LoaderoClientUtils.checkArgumentsForNull(crudController, urlBuilder);
         this.crudController = crudController;
         this.urlBuilder = urlBuilder;
     }

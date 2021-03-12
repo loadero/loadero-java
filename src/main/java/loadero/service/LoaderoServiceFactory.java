@@ -3,21 +3,39 @@ package loadero.service;
 import loadero.controller.LoaderoCrudController;
 import loadero.model.LoaderoModel;
 import loadero.types.LoaderoModelType;
+import loadero.utils.LoaderoClientUtils;
 import loadero.utils.LoaderoUrlBuilder;
 
 /**
- * Factory class that contains method that returns required service layer based on the
+ * This class provides method that returns required service layer based on the
  * provided LoaderoModelType.
  */
 public class LoaderoServiceFactory {
     private final LoaderoCrudController crudController;
     private final LoaderoUrlBuilder urlBuilder;
-
+    
+    /**
+     * Creates LoaderoServiceFactory with given Loadero API token, base url and project ID.
+     * @param apiToken  Loadero APi token, that is provided for Crud controller later.
+     * @param baseUrl   Base url that is passed to the LoaderoUrlBuilder.
+     * @param projectId ID of the project we going to work with.
+     * @throws NullPointerException if apiToken or baseUrl is null or an empty String.
+     * @throws loadero.exceptions.LoaderoException if projectId is negative.
+     */
     public LoaderoServiceFactory(String apiToken, String baseUrl, int projectId) {
+        LoaderoClientUtils.checkArgumentsForNull(apiToken, baseUrl);
+        LoaderoClientUtils.checkIfIntIsNegative(projectId);
+        
         this.crudController = new LoaderoCrudController(apiToken);
         this.urlBuilder = new LoaderoUrlBuilder(baseUrl, projectId);
     }
-
+    
+    /**
+     * Factory method for returning concrete service layer based on the given LoaderoModelType.
+     * @param type LoaderoModelType we want to create service layer for.
+     * @throws IllegalArgumentException if unsupported type is provided.
+     * @return concrete AbstractLoaderoService implementation.
+     */
     public AbstractLoaderoService getLoaderoService(LoaderoModelType type) {
         switch (type) {
             case LOADERO_GROUP:         return new LoaderoGroupService(crudController, urlBuilder);

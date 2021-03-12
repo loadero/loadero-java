@@ -26,7 +26,7 @@ public class LoaderoTestRunParticipantResultService extends
         int testId = id[0];
         int runId = id[1];
         int resultId = id[2];
-        LoaderoClientUtils.checkArgumentsForNull(testId, runId, resultId);
+        LoaderoClientUtils.checkIfIntIsNegative(testId, runId, resultId);
 
         String resultsUrl = buildUrl(testId, runId, resultId);
         return (LoaderoTestRunParticipantResult) crudController.get(resultsUrl,

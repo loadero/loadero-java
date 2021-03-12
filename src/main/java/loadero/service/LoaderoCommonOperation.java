@@ -12,6 +12,7 @@ public interface LoaderoCommonOperation<T extends LoaderoModel> {
     /**
      * Make GET request to the endpoint and retrieves object/objects with specific ID.
      * @param ids Array of IDs.
+     * @throws loadero.exceptions.LoaderoException if any of ids are negative.
      * @return Returns concrete object of the LoaderoModel type from Loadero.
      */
     T getById(int... ids);
