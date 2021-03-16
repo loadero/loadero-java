@@ -1,13 +1,9 @@
-package loadero.service;
+package loadero.main;
 
-import loadero.controller.LoaderoCrudController;
 import loadero.exceptions.LoaderoException;
 import loadero.model.LoaderoModel;
 import loadero.model.LoaderoRunInfo;
 import loadero.types.LoaderoModelType;
-import loadero.utils.LoaderoClientUtils;
-import loadero.utils.LoaderoHttpClient;
-import loadero.utils.LoaderoUrlBuilder;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -20,7 +16,7 @@ import java.io.IOException;
 /**
  * Implementation of AbstractLoaderoService that is responsible for polling operation.
  */
-public class LoaderoPollingService extends AbstractLoaderoService {
+final class LoaderoPollingService extends AbstractLoaderoService {
     private final LoaderoHttpClient     client;
     private final LoaderoCrudController crudController = super.getCrudController();
     private final LoaderoUrlBuilder     urlBuilder     = super.getUrlBuilder();

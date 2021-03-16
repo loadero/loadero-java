@@ -2,7 +2,8 @@ package loadero.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import lombok.AllArgsConstructor;
+import loadero.exceptions.LoaderoBlankTitleException;
+import loadero.exceptions.LoaderoCountException;
 import lombok.Data;
 import lombok.Generated;
 import lombok.NoArgsConstructor;
@@ -13,9 +14,8 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Generated // Need this for JaCoco to ignore getters and setters
-public class LoaderoGroup implements LoaderoModel {
+public final class LoaderoGroup implements LoaderoModel {
     @Expose(serialize = false)
     private int id = 0;
     @Expose(serialize = false)
@@ -23,4 +23,19 @@ public class LoaderoGroup implements LoaderoModel {
     private int testId = 0;
     private String name = "";
     private int count = 0;
+    
+    /**
+     * Constructor for Loadero groups.
+     * @param name  Name of the group.
+     * @param count How many groups you need. At least 1 group is required.
+     * @throws LoaderoBlankTitleException if name is an empty string or null.
+     * @throws LoaderoCountException if count is less than 1.
+     */
+    public LoaderoGroup(String name, int count) {
+        if (name.isBlank()) {throw new LoaderoBlankTitleException(); }
+        if (count < 1) {throw new LoaderoCountException(); }
+        
+        this.name = name;
+        this.count = count;
+    }
 }

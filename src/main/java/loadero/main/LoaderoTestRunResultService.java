@@ -1,16 +1,13 @@
-package loadero.service;
+package loadero.main;
 
-import loadero.controller.LoaderoCrudController;
 import loadero.model.LoaderoTestRunResult;
 import loadero.types.LoaderoModelType;
-import loadero.utils.LoaderoClientUtils;
-import loadero.utils.LoaderoUrlBuilder;
 
 /**
  * Implementation of AbstractLoaderoService that is responsible for CRUD operation
  * related to LoaderoTestRunResult object.
  */
-public class LoaderoTestRunResultService extends AbstractLoaderoService {
+final class LoaderoTestRunResultService extends AbstractLoaderoService {
     private final LoaderoCrudController crudController = super.getCrudController();
     private final LoaderoUrlBuilder urlBuilder = super.getUrlBuilder();
 

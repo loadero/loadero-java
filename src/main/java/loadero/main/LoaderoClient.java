@@ -1,10 +1,8 @@
-package loadero;
+package loadero.main;
 
 import loadero.exceptions.LoaderoException;
 import loadero.model.*;
-import loadero.service.*;
 import loadero.types.LoaderoModelType;
-import loadero.utils.LoaderoClientUtils;
 import lombok.Getter;
 
 

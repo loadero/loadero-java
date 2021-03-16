@@ -2,10 +2,11 @@ package loadero.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import cucumber.api.java.eo.Se;
+import loadero.exceptions.LoaderoBlankTitleException;
+import loadero.exceptions.LoaderoNegativeStartInterval;
+import loadero.exceptions.LoaderoNegativeTimeout;
 import loadero.types.LoaderoIncrementStrategyType;
 import loadero.types.LoaderoTestModeType;
-import loadero.utils.FunctionBodyParser;
 import lombok.Data;
 import lombok.Generated;
 import lombok.NoArgsConstructor;
@@ -24,7 +25,7 @@ import java.util.Map;
 @Data
 @NoArgsConstructor
 @Generated // Need this for JaCoco to ignore getters and setters
-public class LoaderoTestOptions implements LoaderoModel {
+public final class LoaderoTestOptions implements LoaderoModel {
     @Expose(serialize = false)
     private int id = 0;
     private String name = "";
@@ -39,7 +40,34 @@ public class LoaderoTestOptions implements LoaderoModel {
     @SerializedName("script_file_id")
     @Expose(serialize = false)
     private int scriptFileId = 0;
-
+    
+    /**
+     * Constructor for Loadero test.
+     * @param name               Name of the test.
+     * @param startInterval      Starting interval of the participant. In seconds.
+     * @param participantTimeout Timeout for each participant. In seconds.
+     * @param mode               How to perform test. Performance, load or session-record
+     * @param incrementStrategy  How Loadero should add participants during test run.
+     * @param script             Test script.
+     * @throws LoaderoBlankTitleException if name is blank or null.
+     * @throws LoaderoNegativeStartInterval if startInterval is negative.
+     * @throws LoaderoNegativeTimeout if participantTimeout is negative.
+     */
+    public LoaderoTestOptions(String name, int startInterval, int participantTimeout,
+                              LoaderoTestModeType mode, LoaderoIncrementStrategyType incrementStrategy,
+                              String script) {
+        if (name.isBlank()) throw new LoaderoBlankTitleException();
+        if (startInterval < 0) throw new LoaderoNegativeStartInterval();
+        if (participantTimeout < 0) throw new LoaderoNegativeTimeout();
+        
+        this.name = name;
+        this.startInterval = startInterval;
+        this.participantTimeout = participantTimeout;
+        this.mode = mode;
+        this.incrementStrategy = incrementStrategy;
+        this.script = script;
+    }
+    
     /**
      * When given only URI as argument, threats this argument as path
      * in where to look for a script, then parses it to string.

@@ -1,17 +1,14 @@
-package loadero.service;
+package loadero.main;
 
-import loadero.controller.LoaderoCrudController;
 import loadero.model.LoaderoModel;
 import loadero.model.LoaderoParticipant;
 import loadero.types.LoaderoModelType;
-import loadero.utils.LoaderoClientUtils;
-import loadero.utils.LoaderoUrlBuilder;
 
 /**
  * Implementation of AbstractLoaderoService that is responsible for CRUD operation
  * related to LoaderoParticipant object.
  */
-public class LoaderoParticipantService extends AbstractLoaderoService
+final class LoaderoParticipantService extends AbstractLoaderoService
         implements LoaderoSpecialOperation<LoaderoParticipant> {
     private final LoaderoCrudController crudController = super.getCrudController();
     private final LoaderoUrlBuilder urlBuilder         = super.getUrlBuilder();
@@ -48,8 +45,7 @@ public class LoaderoParticipantService extends AbstractLoaderoService
         LoaderoModel updatedParticipant = LoaderoClientUtils
                 .copyUncommonFields(
                         currentParticInfo,
-                        newModel,
-                        LoaderoModelType.LOADERO_PARTICIPANT);
+                        newModel);
 
         return (LoaderoParticipant) crudController
                 .update(participantUrl, LoaderoModelType.LOADERO_PARTICIPANT, updatedParticipant);

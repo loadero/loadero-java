@@ -1,10 +1,9 @@
-package loadero.utils;
+package loadero.main;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import loadero.controller.LoaderoCrudController;
 import loadero.exceptions.LoaderoException;
 import loadero.model.*;
 import loadero.types.LoaderoModelType;
@@ -20,8 +19,7 @@ import java.util.Objects;
 /**
  * This class provides some utility/helper functions for the package.
  */
-public class LoaderoClientUtils {
-    private static final LoaderoModelFactory factory = new LoaderoModelFactory();
+final class LoaderoClientUtils {
     private static final Logger log = LogManager.getLogger(LoaderoClientUtils.class);
     private static final Gson gson = new GsonBuilder()
             .addSerializationExclusionStrategy(new ExclusionStrategy() {
@@ -117,37 +115,42 @@ public class LoaderoClientUtils {
     
     /**
      * Compares two LoaderModel objects field by field and copies field's values from
-     * currentObj into newObject if there are any differences detected. Does nothing if field's values are the same.
+     * copyFrom into copyTo if there are any differences detected. Does nothing if field's values are the same.
      *
      * Slightly modified version of code from SO: https://stackoverflow.com/a/20366149.
      *
-     * @param currentObj LoaderoModel to compare against.
-     * @param newObject  LoaderoModel to be compared.
-     * @param type concrete type of objects to be compared.
+     * @param copyFrom LoaderoModel to compare against.
+     * @param copyTo   LoaderoModel to be compared.
      * @throws NullPointerException if any of provided arguments are null.
-     * @exception IllegalArgumentException if Reflection API couldn't get value from the Field.
-     * @return new concrete LoaderoModel object.
+     * @throws IllegalArgumentException if Reflection API couldn't get value from the Field.
+     * @throws LoaderoException if currentObject and copyTo are not of the same class.
+     * @return copyTo object.
      */
-    public static LoaderoModel copyUncommonFields(LoaderoModel currentObj,
-                                                  LoaderoModel newObject,
-                                                  LoaderoModelType type) {
-        checkArgumentsForNull(currentObj, newObject, type);
-        LoaderoModel result = factory.getLoaderoModel(type);
-        Field[] fieldsArr = result.getClass().getDeclaredFields();
+    public static LoaderoModel copyUncommonFields(LoaderoModel copyFrom, LoaderoModel copyTo) {
+        checkArgumentsForNull(copyFrom, copyTo);
+        
+        if (!Objects.equals(copyFrom.getClass(), copyTo.getClass())) {
+            throw new LoaderoException(
+                    String.format("%s and %s not of the same class",
+                    copyFrom, copyTo));
+        }
+    
+        Field[] fieldsArr = copyFrom.getClass().getDeclaredFields();
 
         for(Field field : fieldsArr){
             // make private fields accessible
             field.setAccessible(true);
             try {
-                if (field.get(currentObj) == field.get(newObject)
-                        || Objects.equals(field.get(newObject), "")
-                        || Objects.equals(field.get(newObject), 0)
-                        || Objects.equals(field.get(newObject), 0L)
-                        || field.get(newObject) == null) {
-                    field.set(result, field.get(currentObj));
-                    
-                } else {
-                    field.set(result, field.get(newObject));
+                /* If field of copyTo object values are equal to copyFrom object values,
+                 * empty, 0 or null, then copies values of copyFrom object into copyTo object.
+                 * Otherwise, leaves field unchanged.
+                */
+                if (field.get(copyFrom) == field.get(copyTo)
+                        || Objects.equals(field.get(copyTo), "")
+                        || Objects.equals(field.get(copyTo), 0)
+                        || Objects.equals(field.get(copyTo), 0L)
+                        || field.get(copyTo) == null) {
+                    field.set(copyTo, field.get(copyFrom));
                 }
             } catch (IllegalArgumentException | IllegalAccessException e) {
                 log.error("Couldn't get access or an illegal argument was provided to {}",
@@ -155,6 +158,6 @@ public class LoaderoClientUtils {
             }
             field.setAccessible(false);
         }
-        return result;
+        return copyTo;
     }
 }

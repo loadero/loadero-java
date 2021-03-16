@@ -5,6 +5,8 @@ package loadero.exceptions;
  */
 public class LoaderoException extends RuntimeException {
 
+    public LoaderoException() {}
+    
     public LoaderoException(String message) {
         super(message);
     }

@@ -4,8 +4,6 @@ import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 import loadero.model.LoaderoTestOptions;
 import loadero.types.LoaderoIncrementStrategyType;
 import loadero.types.LoaderoTestModeType;
-import loadero.utils.FunctionBodyParser;
-import loadero.utils.LoaderoClientUtils;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
@@ -65,7 +63,7 @@ public class TestLoaderoTestOptions extends AbstractTestLoadero {
         testOptions.setScript(URI.create("/Users/mihhail.matisinets/Desktop/Projects/loadero-rest-api-wrapper" +
                 "/src/main/resources/loadero/scripts/testui/LoaderoScript.java"));
         
-        String body = LoaderoClientUtils.modelToJson(testOptions);
+        String body = gson.toJson(testOptions);
         
         StubMapping stub = wmRule.stubFor(post(urlPathMatching(".*/tests/"))
                 .willReturn(aResponse()
@@ -97,7 +95,7 @@ public class TestLoaderoTestOptions extends AbstractTestLoadero {
         newTest.setIncrementStrategy(LoaderoIncrementStrategyType.LINEAR_GROUP);
         newTest.setParticipantTimeout(150);
         newTest.setStartInterval(5);
-        String jsonRes = LoaderoClientUtils.modelToJson(newTest);
+        String jsonRes = gson.toJson(newTest);
         
         testOptionsHelper(jsonRes);
         
@@ -114,7 +112,7 @@ public class TestLoaderoTestOptions extends AbstractTestLoadero {
         newTest.setIncrementStrategy(LoaderoIncrementStrategyType.LINEAR_GROUP);
         newTest.setParticipantTimeout(150);
         newTest.setStartInterval(5);
-        String jsonRes = LoaderoClientUtils.modelToJson(newTest);
+        String jsonRes = gson.toJson(newTest);
         testOptionsHelper(jsonRes);
         
         LoaderoTestOptions updatedTest = loaderoClient.updateTestOptionsById(TEST_ID, newTest);
@@ -125,38 +123,12 @@ public class TestLoaderoTestOptions extends AbstractTestLoadero {
     }
     
     @Test
-    public void testUpdateTestOptionsWithNewScript() {
-        LoaderoTestOptions newTest = new LoaderoTestOptions();
-        // New params for test
-        newTest.setName("unit test 2");
-        // New test script params
-        newTest.setScript(URI.create("src/main/resources/loadero/scripts/testui/LoaderoScript.java"));
-        
-        String jsonRes = LoaderoClientUtils.modelToJson(newTest);
-        testOptionsHelper(jsonRes);
-        
-        // Updating some random test
-        LoaderoTestOptions updatedTest = loaderoClient.updateTestOptionsById(7193, newTest);
-        // Retrieving ID pointing to script file
-        int scriptId = updatedTest.getScriptFileId();
-        // Getting content of the script from Loadero
-        String actualScript = loaderoClient.getTestScriptById(scriptId)
-                .getContent();
-        String expectedScript = FunctionBodyParser
-                .getScriptContent("src/main/resources/loadero/scripts/testui/LoaderoScript.java");
-        
-        assertEquals("unit test 2", updatedTest.getName());
-        // Comparing script from Loadero and local script
-        assertEquals(expectedScript, actualScript);
-    }
-    
-    @Test
     public void negativeUpdateTestOptions() {
         int testId = 23423;
         LoaderoTestOptions test = new LoaderoTestOptions();
         test.setMode(LoaderoTestModeType.PERFORMANCE);
         test.setName("negative test");
-        String json = LoaderoClientUtils.modelToJson(test);
+        String json = gson.toJson(test);
         
         StubMapping stub = wmRule.stubFor(put(urlMatching(".*/tests/" + testId + "/"))
                 .willReturn(aResponse()

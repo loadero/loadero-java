@@ -1,16 +1,13 @@
-package loadero.service;
+package loadero.main;
 
-import loadero.controller.LoaderoCrudController;
 import loadero.model.LoaderoScriptFileLoc;
 import loadero.types.LoaderoModelType;
-import loadero.utils.LoaderoClientUtils;
-import loadero.utils.LoaderoUrlBuilder;
 
 /**
  * Implementation of AbstractLoaderoService that is responsible for CRUD operation
  * related to LoaderoScriptFileLoc object.
  */
-class LoaderoScriptFileService extends AbstractLoaderoService {
+final class LoaderoScriptFileService extends AbstractLoaderoService {
     private final LoaderoCrudController crudController = super.getCrudController();
     private final LoaderoUrlBuilder urlBuilder = super.getUrlBuilder();
 

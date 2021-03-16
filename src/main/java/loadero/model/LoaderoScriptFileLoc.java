@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Generated // Need this for JaCoco to ignore getters and setters
-public class LoaderoScriptFileLoc implements LoaderoModel{
+public final class LoaderoScriptFileLoc implements LoaderoModel{
     private int id;
     @SerializedName("project_id")
     private int projectId;

@@ -1,4 +1,4 @@
-package loadero.utils;
+package loadero.main;
 
 import org.apache.http.Header;
 import org.apache.http.HttpHeaders;
@@ -12,7 +12,7 @@ import java.util.List;
  * Implementation of HttpClientBuilder for interacting with Loadero API.
  * Basically, applies some common headers/traits that is later used to send requests.
  */
-public class LoaderoHttpClient extends HttpClientBuilder {
+final class LoaderoHttpClient extends HttpClientBuilder {
 
     public LoaderoHttpClient(String loaderoApiToken) {
         List<Header> headers = new ArrayList<>(List.of(
