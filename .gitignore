@@ -1,6 +1,7 @@
 .idea
 target
 build
+docs
 src/test/resources/wiremock-standalone-2.27.2.jar
 .DS_Store
 src/.DS_Store

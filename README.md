@@ -6,14 +6,9 @@
 <h3>Description</h3>
 <hr>
 <p>This is a small java library that can be used as a client to interact with Loadero API service.</p>
-<p>For now only a small portion of functionality is covered such as getting or updating information about 
-existing tests, groups and participants. In addition it is possible to launch tests and poll for the results.
+<p>
+It allows you to create, delete, update, launch and retrieve information about tests from Loadero.
 </p>
-
-<h3>Plans</h3>
-<hr>
-<p>Full feature CRUD application to interact with Loadero API service.</p>
-
 <h3>Documentation</h3>
 <hr>
 <h4>Classes</h4>
@@ -134,6 +129,97 @@ class LoaderoTestRunParticipantResult(){}
 </tbody>
 </table>
 
+<h4>Enums</h4>
+Public Enums that can be used to set constant values for Loadero tests and participants.
+<table style="text-align: left; vertical-align: middle; table-layout: fixed;wrap:break-word;">
+<thead>
+  <tr style="text-align: center; vertical-align: middle;">
+    <th>Name</th>
+    <th>Description</th>
+  </tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+```java
+enum LoaderoBrowserType
+```
+</td>
+<td>
+Contains different browser types that can be used for testing.
+</td>
+</tr>
+<tr>
+<td>
+
+```java
+enum LoaderoComputeUnitsType
+```
+</td>
+<td>
+Contains compute units options.
+</td>
+</tr>
+<tr>
+<td>
+
+```java
+enum LoaderoIncrementStrategyType
+```
+</td>
+<td>
+Contains possible options for increment strategies.
+</td>
+</tr>
+<tr>
+<td>
+
+```java
+enum LoaderoLocationType
+```
+</td>
+<td>
+Contains different geo locations that are available for testing.
+</td>
+</tr>
+<tr>
+<td>
+
+```java
+enum LoaderoMediaType
+```
+</td>
+<td>
+Contains media options that can be used for testing.
+</td>
+</tr>
+<tr>
+<td>
+
+```java
+enum LoaderoNetworkTypes
+```
+</td>
+<td>
+Contains different network conditions that can be set for testing.
+</td>
+</tr>
+<tr>
+<td>
+
+```java
+enum LoaderoTestModeType
+```
+</td>
+<td>
+Contains options for setting testing mode.
+</td>
+</tr>
+</tbody>
+</table>
+
+
 <h4>Methods</h4>
 Public methods that is used to interact with Loadero API.
 <table style="text-align: left; vertical-align: middle; table-layout: fixed;wrap:break-word;">
@@ -146,7 +232,6 @@ Public methods that is used to interact with Loadero API.
 </thead>
 <tbody>
 <tr>
-
 <td>
 
 ```java
@@ -164,7 +249,7 @@ retrieves information about existing test. Takes no arguments. Returns data as L
 <td>
 
 ```java
- LoaderoTestOptions updateTestOptionsById
+LoaderoTestOptions updateTestOptionsById
         (int testId, LoaderoTestOptions newOptions)
 ```
 </td>
@@ -183,21 +268,50 @@ Takes in LoaderoTestOptions object with desired params set through setter method
 <td>
 
 ```java
- String getTestScript(int fileId)
+LoaderoTestOptions createNewTest
+        (LoaderoTestOptions newTest) 
 ```
 </td>
 <td>
-<b>int fileId</b> - ID that is pointing to the script file on Loadero.
+<b>LoaderoTestOptions newTest</b> - Required parameter that is used to create new test in Loadero.
 </td>
-<td>Makes GET request to <b>/projects/{projectID}/files/{fileID}/</b> and retrieves the content
-of the script used for testing.
+<td>
+Makes POST request to <b>/projects/{projectID}/tests/</b> and creates new test.
 </td>
 </tr>
 <tr>
 <td>
 
 ```java
- LoaderoGroup getGroupById
+void deleteTestById(int id)
+```
+</td>
+<td>
+<b>int testIdt</b> - Required parameter that is used to delete specific test in Loadero.
+</td>
+<td>
+Makes DELETE request to <b>/projects/{projectID}/tests/{testId}</b> and deletes test.
+</td>
+</tr>
+<tr>
+<td>
+
+```java
+LoaderoScriptFileLoc getTestScriptById(int fileId)
+```
+</td>
+<td>
+<b>int fileId</b> - ID that is pointing to the script file on Loadero.
+</td>
+<td>Makes GET request to <b>/projects/{projectID}/files/{fileID}/</b> and retrieves information
+about the script content and where it's stored.
+</td>
+</tr>
+<tr>
+<td>
+
+```java
+LoaderoGroup getGroupById
         (int testId, int groupId)
 ```
 </td>
@@ -213,7 +327,7 @@ and retrieves information about group.
 <td>
 
 ```java
- LoaderoGroup updateGroupById
+LoaderoGroup updateGroupById
         (int testId, int groupId, LoaderoGroup newGroup)
 ```
 </td>
@@ -230,7 +344,38 @@ and updates information about group.
 <td>
 
 ```java
- LoaderoParticipant getParticipantById
+LoaderoGroup createNewGroup
+        (LoaderoGroup newGroup, int testId)
+```
+</td>
+<td>
+<b>int testId</b>  - ID of the test where group will be created.<br/>
+<b>LoaderoGroup newGroup</b> - new LoaderoGroup object.
+</td>
+<td>Makes POST request to <b>/projects/{projectID}/tests/{testID}/groups/</b> 
+and creates new group.
+</td>
+</tr>
+<tr>
+<td>
+
+```java
+void deleteGroupById
+        (int testId, int groupId)
+```
+</td>
+<td>
+<b>int testId</b>  - ID of the test to be deleted.<br/>
+</td>
+<td>Makes DELETE request to <b>/projects/{projectID}/tests/{testID}/groups/{groupId}/</b> 
+and deletes group.
+</td>
+</tr>
+<tr>
+<td>
+
+```java
+LoaderoParticipant getParticipantById
         (int testId, int groupId, int participnatId)
 ```
 </td>
@@ -267,7 +412,41 @@ and updates information about specific participant.
 <td>
 
 ```java
- LoaderoTestRunResult getTestRunResultById
+LoaderoParticipant createParticipantById(int testId, int groupId,
+        LoaderoParticipant newParticipant)
+```
+</td>
+<td>
+<b>int testId</b>  - ID of the test that contains desired participant.<br/>
+<b>int groupId</b> - ID of the group that contains participant.<br>
+<b>LoaderoParticipant newParticipant</b> - new LoaderoParticipant object.
+</td>
+<td>Makes POST request to <b>/projects/{projectID}/tests/{testID}/groups/{groupID}/participants/</b> 
+and creates new participant.
+</td>
+</tr>
+<tr>
+<td>
+
+```java
+void deleteParticipantById(int testId, int groupId,
+        int participantId)
+```
+</td>
+<td>
+<b>int testId</b>  - ID of the test that contains desired participant.<br/>
+<b>int groupId</b> - ID of the group that contains participant.<br>
+<b>int participantId</b> - ID of the participant we wish to delete.
+</td>
+<td>Makes DELETE request to <b>/projects/{projectID}/tests/{testID}/groups/{groupID}/participants/{participantsId}</b> 
+and deletes participant.
+</td>
+</tr>
+<tr>
+<td>
+
+```java
+LoaderoTestRunResult getTestRunResultById
         (int testId, int runId)
 ```
 </td>
@@ -277,20 +456,6 @@ and updates information about specific participant.
 </td>
 <td>Makes GET request to <b>projects/{projectID}/tests/{testID}/runs/{runID}/results/</b>
 and retrieves information about <b>all</b> test run results.
-</td>
-</tr>
-<tr>
-<td>
-
-```java
-LoaderoScriptFileLoc getTestScriptById(int fileId)
-```
-</td>
-<td>
-<b>int fileId</b> - ID of the test script file.<br>
-</td>
-<td>Makes GET request to <b>/projects/{projectId}/files/{fileId}"</b>
-and retrieves test script.
 </td>
 </tr>
 <tr>
@@ -314,7 +479,7 @@ and retrieves information about <b>specific</b> test run result.
 <td>
 
 ```java
-  LoaderoRunInfo startTestAndPollInfo
+LoaderoRunInfo startTestAndPollInfo
         (int testId, int interval, int timeout)
 ```
 </td>
@@ -349,19 +514,23 @@ int testId = 2323;
 LoaderoTestOptions currentTestOptions = client.getTestOptionsById(testId);
 
 // Initiating new test options.
-// New options are...well...optional. Those options that wasn't specified
-// won't be substitute.
-LoaderoTestOptions newTestOptions = new LoaderoTestOptions();
+String testName = "someName";
+int startInterval = 10;
+int participantTimeout = 500;
+String pathToScript = "path";
+
+LoaderoTestOptions newTestOptions = new LoaderoTestOptions(
+        "someName", startInterval, participantTimeout,
+        LoaderoTestModeType.LOAD, LoaderoIncrementStrategy.LINEAR, pathToScript);
 
 // Desired options can be get/set via getters and setters, respectively.
         
-// There is three(!) possibilities of setting script content.
-// First one is to provide path to location where script is stored.
+// There are three(!) possible ways of setting script content.
+// First one is to provide location where script is stored.
 // Assumed that script is already fully functional in Loadero environment.        
 // This location will be parsed to string. 
 // Regardless, if this is .java or .js file.
-newTestOptions.setName("New name 1");
-newTestOptions.setMode("performance");
+// Default way used by constructor as well.        
 newTestOptions.setScript(URI.create("path/to/.java or .js"));
 
 // The second approach is to pass script as string directly.
@@ -375,12 +544,20 @@ newTestOptions.setScript(new String("your script here"));
 Map<String, String> newParams = new HashMap<>();
 newParams.put("callDuration", "10");
 newParams.put("elementTimeout", "30");
-
 newTestOptions.setScript("path to script template", newParams);        
+
+// Now when your test is ready you can actually create it on Loadero side as well!
+// Just call
+client.createNewTest(newTestOptions);
+// You can assign it to variable and use later as well. This will return new test created on Loadero.
+LoaderoTestOptions test = client.createNewTest(newTestOptions);
 
 // After that you can call updateTestOptions() method and store result
 // of the operation for later usage if needed.       
 LoaderoTestOptions updatedOptions = client.updateTestOptionsById(testId, newTestOptions);
+
+// When you no longer need test just delete it.
+client.deleteTestById(testId);
 ```
 
 <h3>Basic polling usage</h3>
@@ -388,8 +565,8 @@ LoaderoTestOptions updatedOptions = client.updateTestOptionsById(testId, newTest
 ```java
 // Another currently popular feature is to poll your test 
 // results while running the test itself! And this wrapper can give you just that!
-        
-// With method startTestAndPollInfo(interval, timeout) you can start test and...
+
+// With method startTestAndPollInfo(testId, interval, timeout) you can start test and...
 // you guessed it! Poll the information about the state of the running test!
 // When test is done the method will return LoaderoRunInfo object with
 // all the information you need to retrieve results of the test later.        
