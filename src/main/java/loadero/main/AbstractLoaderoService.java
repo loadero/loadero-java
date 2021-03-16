@@ -1,9 +1,6 @@
-package loadero.service;
+package loadero.main;
 
-import loadero.controller.LoaderoCrudController;
 import loadero.model.LoaderoModel;
-import loadero.utils.LoaderoClientUtils;
-import loadero.utils.LoaderoUrlBuilder;
 import lombok.Generated;
 import lombok.Getter;
 

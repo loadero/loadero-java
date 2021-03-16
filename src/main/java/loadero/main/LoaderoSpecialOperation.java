@@ -1,4 +1,4 @@
-package loadero.service;
+package loadero.main;
 
 
 import loadero.model.LoaderoModel;

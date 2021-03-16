@@ -1,16 +1,11 @@
-package loadero.service;
+package loadero.main;
 
-import loadero.controller.LoaderoCrudController;
-import loadero.model.LoaderoModel;
 import loadero.types.LoaderoModelType;
-import loadero.utils.LoaderoClientUtils;
-import loadero.utils.LoaderoUrlBuilder;
-
 /**
  * This class provides method that returns required service layer based on the
  * provided LoaderoModelType.
  */
-public class LoaderoServiceFactory {
+final class LoaderoServiceFactory {
     private final LoaderoCrudController crudController;
     private final LoaderoUrlBuilder urlBuilder;
     

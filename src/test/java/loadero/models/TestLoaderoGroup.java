@@ -3,7 +3,6 @@ package loadero.models;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 import loadero.model.LoaderoGroup;
-import loadero.utils.LoaderoClientUtils;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
@@ -32,8 +31,8 @@ public class TestLoaderoGroup extends AbstractTestLoadero {
         LoaderoGroup newGroup = new LoaderoGroup();
         newGroup.setName("name");
         newGroup.setCount(3);
-        String json = LoaderoClientUtils.modelToJson(newGroup);
-        
+        String json = gson.toJson(newGroup);
+       
         wmRule.stubFor(post(urlMatching( ".*/groups/"))
                 .inScenario("deleteCreate")
                 .whenScenarioStateIs(Scenario.STARTED)
@@ -60,7 +59,7 @@ public class TestLoaderoGroup extends AbstractTestLoadero {
     public void testUpdateGroup() {
         LoaderoGroup newGroup = new LoaderoGroup();
         newGroup.setCount(3);
-        String jsonRes = LoaderoClientUtils.modelToJson(newGroup);
+        String jsonRes = gson.toJson(newGroup);
         String groupUrl = String.format(".*/%s/groups/%s/", TEST_ID, GROUP_ID);
         
         wmRule.stubFor(get(urlMatching(groupUrl))

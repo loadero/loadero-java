@@ -14,6 +14,6 @@ import java.util.List;
  */
 @Data
 @Generated // Need this for JaCoco to ignore getters and setters
-public class LoaderoTestRunResult implements LoaderoModel {
+public final class LoaderoTestRunResult implements LoaderoModel {
     private List<LoaderoTestRunParticipantResult> results;
 }

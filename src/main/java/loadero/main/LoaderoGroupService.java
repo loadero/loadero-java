@@ -1,17 +1,14 @@
-package loadero.service;
+package loadero.main;
 
-import loadero.controller.LoaderoCrudController;
 import loadero.model.LoaderoGroup;
 import loadero.model.LoaderoModel;
 import loadero.types.LoaderoModelType;
-import loadero.utils.LoaderoClientUtils;
-import loadero.utils.LoaderoUrlBuilder;
 
 /**
  * Implementation of AbstractLoaderoService that is responsible for CRUD operation
  * related to LoaderoGroup object.
  */
-public class LoaderoGroupService
+final class LoaderoGroupService
         extends AbstractLoaderoService implements LoaderoSpecialOperation<LoaderoGroup> {
     private final LoaderoUrlBuilder urlBuilder = super.getUrlBuilder();
     private final LoaderoCrudController crudController = super.getCrudController();
@@ -42,9 +39,7 @@ public class LoaderoGroupService
         LoaderoGroup currentGroup = getById(testId, groupId);
         LoaderoModel updatedGroup = LoaderoClientUtils.copyUncommonFields(
                 currentGroup,
-                newModel,
-                LoaderoModelType.LOADERO_GROUP
-        );
+                newModel);
         return (LoaderoGroup) crudController.update(groupUrl, LoaderoModelType.LOADERO_GROUP, updatedGroup);
     }
     

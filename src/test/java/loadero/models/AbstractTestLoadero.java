@@ -2,20 +2,19 @@ package loadero.models;
 
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import loadero.LoaderoClient;
-import loadero.utils.LoaderoHttpClient;
-import loadero.utils.LoaderoUrlBuilder;
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import loadero.main.LoaderoClient;
 import lombok.Getter;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Rule;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
-
-import java.io.IOException;
 
 @Getter
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -29,16 +28,30 @@ public abstract class AbstractTestLoadero {
     protected static final int RESULT_ID      = 930397;
     protected static String BASE_URL;
     protected static LoaderoClient loaderoClient;
-    protected static LoaderoUrlBuilder urlBuilder;
     @Rule
     protected static WireMockRule wmRule = new WireMockRule(
             WireMockConfiguration
                     .wireMockConfig()
                     .dynamicPort()
     );
-    protected final LoaderoHttpClient httpClient = new LoaderoHttpClient(token);
     protected final Logger log = LogManager.getLogger(TestLoaderoPackageFunctionality.class);
     protected CloseableHttpResponse response;
+    protected final static Gson gson = new GsonBuilder()
+            .addSerializationExclusionStrategy(new ExclusionStrategy() {
+                @Override
+                public boolean shouldSkipField(FieldAttributes fieldAttributes) {
+                    return fieldAttributes.getName().equals("id") ||
+                            fieldAttributes.getName().equals("scriptFileId") ||
+                            fieldAttributes.getName().equals("testId") ||
+                            fieldAttributes.getName().equals("groupId");
+                }
+                
+                @Override
+                public boolean shouldSkipClass(Class<?> aClass) {
+                    return false;
+                }
+            })
+            .create();
     
     @BeforeAll
     public static void setup() {
@@ -48,7 +61,6 @@ public abstract class AbstractTestLoadero {
         if (BASE_URL.contains("localhost")) {
             BASE_URL = BASE_URL + ":" + wmRule.port();
         }
-        urlBuilder = new LoaderoUrlBuilder(BASE_URL, PROJECT_ID);
         loaderoClient = new LoaderoClient(BASE_URL, token, PROJECT_ID);
     }
     
@@ -56,20 +68,5 @@ public abstract class AbstractTestLoadero {
     public static void teardownWM() {
         wmRule.stop();
         BASE_URL = null;
-    }
-    
-    /**
-     * Makes GET request to specified url and saves response to
-     * protected response variable.
-     *
-     * @param url - URL to make request to.
-     */
-    protected void makeGetRequest(String url) {
-        try {
-            HttpGet get = new HttpGet(url);
-            response = httpClient.build().execute(get);
-        } catch (IOException ex) {
-            log.error("{}", ex.getMessage());
-        }
     }
 }

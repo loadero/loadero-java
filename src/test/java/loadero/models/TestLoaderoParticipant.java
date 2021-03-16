@@ -3,7 +3,6 @@ package loadero.models;
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 import loadero.model.LoaderoParticipant;
 import loadero.types.*;
-import loadero.utils.LoaderoClientUtils;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
@@ -45,7 +44,7 @@ public class TestLoaderoParticipant extends AbstractTestLoadero {
         newParticipant.setName("unit test partic");
         newParticipant.setCount(2);
         newParticipant.setComputeUnit(LoaderoComputeUnitsType.G2);
-        String updateRes = LoaderoClientUtils.modelToJson(newParticipant);
+        String updateRes = gson.toJson(newParticipant);
         
         wmRule.stubFor(get(urlMatching(url))
                 .willReturn(aResponse()
@@ -76,8 +75,7 @@ public class TestLoaderoParticipant extends AbstractTestLoadero {
         participant.setNetwork(LoaderoNetworkType.DEFAULT);
         participant.setMediaType(LoaderoMediaType.DEFAULT);
         
-        String json = LoaderoClientUtils.modelToJson(participant);
-        
+        String json = gson.toJson(participant);
         wmRule.stubFor(post(urlMatching(".*/participants/"))
                 .willReturn(aResponse()
                         .withStatus(HttpStatus.SC_CREATED)

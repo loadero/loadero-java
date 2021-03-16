@@ -1,4 +1,4 @@
-package loadero.utils;
+package loadero.model;
 
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
@@ -18,7 +19,7 @@ import java.util.regex.Pattern;
  * TestUI code snippets from given path and return them as strings
  * to later pass those snippets as part of JSON request.
  */
-public class FunctionBodyParser {
+final class FunctionBodyParser {
     private static final Logger log = LogManager.getLogger(FunctionBodyParser.class);
     /**
      * Retrieves the content of the public void test(){}; method from .java file.
@@ -51,11 +52,12 @@ public class FunctionBodyParser {
      * If some parameters are not found in Map object, default values in template will be used.
      * @param path   Path to the script.
      * @param scriptParams  Map of String, String object with parameters wish to apply.
-     * @throws NullPointerException if any of the parameters are null.
+     * @throws NullPointerException if any of the parameters are null or an empty string.
      * @return   Script content with new parameters as String.
      */
     public static String applyParamsToScript(String path, Map<String, String> scriptParams) {
-        LoaderoClientUtils.checkArgumentsForNull(path, scriptParams);
+        if (path.isBlank()) {throw new NullPointerException("Path is an empty string or null.");}
+        Objects.requireNonNull(scriptParams, "ScriptParams cannot be null");
 
         String script = getScriptContent(path);
         for (Map.Entry<String, String> param: scriptParams.entrySet()) {

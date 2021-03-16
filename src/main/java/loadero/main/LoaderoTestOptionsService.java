@@ -1,11 +1,8 @@
-package loadero.service;
+package loadero.main;
 
-import loadero.controller.LoaderoCrudController;
 import loadero.model.LoaderoModel;
 import loadero.model.LoaderoTestOptions;
 import loadero.types.LoaderoModelType;
-import loadero.utils.LoaderoClientUtils;
-import loadero.utils.LoaderoUrlBuilder;
 
 import java.util.Objects;
 
@@ -13,7 +10,7 @@ import java.util.Objects;
  * Implementation of AbstractLoaderoService that is responsible for CRUD operation
  * related to LoaderoTestOptions object.
  */
-public class LoaderoTestOptionsService extends AbstractLoaderoService
+final class LoaderoTestOptionsService extends AbstractLoaderoService
         implements LoaderoSpecialOperation<LoaderoTestOptions> {
     private final LoaderoCrudController crudController = super.getCrudController();
     private final LoaderoUrlBuilder urlBuilder = super.getUrlBuilder();
@@ -52,8 +49,7 @@ public class LoaderoTestOptionsService extends AbstractLoaderoService
 
         LoaderoModel updatedOptions = LoaderoClientUtils.copyUncommonFields(
                 currentOptions,
-                newModel,
-                LoaderoModelType.LOADERO_TEST_OPTIONS);
+                newModel);
         
         return (LoaderoTestOptions) crudController.update(testUrl,
                 LoaderoModelType.LOADERO_TEST_OPTIONS, updatedOptions);

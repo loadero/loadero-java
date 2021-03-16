@@ -1,10 +1,7 @@
-package loadero.controller;
+package loadero.main;
 
-import loadero.exceptions.LoaderoException;
 import loadero.model.LoaderoModel;
 import loadero.types.LoaderoModelType;
-import loadero.utils.LoaderoClientUtils;
-import loadero.utils.LoaderoHttpClient;
 import lombok.Getter;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
@@ -24,7 +21,7 @@ import java.lang.reflect.Field;
  * Provides only getter. Cannot be extended.
  */
 @Getter
-public final class LoaderoCrudController {
+final class LoaderoCrudController {
     private final String loaderoApiToken;
     private final LoaderoHttpClient client;
     private static final Logger log = LogManager.getLogger(LoaderoCrudController.class);

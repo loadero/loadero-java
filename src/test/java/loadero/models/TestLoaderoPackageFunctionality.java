@@ -1,26 +1,16 @@
 package loadero.models;
 
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
-import loadero.controller.LoaderoCrudController;
 import loadero.model.LoaderoTestOptions;
-import loadero.types.LoaderoModelType;
 import loadero.types.LoaderoTestModeType;
-import loadero.utils.LoaderoClientUtils;
-import org.apache.http.HttpHeaders;
 import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.client.methods.RequestBuilder;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.message.BasicHeader;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.Map;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class TestLoaderoPackageFunctionality extends AbstractTestLoadero {
     
@@ -41,7 +31,7 @@ public class TestLoaderoPackageFunctionality extends AbstractTestLoadero {
                 "src/test/java/loadero/scripts/testui/TestOneOnOneCall.java",
                 scriptParams);
         
-        String body = LoaderoClientUtils.modelToJson(newTest);
+        String body = gson.toJson(newTest);
         
         wmRule.stubFor(post(urlPathMatching(".*/tests/"))
                 .willReturn(aResponse()
@@ -64,7 +54,7 @@ public class TestLoaderoPackageFunctionality extends AbstractTestLoadero {
         getTest.setMode(LoaderoTestModeType.PERFORMANCE);
         getTest.setName("Performance test");
         
-        body = LoaderoClientUtils.modelToJson(getTest);
+        body = gson.toJson(getTest);
         
         wmRule.stubFor(put(urlMatching(".*/tests/" + TEST_ID + "/"))
                 .willReturn(aResponse()
@@ -80,47 +70,6 @@ public class TestLoaderoPackageFunctionality extends AbstractTestLoadero {
                         .withStatus(HttpStatus.SC_NO_CONTENT)));
         loaderoClient.deleteTestById(TEST_ID);
         assertEquals(HttpStatus.SC_NO_CONTENT, deleteStub.getResponse().getStatus());
-    }
-    
-    @Test
-    public void testTokenAccess() {
-        String projectUrl = urlBuilder.buildProjectURL() + "/";
-        
-        StubMapping stub = wmRule.stubFor(get(urlMatching(".*/projects/.*"))
-                .willReturn(aResponse()
-                        .withStatus(HttpStatus.SC_OK)));
-        
-        assertEquals(HttpStatus.SC_OK, stub.getResponse().getStatus());
-    }
-    
-    @Test
-    public void negativeTokenAccess() {
-        wmRule.stubFor(get(urlMatching(".*/projects/.*"))
-                .willReturn(aResponse().withStatus(HttpStatus.SC_UNAUTHORIZED)));
-        
-        try {
-            String url = urlBuilder.buildProjectURL() + "/";
-            CloseableHttpClient client = HttpClientBuilder.create().build();
-            HttpUriRequest get = RequestBuilder.get(url).build();
-            get.addHeader(new BasicHeader(HttpHeaders.AUTHORIZATION, "random token value"));
-            
-            try (CloseableHttpResponse response = client.execute(get)) {
-                assertEquals(HttpStatus.SC_UNAUTHORIZED, response.getStatusLine().getStatusCode());
-            } catch (IOException ignored) {
-            
-            }
-        } catch (Exception ignored) {
-        
-        }
-    }
-    
-    @Test
-    public void negativeCrudUpdate() {
-        assertThrows(NullPointerException.class, () -> {
-            LoaderoCrudController crudController = new LoaderoCrudController(loaderoClient.getLoaderoApiToken());
-            crudController.update(urlBuilder.buildTestURLById(TEST_ID),
-                    LoaderoModelType.LOADERO_TEST_OPTIONS, null);
-        });
     }
     
     @Test

@@ -13,7 +13,7 @@ import java.util.Map;
  */
 @Data
 @Generated // Need this for JaCoco to ignore getters and setters
-public class LoaderoTestRunParticipantResult implements LoaderoModel {
+public final class LoaderoTestRunParticipantResult implements LoaderoModel {
     private int id;
     private String status;
     @SerializedName("selenium_result")

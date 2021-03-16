@@ -1,7 +1,4 @@
-loadero
-loadero.controller
 loadero.exceptions
+loadero.main
 loadero.model
-loadero.service
 loadero.types
-loadero.utils

@@ -5,7 +5,8 @@ import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class TestLoaderoTestRunParticipantResult extends AbstractTestLoadero {
     @Test

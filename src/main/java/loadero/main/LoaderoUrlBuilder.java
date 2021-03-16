@@ -1,9 +1,9 @@
-package loadero.utils;
+package loadero.main;
 
 /**
  * This class is responsible for building url endpoints for Loadero API.
  */
-public class LoaderoUrlBuilder {
+final class LoaderoUrlBuilder {
     private final String baseUrl;
     private final int projectId;
 
