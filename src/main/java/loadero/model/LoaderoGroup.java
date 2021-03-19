@@ -2,8 +2,7 @@ package loadero.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import loadero.exceptions.LoaderoBlankTitleException;
-import loadero.exceptions.LoaderoCountException;
+import loadero.exceptions.LoaderoClientInternalException;
 import lombok.Data;
 import lombok.Generated;
 import lombok.NoArgsConstructor;
@@ -28,12 +27,12 @@ public final class LoaderoGroup implements LoaderoModel {
      * Constructor for Loadero groups.
      * @param name  Name of the group.
      * @param count How many groups you need. At least 1 group is required.
-     * @throws LoaderoBlankTitleException if name is an empty string or null.
-     * @throws LoaderoCountException if count is less than 1.
+     * @throws LoaderoClientInternalException if name is an empty string or null.
+     * @throws LoaderoClientInternalException if count is less than 1.
      */
     public LoaderoGroup(String name, int count) {
-        if (name.isBlank()) {throw new LoaderoBlankTitleException(); }
-        if (count < 1) {throw new LoaderoCountException(); }
+        if (name.isBlank()) {throw new LoaderoClientInternalException("Name shouldn't be blank."); }
+        if (count < 1) {throw new LoaderoClientInternalException("Amount of groups should at least 1."); }
         
         this.name = name;
         this.count = count;

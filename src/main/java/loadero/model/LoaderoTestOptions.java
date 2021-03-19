@@ -2,9 +2,7 @@ package loadero.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import loadero.exceptions.LoaderoBlankTitleException;
-import loadero.exceptions.LoaderoNegativeStartInterval;
-import loadero.exceptions.LoaderoNegativeTimeout;
+import loadero.exceptions.LoaderoClientInternalException;
 import loadero.types.LoaderoIncrementStrategyType;
 import loadero.types.LoaderoTestModeType;
 import lombok.Data;
@@ -49,16 +47,19 @@ public final class LoaderoTestOptions implements LoaderoModel {
      * @param mode               How to perform test. Performance, load or session-record
      * @param incrementStrategy  How Loadero should add participants during test run.
      * @param script             Test script.
-     * @throws LoaderoBlankTitleException if name is blank or null.
-     * @throws LoaderoNegativeStartInterval if startInterval is negative.
-     * @throws LoaderoNegativeTimeout if participantTimeout is negative.
+     * @throws LoaderoClientInternalException if name is blank or null.
+     * @throws LoaderoClientInternalException if startInterval is negative.
+     * @throws LoaderoClientInternalException if participantTimeout is negative.
      */
     public LoaderoTestOptions(String name, int startInterval, int participantTimeout,
                               LoaderoTestModeType mode, LoaderoIncrementStrategyType incrementStrategy,
                               String script) {
-        if (name.isBlank()) throw new LoaderoBlankTitleException();
-        if (startInterval < 0) throw new LoaderoNegativeStartInterval();
-        if (participantTimeout < 0) throw new LoaderoNegativeTimeout();
+        if (name.isBlank())
+            throw new LoaderoClientInternalException("Name should not be blank.");
+        if (startInterval < 0)
+            throw new LoaderoClientInternalException("Start interval should not be negative.");
+        if (participantTimeout < 0)
+            throw new LoaderoClientInternalException("Participant timeout should not be negative.");
         
         this.name = name;
         this.startInterval = startInterval;

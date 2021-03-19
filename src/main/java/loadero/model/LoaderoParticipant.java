@@ -2,8 +2,7 @@ package loadero.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import loadero.exceptions.LoaderoBlankTitleException;
-import loadero.exceptions.LoaderoCountException;
+import loadero.exceptions.LoaderoClientInternalException;
 import loadero.types.*;
 import lombok.Data;
 import lombok.Generated;
@@ -46,14 +45,14 @@ public final class LoaderoParticipant implements LoaderoModel {
      * @param network     What kind of network should be used.
      * @param location    Geo location from where tests should be run.
      * @param mediaType   Type of media, that should be used.
-     * @throws LoaderoBlankTitleException if name is blank or null.
-     * @throws LoaderoCountException if count is less than 1.
+     * @throws LoaderoClientInternalException if name is blank or null.
+     * @throws LoaderoClientInternalException if count is less than 1.
      */
     public LoaderoParticipant(String name, int count, LoaderoComputeUnitsType computeUnit,
                               LoaderoBrowserType browser, LoaderoNetworkType network,
                               LoaderoLocationType location, LoaderoMediaType mediaType) {
-        if (name.isBlank()) throw new LoaderoBlankTitleException();
-        if (count < 1)      throw new LoaderoCountException();
+        if (name.isBlank()) throw new LoaderoClientInternalException("Name should not be blank.");
+        if (count < 1)      throw new LoaderoClientInternalException("Amount of participants should be at least 1.");
         
         this.name = name;
         this.count = count;

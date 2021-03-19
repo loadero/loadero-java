@@ -1,6 +1,5 @@
 package loadero.main;
 
-import loadero.exceptions.LoaderoException;
 import loadero.model.LoaderoModel;
 import loadero.model.LoaderoRunInfo;
 import loadero.types.LoaderoModelType;
@@ -52,7 +51,7 @@ final class LoaderoPollingService extends AbstractLoaderoService {
      * @param testId    ID of the test to start.
      * @param interval  Interval in seconds specifies how often information should be polled.
      * @param timeout   Timeout in seconds specifies for how long should be poll for information.
-     * @throws LoaderoException if testId, interval or timeout is negative.
+     * @throws loadero.exceptions.LoaderoClientInternalException if testId, interval or timeout is negative.
      * @throws NullPointerException if test couldn't be started.
      * @return          LoaderoRunInfo object containing information about test run.
      */
