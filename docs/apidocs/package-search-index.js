@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"loadero.exceptions"},{"l":"loadero.main"},{"l":"loadero.model"},{"l":"loadero.types"}]
