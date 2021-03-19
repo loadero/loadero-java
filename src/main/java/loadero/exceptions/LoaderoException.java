@@ -3,7 +3,7 @@ package loadero.exceptions;
 /**
  * Custom exception class. Should be used to handle errors from Loadero.
  */
-public class LoaderoException extends RuntimeException {
+abstract class LoaderoException extends RuntimeException {
 
     public LoaderoException() {}
     

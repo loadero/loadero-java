@@ -1,7 +1,7 @@
 package loadero.models;
 
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
-import loadero.exceptions.LoaderoException;
+import loadero.exceptions.LoaderoClientInternalException;
 import loadero.model.LoaderoRunInfo;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
@@ -80,7 +80,7 @@ public class TestLoaderoPolling extends AbstractTestLoadero {
     
     @Test
     public void negativePollingTestInvalidInterval() {
-        assertThrows(LoaderoException.class, () ->
+        assertThrows(LoaderoClientInternalException.class, () ->
                 loaderoClient.startTestAndPollInfo(111, 3, 40));
     }
 }

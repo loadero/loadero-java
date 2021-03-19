@@ -1,6 +1,6 @@
 package loadero.main;
 
-import loadero.exceptions.LoaderoException;
+import loadero.exceptions.LoaderoClientInternalException;
 import loadero.model.*;
 import loadero.types.LoaderoModelType;
 import lombok.Getter;
@@ -25,7 +25,7 @@ public final class LoaderoClient {
      * @param loaderApiToken Loadero API token for your account.
      * @param projectId      ID of the project we want to work with.
      * @throws NullPointerException if baseUrl or loaderoApiToken is null or an empty String.
-     * @throws LoaderoException if projectId is a negative number.
+     * @throws LoaderoClientInternalException if projectId is a negative number.
      */
     public LoaderoClient(String baseUrl, String loaderApiToken, int projectId) {
         LoaderoClientUtils.checkArgumentsForNull(baseUrl, loaderApiToken);
@@ -236,13 +236,13 @@ public final class LoaderoClient {
      * @param testId    ID of the test that is going to run.
      * @param interval  how often check for information. In seconds.
      * @param timeout   how long should polling for information. In seconds.
-     * @throws LoaderoException if interval is less than 5 seconds.
+     * @throws LoaderoClientInternalException if interval is less than 5 seconds.
      * @return          LoaderoRunInfo containing information about test run.
      */
     public LoaderoRunInfo startTestAndPollInfo(int testId, int interval, int timeout) {
-        if (interval < 5) {
-            throw new LoaderoException("Interval is too short. Should be at least 5 seconds.");
-        }
+        if (interval < 5)
+            throw new LoaderoClientInternalException("Interval is too short. Should be at least 5 seconds.");
+        
         
         LoaderoPollingService pollingService = (LoaderoPollingService) serviceFactory
                 .getLoaderoService(LoaderoModelType.LOADERO_RUN_INFO);

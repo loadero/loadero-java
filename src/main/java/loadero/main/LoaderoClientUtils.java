@@ -4,7 +4,7 @@ import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import loadero.exceptions.LoaderoException;
+import loadero.exceptions.LoaderoClientInternalException;
 import loadero.model.*;
 import loadero.types.LoaderoModelType;
 import org.apache.http.HttpEntity;
@@ -57,12 +57,12 @@ final class LoaderoClientUtils {
     /**
      * Check given comma separated int values, if they are negative.
      * @param values Comma separated int arguments.
-     * @throws LoaderoException if value is negative.
+     * @throws LoaderoClientInternalException if value is negative.
      */
     public static void checkIfIntIsNegative(int...values) {
         for (int arg: values) {
             if (arg < 0) {
-                throw new LoaderoException(arg + "cannot be negative");
+                throw new LoaderoClientInternalException(arg + "cannot be negative");
             }
         }
     }
@@ -123,14 +123,14 @@ final class LoaderoClientUtils {
      * @param copyTo   LoaderoModel to be compared.
      * @throws NullPointerException if any of provided arguments are null.
      * @throws IllegalArgumentException if Reflection API couldn't get value from the Field.
-     * @throws LoaderoException if currentObject and copyTo are not of the same class.
+     * @throws LoaderoClientInternalException if currentObject and copyTo are not of the same class.
      * @return copyTo object.
      */
     public static LoaderoModel copyUncommonFields(LoaderoModel copyFrom, LoaderoModel copyTo) {
         checkArgumentsForNull(copyFrom, copyTo);
         
         if (!Objects.equals(copyFrom.getClass(), copyTo.getClass())) {
-            throw new LoaderoException(
+            throw new LoaderoClientInternalException(
                     String.format("%s and %s not of the same class",
                     copyFrom, copyTo));
         }
