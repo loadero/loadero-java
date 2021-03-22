@@ -5,15 +5,15 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Enum to define compute units types provided for usage in Loadero.
  */
-public enum LoaderoComputeUnitsType implements Labeled {
+public enum LoaderoComputeUnitsType {
     @SerializedName("g0.5")
     G05("g0.5"),
     @SerializedName("g1")
     G1("g1"),
     @SerializedName("g2")
     G2("g2"),
-    @SerializedName("g3")
-    G3("g3"),
+    @SerializedName("g6")
+    G6("g6"),
     @SerializedName("g4")
     G4("g4");
     
@@ -24,7 +24,7 @@ public enum LoaderoComputeUnitsType implements Labeled {
     }
     
     @Override
-    public String label() {
+    public String toString() {
         return label;
     }
 }

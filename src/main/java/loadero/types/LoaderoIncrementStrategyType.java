@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Enum to define increment strategies types provided for usage in Loadero.
  */
-public enum LoaderoIncrementStrategyType implements Labeled {
+public enum LoaderoIncrementStrategyType {
     @SerializedName("linear")
     LINEAR("linear"),
     @SerializedName("random")
@@ -23,5 +23,5 @@ public enum LoaderoIncrementStrategyType implements Labeled {
     }
     
     @Override
-    public String label() { return label; }
+    public String toString() { return label; }
 }

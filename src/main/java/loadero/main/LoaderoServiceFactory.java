@@ -42,6 +42,7 @@ final class LoaderoServiceFactory {
             case LOADERO_SCRIPT_FILE_LOC:
                                         return new LoaderoScriptFileService(crudController, urlBuilder);
             case LOADERO_RUN_INFO:      return new LoaderoPollingService(crudController, urlBuilder);
+            case LOADERO_STATICS:       return new LoaderoStaticsService(crudController, urlBuilder);
             default:                    throw new IllegalArgumentException("Not supported type");
         }
     }

@@ -74,9 +74,9 @@ public class TestLoaderoPackageFunctionality extends AbstractTestLoadero {
     
     @Test
     public void testEnumsTypes() {
-        assertEquals("load", LoaderoTestModeType.LOAD.label());
-        assertEquals("performance", LoaderoTestModeType.PERFORMANCE.label());
-        assertEquals("session-record", LoaderoTestModeType.SESSION_RECORD.label());
+        assertEquals("load", LoaderoTestModeType.LOAD.toString());
+        assertEquals("performance", LoaderoTestModeType.PERFORMANCE.toString());
+        assertEquals("session-record", LoaderoTestModeType.SESSION_RECORD.toString());
     }
     
 }

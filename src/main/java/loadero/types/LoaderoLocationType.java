@@ -2,10 +2,8 @@ package loadero.types;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Enum to define location types provided for usage in Loadero.
- */
-public enum LoaderoLocationType implements Labeled {
+public enum LoaderoLocationType {
+
     @SerializedName("eu-central-1")
     EU_CENTRAL_1("eu-central-1"),
     @SerializedName("eu-west-1")
@@ -31,16 +29,18 @@ public enum LoaderoLocationType implements Labeled {
     @SerializedName("us-west-2")
     US_WEST_2("us-west-2"),
     @SerializedName("sa-east-1")
-    SA_EAST_1("sa-east-1");
-    
+    SA_EAST_1("sa-east-1"),
+    @SerializedName("ap-northeast-2")
+    AP_NORTHEAST_2("ap-northeast-2");
+
     private final String label;
-    
+
     LoaderoLocationType(String label) {
         this.label = label;
     }
-    
+
     @Override
-    public String label() {
+    public String toString() {
         return label;
     }
 }

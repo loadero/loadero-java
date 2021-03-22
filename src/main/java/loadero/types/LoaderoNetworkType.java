@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Enum to define network condition types provided for usage in Loadero.
  */
-public enum LoaderoNetworkType implements Labeled {
+public enum LoaderoNetworkType {
     @SerializedName("default")
     DEFAULT("default"),
     @SerializedName("20packet")
@@ -44,7 +44,7 @@ public enum LoaderoNetworkType implements Labeled {
     }
     
     @Override
-    public String label() {
+    public String toString() {
         return label;
     }
 }
