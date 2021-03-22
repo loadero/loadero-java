@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.util.Objects;
 
 /**
@@ -95,6 +96,8 @@ final class LoaderoClientUtils {
                     return gson.fromJson(content, LoaderoScriptFileLoc.class);
                 case LOADERO_RUN_RESULT:
                     return gson.fromJson(content, LoaderoTestRunResult.class);
+                case LOADERO_STATICS:
+                    return gson.fromJson(content, LoaderoStatics.class);
             }
         } catch (IOException e) {
             log.error("{}", e.getMessage());

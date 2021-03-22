@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Enum to define test mode types provided for usage in Loadero.
  */
-public enum LoaderoTestModeType implements Labeled {
+public enum LoaderoTestModeType {
     @SerializedName("load")
     LOAD("load"),
     @SerializedName("performance")
@@ -20,5 +20,5 @@ public enum LoaderoTestModeType implements Labeled {
     }
     
     @Override
-    public String label() { return label; }
+    public String toString() { return label; }
 }

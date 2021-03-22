@@ -228,6 +228,15 @@ public final class LoaderoClient {
                 .getLoaderoService(LoaderoModelType.LOADERO_TEST_RUN_PARTICIPANT_RESULT)
                 .getById(testId, runId, resultId);
     }
+    
+    /**
+     * Returns Loadero statics provided by API.
+     * @return Returns class instance of {@link LoaderoStatics}
+     */
+    public LoaderoStatics getLoaderoStatics() {
+        return (LoaderoStatics) serviceFactory
+                .getLoaderoService(LoaderoModelType.LOADERO_STATICS).getById();
+    }
 
     /**
      * Start test run by sending POST command underneath to tests/testId/runs endpoint.

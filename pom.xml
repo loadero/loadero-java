@@ -30,6 +30,8 @@
                 <loadero.baseurl>
                     http://localhost
                 </loadero.baseurl>
+                <staticsCheck.exclude>TestLoaderoStatics.java</staticsCheck.exclude>
+                <staticsCheck.include>%regex[^((?!LoaderoStatics).)*$]</staticsCheck.include>
             </properties>
         </profile>
         <profile>
@@ -48,6 +50,28 @@
                 <loadero.baseurl>
                     https://api.loadero.com/v2
                 </loadero.baseurl>
+                <staticsCheck.exclude>TestLoaderoStatics.java</staticsCheck.exclude>
+                <staticsCheck.include>%regex[^((?!LoaderoStatics).)*$]</staticsCheck.include>
+            </properties>
+        </profile>
+        <profile>
+            <id>check-statics</id>
+            <activation>
+                <property>
+                    <name>env</name>
+                    <value>check</value>
+                </property>
+            </activation>
+            <properties>
+                <!--suppress UnresolvedMavenProperty -->
+                <loadero.token>
+                    ${env.LOADERO_API_TOKEN}
+                </loadero.token>
+                <loadero.baseurl>
+                    https://api.loadero.com/v2
+                </loadero.baseurl>
+                <staticsCheck.exclude>%regex[^((LoaderoStatics).)*$]</staticsCheck.exclude>
+                <staticsCheck.include>TestLoaderoStatics.java</staticsCheck.include>
             </properties>
         </profile>
     </profiles>
@@ -58,6 +82,12 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M5</version>
                 <configuration>
+                    <excludes>
+                        <exclude>${staticsCheck.exclude}</exclude>
+                    </excludes>
+                    <includes>
+                        <include>${staticsCheck.include}</include>
+                    </includes>
                     <environmentVariables>
                         <!--suppress UnresolvedMavenProperty -->
                         <LOADERO_API_TOKEN>${loadero.token}</LOADERO_API_TOKEN>

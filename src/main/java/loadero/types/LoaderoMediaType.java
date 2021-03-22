@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Enum to define media types provided for usage in Loadero.
  */
-public enum LoaderoMediaType implements Labeled {
+public enum LoaderoMediaType {
     @SerializedName("default")
     DEFAULT("default"),
     @SerializedName("240pAV")
@@ -34,7 +34,7 @@ public enum LoaderoMediaType implements Labeled {
     }
     
     @Override
-    public String label() {
+    public String toString() {
         return label;
     }
 }

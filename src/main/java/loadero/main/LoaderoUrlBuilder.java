@@ -1,9 +1,12 @@
 package loadero.main;
 
+import lombok.Getter;
+
 /**
  * This class is responsible for building url endpoints for Loadero API.
  */
 final class LoaderoUrlBuilder {
+    @Getter
     private final String baseUrl;
     private final int projectId;
 

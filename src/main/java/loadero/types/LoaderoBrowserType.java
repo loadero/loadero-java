@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Enum to define browser types provided for usage in Loadero.
  */
-public enum LoaderoBrowserType implements Labeled {
+public enum LoaderoBrowserType {
     @SerializedName("firefoxLatest")
     FIREFOX_LATEST("firefoxLatest"),
     @SerializedName("firefox82")
@@ -38,7 +38,5 @@ public enum LoaderoBrowserType implements Labeled {
     }
     
     @Override
-    public String label() {
-        return label;
-    }
+    public String toString() { return label; }
 }
