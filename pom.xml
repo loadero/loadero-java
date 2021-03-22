@@ -71,7 +71,6 @@
                 <version>${maven.javadoc.plugin}</version>
                 <configuration>
                     <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
-                    <reportOutputDirectory>${project.basedir}/docs</reportOutputDirectory>
                 </configuration>
                 <executions>
                     <execution>
