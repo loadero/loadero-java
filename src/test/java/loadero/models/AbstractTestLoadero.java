@@ -34,6 +34,7 @@ public abstract class AbstractTestLoadero {
                     .wireMockConfig()
                     .dynamicPort()
     );
+
     protected static final Logger log = LogManager.getLogger(AbstractTestLoadero.class);
     protected CloseableHttpResponse response;
     protected final static Gson gson = new GsonBuilder()

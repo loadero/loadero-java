@@ -568,7 +568,7 @@ client.deleteTestById(testId);
 
 // With method startTestAndPollInfo(testId, interval, timeout) you can start test and...
 // you guessed it! Poll the information about the state of the running test!
-// When test is done the method will return LoaderoRunInfo object with
+// When test is done the method will return RunInfo object with
 // all the information you need to retrieve results of the test later.        
 LoaderoRunInfo testRunInfo = client.startTestAndPollInfo(testId, 15, 100);
 
