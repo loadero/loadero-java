@@ -4,7 +4,7 @@ import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.printer.PrettyPrinter;
 import com.github.javaparser.printer.PrettyPrinterConfiguration;
-import loadero.exceptions.LoaderoClientInternalException;
+import loadero.exceptions.ClientInternalException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,7 +24,7 @@ final class FunctionBodyParser {
     /**
      * Retrieves the content of the public void test(){}; method from .java file.
      * @param path  Path to the script.
-     * @throws  LoaderoClientInternalException if any other exception occurs.
+     * @throws ClientInternalException if any other exception occurs.
      * @return    Content of the script as String.
      */
     public static String getScriptContent(String path) {
@@ -40,7 +40,7 @@ final class FunctionBodyParser {
             result = printer.print(cu);
             result = result.substring(result.lastIndexOf("public void test"));
             result = result.substring(0, result.lastIndexOf('}'));
-        } catch (FileNotFoundException | LoaderoClientInternalException e) {
+        } catch (FileNotFoundException | ClientInternalException e) {
             result = null;
             log.error("{}", e.getMessage());
         }
