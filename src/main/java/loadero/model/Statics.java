@@ -11,7 +11,6 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 public class Statics implements LoaderoModel {
-    private Set<Map<String, String>> browser;
     private Set<Map<String, String>> network;
     @SerializedName("media_type")
     private Set<Map<String, String>> mediaType;

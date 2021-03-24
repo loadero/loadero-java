@@ -62,4 +62,33 @@ public final class Participant implements LoaderoModel {
         this.location = location;
         this.mediaType = mediaType;
     }
+    
+    /**
+     * Constructor for Loadero participants.
+     * Used for custom serialization/deserialization purposes.
+     * @param id          Participant ID.
+     * @param name        Participant name.
+     * @param count       How many participants you need. At least 1 is required.
+     * @param computeUnit What compute units should to be used.
+     * @param browser     What browser should to be used.
+     * @param network     What kind of network should be used.
+     * @param location    Geo location from where tests should be run.
+     * @param mediaType   Type of media, that should be used.
+     * @throws ClientInternalException if name is blank or null.
+     * @throws ClientInternalException if count is less than 1.
+     */
+    public Participant(int id, String name, int count, ComputeUnitsType computeUnit,
+                              BrowserType browser, NetworkType network,
+                              LocationType location, MediaType mediaType) {
+        if (name.isBlank()) throw new ClientInternalException("Name should not be blank.");
+        if (count < 1)      throw new ClientInternalException("Amount of participants should be at least 1.");
+        this.id = id;
+        this.name = name;
+        this.count = count;
+        this.computeUnit = computeUnit;
+        this.browser = browser;
+        this.network = network;
+        this.location = location;
+        this.mediaType = mediaType;
+    }
 }
