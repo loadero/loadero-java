@@ -6,6 +6,7 @@ default:
 stages:
     - test
     - visualize_coverage
+    - upload_javadoc
 
 variables:
     MAVEN_CLI_OPTS: "-B --errors --fail-fast"
@@ -54,3 +55,22 @@ visualize_tests:
     artifacts:
         reports:
             cobertura: target/site/cobertura.xml
+
+upload_javadoc:
+    image: ubuntu
+    stage: upload_javadoc
+    artifacts:
+        when: on_success
+        paths:
+            - target/site/apidocs/
+    rules:
+        - if: '$CI_PIPELINE_SOURCE == "push"'
+          allow_failure: true
+    before_script:
+        - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+        - apt install sshpass
+        - eval $(ssh-agent -s)
+    script:
+        - sshpass -p $VM_PASS scp -P 22 -o StrictHostKeyChecking=no -r target/site/apidocs/* $SERVER_NAME@$SERVER_IP:/home/$SERVER_NAME/tmp/
+        - sshpass -p $VM_PASS ssh -vvv -p22 -o StrictHostKeyChecking=no $SERVER_NAME@$SERVER_IP "echo $VM_PASS | sudo -S -k rm -rf /var/www/apidocs/*"
+        - sshpass -p $VM_PASS ssh -p22 -o StrictHostKeyChecking=no $SERVER_NAME@$SERVER_IP "echo $VM_PASS | sudo -S -k mv -v /home/$SERVER_NAME/tmp/* /var/www/apidocs/"
