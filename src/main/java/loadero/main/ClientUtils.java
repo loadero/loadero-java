@@ -1,12 +1,13 @@
 package loadero.main;
 
+import com.google.gson.*;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import loadero.exceptions.ClientInternalException;
 import loadero.model.*;
-import loadero.types.LoaderoModelType;
+import loadero.types.*;
 import org.apache.http.HttpEntity;
 import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
@@ -14,7 +15,57 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.util.Objects;
+
+class ParticipantCustomSerializer implements
+        JsonSerializer<Participant> {
+    
+    @Override
+    public JsonElement serialize(Participant participant, Type type,
+                                 JsonSerializationContext context) {
+        JsonObject json = new JsonObject();
+        json.addProperty("name", participant.getName());
+        json.addProperty("count", participant.getCount());
+        json.add("compute_unit",
+                context.serialize(participant.getComputeUnit(), ComputeUnitsType.class));
+        json.addProperty("browser", participant.getBrowser().getBrowser());
+        json.add("network",
+                context.serialize(participant.getNetwork(), NetworkType.class));
+        json.add("location",
+                context.serialize(participant.getLocation(), LocationType.class));
+        json.add("media_type",
+                context.serialize(participant.getMediaType(), MediaType.class));
+        return json;
+    }
+}
+
+class ParticipantCustomDeserializer implements
+        JsonDeserializer<Participant> {
+    
+    @Override
+    public Participant deserialize(JsonElement jsonElement, Type type,
+                                          JsonDeserializationContext con)
+            throws JsonParseException {
+        JsonObject jsonObject = jsonElement.getAsJsonObject();
+        JsonElement browserName = jsonObject.get("browser");
+        jsonObject.remove("browser");
+        if (browserName != null) {
+            BrowserType browser = new BrowserType(browserName.getAsString());
+            return new Participant(
+                    jsonObject.getAsJsonPrimitive("id").getAsInt(),
+                    jsonObject.getAsJsonPrimitive("name").getAsString(),
+                    jsonObject.getAsJsonPrimitive("count").getAsInt(),
+                    con.deserialize(jsonObject.get("compute_unit"), ComputeUnitsType.class),
+                    browser,
+                    con.deserialize(jsonObject.get("network"), NetworkType.class),
+                    con.deserialize(jsonObject.get("location"), LocationType.class),
+                    con.deserialize(jsonObject.get("media_type"), MediaType.class)
+            );
+        }
+        return null;
+    }
+}
 
 /**
  * This class provides some utility/helper functions for the package.
@@ -22,6 +73,8 @@ import java.util.Objects;
 final class ClientUtils {
     private static final Logger log = LogManager.getLogger(ClientUtils.class);
     private static final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(Participant.class, new ParticipantCustomSerializer())
+            .registerTypeAdapter(Participant.class, new ParticipantCustomDeserializer())
             .addSerializationExclusionStrategy(new ExclusionStrategy() {
         @Override
         public boolean shouldSkipField(FieldAttributes fieldAttributes) {

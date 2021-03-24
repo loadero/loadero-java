@@ -1,42 +1,25 @@
 package loadero.types;
 
-import com.google.gson.annotations.SerializedName;
+import lombok.Getter;
 
 /**
- * Enum to define browser types provided for usage in Loadero.
+ * Class to define browser for a Participant.
  */
-public enum BrowserType {
-    @SerializedName("firefoxLatest")
-    FIREFOX_LATEST("firefoxLatest"),
-    @SerializedName("firefox82")
-    FIREFOX_82("firefox82"),
-    @SerializedName("firefox83")
-    FIREFOX_83("firefox83"),
-    @SerializedName("firefox84")
-    FIREFOX_84("firefox84"),
-    @SerializedName("firefox85")
-    FIREFOX_85("firefox85"),
-    @SerializedName("firefox86")
-    FIREFOX_86("firefox86"),
-    @SerializedName("chromeLatest")
-    CHROME_LATEST("chromeLatest"),
-    @SerializedName("chrome85")
-    CHROME_85("chrome85"),
-    @SerializedName("chrome86")
-    CHROME_86("chrome86"),
-    @SerializedName("chrome87")
-    CHROME_87("chrome87"),
-    @SerializedName("chrome88")
-    CHROME_88("chrome88"),
-    @SerializedName("chrome89")
-    CHROME_89("chrome89");
+@Getter
+public class BrowserType {
+    private String browser;
     
-    private final String label;
+    public BrowserType() {}
+    public BrowserType(String browser) {
+        this.browser = browser;
+    }
+    public BrowserType(BrowserTypeLatest browser) {this.browser = browser.toString();}
     
-    BrowserType(String label) {
-        this.label = label;
+    public void setBrowser(String browser) {
+        this.browser = browser;
     }
     
-    @Override
-    public String toString() { return label; }
+    public void setBrowser(BrowserTypeLatest browser) {
+        this.browser = browser.toString();
+    }
 }

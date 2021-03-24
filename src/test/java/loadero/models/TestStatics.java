@@ -39,7 +39,6 @@ class MissingValues {
 public class TestStatics extends AbstractTestLoadero {
     // Set of Loadero type's values
     private static final Map<String, EnumSet<?>> locals = Map.of(
-            "browser",      EnumSet.copyOf(Arrays.asList(BrowserType.values())),
             "location",     EnumSet.copyOf(Arrays.asList(LocationType.values())),
             "computeUnit",  EnumSet.copyOf(Arrays.asList(ComputeUnitsType.values())),
             "mediaType",    EnumSet.copyOf(Arrays.asList(MediaType.values())),
