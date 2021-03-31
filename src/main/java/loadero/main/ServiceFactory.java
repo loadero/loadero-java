@@ -43,6 +43,7 @@ final class ServiceFactory {
                                         return new ScriptFileService(crudController, urlBuilder);
             case LOADERO_RUN_INFO:      return new PollingService(crudController, urlBuilder);
             case LOADERO_STATICS:       return new StaticsService(crudController, urlBuilder);
+            case LOADERO_ASSERT:        return new AssertService(crudController, urlBuilder);
             default:                    throw new IllegalArgumentException("Not supported type");
         }
     }

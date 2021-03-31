@@ -9,7 +9,6 @@ import lombok.Getter;
 public class BrowserType {
     private String browser;
     
-    public BrowserType() {}
     public BrowserType(String browser) {
         this.browser = browser;
     }

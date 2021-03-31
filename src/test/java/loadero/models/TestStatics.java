@@ -7,14 +7,17 @@ import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.expr.*;
 import com.google.gson.annotations.SerializedName;
+import loadero.model.MetricPaths;
 import loadero.model.Statics;
 import loadero.types.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.eclipse.jetty.util.IO;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
@@ -50,6 +53,37 @@ public class TestStatics extends AbstractTestLoadero {
     // Key is name of the field from Statics.
     // Value is physical location of the respective Enum file.
     private static Map<String, Path> localEnumsLocation;
+    
+    @Test
+    public void testGetMetricPaths() {
+        Statics statics = loaderoClient.getLoaderoStatics();
+        Assertions.assertNotNull(statics);
+        MetricPaths metricPaths = loaderoClient.getMetricPaths();
+        log.info(metricPaths.getMachinePaths());
+        log.info(metricPaths.getWebrtcPaths());
+        Assertions.assertNotNull(metricPaths);
+    }
+    
+    @Test
+    public void generateMachineAndWebRtcEnums() {
+        MetricPaths metricPaths = loaderoClient.getMetricPaths();
+        Set<String> machinePaths = metricPaths.getMachinePaths();
+        machinePaths.forEach(this::formatName);
+        Set<String> webRtcPaths = metricPaths.getWebrtcPaths();
+        webRtcPaths.forEach(this::formatName);
+        Path machinePathsEnumLoc = Path.of("src/main/java/loadero/types/MachineAsserts.java");
+        Path webRtcPathsEnumLoc = Path.of("src/main/java/loadero/types/WebRtcAsserts.java");
+        
+        String machinePathNewEnum = addMissingValuesToEnum(machinePathsEnumLoc, machinePaths);
+        String webRtcPathNewEnum = addMissingValuesToEnum(webRtcPathsEnumLoc, webRtcPaths);
+        
+        try {
+            Files.writeString(machinePathsEnumLoc, machinePathNewEnum, StandardCharsets.UTF_8);
+            Files.writeString(webRtcPathsEnumLoc, webRtcPathNewEnum, StandardCharsets.UTF_8);
+        } catch (IOException ex) {
+            log.error(ex.getMessage(), ex.fillInStackTrace());
+        }
+    }
     
     @Test
     public void updateLocalEnums() {
@@ -88,6 +122,7 @@ public class TestStatics extends AbstractTestLoadero {
         Assertions.assertEquals("AP_NORTHWEST_2", formatName("ap-northwest-2"));
         Assertions.assertEquals("CHROME_LATEST",  formatName("chromeLatest"));
         Assertions.assertEquals("FIREFOX_89",     formatName("firefox89"));
+        Assertions.assertEquals("MACHINE_RAM_50TH", formatName("machine/ram/50th"));
     }
     
     private void writeUpdatedEnumsBack(Map<Path, String> updatedEnums) {
@@ -193,6 +228,7 @@ public class TestStatics extends AbstractTestLoadero {
      * chrome67      -> CHROME_67
      * 1080p-30db    -> DB_30_1080P
      * 480pAV        -> AV_180P
+     * machine/ram/50th -> MACHINE_RAM_50TH
      */
     private String formatName(String name) {
         String formattedName = "";
@@ -238,10 +274,10 @@ public class TestStatics extends AbstractTestLoadero {
             
             if (name.equals("3g") || name.equals("4g")) {
                 formattedName = String.format("CONNECTION_%s",
-                        name.toUpperCase(Locale.ROOT));
+                        name.toUpperCase(Locale.ENGLISH));
             }
             
-            return formattedName.toUpperCase(Locale.ROOT);
+            return formattedName.toUpperCase(Locale.ENGLISH);
         }
         
         if (name.startsWith("firefox") || name.startsWith("chrome")) {
@@ -251,11 +287,15 @@ public class TestStatics extends AbstractTestLoadero {
                 formattedName = String.format("%s_%s",
                         matcher.group("browser"),
                         matcher.group("rest"));
-                return formattedName.toUpperCase(Locale.ROOT);
+                return formattedName.toUpperCase(Locale.ENGLISH);
             }
         }
+    
+        if (name.startsWith("machine") || name.startsWith("webrtc")) {
+            return name.replace("/", "_").toUpperCase(Locale.ENGLISH);
+        }
         
-        return name.replace("-", "_").toUpperCase();
+        return name.replace("-", "_").toUpperCase(Locale.ENGLISH);
     }
     
     private Matcher getMatcher(String regex, String name) {

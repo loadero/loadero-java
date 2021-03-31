@@ -26,6 +26,7 @@ public abstract class AbstractTestLoadero {
     protected static final int GROUP_ID       = 48797;
     protected static final int RUN_ID         = 33328;
     protected static final int RESULT_ID      = 930397;
+    protected static final int ASSERT_ID      = 47523;
     protected static String BASE_URL;
     protected static LoaderoClient loaderoClient;
     @Rule
