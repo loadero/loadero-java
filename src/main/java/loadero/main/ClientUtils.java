@@ -5,6 +5,7 @@ import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import loadero.exceptions.ClientInternalException;
 import loadero.model.*;
 import loadero.types.*;
@@ -17,6 +18,8 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 class ParticipantCustomSerializer implements
         JsonSerializer<Participant> {
@@ -45,7 +48,7 @@ class ParticipantCustomDeserializer implements
     
     @Override
     public Participant deserialize(JsonElement jsonElement, Type type,
-                                          JsonDeserializationContext con)
+                                          JsonDeserializationContext context)
             throws JsonParseException {
         JsonObject jsonObject = jsonElement.getAsJsonObject();
         JsonElement browserName = jsonObject.get("browser");
@@ -56,14 +59,49 @@ class ParticipantCustomDeserializer implements
                     jsonObject.getAsJsonPrimitive("id").getAsInt(),
                     jsonObject.getAsJsonPrimitive("name").getAsString(),
                     jsonObject.getAsJsonPrimitive("count").getAsInt(),
-                    con.deserialize(jsonObject.get("compute_unit"), ComputeUnitsType.class),
+                    context.deserialize(jsonObject.get("compute_unit"), ComputeUnitsType.class),
                     browser,
-                    con.deserialize(jsonObject.get("network"), NetworkType.class),
-                    con.deserialize(jsonObject.get("location"), LocationType.class),
-                    con.deserialize(jsonObject.get("media_type"), MediaType.class)
+                    context.deserialize(jsonObject.get("network"), NetworkType.class),
+                    context.deserialize(jsonObject.get("location"), LocationType.class),
+                    context.deserialize(jsonObject.get("media_type"), MediaType.class)
             );
         }
         return null;
+    }
+}
+
+class MetricsPathCustomDeserializer implements JsonDeserializer<MetricPaths> {
+    
+    @Override
+    public MetricPaths deserialize(JsonElement jsonElement, Type type,
+                                   JsonDeserializationContext context)
+            throws JsonParseException {
+        JsonElement metricPaths = jsonElement.getAsJsonArray();
+        Type setType = new TypeToken<Set<String>>() {}.getType();
+        Set<String> metricSet = context.deserialize(metricPaths, setType);
+        Set<String> machinePaths = metricSet.stream()
+                .filter(path -> path.contains("machine"))
+                .collect(Collectors.toSet());
+        Set<String> webrtcPaths = metricSet.stream()
+                .filter(path -> path.contains("webrtc"))
+                .collect(Collectors.toSet());
+        
+        return new MetricPaths(machinePaths, webrtcPaths);
+    }
+}
+
+class AssertPathsCustomDeserializer implements JsonDeserializer<AssertPath> {
+    
+    @Override
+    public AssertPath deserialize(JsonElement jsonElement, Type type,
+                                  JsonDeserializationContext context)
+            throws JsonParseException {
+        String path = jsonElement.getAsString();
+        if (path.contains("webrtc")) {
+            return context.deserialize(jsonElement, WebRtcAsserts.class);
+        } else {
+            return context.deserialize(jsonElement, MachineAsserts.class);
+        }
     }
 }
 
@@ -75,6 +113,8 @@ final class ClientUtils {
     private static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(Participant.class, new ParticipantCustomSerializer())
             .registerTypeAdapter(Participant.class, new ParticipantCustomDeserializer())
+            .registerTypeAdapter(MetricPaths.class, new MetricsPathCustomDeserializer())
+            .registerTypeAdapter(AssertPath.class, new AssertPathsCustomDeserializer())
             .addSerializationExclusionStrategy(new ExclusionStrategy() {
         @Override
         public boolean shouldSkipField(FieldAttributes fieldAttributes) {
@@ -150,6 +190,10 @@ final class ClientUtils {
                     return gson.fromJson(content, TestRunResult.class);
                 case LOADERO_STATICS:
                     return gson.fromJson(content, Statics.class);
+                case LOADERO_ASSERT:
+                    return gson.fromJson(content, Assert.class);
+                case LOADERO_METRIC_PATHS:
+                    return gson.fromJson(content, MetricPaths.class);
             }
         } catch (IOException e) {
             log.error("{}", e.getMessage());

@@ -34,7 +34,7 @@ class LoaderoClient(){}
 <td>
 
 ```java
-interface LoaderoModel(){}
+interface Model(){}
 ```
 </td>
 <td>Marker interface to group similar classes.</td>
@@ -43,7 +43,7 @@ interface LoaderoModel(){}
 <td>
 
 ```java
-class LoaderoGroup(){}
+class Group(){}
 ```
 </td>
 <td>Class that is responsible to represent information about Loadero group.</td>
@@ -52,7 +52,7 @@ class LoaderoGroup(){}
 <td>
 
 ```java
-class LoaderoTestOptions(){}
+class Test(){}
 ```
 </td>
 <td>
@@ -64,7 +64,7 @@ from Loadero API.
 <td>
 
 ```java
-class LoaderoRunInfo(){}
+class RunInfo(){}
 ```
 </td>
 <td>Class that is used to collect information about test runs.</td>
@@ -73,7 +73,7 @@ class LoaderoRunInfo(){}
 <td>
 
 ```java
-class LoaderoParticipant(){}
+class Participant(){}
 ```
 </td>
 <td>Class that represents information about Loadero participant.</td>
@@ -82,7 +82,7 @@ class LoaderoParticipant(){}
 <td>
 
 ```java
-class LoaderoScriptFileLoc(){}
+class ScriptDetails(){}
 ```
 </td>
 <td>Class that is represent information about script file that is used
@@ -93,7 +93,7 @@ by Loadero to run tests against.
 <td>
 
 ```java
-class LoaderoTestResults(){}
+class TestResults(){}
 ```
 </td>
 <td>Class that (will) represent information about Loadero test's results.</td>
@@ -102,16 +102,7 @@ class LoaderoTestResults(){}
 <td>
 
 ```java
-class LoaderoModelFactory(){}
-```
-</td>
-<td>Factory that is used to create concrete classes of LoaderoModel interface.</td>
-</tr>
-<tr>
-<td>
-
-```java
-class LoaderoTestRunResult(){}
+class TestRunResult(){}
 ```
 </td>
 <td>Class that is responsible for storing information about all test run results.</td>
@@ -120,12 +111,30 @@ class LoaderoTestRunResult(){}
 <td>
 
 ```java
-class LoaderoTestRunParticipantResult(){}
+class TestRunParticipantResult(){}
 ```
 </td>
 <td>Class that is responsible to represent information about single participant test run result.</td>
 </tr>
 
+<tr>
+<td>
+
+```java
+class BrowserType(){}
+```
+</td>
+<td>Class that is used to represent different versions of browser.</td>
+</tr>
+<tr>
+<td>
+
+```java
+class Asserts(){}
+```
+</td>
+<td>Class that is used to create,update, retrieve and delete test's asserts.</td>
+</tr>
 </tbody>
 </table>
 
@@ -143,18 +152,18 @@ Public Enums that can be used to set constant values for Loadero tests and parti
 <td>
 
 ```java
-enum LoaderoBrowserType
+enum BrowserLatestType
 ```
 </td>
 <td>
-Contains different browser types that can be used for testing.
+Contains latest version of Chrome and Firefox browser that can be used for testing.
 </td>
 </tr>
 <tr>
 <td>
 
 ```java
-enum LoaderoComputeUnitsType
+enum ComputeUnitsType
 ```
 </td>
 <td>
@@ -165,7 +174,7 @@ Contains compute units options.
 <td>
 
 ```java
-enum LoaderoIncrementStrategyType
+enum IncrementStrategyType
 ```
 </td>
 <td>
@@ -176,7 +185,7 @@ Contains possible options for increment strategies.
 <td>
 
 ```java
-enum LoaderoLocationType
+enum LocationType
 ```
 </td>
 <td>
@@ -187,7 +196,7 @@ Contains different geo locations that are available for testing.
 <td>
 
 ```java
-enum LoaderoMediaType
+enum MediaType
 ```
 </td>
 <td>
@@ -198,7 +207,7 @@ Contains media options that can be used for testing.
 <td>
 
 ```java
-enum LoaderoNetworkTypes
+enum NetworkTypes
 ```
 </td>
 <td>
@@ -209,11 +218,44 @@ Contains different network conditions that can be set for testing.
 <td>
 
 ```java
-enum LoaderoTestModeType
+enum TestModeType
 ```
 </td>
 <td>
 Contains options for setting testing mode.
+</td>
+</tr>
+<tr>
+<td>
+
+```java
+enum MachineAsserts
+```
+</td>
+<td>
+Contains values for all machine asserts paths.
+</td>
+</tr>
+<tr>
+<td>
+
+```java
+enum WebrtcAsserts
+```
+</td>
+<td>
+Contains values for all webrtc asserts paths.
+</td>
+</tr>
+<tr>
+<td>
+
+```java
+enum AssertOperator
+```
+</td>
+<td>
+Contains values for asserts operators.
 </td>
 </tr>
 </tbody>
@@ -235,7 +277,7 @@ Public methods that is used to interact with Loadero API.
 <td>
 
 ```java
-LoaderoTestOptions getTestOptionsById(int testId)
+Test getTestById(int testId)
 ```
 </td>
 <td>
@@ -243,37 +285,36 @@ LoaderoTestOptions getTestOptionsById(int testId)
 </td>
 <td>
 Makes GET request to <b>/projects/{projectID}/tests/{testID}</b> endpoint and
-retrieves information about existing test. Takes no arguments. Returns data as LoaderoTestOptions object.</td>
+retrieves information about existing test. Takes no arguments. Returns data as Test object.</td>
 </tr>
 <tr>
 <td>
 
 ```java
-LoaderoTestOptions updateTestOptionsById
-        (int testId, LoaderoTestOptions newOptions)
+Test updateTestById
+        (int testId, Test newOptions)
 ```
 </td>
 <td>
-<b>LoaderoTestOptions newOptions</b> - Required parameter that is used to set new test options
+<b>Test newOptions</b> - Required parameter that is used to set new test options
 in Loadero via API call.
 
 <b>int testId</b> - ID of the test we wish to update.
 </td>
 <td>Makes PUT request to <b>/projects/{projectID}/tests/{testID}</b> and updates existing test options 
 in Loadero. 
-Takes in LoaderoTestOptions object with desired params set through setter methods.
+Takes in Test object with desired params set through setter methods.
 </td>
 </tr>
 <tr>
 <td>
 
 ```java
-LoaderoTestOptions createNewTest
-        (LoaderoTestOptions newTest) 
+Test createNewTest(Test newTest) 
 ```
 </td>
 <td>
-<b>LoaderoTestOptions newTest</b> - Required parameter that is used to create new test in Loadero.
+<b>Test newTest</b> - Required parameter that is used to create new test in Loadero.
 </td>
 <td>
 Makes POST request to <b>/projects/{projectID}/tests/</b> and creates new test.
@@ -297,7 +338,7 @@ Makes DELETE request to <b>/projects/{projectID}/tests/{testId}</b> and deletes 
 <td>
 
 ```java
-LoaderoScriptFileLoc getTestScriptById(int fileId)
+ScriptDetails getTestScriptById(int fileId)
 ```
 </td>
 <td>
@@ -311,7 +352,7 @@ about the script content and where it's stored.
 <td>
 
 ```java
-LoaderoGroup getGroupById
+Group getGroupById
         (int testId, int groupId)
 ```
 </td>
@@ -327,14 +368,14 @@ and retrieves information about group.
 <td>
 
 ```java
-LoaderoGroup updateGroupById
-        (int testId, int groupId, LoaderoGroup newGroup)
+Group updateGroupById
+        (int testId, int groupId, Group newGroup)
 ```
 </td>
 <td>
 <b>int testId</b>  - ID of the test that contains desired group.<br/>
 <b>int groupId</b> - ID of the group that is wish to be updated.<br>
-<b>LoaderoGroup newGroup</b> - LoaderoGroup object with new params.
+<b>Group newGroup</b> - Group object with new params.
 </td>
 <td>Makes PUT request to <b>/projects/{projectID}/tests/{testID}/groups/{groupID}/</b> 
 and updates information about group.
@@ -344,13 +385,13 @@ and updates information about group.
 <td>
 
 ```java
-LoaderoGroup createNewGroup
-        (LoaderoGroup newGroup, int testId)
+Group createNewGroup
+        (Group newGroup, int testId)
 ```
 </td>
 <td>
 <b>int testId</b>  - ID of the test where group will be created.<br/>
-<b>LoaderoGroup newGroup</b> - new LoaderoGroup object.
+<b>Group newGroup</b> - new Group object.
 </td>
 <td>Makes POST request to <b>/projects/{projectID}/tests/{testID}/groups/</b> 
 and creates new group.
@@ -375,7 +416,7 @@ and deletes group.
 <td>
 
 ```java
-LoaderoParticipant getParticipantById
+Participant getParticipantById
         (int testId, int groupId, int participnatId)
 ```
 </td>
@@ -393,16 +434,16 @@ and retrieves information about participant.
 <td>
 
 ```java
-LoaderoParticipant updateTestParticipantById
+Participant updateTestParticipantById
         (int testId, int groupId, int participantId,
-        LoaderoParticipant newParticipant)
+        Participant newParticipant)
 ```
 </td>
 <td>
 <b>int testId</b>  - ID of the test that contains desired group.<br/>
 <b>int groupId</b> - ID of the group that contains participant.<br>
 <b>int participantId</b> - ID of the participant to be updated.<br>
-<b>LoaderoParticipant newParticipant</b> - LoaderoParticipant object with new params.
+<b>Participant newParticipant</b> - Participant object with new params.
 </td>
 <td>Makes PUT request to <b>/projects/{projectID}/tests/{testID}/groups/{groupID}/participants/{participanatID}</b> 
 and updates information about specific participant.
@@ -412,14 +453,14 @@ and updates information about specific participant.
 <td>
 
 ```java
-LoaderoParticipant createParticipantById(int testId, int groupId,
-        LoaderoParticipant newParticipant)
+Participant createParticipantById(int testId, int groupId,
+        Participant newParticipant)
 ```
 </td>
 <td>
 <b>int testId</b>  - ID of the test that contains desired participant.<br/>
 <b>int groupId</b> - ID of the group that contains participant.<br>
-<b>LoaderoParticipant newParticipant</b> - new LoaderoParticipant object.
+<b>Participant newParticipant</b> - new Participant object.
 </td>
 <td>Makes POST request to <b>/projects/{projectID}/tests/{testID}/groups/{groupID}/participants/</b> 
 and creates new participant.
@@ -446,7 +487,7 @@ and deletes participant.
 <td>
 
 ```java
-LoaderoTestRunResult getTestRunResultById
+TestRunResult getTestRunResultById
         (int testId, int runId)
 ```
 </td>
@@ -462,7 +503,7 @@ and retrieves information about <b>all</b> test run results.
 <td>
 
 ```java
-LoaderoTestRunParticipantResult getTestRunParticipantResultById
+TestRunParticipantResult getTestRunParticipantResultById
         (int testId, int runId, int resultId) 
 ```
 </td>
@@ -479,7 +520,64 @@ and retrieves information about <b>specific</b> test run result.
 <td>
 
 ```java
-LoaderoRunInfo startTestAndPollInfo
+Assert getAssertById
+        (int testId, int assertId)
+```
+</td>
+<td>
+<b>int testId</b>  - ID of the test that contains desired group.<br/>
+<b>int assertId</b> - ID of the assert that we need.
+</td>
+<td>Retrieves assert for a specific test.</td>
+</tr>
+<tr>
+<td>
+
+```java
+Assert updateAssretById
+        (int testId, int assertId, Group newGroup)
+```
+</td>
+<td>
+<b>int testId</b>  - ID of the test that contains desired group.<br/>
+<b>int assertId</b> - ID of the assert that is wish to be updated.<br>
+<b>Assert newAssert</b> - Assert object with new params.
+</td>
+<td>Modifies existing assert for a specific test.</td>
+</tr>
+<tr>
+<td>
+
+```java
+Assert createNewAssert
+        (Assert newAssert, int testId)
+```
+</td>
+<td>
+<b>int testId</b>  - ID of the test where assert will be created.<br/>
+<b>Assert newAssert</b> - new Assert object.
+</td>
+<td>Creates new assert for a specific test.</td>
+</tr>
+<tr>
+<td>
+
+```java
+void deleteAssertById
+        (int testId, int assertId)
+```
+</td>
+<td>
+<b>int testId</b>  - ID of the test to be deleted.<br/>
+<b>int assertId</b> - ID of the assert to be deleted.
+</td>
+<td>Deletes assert for a specific test.</td>
+</tr>
+<tr>
+<td>
+
+```java
+RunInfo startTestAndPollInfo
         (int testId, int interval, int timeout)
 ```
 </td>
@@ -490,7 +588,7 @@ LoaderoRunInfo startTestAndPollInfo
 </td>
 <td>Starts test run by sending POST command to <b>/projects/{projectID}/tests/{testID}/runs/</b>.
 After which starts with specified interval within given timeout sending GET request to retrieve information
-about test run state. If test run is completed, will return LoaderoRunInfo object with test run result. 
+about test run state. If test run is completed, will return RunInfo object with test run result. 
 Also, will give link to results.
 </td>
 </tr>
@@ -511,7 +609,7 @@ LoaderoClient client = new LoaderoClient(baseUrl, loaderoToken, projectId);
 int testId = 2323;
 
 // Retrieving current test description, if needed.
-LoaderoTestOptions currentTestOptions = client.getTestOptionsById(testId);
+Test currentTest = client.getTestById(testId);
 
 // Initiating new test options.
 String testName = "someName";
@@ -519,9 +617,8 @@ int startInterval = 10;
 int participantTimeout = 500;
 String pathToScript = "path";
 
-LoaderoTestOptions newTestOptions = new LoaderoTestOptions(
-        "someName", startInterval, participantTimeout,
-        LoaderoTestModeType.LOAD, LoaderoIncrementStrategy.LINEAR, pathToScript);
+Test newTest = new Test("someName", startInterval, participantTimeout,
+        TestModeType.LOAD, IncrementStrategy.LINEAR, pathToScript);
 
 // Desired options can be get/set via getters and setters, respectively.
         
@@ -531,10 +628,10 @@ LoaderoTestOptions newTestOptions = new LoaderoTestOptions(
 // This location will be parsed to string. 
 // Regardless, if this is .java or .js file.
 // Default way used by constructor as well.        
-newTestOptions.setScript(URI.create("path/to/.java or .js"));
+newTest.setScript(URI.create("path/to/.java or .js"));
 
 // The second approach is to pass script as string directly.
-newTestOptions.setScript(new String("your script here"));
+newTest.setScript(new String("your script here"));
 // The third options is meant to be used to update existing test script template
 // for Loadero.
 // First we need to define which parameters we wish to set. For this we need to create
@@ -544,17 +641,17 @@ newTestOptions.setScript(new String("your script here"));
 Map<String, String> newParams = new HashMap<>();
 newParams.put("callDuration", "10");
 newParams.put("elementTimeout", "30");
-newTestOptions.setScript("path to script template", newParams);        
+newTest.setScript("path to script template", newParams);        
 
 // Now when your test is ready you can actually create it on Loadero side as well!
 // Just call
-client.createNewTest(newTestOptions);
+client.createNewTest(newTest);
 // You can assign it to variable and use later as well. This will return new test created on Loadero.
-LoaderoTestOptions test = client.createNewTest(newTestOptions);
+Test test = client.createNewTest(newTest);
 
-// After that you can call updateTestOptions() method and store result
+// After that you can call updateTest() method and store result
 // of the operation for later usage if needed.       
-LoaderoTestOptions updatedOptions = client.updateTestOptionsById(testId, newTestOptions);
+Test updatedOptions = client.updateTestById(testId, newTest);
 
 // When you no longer need test just delete it.
 client.deleteTestById(testId);
@@ -570,7 +667,7 @@ client.deleteTestById(testId);
 // you guessed it! Poll the information about the state of the running test!
 // When test is done the method will return RunInfo object with
 // all the information you need to retrieve results of the test later.        
-LoaderoRunInfo testRunInfo = client.startTestAndPollInfo(testId, 15, 100);
+RunInfo testRunInfo = client.startTestAndPollInfo(testId, 15, 100);
 
 // For example you going to need test run ID field to get results
 // about this test run.
@@ -587,11 +684,11 @@ double successRate = testRunInfo.getSuccessRate();
 // After successfully run of polling function you can retrieve results of the
 // test runs that were made.
 // You can use testRunId defined earlier to get all information about test run results
-// This will give you a List<LoaderoSingleTestRunResult> object.
-LoaderoTestRunResult results = client.getTestRunResultById(testId, testRunId);
+// This will give you a List<SingleTestRunResult> object.
+TestRunResult results = client.getTestRunResultById(testId, testRunId);
 // This object contains an individual IDs of each test run result that you can
 // retrieve later with the next method
-LoaderoTestRunParticipantResult singleResult = client
+TestRunParticipantResult singleResult = client
         .getTestRunParticipantResultById(int testId, int testRunId, int resultId);
 
 // And then, with getters, retrieve all the necessary information about single test run results,
@@ -630,15 +727,15 @@ mvm test
 
 <b>To run a specific set of tests against mocked data.</b>
 ```
-mvn -DTest=TestLoaderoPackage test
+mvn -DTest=TestPackage test
 ```
 
 <b>To run a specific set of tests with real credentials(eg. API toke, real IDs etc.).</b>
 ```
-mvn -DTest=TestLoaderoPackage -Denv=live test
+mvn -DTest=TestPackage -Denv=live test
 ```
 
 <b>To run a specific test method inside test class.</b>
 ```
-mvn -DTest=TestLoaderoPackage#testGetTestOptionsById test
+mvn -DTest=TestPackage#testGetTestById test
 ```

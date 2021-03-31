@@ -1,5 +1,6 @@
 package loadero.main;
 
+import loadero.model.MetricPaths;
 import loadero.model.Statics;
 import loadero.types.LoaderoModelType;
 
@@ -10,6 +11,11 @@ final class StaticsService extends AbstractService {
     public StaticsService(CrudController crudController,
                           CustomUrlBuilder urlBuilder) {
         super(crudController, urlBuilder);
+    }
+    
+    public MetricPaths getMetricPaths() {
+        String metricPathsUrl = String.format("%smetric_path/", buildUrl());
+        return (MetricPaths) crudController.get(metricPathsUrl, LoaderoModelType.LOADERO_METRIC_PATHS);
     }
     
     @Override

@@ -1,16 +1,15 @@
 package loadero.model;
 
 import com.google.gson.annotations.SerializedName;
-import loadero.types.*;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.Map;
 import java.util.Set;
 
-@Data
+@Getter
 @NoArgsConstructor
-public class Statics implements LoaderoModel {
+public final class Statics implements LoaderoModel {
     private Set<Map<String, String>> network;
     @SerializedName("media_type")
     private Set<Map<String, String>> mediaType;

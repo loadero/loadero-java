@@ -202,6 +202,50 @@ public final class LoaderoClient {
     }
     
     /**
+     * Retrieves assert from Loadero.
+     * @param testId    ID of the test where assert is located.
+     * @param assertId  ID of an assert.
+     * @return          {@link Assert} class.
+     */
+    public Assert getAssertById(int testId, int assertId) {
+        return (Assert) serviceFactory.getLoaderoService(LoaderoModelType.LOADERO_ASSERT)
+                .getById(testId, assertId);
+    }
+    
+    /**
+     * Creates new assert for a specified test.
+     * @param newAssert {@link Assert} class.
+     * @param testId    ID of the test where we want new assert.
+     * @return          {@link Assert} class.
+     */
+    public Assert createNewAssert(Assert newAssert, int testId) {
+        AssertService service = (AssertService) serviceFactory.getLoaderoService(LoaderoModelType.LOADERO_ASSERT);
+        return service.createNewModel(newAssert, testId);
+    }
+    
+    /**
+     * Updates existing assert for specific test.
+     * @param newAssert  {@link Assert} class with parameters we wish to replace.
+     * @param testId     ID of the test.
+     * @param assertId   ID of the assert.
+     * @return          {@link Assert} class with updated parameters.
+     */
+    public Assert updateAssertById(Assert newAssert, int testId, int assertId) {
+        AssertService service = (AssertService) serviceFactory.getLoaderoService(LoaderoModelType.LOADERO_ASSERT);
+        return service.updateById(newAssert, testId, assertId);
+    }
+    
+    /**
+     * Delete existing assert for specific test.
+     * @param testId    ID of the test.
+     * @param assertId  ID of the assert.
+     */
+    public void deleteAssertById(int testId, int assertId) {
+        AssertService service = (AssertService) serviceFactory.getLoaderoService(LoaderoModelType.LOADERO_ASSERT);
+        service.deleteById(testId, assertId);
+    }
+    
+    /**
      * Gets information about all test run results from Loadero API.
      * @param testId  ID of the desired test to get results from.
      * @param runId   ID of the test run.
@@ -236,6 +280,16 @@ public final class LoaderoClient {
     public Statics getLoaderoStatics() {
         return (Statics) serviceFactory
                 .getLoaderoService(LoaderoModelType.LOADERO_STATICS).getById();
+    }
+    
+    /**
+     * Returns metric paths used by Loadero for asserts.
+     * @return  {@link MetricPaths} class with webrtc and machine paths separated.
+     */
+    public MetricPaths getMetricPaths() {
+        StaticsService service = (StaticsService)
+                serviceFactory.getLoaderoService(LoaderoModelType.LOADERO_STATICS);
+        return service.getMetricPaths();
     }
 
     /**
