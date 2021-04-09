@@ -1,12 +1,12 @@
-package loadero.models;
+package com.loadero.models;
 
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
+import com.loadero.AbstractTestLoadero;
 import loadero.model.Participant;
 import loadero.types.*;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
-import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.jupiter.api.Assertions.*;

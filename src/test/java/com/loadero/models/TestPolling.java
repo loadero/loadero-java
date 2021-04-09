@@ -1,6 +1,7 @@
-package loadero.models;
+package com.loadero.models;
 
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
+import com.loadero.AbstractTestLoadero;
 import loadero.exceptions.ClientInternalException;
 import loadero.model.RunInfo;
 import org.apache.http.HttpStatus;

@@ -1,4 +1,4 @@
-package loadero.models;
+package com.loadero;
 
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;

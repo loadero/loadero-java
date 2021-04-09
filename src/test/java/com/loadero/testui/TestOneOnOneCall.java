@@ -1,4 +1,4 @@
-package loadero.scripts.testui;
+package com.loadero.testui;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

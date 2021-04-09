@@ -1,5 +1,6 @@
-package loadero.models;
+package com.loadero.models;
 
+import com.loadero.AbstractTestLoadero;
 import loadero.model.TestRunParticipantResult;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;

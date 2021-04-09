@@ -1,4 +1,4 @@
-package loadero.models;
+package com.loadero;
 
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 import loadero.model.Assert;
