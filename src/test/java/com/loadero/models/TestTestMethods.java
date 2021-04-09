@@ -1,6 +1,7 @@
-package loadero.models;
+package com.loadero.models;
 
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
+import com.loadero.AbstractTestLoadero;
 import loadero.model.Test;
 import loadero.types.IncrementStrategyType;
 import loadero.types.TestModeType;

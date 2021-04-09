@@ -1,6 +1,6 @@
 public class CallOneOnOne {
     public void test() {
-        int particId = globalConfig.getParticipant().getId();
+//        int particId = globalConfig.getParticipant().getId();
         String identity = String.format("Participant%d", particId);
         int callDuration = 60; // in seconds
         String appUrl = "";

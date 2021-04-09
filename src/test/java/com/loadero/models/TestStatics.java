@@ -1,4 +1,4 @@
-package loadero.models;
+package com.loadero.models;
 
 import com.github.javaparser.ParserConfiguration;
 import com.github.javaparser.StaticJavaParser;
@@ -7,17 +7,16 @@ import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.expr.*;
 import com.google.gson.annotations.SerializedName;
+import com.loadero.AbstractTestLoadero;
 import loadero.model.MetricPaths;
 import loadero.model.Statics;
 import loadero.types.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import org.eclipse.jetty.util.IO;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;

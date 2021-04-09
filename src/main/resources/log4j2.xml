@@ -6,10 +6,7 @@
         </Console>
     </Appenders>
     <Loggers>
-        <Logger name="loadero" level="info" additivity="false">
-            <AppenderRef ref="LogToConsole"/>
-        </Logger>
-        <Root level="error">
+        <Root level="info">
             <AppenderRef ref="LogToConsole"/>
         </Root>
     </Loggers>
