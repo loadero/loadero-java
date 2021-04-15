@@ -41,12 +41,14 @@ class MissingValues {
 public class TestStatics extends AbstractTestLoadero {
     // Set of Loadero type's values
     private static final Map<String, EnumSet<?>> locals = Map.of(
-            "location",     EnumSet.copyOf(Arrays.asList(LocationType.values())),
-            "computeUnit",  EnumSet.copyOf(Arrays.asList(ComputeUnitsType.values())),
+            "location",     EnumSet.copyOf(Arrays.asList(Location.values())),
+            "computeUnit",  EnumSet.copyOf(Arrays.asList(ComputeUnit.values())),
             "mediaType",    EnumSet.copyOf(Arrays.asList(MediaType.values())),
-            "network",      EnumSet.copyOf(Arrays.asList(NetworkType.values())),
-            "testMode",     EnumSet.copyOf(Arrays.asList(TestModeType.values())),
-            "incrementStrategy", EnumSet.copyOf(Arrays.asList(IncrementStrategyType.values()))
+            "network",      EnumSet.copyOf(Arrays.asList(Network.values())),
+            "testMode",     EnumSet.copyOf(Arrays.asList(TestMode.values())),
+            "incrementStrategy", EnumSet.copyOf(Arrays.asList(IncrementStrategy.values())),
+            "audioFeed", EnumSet.copyOf(Arrays.asList(AudioFeed.values())),
+            "videoFeed", EnumSet.copyOf(Arrays.asList(VideoFeed.values()))
     );
     // Enums that we have locally and their locations.
     // Key is name of the field from Statics.
@@ -90,7 +92,7 @@ public class TestStatics extends AbstractTestLoadero {
         try {
             // Set of all Enum paths in types package.
             Set<Path> enumFiles = Files.walk(
-                    Paths.get("src/main/java/loadero/types"))
+                    Paths.get("src/main/java/com/loadero/types"))
                     .collect(Collectors.toSet());
             localEnumsLocation = mapKeysToLocations(locals.keySet(), enumFiles);
         } catch (IOException ex) {
@@ -122,6 +124,12 @@ public class TestStatics extends AbstractTestLoadero {
         Assertions.assertEquals("CHROME_LATEST",  formatName("chromeLatest"));
         Assertions.assertEquals("FIREFOX_89",     formatName("firefox89"));
         Assertions.assertEquals("MACHINE_RAM_50TH", formatName("machine/ram/50th"));
+        Assertions.assertEquals("MINUS_128_DB", formatName("-128db"));
+        Assertions.assertEquals("KBPS_128", formatName("128kbps"));
+        Assertions.assertEquals("DTMF", formatName("dtmf"));
+        Assertions.assertEquals("CENTER_MARKED_1080P", formatName("1080p-marked-center"));
+        Assertions.assertEquals("LEFT_TOP_MARKED_1080P", formatName("1080p-marked-top-left"));
+        Assertions.assertEquals("P_1080", formatName("1080p"));
     }
     
     private void writeUpdatedEnumsBack(Map<Path, String> updatedEnums) {
@@ -228,6 +236,7 @@ public class TestStatics extends AbstractTestLoadero {
      * 1080p-30db    -> DB_30_1080P
      * 480pAV        -> AV_180P
      * machine/ram/50th -> MACHINE_RAM_50TH
+     * -128db -> MINUS_128_DB
      */
     private String formatName(String name) {
         String formattedName = "";
@@ -237,7 +246,8 @@ public class TestStatics extends AbstractTestLoadero {
             
             if (name.contains("-")) {
                 String[] tokens = name.split("-");
-                formattedName = String.format("%s_%s",tokens[1], tokens[0]);
+                Collections.reverse(Arrays.asList(tokens));
+                formattedName = String.join("_", tokens);
             }
     
             if (name.contains("db") && name.contains("-")) {
@@ -260,6 +270,16 @@ public class TestStatics extends AbstractTestLoadero {
                             matcher.group("rest"));
                 }
             }
+
+            if (name.contains("kbps")) {
+                regex = "(?<nums>\\d+)(?<kbps>\\w+)$";
+                matcher = getMatcher(regex, name);
+                if (matcher.find()) {
+                    formattedName = String.format("%s_%s",
+                        matcher.group("kbps"),
+                        matcher.group("nums"));
+                }
+            }
             
             if (name.contains("packet")) {
                 regex = "^(?<lossNum>\\d{1,})(?<packet>[a-z]{2,})$";
@@ -275,7 +295,27 @@ public class TestStatics extends AbstractTestLoadero {
                 formattedName = String.format("CONNECTION_%s",
                         name.toUpperCase(Locale.ENGLISH));
             }
-            
+
+            if (name.endsWith("p")) {
+                regex = "(?<nums>\\d+)(?<p>\\w{1})";
+                matcher = getMatcher(regex, name);
+                if (matcher.find()) {
+                    formattedName = String.format("%s_%s",
+                        matcher.group("p"), matcher.group("nums"));
+                }
+            }
+
+            return formattedName.toUpperCase(Locale.ENGLISH);
+        }
+
+        if (name.startsWith("-")) {
+            regex = "(?<minus>-)(?<nums>\\d+)(?<rest>\\w+)";
+            matcher = getMatcher(regex, name);
+            if (matcher.find()) {
+                formattedName = String.format("MINUS_%s_%s",
+                    matcher.group("nums"), matcher.group("rest"));
+            }
+
             return formattedName.toUpperCase(Locale.ENGLISH);
         }
         

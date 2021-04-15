@@ -3,8 +3,8 @@ package com.loadero.models;
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 import com.loadero.AbstractTestLoadero;
 import loadero.model.Test;
-import loadero.types.IncrementStrategyType;
-import loadero.types.TestModeType;
+import loadero.types.IncrementStrategy;
+import loadero.types.TestMode;
 import org.apache.http.HttpStatus;
 
 import java.net.URI;
@@ -56,8 +56,8 @@ public class TestTestMethods extends AbstractTestLoadero {
     public void testCreateNewTest() {
         Test testOptions = new Test();
         testOptions.setName("new test 5");
-        testOptions.setMode(TestModeType.LOAD);
-        testOptions.setIncrementStrategy(IncrementStrategyType.LINEAR_GROUP);
+        testOptions.setMode(TestMode.LOAD);
+        testOptions.setIncrementStrategy(IncrementStrategy.LINEAR_GROUP);
         testOptions.setStartInterval(10);
         testOptions.setParticipantTimeout(200);
         testOptions.setScript(URI.create("/Users/mihhail.matisinets/Desktop/Projects/loadero-rest-api-wrapper" +
@@ -91,8 +91,8 @@ public class TestTestMethods extends AbstractTestLoadero {
     @org.junit.jupiter.api.Test
     public void testUpdateTestOptions() {
         Test newTest = new Test();
-        newTest.setMode(TestModeType.LOAD);
-        newTest.setIncrementStrategy(IncrementStrategyType.LINEAR_GROUP);
+        newTest.setMode(TestMode.LOAD);
+        newTest.setIncrementStrategy(IncrementStrategy.LINEAR_GROUP);
         newTest.setParticipantTimeout(150);
         newTest.setStartInterval(5);
         String jsonRes = gson.toJson(newTest);
@@ -102,14 +102,14 @@ public class TestTestMethods extends AbstractTestLoadero {
         Test updatedTest = loaderoClient.updateTestById(TEST_ID, newTest);
         assertNotNull(updatedTest);
         assertEquals(150, updatedTest.getParticipantTimeout());
-        assertEquals(TestModeType.LOAD, updatedTest.getMode());
+        assertEquals(TestMode.LOAD, updatedTest.getMode());
     }
     
     @org.junit.jupiter.api.Test
     public void testUpdateTestOptionsWithEnums() {
         Test newTest = new Test();
-        newTest.setMode(TestModeType.PERFORMANCE);
-        newTest.setIncrementStrategy(IncrementStrategyType.LINEAR_GROUP);
+        newTest.setMode(TestMode.PERFORMANCE);
+        newTest.setIncrementStrategy(IncrementStrategy.LINEAR_GROUP);
         newTest.setParticipantTimeout(150);
         newTest.setStartInterval(5);
         String jsonRes = gson.toJson(newTest);
@@ -118,15 +118,15 @@ public class TestTestMethods extends AbstractTestLoadero {
         Test updatedTest = loaderoClient.updateTestById(TEST_ID, newTest);
         assertNotNull(updatedTest);
         assertEquals(150, updatedTest.getParticipantTimeout());
-        assertEquals(TestModeType.PERFORMANCE, updatedTest.getMode());
-        assertEquals(IncrementStrategyType.LINEAR_GROUP, updatedTest.getIncrementStrategy());
+        assertEquals(TestMode.PERFORMANCE, updatedTest.getMode());
+        assertEquals(IncrementStrategy.LINEAR_GROUP, updatedTest.getIncrementStrategy());
     }
     
     @org.junit.jupiter.api.Test
     public void negativeUpdateTestOptions() {
         int testId = 23423;
         Test test = new Test();
-        test.setMode(TestModeType.PERFORMANCE);
+        test.setMode(TestMode.PERFORMANCE);
         test.setName("negative test");
         String json = gson.toJson(test);
         

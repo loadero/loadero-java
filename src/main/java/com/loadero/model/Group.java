@@ -7,21 +7,21 @@ import java.io.IOException;
 
 public final class Group {
     private final int id;
+    private final String created;
+    private final String updated;
     private final int testId;
     private final String name;
     private final int count;
     private final int participantCount;
-    private final String created;
-    private final String updated;
 
     public Group(GroupParams params) {
         this.id = params.getId();
+        this.created = params.getCreated();
+        this.updated = params.getUpdated();
         this.testId = params.getTestId();
         this.name = params.getName();
         this.count = params.getCount();
         this.participantCount = params.getParticipantCount();
-        this.created = params.getCreated();
-        this.updated = params.getUpdated();
     }
 
     /**
@@ -72,7 +72,7 @@ public final class Group {
      */
     public static void delete(int testId, int groupId) throws IOException {
         String route = buildRoute(testId, groupId);
-        ApiResource.request(RequestMethod.DELETE, route, null, null);
+        ApiResource.request(RequestMethod.DELETE, route, null, Group.class);
     }
 
     private static String buildRoute(int testId) {
@@ -85,6 +85,14 @@ public final class Group {
 
     public int getId() {
         return id;
+    }
+
+    public String getCreated() {
+        return created;
+    }
+
+    public String getUpdated() {
+        return updated;
     }
 
     public int getTestId() {
@@ -103,32 +111,16 @@ public final class Group {
         return participantCount;
     }
 
-    public String getCreated() {
-        return created;
-    }
-
-    public String getUpdated() {
-        return updated;
-    }
-
     @Override
     public String toString() {
         return "Group{"
-            + "id="
-            + id
-            + ", testId="
-            + testId
-            + ", name='"
-            + name
-            + '\''
-            + ", count="
-            + count
-            + ", participantCount="
-            + participantCount
-            + ", created="
-            + created
-            + ", updated="
-            + updated
+            + "id=" + id +
+            ", created=" + created +
+            ", updated=" + updated +
+            ", testId=" + testId +
+            ", name='" + name + '\'' +
+            ", count=" + count +
+            ", participantCount=" + participantCount
             + '}';
     }
 }
