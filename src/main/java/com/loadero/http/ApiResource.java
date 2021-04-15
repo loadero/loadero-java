@@ -1,19 +1,20 @@
 package com.loadero.http;
 
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.loadero.model.Group;
 import com.loadero.model.ModelParams;
+import com.loadero.model.Participant;
 import java.io.IOException;
 
-public abstract class ApiResource {
+public enum ApiResource {
+    ;
+
     private static final HttpController controller = new HttpController();
     private static final Gson gson = createGson();
 
     /**
-     * Makes specify request to Loadero API serivce.
+     * Makes specific request to Loadero API service.
      *
      * @param method Request method name i.e GET, POST, PUT or DELETE.
      * @param url    Url to make request for.
@@ -23,11 +24,9 @@ public abstract class ApiResource {
      * @throws IOException if request failed.
      */
     public static <T> T request(
-        RequestMethod method, String url,
-        ModelParams params, Class<T> clazz
-    )
-        throws IOException {
-        String content = gson.toJson(params);
+        RequestMethod method, String url, ModelParams params, Class<T> clazz
+    ) throws IOException {
+        String content = gson.toJson(params, clazz);
         return controller.request(method, url, content, clazz);
     }
 
@@ -39,22 +38,9 @@ public abstract class ApiResource {
         return new GsonBuilder()
             .registerTypeAdapter(Group.class, new GroupDeserializer())
             .registerTypeAdapter(Group.class, new GroupSerializer())
+            .registerTypeAdapter(Participant.class, new ParticipantDeserializer())
+            .registerTypeAdapter(Participant.class, new ParticipantSerializer())
             .setPrettyPrinting()
-            .addSerializationExclusionStrategy(
-                new ExclusionStrategy() {
-                    @Override
-                    public boolean shouldSkipField(FieldAttributes fieldAttributes) {
-                        return fieldAttributes.getName().equals("id")
-                            || fieldAttributes.getName().equals("scriptFileId")
-                            || fieldAttributes.getName().equals("testId")
-                            || fieldAttributes.getName().equals("groupId");
-                    }
-
-                    @Override
-                    public boolean shouldSkipClass(Class<?> aClass) {
-                        return false;
-                    }
-                })
             .create();
     }
 }

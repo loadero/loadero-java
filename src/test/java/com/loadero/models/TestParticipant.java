@@ -1,122 +1,117 @@
 package com.loadero.models;
 
-import com.github.tomakehurst.wiremock.stubbing.StubMapping;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import com.loadero.AbstractTestLoadero;
+import com.loadero.Loadero;
+import com.loadero.model.ParticipantParams;
+import java.io.IOException;
 import loadero.model.Participant;
-import loadero.types.*;
-import org.apache.http.HttpStatus;
+import loadero.types.Browser;
+import loadero.types.BrowserLatest;
+import loadero.types.ComputeUnit;
+import loadero.types.Location;
+import loadero.types.MediaType;
+import loadero.types.Network;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static org.junit.jupiter.api.Assertions.*;
-
 public class TestParticipant extends AbstractTestLoadero {
-    
+
     @Test
-    public void testGetParticipantById() {
-        String url = String.format(".*/tests/%s/groups/%s/participants/%s/",
-                TEST_ID, GROUP_ID, PARTICIPANT_ID);
-        wmRule.stubFor(get(urlMatching(url))
-                .willReturn(aResponse()
-                        .withStatus(HttpStatus.SC_OK)
-                        .withBodyFile("body-projects-5040-tests-6866-participants-94633-aZHuT.json")));
-        
-        Participant participant = loaderoClient.getParticipantById(TEST_ID, GROUP_ID, PARTICIPANT_ID);
+    public void testGetParticipantById() throws IOException {
+        Loadero.init(BASE_URL, token, PROJECT_ID);
+        com.loadero.model.Participant participant = com.loadero.model.Participant
+            .read(TEST_ID, GROUP_ID, PARTICIPANT_ID);
         assertNotNull(participant);
-        assertEquals(PARTICIPANT_ID, participant.getId());
     }
-    
+
     @Test
     public void negativeGetParticipantWrongTestId() {
         Participant participant = loaderoClient.getParticipantById(234, GROUP_ID, PARTICIPANT_ID);
         assertNull(participant);
     }
-    
+
     @Test
     public void negativeGetParticipantWrongParticipantId() {
         Participant participant = loaderoClient.getParticipantById(TEST_ID, GROUP_ID, 2312);
         assertNull(participant);
     }
-    
+
     @Test
     @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
-    public void testUpdateParticipant() {
-        String url = String.format(".*/tests/%s/groups/%s/participants/%s/", TEST_ID, GROUP_ID, PARTICIPANT_ID);
-        Participant newParticipant = new Participant();
-        newParticipant.setName("unit test partic");
-        newParticipant.setCount(2);
-        newParticipant.setComputeUnit(ComputeUnitsType.G2);
-        String updateRes = gson.toJson(newParticipant);
-        
-        wmRule.stubFor(get(urlMatching(url))
-                .willReturn(aResponse()
-                        .withStatus(HttpStatus.SC_OK)
-                        .withBodyFile("body-projects-5040-tests-6866-participants-94633-aZHuT.json")));
-        
-        StubMapping stub = wmRule.stubFor(put(urlMatching(url))
-                .willReturn(aResponse()
-                        .withStatus(HttpStatus.SC_OK)
-                        .withBody(updateRes)));
-        
-        Participant updatedPartic = loaderoClient.
-                updateTestParticipantById(TEST_ID, GROUP_ID, PARTICIPANT_ID, newParticipant);
-        assertNotNull(updatedPartic);
+    public void testUpdateParticipant() throws IOException {
+        Loadero.init(BASE_URL, token, PROJECT_ID);
+        ParticipantParams newParams = ParticipantParams
+            .builder()
+            .withName("new name")
+            .withId(PARTICIPANT_ID)
+            .withGroupId(GROUP_ID)
+            .withTestId(TEST_ID)
+            .build();
+        // current participant
+        com.loadero.model.Participant read = com.loadero.model.Participant
+            .read(TEST_ID, GROUP_ID, PARTICIPANT_ID);
+        assertNotNull(read);
+        // updated
+        com.loadero.model.Participant update = com.loadero.model.Participant.update(newParams);
+        assertNotNull(update);
+        assertEquals(read.getCount(), update.getCount());
+        assertEquals(read.getLocation(), update.getLocation());
+        assertNotEquals(read.getName(), update.getName());
     }
-    
+
     @Test
     @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
-    public void testCreateAndDeleteParticipant() {
-        Participant participant = new Participant();
-        BrowserType browser = new BrowserType(BrowserTypeLatest.CHROME_LATEST);
-        participant.setName("new participant");
-        participant.setCount(1);
-        participant.setComputeUnit(ComputeUnitsType.G2);
-        participant.setBrowser(browser);
-        participant.setLocation(LocationType.EU_WEST_1);
-        participant.setNetwork(NetworkType.DEFAULT);
-        participant.setMediaType(MediaType.DEFAULT);
-        
-        String json = gson.toJson(participant);
-        wmRule.stubFor(post(urlMatching(".*/participants/"))
-                .willReturn(aResponse()
-                        .withStatus(HttpStatus.SC_CREATED)
-                        .withBody(json)));
-        
-        Participant newParticipant = loaderoClient.createParticipantById(TEST_ID, GROUP_ID, participant);
-        assertNotNull(newParticipant);
-        
-        StubMapping deleteStub = wmRule.stubFor(delete(urlMatching(".*/participant/*."))
-                .willReturn(aResponse().withStatus(HttpStatus.SC_NO_CONTENT)));
-        
-        loaderoClient.deleteParticipantById(TEST_ID, GROUP_ID, newParticipant.getId());
-        assertEquals(HttpStatus.SC_NO_CONTENT, deleteStub.getResponse().getStatus());
+    public void testCreateAndDeleteParticipant() throws IOException {
+        Loadero.init(BASE_URL, token, PROJECT_ID);
+        ParticipantParams params = ParticipantParams
+            .builder()
+            .withName("participant1")
+            .withCount(1)
+            .withLocation(Location.EU_WEST_1)
+            .withNetwork(Network.DEFAULT)
+            .withBrowser(new Browser(BrowserLatest.CHROME_LATEST))
+            .withComputeUnit(ComputeUnit.G2)
+            .withMediaType(MediaType.DEFAULT)
+            .withGroupId(GROUP_ID)
+            .withTestId(TEST_ID)
+            .withRecordAudio(false)
+            .build();
+        com.loadero.model.Participant create = com.loadero.model.Participant.create(params);
+        assertNotNull(create);
+        com.loadero.model.Participant
+            .delete(create.getTestId(), create.getGroupId(), create.getId());
     }
-    
+
     @Test
     public void negativeUpdateParticipant() {
         // Should throw null pointer exception
         assertThrows(NullPointerException.class, () ->
-                loaderoClient.
-                        updateTestParticipantById(TEST_ID, GROUP_ID, PARTICIPANT_ID, null)
+            loaderoClient.
+                updateTestParticipantById(TEST_ID, GROUP_ID, PARTICIPANT_ID, null)
         );
     }
-    
+
     @Test
     public void negativeUpdateParticipantIdNull() {
         // Should throw null pointer exception
         assertThrows(NullPointerException.class, () ->
-                loaderoClient.
-                        updateTestParticipantById(TEST_ID, GROUP_ID, 0, null)
+            loaderoClient.
+                updateTestParticipantById(TEST_ID, GROUP_ID, 0, null)
         );
     }
-    
+
     @Test
     public void negativeUpdateParticipantTestIdWrong() {
         // Should throw null pointer exception
         assertThrows(NullPointerException.class, () ->
-                loaderoClient.
-                        updateTestParticipantById(1, GROUP_ID, PARTICIPANT_ID, null)
+            loaderoClient.
+                updateTestParticipantById(1, GROUP_ID, PARTICIPANT_ID, null)
         );
     }
 }

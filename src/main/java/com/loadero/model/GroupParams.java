@@ -4,35 +4,34 @@ import com.loadero.util.StringUtil;
 
 public class GroupParams implements ModelParams {
     private final int id;
+    private final String created;
+    private final String updated;
     private final int testId;
     private final String name;
     private final int count;
     private final int participantCount;
-    private final String created;
-    private final String updated;
 
     private GroupParams(GroupParamsBuilder builder) {
         this.id = builder.id;
+        this.created = builder.created;
+        this.updated = builder.updated;
         this.testId = builder.testId;
         this.name = builder.name;
         this.count = builder.count;
         this.participantCount = builder.participantCount;
-        this.created = builder.created;
-        this.updated = builder.updated;
     }
 
     private GroupParams(
-        int id, int testId,
-        String name, int count, int participantCount,
-        String created, String updated
+        int id, String created, String updated,
+        int testId, String name, int count, int participantCount
     ) {
         this.id = id;
+        this.created = created;
+        this.updated = updated;
         this.testId = testId;
         this.name = name;
         this.count = count;
         this.participantCount = participantCount;
-        this.created = created;
-        this.updated = updated;
     }
 
     /**
@@ -55,62 +54,17 @@ public class GroupParams implements ModelParams {
             this.count == 0
                 ? currentParams.getCount()
                 : this.count == currentParams.getCount() ? currentParams.getCount() : this.count;
-        return new GroupParams(id, testId, name, count, participantCount, created, updated);
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public int getTestId() {
-        return testId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public int getParticipantCount() {
-        return participantCount;
-    }
-
-    public String getCreated() {
-        return created;
-    }
-
-    public String getUpdated() {
-        return updated;
-    }
-
-    @Override
-    public String toString() {
-        return "GroupParams{"
-            + "id="
-            + id
-            + ", testId="
-            + testId
-            + ", name='"
-            + name
-            + '\''
-            + ", count="
-            + count
-            + ", participantCount="
-            + participantCount
-            + '}';
+        return new GroupParams(id, created, updated, testId, name, count, participantCount);
     }
 
     public static final class GroupParamsBuilder {
         private int id;
+        private String created;
+        private String updated;
         private int testId;
         private String name;
         private int count;
         private int participantCount;
-        private String created;
-        private String updated;
 
         private GroupParamsBuilder() {
         }
@@ -123,6 +77,28 @@ public class GroupParams implements ModelParams {
          */
         public GroupParamsBuilder withId(int id) {
             this.id = id;
+            return this;
+        }
+
+        /**
+         * Sets time when object was created in Loadero. Used for deserialization only.
+         *
+         * @param created
+         * @return
+         */
+        public GroupParamsBuilder withTimeCreated(String created) {
+            this.created = created;
+            return this;
+        }
+
+        /**
+         * Sets time when object was updated in Loadero. Used for deserialization only.
+         *
+         * @param updated
+         * @return
+         */
+        public GroupParamsBuilder withTimeUpdated(String updated) {
+            this.updated = updated;
             return this;
         }
 
@@ -175,28 +151,6 @@ public class GroupParams implements ModelParams {
         }
 
         /**
-         * Sets time when object was created in Loadero. Used for deserialization only.
-         *
-         * @param created
-         * @return
-         */
-        public GroupParamsBuilder withTimeCreated(String created) {
-            this.created = created;
-            return this;
-        }
-
-        /**
-         * Sets time when object was updated in Loadero. Used for deserialization only.
-         *
-         * @param updated
-         * @return
-         */
-        public GroupParamsBuilder withTimeUpdated(String updated) {
-            this.updated = updated;
-            return this;
-        }
-
-        /**
          * Builds {@link GroupParams} object.
          *
          * @return Constructed {@link GroupParams} object.
@@ -204,5 +158,46 @@ public class GroupParams implements ModelParams {
         public GroupParams build() {
             return new GroupParams(this);
         }
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getCreated() {
+        return created;
+    }
+
+    public String getUpdated() {
+        return updated;
+    }
+
+    public int getTestId() {
+        return testId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public int getParticipantCount() {
+        return participantCount;
+    }
+
+    @Override
+    public String toString() {
+        return "GroupParams{" +
+            "id=" + id +
+            ", created=" + created +
+            ", updated=" + updated +
+            ", testId=" + testId +
+            ", name='" + name + '\'' +
+            ", count=" + count +
+            ", participantCount=" + participantCount +
+            '}';
     }
 }

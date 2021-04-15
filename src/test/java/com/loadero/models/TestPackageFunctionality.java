@@ -3,7 +3,7 @@ package com.loadero.models;
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 import com.loadero.AbstractTestLoadero;
 import loadero.model.Test;
-import loadero.types.TestModeType;
+import loadero.types.TestMode;
 import org.apache.http.HttpStatus;
 
 import java.util.Map;
@@ -25,7 +25,7 @@ public class TestPackageFunctionality extends AbstractTestLoadero {
         newTest.setId(TEST_ID);
         newTest.setName("new test");
         newTest.setParticipantTimeout(300);
-        newTest.setMode(TestModeType.LOAD);
+        newTest.setMode(TestMode.LOAD);
         newTest.setStartInterval(20);
         newTest.setScript(
                 "src/test/java/loadero/scripts/testui/TestOneOnOneCall.java",
@@ -48,10 +48,10 @@ public class TestPackageFunctionality extends AbstractTestLoadero {
         // Retreiving test
         Test getTest = loaderoClient.getTestById(TEST_ID);
         assertNotNull(getTest);
-        assertEquals(TestModeType.LOAD, getTest.getMode());
+        assertEquals(TestMode.LOAD, getTest.getMode());
         
         // Updating
-        getTest.setMode(TestModeType.PERFORMANCE);
+        getTest.setMode(TestMode.PERFORMANCE);
         getTest.setName("Performance test");
         
         body = gson.toJson(getTest);
@@ -63,7 +63,7 @@ public class TestPackageFunctionality extends AbstractTestLoadero {
         
         Test updateTest = loaderoClient.updateTestById(TEST_ID, getTest);
         assertNotNull(updateTest);
-        assertEquals(TestModeType.PERFORMANCE, updateTest.getMode());
+        assertEquals(TestMode.PERFORMANCE, updateTest.getMode());
         // Deleting test
         StubMapping deleteStub = wmRule.stubFor(delete(urlMatching(".*/tests/" + TEST_ID + "/"))
                 .willReturn(aResponse()
@@ -74,9 +74,9 @@ public class TestPackageFunctionality extends AbstractTestLoadero {
     
     @org.junit.jupiter.api.Test
     public void testEnumsTypes() {
-        assertEquals("load", TestModeType.LOAD.toString());
-        assertEquals("performance", TestModeType.PERFORMANCE.toString());
-        assertEquals("session-record", TestModeType.SESSION_RECORD.toString());
+        assertEquals("load", TestMode.LOAD.toString());
+        assertEquals("performance", TestMode.PERFORMANCE.toString());
+        assertEquals("session-record", TestMode.SESSION_RECORD.toString());
     }
     
 }
