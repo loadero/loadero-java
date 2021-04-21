@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.loadero.model.Group;
 import com.loadero.model.ModelParams;
 import com.loadero.model.Participant;
+import com.loadero.model.Test;
 import java.io.IOException;
 
 public enum ApiResource {
@@ -36,6 +37,8 @@ public enum ApiResource {
 
     private static Gson createGson() {
         return new GsonBuilder()
+            .registerTypeAdapter(Test.class, new TestDeserializer())
+            .registerTypeAdapter(Test.class, new TestSerializer())
             .registerTypeAdapter(Group.class, new GroupDeserializer())
             .registerTypeAdapter(Group.class, new GroupSerializer())
             .registerTypeAdapter(Participant.class, new ParticipantDeserializer())

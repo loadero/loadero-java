@@ -2,7 +2,7 @@
 # Created by https://www.toptal.com/developers/gitignore/api/java,maven,intellij,vscode,emacs,vim,windows,macos,linux
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,maven,intellij,vscode,emacs,vim,windows,macos,linux
 google_checks.xml
-src/main/java/loadero/
+src/main/java/loadero
 ### Emacs ###
 # -*- mode: gitignore; -*-
 *~

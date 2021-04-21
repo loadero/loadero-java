@@ -53,7 +53,7 @@ final class CustomResponseHandler<T> implements ResponseHandler<T> {
             resource = ApiResource.getGSON().fromJson(reader, clazz);
             log.info("Successful - {} - {} - {}", method, resource, route);
         } catch (JsonSyntaxException | NullPointerException ex) {
-            log.error(ex.getMessage(), ex.fillInStackTrace());
+            log.error("{} - {} - {}", ex.getMessage(), ex.fillInStackTrace(), route);
             throw new ApiException(ex.getMessage());
         } finally {
             input.close();
