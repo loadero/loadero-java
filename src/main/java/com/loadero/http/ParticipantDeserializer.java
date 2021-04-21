@@ -7,21 +7,19 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.loadero.model.Participant;
 import com.loadero.model.ParticipantParams;
+import com.loadero.types.AudioFeed;
+import com.loadero.types.Browser;
+import com.loadero.types.ComputeUnit;
+import com.loadero.types.Location;
+import com.loadero.types.MediaType;
+import com.loadero.types.Network;
+import com.loadero.types.VideoFeed;
 import java.lang.reflect.Type;
-import loadero.types.AudioFeed;
-import loadero.types.Browser;
-import loadero.types.ComputeUnit;
-import loadero.types.Location;
-import loadero.types.MediaType;
-import loadero.types.Network;
-import loadero.types.VideoFeed;
+
 
 final class ParticipantDeserializer implements JsonDeserializer<Participant> {
     @Override
-    public Participant deserialize(
-        JsonElement json,
-        Type type,
-        JsonDeserializationContext context
+    public Participant deserialize(JsonElement json, Type type, JsonDeserializationContext context
     ) throws JsonParseException {
         JsonObject jsonObject = json.getAsJsonObject();
         if (jsonObject == null) {
@@ -29,18 +27,18 @@ final class ParticipantDeserializer implements JsonDeserializer<Participant> {
         }
 
         ComputeUnit computeUnit = ComputeUnit
-            .getValue(jsonObject.getAsJsonPrimitive("compute_unit").getAsString());
+            .getConstant(jsonObject.getAsJsonPrimitive("compute_unit").getAsString());
         Browser browser = new Browser(
             jsonObject.getAsJsonPrimitive("browser").getAsString());
-        Network network = Network.getValue(
+        Network network = Network.getConstant(
             jsonObject.getAsJsonPrimitive("network").getAsString());
-        Location location = Location.getValue(
+        Location location = Location.getConstant(
             jsonObject.getAsJsonPrimitive("location").getAsString());
-        MediaType mediaType = MediaType.getValue(
+        MediaType mediaType = MediaType.getConstant(
             jsonObject.getAsJsonPrimitive("media_type").getAsString());
-        AudioFeed audioFeed = AudioFeed.getValue(
+        AudioFeed audioFeed = AudioFeed.getConstant(
             jsonObject.getAsJsonPrimitive("audio_feed").getAsString());
-        VideoFeed videoFeed = VideoFeed.getValue(
+        VideoFeed videoFeed = VideoFeed.getConstant(
             jsonObject.getAsJsonPrimitive("video_feed").getAsString());
 
         ParticipantParams params = ParticipantParams
@@ -56,7 +54,6 @@ final class ParticipantDeserializer implements JsonDeserializer<Participant> {
             .withNetwork(network)
             .withLocation(location)
             .withMediaType(mediaType)
-            .withRecordAudio(jsonObject
             .withRecordAudio(jsonObject.getAsJsonPrimitive("record_audio").getAsBoolean())
             .withAudioFeed(audioFeed)
             .withVideoFeed(videoFeed)

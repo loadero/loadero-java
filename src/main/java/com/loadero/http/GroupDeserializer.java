@@ -13,11 +13,9 @@ import java.lang.reflect.Type;
 class GroupDeserializer implements JsonDeserializer<Group> {
     @Override
     public Group deserialize(
-        JsonElement jsonElement,
-        Type type,
-        JsonDeserializationContext context
+        JsonElement json, Type type, JsonDeserializationContext context
     ) throws JsonParseException {
-        JsonObject jsonObject = jsonElement.getAsJsonObject();
+        JsonObject jsonObject = json.getAsJsonObject();
         if (jsonObject == null) {
             return null;
         }

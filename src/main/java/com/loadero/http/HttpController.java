@@ -24,10 +24,7 @@ final class HttpController {
      * @throws IOException if request failed.
      */
     public <T> T request(
-        RequestMethod method,
-        String route,
-        String content,
-        Class<T> clazz
+        RequestMethod method, String route, String content, Class<T> clazz
     ) throws IOException {
         HttpEntity entityContent = new StringEntity(content);
         HttpUriRequest request = RequestBuilder

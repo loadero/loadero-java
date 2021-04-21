@@ -3,14 +3,15 @@ package com.loadero.model;
 import com.loadero.Loadero;
 import com.loadero.http.ApiResource;
 import com.loadero.http.RequestMethod;
+import com.loadero.types.AudioFeed;
+import com.loadero.types.Browser;
+import com.loadero.types.ComputeUnit;
+import com.loadero.types.Location;
+import com.loadero.types.MediaType;
+import com.loadero.types.Network;
+import com.loadero.types.VideoFeed;
 import java.io.IOException;
-import loadero.types.AudioFeed;
-import loadero.types.Browser;
-import loadero.types.ComputeUnit;
-import loadero.types.Location;
-import loadero.types.MediaType;
-import loadero.types.Network;
-import loadero.types.VideoFeed;
+
 
 public final class Participant {
     private final int id;
