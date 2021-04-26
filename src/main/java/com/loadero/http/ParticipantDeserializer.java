@@ -16,7 +16,6 @@ import com.loadero.types.Network;
 import com.loadero.types.VideoFeed;
 import java.lang.reflect.Type;
 
-
 final class ParticipantDeserializer implements JsonDeserializer<Participant> {
     @Override
     public Participant deserialize(JsonElement json, Type type, JsonDeserializationContext context

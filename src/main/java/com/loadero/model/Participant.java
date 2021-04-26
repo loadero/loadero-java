@@ -12,7 +12,6 @@ import com.loadero.types.Network;
 import com.loadero.types.VideoFeed;
 import java.io.IOException;
 
-
 public final class Participant {
     private final int id;
     private final String created;

@@ -2,9 +2,11 @@ package com.loadero.http;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.loadero.model.Assert;
 import com.loadero.model.Group;
 import com.loadero.model.ModelParams;
 import com.loadero.model.Participant;
+import com.loadero.model.Precondition;
 import com.loadero.model.Test;
 import java.io.IOException;
 
@@ -43,6 +45,10 @@ public enum ApiResource {
             .registerTypeAdapter(Group.class, new GroupSerializer())
             .registerTypeAdapter(Participant.class, new ParticipantDeserializer())
             .registerTypeAdapter(Participant.class, new ParticipantSerializer())
+            .registerTypeAdapter(Assert.class, new AssertDeserializer())
+            .registerTypeAdapter(Assert.class, new AssertSerializer())
+            .registerTypeAdapter(Precondition.class, new PreconditionDeserializer())
+            .registerTypeAdapter(Precondition.class, new PreconditionSerializer())
             .setPrettyPrinting()
             .create();
     }
