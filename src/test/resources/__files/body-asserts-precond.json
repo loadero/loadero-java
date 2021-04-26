@@ -1,0 +1,29 @@
+{
+  "id": 47523,
+  "created": "2021-03-24T12:33:06Z",
+  "updated": "2021-04-13T14:08:33Z",
+  "path": "webrtc/audio/jitterBuffer/75th",
+  "operator": "eq",
+  "expected": "nothing",
+  "test_id": 6866,
+  "preconditions": [
+    {
+      "id": 692,
+      "created": "2021-03-25T13:25:40Z",
+      "updated": "2021-03-25T13:25:40Z",
+      "property": "media_type",
+      "operator": "eq",
+      "expected": "1080p-20db",
+      "assert_id": 47523
+    },
+    {
+      "id": 693,
+      "created": "2021-03-25T13:25:40Z",
+      "updated": "2021-03-25T13:25:40Z",
+      "property": "location",
+      "operator": "neq",
+      "expected": "us-west-2",
+      "assert_id": 47523
+    }
+  ]
+}
