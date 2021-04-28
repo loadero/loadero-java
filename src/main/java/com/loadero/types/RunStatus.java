@@ -1,0 +1,17 @@
+package com.loadero.types;
+
+public enum RunStatus {
+    PENDING,
+    INITIALIZING,
+    RUNNING,
+    WAITING_RESULTS,
+    COLLECTING_RESULTS,
+    STOPPING,
+    DONE,
+    ABORTED,
+    SERVER_ERROR,
+    DATABASE_ERROR,
+    AWS_ERROR,
+    INSUFFICIENT_RESOURCES,
+    TIMEOUT_EXCEEDED
+}
