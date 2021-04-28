@@ -8,6 +8,7 @@ import com.loadero.model.ModelParams;
 import com.loadero.model.Participant;
 import com.loadero.model.Precondition;
 import com.loadero.model.Test;
+import com.loadero.model.TestRun;
 import java.io.IOException;
 
 public enum ApiResource {
@@ -45,6 +46,7 @@ public enum ApiResource {
             .registerTypeAdapter(Group.class, new GroupSerializer())
             .registerTypeAdapter(Participant.class, new ParticipantDeserializer())
             .registerTypeAdapter(Participant.class, new ParticipantSerializer())
+            .registerTypeAdapter(TestRun.class, new TestRunDeserializer())
             .registerTypeAdapter(Assert.class, new AssertDeserializer())
             .registerTypeAdapter(Assert.class, new AssertSerializer())
             .registerTypeAdapter(Precondition.class, new PreconditionDeserializer())

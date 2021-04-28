@@ -3,10 +3,10 @@ package com.loadero.model;
 import com.loadero.Loadero;
 import com.loadero.http.ApiResource;
 import com.loadero.http.RequestMethod;
-import java.io.IOException;
-import java.time.Duration;
 import com.loadero.types.IncrementStrategy;
 import com.loadero.types.TestMode;
+import java.io.IOException;
+import java.time.Duration;
 
 public final class Test {
     private final int id;
@@ -86,6 +86,17 @@ public final class Test {
     public static void delete(int testId) throws IOException {
         String route = buildRoute(testId);
         ApiResource.request(RequestMethod.DELETE, route, null, Test.class);
+    }
+
+    /**
+     * Launches test script.
+     *
+     * @return {@link TestRun} object with information about test run.
+     * @throws IOException if request failed.
+     */
+    public static TestRun launch(int testId) throws IOException {
+        String route = buildRoute(testId) + "runs/";
+        return ApiResource.request(RequestMethod.POST, route, null, TestRun.class);
     }
 
     private static String buildRoute() {
