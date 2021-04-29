@@ -25,4 +25,11 @@ public class Browser {
     public void setBrowser(BrowserLatest browser) {
         this.browser = browser.toString();
     }
+
+    @Override
+    public String toString() {
+        return "Browser{" +
+            "browser='" + browser + '\'' +
+            '}';
+    }
 }
