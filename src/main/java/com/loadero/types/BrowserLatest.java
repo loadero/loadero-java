@@ -3,7 +3,8 @@ package com.loadero.types;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Enum to define browser types provided for usage in Loadero.
+ * Contains values that can be used to set latest browser
+ * for a {@link com.loadero.model.Participant}.
  */
 public enum BrowserLatest {
     @SerializedName("firefoxLatest")

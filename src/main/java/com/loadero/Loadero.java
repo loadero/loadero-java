@@ -1,7 +1,7 @@
 package com.loadero;
 
 /**
- * Singleton instance that represents setting for Loadero.
+ * Singleton instance that represents settings for Loadero.
  */
 public enum Loadero {
     ;

@@ -1,10 +1,10 @@
 package com.loadero.types;
 
 import com.google.gson.annotations.SerializedName;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
+/**
+ * Contains values that are used to deserialize audio feed for a {@link com.loadero.model.Participant}.
+ */
 public enum AudioFeed {
     @SerializedName("dtmf")
     DTMF("dtmf"),

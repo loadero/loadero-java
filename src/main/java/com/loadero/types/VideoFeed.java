@@ -2,6 +2,9 @@ package com.loadero.types;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Contains values that are used to deserialize video feed for a {@link com.loadero.model.Participant}.
+ */
 public enum VideoFeed {
     @SerializedName("default")
     DEFAULT("default"),

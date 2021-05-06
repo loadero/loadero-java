@@ -8,6 +8,9 @@ import com.loadero.types.TestMode;
 import java.io.IOException;
 import java.time.Duration;
 
+/**
+ * Used for performing CRUD operations on tests.
+ */
 public final class Test {
     private final int id;
     private final String created;

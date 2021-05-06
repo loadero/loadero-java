@@ -7,13 +7,18 @@ import com.github.javaparser.printer.PrettyPrinterConfiguration;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * This class contains functions for parsing different script files.
+ * Since Java's script is a little different and expected to be written as unit test, we have
+ * to use different approach of parsing for them.
+ * For Javascript/Python script's file parsing are quite trivial for now.
+ */
 final class ScriptBodyParser {
     private static final Logger log = LogManager.getLogger(ScriptBodyParser.class);
 
@@ -51,7 +56,7 @@ final class ScriptBodyParser {
     public static String getScriptContent(String pathToScript) {
         Path path = Paths.get(pathToScript);
         StringBuilder builder = new StringBuilder();
-        try (Scanner scanner = new Scanner(path, StandardCharsets.UTF_8)) {
+        try (Scanner scanner = new Scanner(path)) {
             while (scanner.hasNextLine()) {
                 builder.append(scanner.nextLine());
                 builder.append("\n");

@@ -13,6 +13,9 @@ import com.loadero.model.Test;
 import com.loadero.model.TestRun;
 import java.io.IOException;
 
+/**
+ * JSON serialization/deserialization layer. Also used as an abstraction to hide HTTP logic.
+ */
 public enum ApiResource {
     ;
 

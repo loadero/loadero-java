@@ -7,7 +7,7 @@ import com.google.gson.JsonSerializer;
 import com.loadero.model.GroupParams;
 import java.lang.reflect.Type;
 
-class GroupSerializer implements JsonSerializer<GroupParams> {
+final class GroupSerializer implements JsonSerializer<GroupParams> {
     @Override
     public JsonElement serialize(GroupParams params, Type type, JsonSerializationContext context) {
         JsonObject jsonObject = new JsonObject();

@@ -32,6 +32,7 @@ final class ResultAssertDeserializer implements JsonDeserializer<ResultAssert> {
                 .getAsString()
                 .toUpperCase(Locale.ROOT)
         );
+
         return new ResultAssert(
             jsonObject.getAsJsonPrimitive("id").getAsInt(),
             jsonObject.getAsJsonPrimitive("result_id").getAsInt(),

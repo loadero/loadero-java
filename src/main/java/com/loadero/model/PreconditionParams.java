@@ -3,6 +3,9 @@ package com.loadero.model;
 import com.loadero.types.AssertOperator;
 import com.loadero.types.Property;
 
+/**
+ * Builder class that is used to define parameters for a {@link Precondition}.
+ */
 public final class PreconditionParams implements ModelParams {
     private final int id;
     private final String created;

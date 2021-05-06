@@ -13,6 +13,10 @@ import java.time.Duration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * Used to read information about test runs, perform polling and
+ * call force stop for specific test when needed.
+ */
 public final class TestRun {
     private final int id;
     private final String created;
@@ -171,7 +175,7 @@ public final class TestRun {
     }
 
     private static String buildRoute(int testId, int runId) {
-        return String.format("%s/tests/%s/runs/%s/", Loadero.getProjectUrl(), testId, runId);
+        return String.format("%s/tests/%s/runs/%s", Loadero.getProjectUrl(), testId, runId);
     }
 
     public int getId() {

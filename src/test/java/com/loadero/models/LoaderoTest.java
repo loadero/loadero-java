@@ -33,7 +33,7 @@ public class LoaderoTest extends AbstractTestLoadero {
     public void testGetScriptContent() {
         TestParams params = TestParams
             .builder()
-            .withScriptJava(
+            .withScript(
                 "src/main/resources/com/loadero/testui/CallOneOnOne.java",
                 "test"
             )
@@ -41,7 +41,7 @@ public class LoaderoTest extends AbstractTestLoadero {
 
         TestParams params1 = TestParams
             .builder()
-            .withScriptJs("src/main/resources/loadero/scripts/nightwatch/test1.js")
+            .withScript("src/main/resources/loadero/scripts/nightwatch/test1.js")
             .build();
 
         System.out.println(params.getScript());
@@ -120,7 +120,7 @@ public class LoaderoTest extends AbstractTestLoadero {
             .builder()
             .withName("new test")
             .withMode(TestMode.LOAD)
-            .withScriptJava(
+            .withScript(
                 "src/main/resources/com/loadero/testui/CallOneOnOne.java", "test")
             .withIncrementStrategy(IncrementStrategy.LINEAR_GROUP)
             .withStartInterval(Duration.ofSeconds(10))

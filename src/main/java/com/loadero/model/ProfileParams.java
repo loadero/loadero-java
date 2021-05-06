@@ -8,7 +8,7 @@ import com.loadero.types.Network;
 import com.loadero.types.VideoFeed;
 
 /**
- * Class to represent information about profile_params field in results.
+ * Class to deserialize information about profile_params field in results.
  */
 public final class ProfileParams {
     private final Browser browser;

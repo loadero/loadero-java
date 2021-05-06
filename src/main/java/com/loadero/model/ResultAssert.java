@@ -3,10 +3,9 @@ package com.loadero.model;
 import com.loadero.types.AssertOperator;
 import com.loadero.types.AssertPath;
 import com.loadero.types.AssertStatus;
-import com.loadero.types.ResultStatus;
 
 /**
- * Class to represent information about asserts field in results.
+ * Class to deserialize information about asserts field in results.
  */
 public final class ResultAssert {
     private final int id;

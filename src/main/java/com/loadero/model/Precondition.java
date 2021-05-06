@@ -7,6 +7,9 @@ import com.loadero.types.AssertOperator;
 import com.loadero.types.Property;
 import java.io.IOException;
 
+/**
+ * Used to perform CRUD operations on assert's preconditions.
+ */
 public final class Precondition {
     private final int id;
     private final String created;

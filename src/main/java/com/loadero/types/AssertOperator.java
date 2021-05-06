@@ -1,10 +1,10 @@
 package com.loadero.types;
 
 import com.google.gson.annotations.SerializedName;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
+/**
+ * Contains values that can be used to set assert's operations.
+ */
 public enum AssertOperator {
     @SerializedName("eq")
     EQUAL("eq"),

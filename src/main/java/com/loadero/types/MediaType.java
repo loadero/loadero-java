@@ -3,7 +3,7 @@ package com.loadero.types;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Enum to define media types provided for usage in Loadero.
+ * Contains values that can be used to set media type for a {@link com.loadero.model.Participant}.
  */
 public enum MediaType {
     @SerializedName("default")

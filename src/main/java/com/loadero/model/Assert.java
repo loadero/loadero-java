@@ -8,6 +8,9 @@ import com.loadero.types.AssertPath;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Used for performing CRUD operations on asserts.
+ */
 public final class Assert {
     private final int id;
     private final String created;
