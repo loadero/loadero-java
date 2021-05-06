@@ -93,7 +93,7 @@ public class TestAsserts extends AbstractTestLoadero {
             .withId(ASSERT_ID)
             .withCreated("some date")
             .withUpdated("some date")
-            .withPath(MachineAsserts.MACHINE_CPU_25TH)
+            .withPath(MachineAsserts.MACHINE_CPU_PERCENT_25TH)
             .withOperator(AssertOperator.GREATER_OR_EQUAL)
             .withExpected("expected")
             .build();

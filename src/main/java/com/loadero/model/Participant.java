@@ -12,6 +12,9 @@ import com.loadero.types.Network;
 import com.loadero.types.VideoFeed;
 import java.io.IOException;
 
+/**
+ * Used for performing CRUD operations on participants.
+ */
 public final class Participant {
     private final int id;
     private final String created;

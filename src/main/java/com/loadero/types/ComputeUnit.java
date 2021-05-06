@@ -3,7 +3,7 @@ package com.loadero.types;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Enum to define compute units types provided for usage in Loadero.
+ * Contains values that can be used to set compute unit for a {@link com.loadero.model.Participant}.
  */
 public enum ComputeUnit {
     @SerializedName("g0.5")

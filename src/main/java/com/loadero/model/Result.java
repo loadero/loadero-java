@@ -8,6 +8,9 @@ import com.loadero.types.ResultStatus;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Class for reading the results of a test run.
+ */
 public final class Result {
     private final int id;
     private final String created;

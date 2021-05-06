@@ -1,10 +1,10 @@
 package com.loadero.types;
 
-
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Enum to define increment strategies types provided for usage in Loadero.
+ * Contains values that can be used to set increment strategies
+ * for a {@link com.loadero.model.Test}.
  */
 public enum IncrementStrategy {
     @SerializedName("linear")

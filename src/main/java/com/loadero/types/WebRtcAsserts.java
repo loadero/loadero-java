@@ -2,6 +2,9 @@ package com.loadero.types;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Contains values that can be used to set WebRTC paths for an {@link com.loadero.model.Assert}.
+ */
 public enum WebRtcAsserts implements AssertPath {
     @SerializedName("webrtc/audio/bitrate/out/avg")
     WEBRTC_AUDIO_BITRATE_OUT_AVG("webrtc/audio/bitrate/out/avg"),

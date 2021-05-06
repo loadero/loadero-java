@@ -5,6 +5,9 @@ import com.loadero.http.ApiResource;
 import com.loadero.http.RequestMethod;
 import java.io.IOException;
 
+/**
+ * Used for performing CRUD operations on groups.
+ */
 public final class Group {
     private final int id;
     private final String created;

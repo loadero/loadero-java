@@ -1,7 +1,7 @@
 package com.loadero.http;
 
 /**
- * Enum for request methods.
+ * Enum for available request methods.
  */
 public enum RequestMethod {
     GET,

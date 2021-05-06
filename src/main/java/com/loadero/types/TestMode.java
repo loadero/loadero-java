@@ -3,7 +3,7 @@ package com.loadero.types;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Enum to define test mode types provided for usage in Loadero.
+ * Contains values that can be used to set mode for a {@link com.loadero.model.Test}.
  */
 public enum TestMode {
     @SerializedName("load")

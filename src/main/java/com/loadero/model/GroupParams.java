@@ -2,6 +2,9 @@ package com.loadero.model;
 
 import com.loadero.util.StringUtil;
 
+/**
+ * Builder class that is used to define parameters for a {@link Group}.
+ */
 public class GroupParams implements ModelParams {
     private final int id;
     private final String created;
@@ -54,6 +57,7 @@ public class GroupParams implements ModelParams {
             this.count == 0
                 ? currentParams.getCount()
                 : this.count == currentParams.getCount() ? currentParams.getCount() : this.count;
+
         return new GroupParams(id, created, updated, testId, name, count, participantCount);
     }
 

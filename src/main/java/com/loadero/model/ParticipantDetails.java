@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 import com.loadero.types.ComputeUnit;
 
 /*
- * Class to represent information about participant_details field in results.
+ * Class to deserialize information about participant_details field in results.
  */
 public final class ParticipantDetails {
     private final int id;

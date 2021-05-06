@@ -3,7 +3,7 @@ package com.loadero.types;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Enum to define network condition types provided for usage in Loadero.
+ * Contains values that can be used to set network for a {@link com.loadero.model.Participant}.
  */
 public enum Network {
     @SerializedName("default")

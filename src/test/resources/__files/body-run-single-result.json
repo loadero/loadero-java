@@ -39,7 +39,7 @@
   },
   "asserts": [
     {
-      "path": "machine/cpu/avg",
+      "path": "machine/cpu/used/avg",
       "operator": "lte",
       "expected": "4545",
       "id": 4290798,
@@ -50,7 +50,7 @@
       "status": "pass"
     },
     {
-      "path": "machine/cpu/avg",
+      "path": "machine/cpu/used/avg",
       "operator": "gt",
       "expected": "4545",
       "id": 4290799,

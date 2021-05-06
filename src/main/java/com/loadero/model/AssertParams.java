@@ -4,6 +4,9 @@ import com.loadero.types.AssertOperator;
 import com.loadero.types.AssertPath;
 import java.util.List;
 
+/**
+ * Builder class that is used to define parameters for an {@link Assert}.
+ */
 public final class AssertParams implements ModelParams {
     private final int id;
     private final String created;

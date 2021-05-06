@@ -10,7 +10,7 @@ import com.loadero.model.Group;
 import com.loadero.model.GroupParams;
 import java.lang.reflect.Type;
 
-class GroupDeserializer implements JsonDeserializer<Group> {
+final class GroupDeserializer implements JsonDeserializer<Group> {
     @Override
     public Group deserialize(
         JsonElement json, Type type, JsonDeserializationContext context

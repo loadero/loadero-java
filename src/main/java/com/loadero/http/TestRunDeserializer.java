@@ -14,7 +14,7 @@ import java.lang.reflect.Type;
 import java.time.Duration;
 import java.util.Locale;
 
-public class TestRunDeserializer implements JsonDeserializer<TestRun> {
+final class TestRunDeserializer implements JsonDeserializer<TestRun> {
     @Override
     public TestRun deserialize(
         JsonElement json, Type type, JsonDeserializationContext context

@@ -9,6 +9,9 @@ import com.loadero.types.Network;
 import com.loadero.types.VideoFeed;
 import com.loadero.util.StringUtil;
 
+/**
+ * Builder class that is used to define parameters for a {@link Participant}.
+ */
 public final class ParticipantParams implements ModelParams {
     private final int id;
     private final String created;
@@ -119,6 +122,7 @@ public final class ParticipantParams implements ModelParams {
                 ? currentParams.getMediaType()
                 : this.mediaType == currentParams.getMediaType()
                     ? currentParams.getMediaType() : this.mediaType;
+
         return new ParticipantParams(
             id, created, updated,
             testId, groupId, profileId,

@@ -1,7 +1,7 @@
 package com.loadero.types;
 
 /**
- * Class to define browser for a Participant.
+ * Class to define browser for a {@link com.loadero.model.Participant}.
  */
 public class Browser {
     private String browser;

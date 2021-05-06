@@ -7,6 +7,9 @@ import java.time.Duration;
 import com.loadero.types.IncrementStrategy;
 import com.loadero.types.TestMode;
 
+/**
+ * Builder class that is used to define parameters for a {@link Test}.
+ */
 public final class TestParams implements ModelParams {
     private final int id;
     private final String created;
@@ -192,7 +195,7 @@ public final class TestParams implements ModelParams {
          * @return value of {@link TestParamsBuilder}
          * @throws ApiException if testName or script file is empty.
          */
-        public TestParamsBuilder withScriptJava(String pathToScript, String testName) {
+        public TestParamsBuilder withScript(String pathToScript, String testName) {
             String script = ScriptBodyParser.getScriptContentJava(pathToScript, testName);
             if (StringUtil.empty(testName) || StringUtil.empty(script)) {
                 throw new ApiException("Test name or script cannot be empty.");
@@ -202,27 +205,12 @@ public final class TestParams implements ModelParams {
         }
 
         /**
-         * Sets Nightwatch.js script
+         * Sets Nightwatch.js or Py-TestUI script.
          *
          * @param pathToScript Path to Nightwatch.js script.
          * @return value of {@link TestParamsBuilder}
          */
-        public TestParamsBuilder withScriptJs(String pathToScript) {
-            String script = ScriptBodyParser.getScriptContent(pathToScript);
-            if (StringUtil.empty(script)) {
-                throw new ApiException("Test name or script cannot be empty.");
-            }
-            this.script = script;
-            return this;
-        }
-
-        /**
-         * Sets Py-TestUI Python script.
-         *
-         * @param pathToScript Path to Py-TestUi script.
-         * @return value of {@link TestParamsBuilder}
-         */
-        public TestParamsBuilder withScriptPython(String pathToScript) {
+        public TestParamsBuilder withScript(String pathToScript) {
             String script = ScriptBodyParser.getScriptContent(pathToScript);
             if (StringUtil.empty(script)) {
                 throw new ApiException("Test name or script cannot be empty.");

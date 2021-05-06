@@ -6,6 +6,9 @@ import com.loadero.http.ApiResource;
 import com.loadero.http.RequestMethod;
 import java.io.IOException;
 
+/**
+ * Used to read information about test's script.
+ */
 public final class Script {
     private final int id;
     private final String created;
