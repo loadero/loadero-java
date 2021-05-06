@@ -86,42 +86,15 @@ public final class ParticipantParams implements ModelParams {
     // Can change: name, count, location, network, browser, record_audio, computeUnit
     // media_type
     ParticipantParams copyUncommonFields(Participant currentParams) {
-        String name =
-            this.name == null
-                ? currentParams.getName()
-                : this.name.equals(currentParams.getName()) ? currentParams.getName() : this.name;
-        int count =
-            this.count == 0
-                ? currentParams.getCount()
-                : this.count == currentParams.getCount() ? currentParams.getCount() : this.count;
-        Location location =
-            this.location == null
-                ? currentParams.getLocation()
-                : this.location == currentParams.getLocation()
-                    ? currentParams.getLocation() : this.location;
-        Network network =
-            this.network == null
-                ? currentParams.getNetwork()
-                : this.network == currentParams.getNetwork()
-                    ? currentParams.getNetwork() : this.network;
-        Browser browser =
-            this.browser == null
-                ? currentParams.getBrowser()
-                : this.browser.getBrowser().equals(currentParams.getBrowser().getBrowser())
-                    ? currentParams.getBrowser() : this.browser;
-        boolean recordAudio =
-            this.recordAudio == currentParams.getRecordAudio()
-                ? currentParams.getRecordAudio() : this.recordAudio;
-        ComputeUnit cu =
-            this.computeUnit == null
-                ? currentParams.getComputeUnit()
-                : this.computeUnit == currentParams.getComputeUnit()
-                    ? currentParams.getComputeUnit() : this.computeUnit;
-        MediaType mediaType =
-            this.mediaType == null
-                ? currentParams.getMediaType()
-                : this.mediaType == currentParams.getMediaType()
-                    ? currentParams.getMediaType() : this.mediaType;
+        String name = this.name == null ? currentParams.getName() : this.name;
+        int count = this.count == 0 ? currentParams.getCount() : this.count;
+        Location location = this.location == null ? currentParams.getLocation() : this.location;
+        Network network = this.network == null ? currentParams.getNetwork() : this.network;
+        Browser browser = this.browser == null ? currentParams.getBrowser() : this.browser;
+        boolean recordAudio = currentParams.getRecordAudio();
+        ComputeUnit cu = this.computeUnit == null
+            ? currentParams.getComputeUnit() : this.computeUnit;
+        MediaType mediaType = this.mediaType == null ? currentParams.getMediaType() : this.mediaType;
 
         return new ParticipantParams(
             id, created, updated,

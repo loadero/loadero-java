@@ -72,23 +72,16 @@ public final class TestParams implements ModelParams {
 
     // Can change: name, mode, strategy, start, timeout, script
     TestParams copyUncommonFields(Test currentParams) throws IOException {
-        String name = this.name == null ? currentParams.getName()
-            : this.name.equals(currentParams.getName()) ? currentParams.getName() : this.name;
-        TestMode mode = this.mode == null ? currentParams.getMode()
-            : this.mode == currentParams.getMode() ? currentParams.getMode() : this.mode;
+        String name = this.name == null ? currentParams.getName() : this.name;
+        TestMode mode = this.mode == null ? currentParams.getMode() : this.mode;
         IncrementStrategy strategy = this.incrementStrategy == null
-            ? currentParams.getIncrementStrategy()
-            : this.incrementStrategy == currentParams.getIncrementStrategy()
                 ? currentParams.getIncrementStrategy() : this.incrementStrategy;
-        Duration startInterval = this.startInterval == null ? currentParams.getStartInterval()
-            : this.startInterval == currentParams.getStartInterval()
-                ? currentParams.getStartInterval() : this.startInterval;
-        Duration timeout = this.participantTimeout == null ? currentParams.getParticipantTimeout()
-            : this.participantTimeout == currentParams.getParticipantTimeout() ?
-                currentParams.getParticipantTimeout() : this.participantTimeout;
+        Duration startInterval = this.startInterval == null
+            ? currentParams.getStartInterval() : this.startInterval;
+        Duration timeout = this.participantTimeout == null
+            ? currentParams.getParticipantTimeout() : this.participantTimeout;
         String currentScript = Script.read(currentParams.getScriptFileId()).getContent();
-        String script = this.script == null ? currentScript
-            : this.script.equals(currentScript) ? currentScript : this.script;
+        String script = this.script == null ? currentScript : this.script;
 
         return new TestParams(
             id, created, updated,
