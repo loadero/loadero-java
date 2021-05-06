@@ -1,7 +1,13 @@
 <h2>Java client library for Loadero</h2>
 
-<a href="https://code.tdlbox.com/mihhail.matisinets/loader-rest-api-wrapper/-/commits/master"><img alt="pipeline status" src="https://code.tdlbox.com/mihhail.matisinets/loader-rest-api-wrapper/badges/master/pipeline.svg" /></a>
-<a href="https://code.tdlbox.com/mihhail.matisinets/loader-rest-api-wrapper/-/commits/master"><img alt="coverage report" src="https://code.tdlbox.com/mihhail.matisinets/loader-rest-api-wrapper/badges/master/coverage.svg" /></a>
+<a href="https://codecov.io/gh/loadero/loadero-java">
+<img src="https://codecov.io/gh/loadero/loadero-java/branch/master/graph/badge.svg?token=R8988X7N39"/>
+</a>
+
+<a href="https://jitpack.io/#loadero/loadero-java">
+<img src="https://jitpack.io/v/loadero/loadero-java.svg">
+</a>
+
 
 <h3>Description</h3>
 <hr>
