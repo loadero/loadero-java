@@ -83,6 +83,19 @@ public final class Assert {
         ApiResource.request(RequestMethod.DELETE, route, null, Assert.class);
     }
 
+    /**
+     * Duplicates assert.
+     *
+     * @param testId ID of the test.
+     * @param assertId ID of an assert.
+     * @return Copy of {@link Assert} with new ID.
+     * @throws IOException if request failed.
+     */
+    public static Assert copy(int testId, int assertId) throws IOException {
+        String route = buildRoute(testId, assertId) + "copy/";
+        return ApiResource.request(RequestMethod.POST, route, null, Assert.class);
+    }
+
     private static String buildRoute(int testId) {
         return String.format("%s/tests/%s/asserts/", Loadero.getProjectUrl(), testId);
     }
