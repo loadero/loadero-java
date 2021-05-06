@@ -156,15 +156,59 @@ public final class TestRun {
 
             try {
                 result = read(testId, runId);
-                if (result.getStatus() == RunStatus.DONE) {
-                    done = true;
-                    log.info("Test run is done.");
-                    log.info("Results available at {}/results", route);
-                } else {
-                    log.info("Run ID: {} - Test run status: {}",
-                        result.getId(), result.getStatus()
-                    );
-                    Thread.sleep(interval.toMillis());
+                switch (result.getStatus()) {
+                    case DONE:
+                        done = true;
+                        log.info("Test run is done.");
+                        log.info("Results available at {}/results", route);
+                        break;
+                    case ABORTED:
+                        done = true;
+                        log.info("Test run was aborted.");
+                        log.info("Results available at {}/results", route);
+                        break;
+                    case DB_ERROR:
+                        done = true;
+                        log.info("There was error in database "
+                            + "queries or connection during test.");
+                        log.info("Results available at {}/results", route);
+                        break;
+                    case NO_USERS:
+                        done = true;
+                        log.info("Test run started without any configured user.");
+                        log.info("Results available at {}/results", route);
+                        break;
+                    case AWS_ERROR:
+                        done = true;
+                        log.info("There was some error coming from"
+                            + " AWS which prevented successful test execution."
+                        );
+                        log.info("Results available at {}/results", route);
+                        break;
+                    case TIMEOUT_EXCEEDED:
+                        done = true;
+                        log.info("Test execution has exceeded a timeout in some test phase.");
+                        log.info("Results available at {}/results", route);
+                        break;
+                    case INSUFFICIENT_RESOURCES:
+                        done = true;
+                        log.info("Test execution did not start because"
+                            + " not enough resource were available."
+                        );
+                        log.info("Results available at {}/results", route);
+                        break;
+                    case SERVER_ERROR:
+                        done = true;
+                        log.info("Some error on server side has "
+                            + "occurred that should not have happened."
+                        );
+                        log.info("Results available at {}/results", route);
+                        break;
+                    default:
+                        log.info("Run ID: {} - Test run status: {}",
+                            result.getId(), result.getStatus()
+                        );
+                        Thread.sleep(interval.toMillis());
                 }
             } catch (InterruptedException | ApiException ex) {
                 throw new ApiException(ex.getLocalizedMessage());

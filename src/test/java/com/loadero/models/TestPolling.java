@@ -34,12 +34,12 @@ public class TestPolling extends AbstractTestLoadero {
     private StubMapping runningStub;
     private StubMapping resultStub;
     private StubMapping doneStub;
+    private final String scenarioName = "polling";
+    private final String getRunInfo = ".*/runs/.*";
 
     @BeforeEach
     public void setupStubs() {
         Loadero.init(BASE_URL, token, PROJECT_ID);
-        String scenarioName = "polling";
-        String getRunInfo = ".*/runs/.*";
 
         pendingStub1 = wmRule.stubFor(post(urlMatching(".*/runs/"))
             .inScenario(scenarioName)
@@ -84,14 +84,6 @@ public class TestPolling extends AbstractTestLoadero {
                     "body-projects-5040-tests-6866-runs-34778-waiting-for-results-ua.json"))
             .willSetStateTo("waiting for results")
         );
-
-        doneStub = wmRule.stubFor(get(urlMatching(getRunInfo))
-            .inScenario(scenarioName)
-            .whenScenarioStateIs("waiting for results")
-            .willReturn(aResponse()
-                .withStatus(HttpStatus.SC_OK)
-                .withBodyFile("body-projects-5040-tests-6866-runs-34778-done-ua.json"))
-        );
     }
 
     @AfterEach
@@ -107,6 +99,14 @@ public class TestPolling extends AbstractTestLoadero {
     @Test
     @Order(1)
     public void testPollingWithTimeout() throws IOException {
+        doneStub = wmRule.stubFor(get(urlMatching(getRunInfo))
+            .inScenario(scenarioName)
+            .whenScenarioStateIs("waiting for results")
+            .willReturn(aResponse()
+                .withStatus(HttpStatus.SC_OK)
+                .withBodyFile("body-projects-5040-tests-6866-runs-34778-done-ua.json"))
+        );
+
         TestRun run = com.loadero.model.Test.launch(7193);
         Assertions.assertNotNull(run);
         TestRun poll = TestRun.poll(7193, run.getId(),
@@ -118,6 +118,14 @@ public class TestPolling extends AbstractTestLoadero {
     @Test
     @Order(2)
     public void testPollingWithoutTimeout() throws IOException {
+        doneStub = wmRule.stubFor(get(urlMatching(getRunInfo))
+            .inScenario(scenarioName)
+            .whenScenarioStateIs("waiting for results")
+            .willReturn(aResponse()
+                .withStatus(HttpStatus.SC_OK)
+                .withBodyFile("body-projects-5040-tests-6866-runs-34778-done-ua.json"))
+        );
+
         TestRun run = com.loadero.model.Test.launch(7193);
         Assertions.assertNotNull(run);
         TestRun poll = TestRun.poll(7193, run.getId(), Duration.ofSeconds(10));
@@ -164,5 +172,56 @@ public class TestPolling extends AbstractTestLoadero {
             TestRun poll = TestRun.poll(
                 launch.getTestId(), launch.getId(), Duration.ofSeconds(5), Duration.ofSeconds(0));
         });
+    }
+
+    @Test
+    @Order(7)
+    public void testPollingWithoutTimeoutDbError() throws IOException {
+        doneStub = wmRule.stubFor(get(urlMatching(getRunInfo))
+            .inScenario(scenarioName)
+            .whenScenarioStateIs("waiting for results")
+            .willReturn(aResponse()
+                .withStatus(HttpStatus.SC_OK)
+                .withBodyFile("body-projects-5040-tests-6866-runs-34778-db-error-ua.json"))
+        );
+
+        TestRun run = com.loadero.model.Test.launch(7193);
+        Assertions.assertNotNull(run);
+        TestRun poll = TestRun.poll(7193, run.getId(), Duration.ofSeconds(10));
+        assertEquals(RunStatus.DB_ERROR, poll.getStatus());
+    }
+
+    @Test
+    @Order(8)
+    public void testPollingWithoutTimeoutServerError() throws IOException {
+        doneStub = wmRule.stubFor(get(urlMatching(getRunInfo))
+            .inScenario(scenarioName)
+            .whenScenarioStateIs("waiting for results")
+            .willReturn(aResponse()
+                .withStatus(HttpStatus.SC_OK)
+                .withBodyFile("body-projects-5040-tests-6866-runs-34778-server-error-ua.json"))
+        );
+
+        TestRun run = com.loadero.model.Test.launch(7193);
+        Assertions.assertNotNull(run);
+        TestRun poll = TestRun.poll(7193, run.getId(), Duration.ofSeconds(10));
+        assertEquals(RunStatus.SERVER_ERROR, poll.getStatus());
+    }
+
+    @Test
+    @Order(9)
+    public void testPollingWithoutTimeoutNoUsers() throws IOException {
+        doneStub = wmRule.stubFor(get(urlMatching(getRunInfo))
+            .inScenario(scenarioName)
+            .whenScenarioStateIs("waiting for results")
+            .willReturn(aResponse()
+                .withStatus(HttpStatus.SC_OK)
+                .withBodyFile("body-projects-5040-tests-6866-runs-34778-no-users-ua.json"))
+        );
+
+        TestRun run = com.loadero.model.Test.launch(7193);
+        Assertions.assertNotNull(run);
+        TestRun poll = TestRun.poll(7193, run.getId(), Duration.ofSeconds(10));
+        assertEquals(RunStatus.NO_USERS, poll.getStatus());
     }
 }
