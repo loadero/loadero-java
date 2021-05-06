@@ -49,14 +49,8 @@ public class GroupParams implements ModelParams {
     // Helper method for internal purposes.
     // Helps us update remote Loadero objects.
     GroupParams copyUncommonFields(Group currentParams) {
-        String name =
-            this.name == null
-                ? currentParams.getName()
-                : this.name.equals(currentParams.getName()) ? currentParams.getName() : this.name;
-        int count =
-            this.count == 0
-                ? currentParams.getCount()
-                : this.count == currentParams.getCount() ? currentParams.getCount() : this.count;
+        String name = this.name == null ? currentParams.getName() : this.name;
+        int count = this.count == 0 ? currentParams.getCount() : this.count;
 
         return new GroupParams(id, created, updated, testId, name, count, participantCount);
     }
