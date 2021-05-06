@@ -1,5 +1,14 @@
 <h2>Java client library for Loadero</h2>
 
+<a href="https://codecov.io/gh/loadero/loadero-java">
+<img src="https://codecov.io/gh/loadero/loadero-java/branch/master/graph/badge.svg?token=R8988X7N39"/>
+</a>
+
+<a href="https://jitpack.io/#loadero/loadero-java">
+<img src="https://jitpack.io/v/loadero/loadero-java.svg">
+</a>
+
+
 <h3>Description</h3>
 <hr>
 <p>This is Java library that can be used as a client to interact with <a href="https://loadero.com/home">Loadero</a> API service.</p>
