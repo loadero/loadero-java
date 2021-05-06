@@ -1,8 +1,5 @@
 <h2>Java client library for Loadero</h2>
 
-<a href="https://code.tdlbox.com/mihhail.matisinets/loader-rest-api-wrapper/-/commits/master"><img alt="pipeline status" src="https://code.tdlbox.com/mihhail.matisinets/loader-rest-api-wrapper/badges/master/pipeline.svg" /></a>
-<a href="https://code.tdlbox.com/mihhail.matisinets/loader-rest-api-wrapper/-/commits/master"><img alt="coverage report" src="https://code.tdlbox.com/mihhail.matisinets/loader-rest-api-wrapper/badges/master/coverage.svg" /></a>
-
 <h3>Description</h3>
 <hr>
 <p>This is Java library that can be used as a client to interact with <a href="https://loadero.com/home">Loadero</a> API service.</p>
