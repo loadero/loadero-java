@@ -1,6 +1,8 @@
 package com.loadero.models;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.delete;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -9,9 +11,12 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 
 import com.loadero.AbstractTestLoadero;
 import com.loadero.Loadero;
+import com.loadero.model.Participant;
 import com.loadero.model.ParticipantParams;
 import java.io.IOException;
 import com.loadero.types.*;
+import org.apache.http.HttpStatus;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
@@ -78,5 +83,35 @@ public class TestParticipant extends AbstractTestLoadero {
         assertNotNull(create);
         com.loadero.model.Participant
             .delete(create.getTestId(), create.getGroupId(), create.getId());
+    }
+
+    @Test
+    public void testCopyParticipant() throws IOException {
+        wmRule.stubFor(get(urlMatching(".*/participants/[0-9]*/"))
+            .willReturn(aResponse()
+                .withStatus(200)
+                .withBodyFile(participantJson)));
+
+        wmRule.stubFor(post(urlMatching(".*/participants/[0-9]*/copy/"))
+            .willReturn(aResponse()
+                .withStatus(200)
+                .withBodyFile(participantJson)));
+
+        wmRule.stubFor(delete(urlMatching(".*/participants/[0-9]*/"))
+            .willReturn(aResponse()
+                .withStatus(HttpStatus.SC_NO_CONTENT)
+                .withBody("")
+            ));
+
+        Participant original = Participant.read(TEST_ID, GROUP_ID, PARTICIPANT_ID);
+        Participant copy = Participant.copy(
+            TEST_ID, GROUP_ID, PARTICIPANT_ID, "Copy"
+        );
+
+        Assertions.assertNotNull(copy);
+        Assertions.assertEquals(original.getCount(), copy.getCount());
+        Assertions.assertEquals(original.getComputeUnit(), copy.getComputeUnit());
+
+        Participant.delete(TEST_ID, GROUP_ID, copy.getId());
     }
 }

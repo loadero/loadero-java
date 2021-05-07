@@ -121,7 +121,7 @@ public class TestGroup extends AbstractTestLoadero {
         com.loadero.model.Group group = Group.create(params);
         assertNotNull(group);
 
-        wmRule.stubFor(delete(urlMatching(".*/groups/" + group.getId()))
+        wmRule.stubFor(delete(urlMatching(".*/groups/[0-9]*/"))
             .inScenario("deleteCreate")
             .whenScenarioStateIs("created")
             .willReturn(aResponse()
@@ -129,7 +129,31 @@ public class TestGroup extends AbstractTestLoadero {
 
         // Since delete() doesn't return anything in mocked environment
         // this exception means that everything is okay
-        Assertions
-            .assertThrows(ApiException.class, () -> Group.delete(TEST_ID, GROUP_ID));
+        Group.delete(TEST_ID, GROUP_ID);
+    }
+
+    @Test
+    public void testCopyGroup() throws IOException {
+        wmRule.stubFor(get(urlMatching(groupUrl))
+            .willReturn(aResponse()
+                .withStatus(HttpStatus.SC_OK)
+                .withBodyFile(groupJson))
+        );
+
+        wmRule.stubFor(post(urlMatching(".*/groups/[0-9]*/copy/"))
+            .willReturn(aResponse()
+                .withStatus(HttpStatus.SC_CREATED)
+                .withBodyFile(groupJson)));
+
+        wmRule.stubFor(delete(urlMatching(".*/groups/[0-9]*/"))
+            .willReturn(aResponse()
+                .withStatus(HttpStatus.SC_NO_CONTENT)));
+
+        Group original = Group.read(TEST_ID, GROUP_ID);
+        Group copy = Group.copy(TEST_ID, GROUP_ID, original.getName() + "Copy");
+
+        Assertions.assertNotNull(copy);
+        Assertions.assertEquals(original.getCount(), copy.getCount());
+        Group.delete(TEST_ID, copy.getId());
     }
 }

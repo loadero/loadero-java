@@ -102,6 +102,18 @@ public final class Test {
         return ApiResource.request(RequestMethod.POST, route, null, TestRun.class);
     }
 
+    /**
+     * Duplicates test with new name.
+     * @param testId ID of the test.
+     * @param name Name of the copy.
+     * @return Copy of {@link Test} with new name and ID.
+     * @throws IOException if request failed.
+     */
+    public static Test copy(int testId, String name) throws IOException {
+        String route = buildRoute(testId) + "copy/";
+        return ApiResource.request(RequestMethod.POST, route, Test.class, name);
+    }
+
     private static String buildRoute() {
         return String.format("%s/tests/", Loadero.getProjectUrl());
     }

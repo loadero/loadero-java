@@ -126,4 +126,26 @@ public class TestAsserts extends AbstractTestLoadero {
         Assertions.assertNotNull(update.getExpected());
         Assertions.assertEquals(AssertOperator.GREATER_OR_EQUAL, update.getOperator());
     }
+
+    @Test
+    public void testCopyAssert() throws IOException {
+        String url = ".*/asserts/[0-9]*/";
+
+        wmRule.stubFor(get(urlMatching(url))
+            .willReturn(aResponse()
+                .withStatus(200)
+                .withBodyFile(assertsPrecondFile))
+        );
+        wmRule.stubFor(post(urlMatching(url + "copy/"))
+            .willReturn(aResponse()
+                .withStatus(200)
+                .withBodyFile(assertsPrecondFile)
+            ));
+        Assert read = Assert.read(TEST_ID, ASSERT_ID);
+        Assert copy = Assert.copy(TEST_ID, ASSERT_ID);
+
+        Assertions.assertNotNull(copy);
+        Assertions.assertEquals(read.getOperator(), copy.getOperator());
+        Assertions.assertEquals(read.getPath(), copy.getPath());
+    }
 }

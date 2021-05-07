@@ -107,6 +107,22 @@ public final class Participant {
         ApiResource.request(RequestMethod.DELETE, route, null, Participant.class);
     }
 
+    /**
+     * Duplicates participant with new name.
+     *
+     * @param testId ID of the test.
+     * @param groupId ID of the group.
+     * @param participantId ID of the participant.
+     * @param name Name of the copy.
+     * @return Copy of {@link Participant} with new name and ID.
+     * @throws IOException if request failed.
+     */
+    public static Participant copy(int testId, int groupId, int participantId, String name)
+        throws IOException {
+        String route = buildRoute(testId, groupId, participantId) + "copy/";
+        return ApiResource.request(RequestMethod.POST, route, Participant.class, name);
+    }
+
     private static String buildRoute(int testId, int groupId) {
         return String
             .format("%s/tests/%s/groups/%s/participants/",

@@ -78,6 +78,20 @@ public final class Group {
         ApiResource.request(RequestMethod.DELETE, route, null, Group.class);
     }
 
+    /**
+     * Duplicates group with new name.
+     *
+     * @param testId ID of the test.
+     * @param groupId ID of the group.
+     * @param name Name of the copy.
+     * @return Copy of {@link Group} with new name and ID.
+     * @throws IOException if request failed.
+     */
+    public static Group copy(int testId, int groupId, String name) throws IOException {
+        String route = buildRoute(testId, groupId) + "copy/";
+        return ApiResource.request(RequestMethod.POST, route, Group.class, name);
+    }
+
     private static String buildRoute(int testId) {
         return String.format("%s/tests/%s/groups/", Loadero.getProjectUrl(), testId);
     }

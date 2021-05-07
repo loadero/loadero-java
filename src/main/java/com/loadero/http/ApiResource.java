@@ -39,6 +39,21 @@ public enum ApiResource {
         return controller.request(method, url, content, clazz);
     }
 
+    /**
+     * Overloads request() method above to avoid unnecessary serialization
+     * of *Params object during copy operation.
+     */
+    public static <T> T request(
+        RequestMethod method, String url, Class<T> clazz, String name
+    ) throws IOException {
+        String content = String.format(
+            "{"
+            + "\"name\":\"%s\""
+            + "}", name
+        );
+        return controller.request(method, url, content, clazz);
+    }
+
     public static Gson getGSON() {
         return gson;
     }

@@ -17,6 +17,7 @@ import com.loadero.types.IncrementStrategy;
 import com.loadero.types.TestMode;
 import java.io.IOException;
 import java.time.Duration;
+import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -183,5 +184,30 @@ public class LoaderoTest extends AbstractTestLoadero {
         Assertions.assertThrows(ApiException.class, () ->{
             IncrementStrategy strategy = IncrementStrategy.getConstant("perf");
         });
+    }
+
+    @Test
+    public void testCopyTest() throws IOException {
+        wmRule.stubFor(get(urlMatching(".*/tests/[0-9]*/"))
+            .willReturn(aResponse()
+                .withStatus(HttpStatus.SC_OK)
+                .withBodyFile(testFile))
+        );
+
+        wmRule.stubFor(post(urlMatching(".*/tests/[0-9]*/copy/"))
+            .willReturn(aResponse()
+                .withStatus(HttpStatus.SC_CREATED)
+                .withBodyFile(testFile)));
+
+        wmRule.stubFor(delete(urlMatching(".*/tests/[0-9]*/"))
+            .willReturn(aResponse()
+                .withStatus(HttpStatus.SC_NO_CONTENT)));
+
+        com.loadero.model.Test original = com.loadero.model.Test.read(TEST_ID);
+        com.loadero.model.Test copy = com.loadero.model.Test.copy(TEST_ID, original.getName() + "Copy");
+        Assertions.assertEquals(original.getGroupCount(), copy.getGroupCount());
+        Assertions.assertEquals(original.getMode(), copy.getMode());
+
+        com.loadero.model.Test.delete(copy.getId());
     }
 }
