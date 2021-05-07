@@ -121,7 +121,7 @@ public class TestGroup extends AbstractTestLoadero {
         com.loadero.model.Group group = Group.create(params);
         assertNotNull(group);
 
-        wmRule.stubFor(delete(urlMatching(".*/groups/" + group.getId()))
+        wmRule.stubFor(delete(urlMatching(".*/groups/[0-9]*/"))
             .inScenario("deleteCreate")
             .whenScenarioStateIs("created")
             .willReturn(aResponse()
@@ -129,8 +129,7 @@ public class TestGroup extends AbstractTestLoadero {
 
         // Since delete() doesn't return anything in mocked environment
         // this exception means that everything is okay
-        Assertions
-            .assertThrows(ApiException.class, () -> Group.delete(TEST_ID, GROUP_ID));
+        Group.delete(TEST_ID, GROUP_ID);
     }
 
     @Test

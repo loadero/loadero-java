@@ -5,7 +5,6 @@ import com.loadero.http.ApiResource;
 import com.loadero.http.RequestMethod;
 import com.loadero.types.AudioFeed;
 import com.loadero.types.Browser;
-import com.loadero.types.BrowserLatest;
 import com.loadero.types.ComputeUnit;
 import com.loadero.types.Location;
 import com.loadero.types.MediaType;
