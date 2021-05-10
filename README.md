@@ -8,6 +8,10 @@
 <img src="https://jitpack.io/v/loadero/loadero-java.svg">
 </a>
 
+<a href="https://javadoc.jitpack.io/com/github/loadero/loadero-java/latest/javadoc/index.html">
+<img src="http://img.shields.io/badge/javadoc-reference-blue.svg">
+</a>
+
 
 <h3>Description</h3>
 <hr>
@@ -284,6 +288,7 @@ Contains options for precondition's properties.
 // initiate client instance configuration that is going to be used for performing different operations.
 Loadero.init(apiToken, projectId);
 ```
+
 <h4>Retrieve existing item</h4>
 <p>All items can be retrieved with their respective <b>IDs</b>.</p>
 
