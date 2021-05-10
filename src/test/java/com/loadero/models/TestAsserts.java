@@ -14,15 +14,16 @@ import com.loadero.AbstractTestLoadero;
 import com.loadero.Loadero;
 import com.loadero.exceptions.ApiException;
 import com.loadero.model.Assert;
+import com.loadero.model.AssertCollection;
 import com.loadero.model.AssertParams;
 import com.loadero.types.AssertOperator;
 import com.loadero.types.MachineAsserts;
 import com.loadero.types.WebRtcAsserts;
 import java.io.IOException;
+import java.util.List;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class TestAsserts extends AbstractTestLoadero {
@@ -147,5 +148,13 @@ public class TestAsserts extends AbstractTestLoadero {
         Assertions.assertNotNull(copy);
         Assertions.assertEquals(read.getOperator(), copy.getOperator());
         Assertions.assertEquals(read.getPath(), copy.getPath());
+    }
+
+    @Test
+    public void testReadAll() throws IOException {
+        AssertCollection assertList = Assert.readAll(TEST_ID);
+        System.out.println(assertList);
+        System.out.println(assertList.getResults().get(0));
+        Assertions.assertNotNull(assertList);
     }
 }

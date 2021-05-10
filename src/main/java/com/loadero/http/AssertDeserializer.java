@@ -29,7 +29,7 @@ final class AssertDeserializer implements JsonDeserializer<Assert> {
             .getConstant(jsonObject.getAsJsonPrimitive("operator").getAsString());
         List<Precondition> preconditions = new ArrayList<>();
 
-        if (jsonObject.get("preconditions") != null) {
+        if (!jsonObject.get("preconditions").isJsonNull()) {
             jsonObject.get("preconditions").getAsJsonArray()
                 .forEach(p -> preconditions.add(context.deserialize(p, Precondition.class)));
         }

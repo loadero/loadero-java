@@ -45,6 +45,11 @@ public final class Assert {
         return ApiResource.request(RequestMethod.GET, route, null, Assert.class);
     }
 
+    public static AssertCollection readAll(int testId) throws IOException {
+        String route = buildRoute(testId);
+        return ApiResource.request(RequestMethod.GET, route, null, AssertCollection.class);
+    }
+
     /**
      * Creates assert.
      *
