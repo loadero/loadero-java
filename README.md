@@ -8,7 +8,7 @@
 <img src="https://jitpack.io/v/loadero/loadero-java.svg">
 </a>
 
-<a href="https://javadoc.jitpack.io/com/github/loadero/loadero-java/1.0.1/javadoc/index.html">
+<a href="https://javadoc.jitpack.io/com/github/loadero/loadero-java/latest/javadoc/index.html">
 <img src="http://img.shields.io/badge/javadoc-reference-blue.svg">
 </a>
 
