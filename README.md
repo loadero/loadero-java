@@ -278,6 +278,7 @@ Contains options for precondition's properties.
 <hr>
 
 <h4>Setup</h4>
+
 ```java
 // Before beginning to have fun with tests you should
 // initiate client instance configuration that is going to be used for performing different operations.
