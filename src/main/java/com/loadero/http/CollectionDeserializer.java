@@ -6,13 +6,14 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.loadero.model.Assert;
+import com.google.gson.reflect.TypeToken;
+import com.loadero.exceptions.ApiException;
 import com.loadero.model.AssertCollection;
+import com.loadero.model.LoaderoCollection;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
-public class CollectionDeserializer<T> implements JsonDeserializer<AssertCollection> {
+final class CollectionDeserializer<T> implements JsonDeserializer<LoaderoCollection<?>> {
     private final Class<T> clazz;
 
     public CollectionDeserializer(Class<T> clazz) {
@@ -20,16 +21,27 @@ public class CollectionDeserializer<T> implements JsonDeserializer<AssertCollect
     }
 
     @Override
-    public AssertCollection deserialize(
+    public LoaderoCollection<?> deserialize(
         JsonElement json, Type type, JsonDeserializationContext context
     ) throws JsonParseException {
         JsonObject jsonObject = json.getAsJsonObject();
-        System.out.println(jsonObject.toString());
         JsonArray arr = jsonObject.getAsJsonArray("results");
-        System.out.println(arr);
-        List<Assert> asserts = new ArrayList<>();
-        arr.forEach(el -> asserts.add(ApiResource.getGSON().fromJson(el, Assert.class)));
+        return deserializeHelper(context, arr);
+    }
 
-        return new AssertCollection(asserts);
+    private LoaderoCollection<?> deserializeHelper(
+        JsonDeserializationContext context, JsonArray arr
+    ) {
+        String[] split = clazz.getTypeName().split("\\.");
+        String name = split[split.length - 1];
+        Type valType = TypeToken.getParameterized(List.class, clazz).getType();
+
+        switch (name) {
+            case "Assert":
+                return new AssertCollection(context.deserialize(arr, valType));
+            // other cases eg Test, Group etc.
+            default:
+                throw new ApiException("Unsupported collection.");
+        }
     }
 }

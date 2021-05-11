@@ -16,6 +16,7 @@ import com.loadero.exceptions.ApiException;
 import com.loadero.model.Assert;
 import com.loadero.model.AssertCollection;
 import com.loadero.model.AssertParams;
+import com.loadero.model.LoaderoCollection;
 import com.loadero.types.AssertOperator;
 import com.loadero.types.MachineAsserts;
 import com.loadero.types.WebRtcAsserts;
@@ -152,9 +153,7 @@ public class TestAsserts extends AbstractTestLoadero {
 
     @Test
     public void testReadAll() throws IOException {
-        AssertCollection assertList = Assert.readAll(TEST_ID);
-        System.out.println(assertList);
-        System.out.println(assertList.getResults().get(0));
+        List<Assert> assertList = Assert.readAll(TEST_ID);
         Assertions.assertNotNull(assertList);
     }
 }

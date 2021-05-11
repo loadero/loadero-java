@@ -45,9 +45,18 @@ public final class Assert {
         return ApiResource.request(RequestMethod.GET, route, null, Assert.class);
     }
 
-    public static AssertCollection readAll(int testId) throws IOException {
+    /**
+     * Returns all existing asserts.
+     *
+     * @param testId ID of the test.
+     * @return List containing {@link Assert} objects.
+     * @throws IOException if request failed.
+     */
+    public static List<Assert> readAll(int testId) throws IOException {
         String route = buildRoute(testId);
-        return ApiResource.request(RequestMethod.GET, route, null, AssertCollection.class);
+        AssertCollection collection =
+           ApiResource.request(RequestMethod.GET, route, null, AssertCollection.class);
+        return collection.getResults();
     }
 
     /**
