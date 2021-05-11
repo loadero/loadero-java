@@ -14,6 +14,7 @@ import com.loadero.exceptions.ApiException;
 import com.loadero.model.Script;
 import com.loadero.model.TestParams;
 import com.loadero.types.IncrementStrategy;
+import com.loadero.types.Location;
 import com.loadero.types.TestMode;
 import java.io.IOException;
 import java.time.Duration;
@@ -209,5 +210,12 @@ public class LoaderoTest extends AbstractTestLoadero {
         Assertions.assertEquals(original.getMode(), copy.getMode());
 
         com.loadero.model.Test.delete(copy.getId());
+    }
+
+    @Test
+    public void testEnumLocation() {
+        Assertions.assertEquals(Location.FRANKFURT.toString(), "eu-central-1");
+        Assertions.assertEquals(Location.TOKYO.toString(), "ap-northeast-1");
+        Assertions.assertEquals(Location.SAO_PAULO.toString(), "sa-east-1");
     }
 }
