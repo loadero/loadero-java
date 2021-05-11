@@ -26,6 +26,7 @@ import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
 public class TestAsserts extends AbstractTestLoadero {
     private static final String assertsPrecondFile = "body-asserts-precond.json";
@@ -152,6 +153,7 @@ public class TestAsserts extends AbstractTestLoadero {
     }
 
     @Test
+    @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
     public void testReadAll() throws IOException {
         List<Assert> assertList = Assert.readAll(TEST_ID);
         Assertions.assertNotNull(assertList);
