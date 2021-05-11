@@ -99,10 +99,12 @@ public class TestAsserts extends AbstractTestLoadero {
             .withPath(MachineAsserts.MACHINE_CPU_PERCENT_25TH)
             .withOperator(AssertOperator.GREATER_OR_EQUAL)
             .withExpected("expected")
+            .withPreconditions(null)
             .build();
 
         Gson mockGson = new GsonBuilder()
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+            .serializeNulls()
             .create();
         System.out.println(mockGson.toJson(mockParams));
 
