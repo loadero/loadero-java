@@ -7,6 +7,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.put;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 
+import com.github.tomakehurst.wiremock.common.Json;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
 import com.loadero.AbstractTestLoadero;
 import com.loadero.Loadero;
@@ -209,5 +210,46 @@ public class LoaderoTest extends AbstractTestLoadero {
         Assertions.assertEquals(original.getMode(), copy.getMode());
 
         com.loadero.model.Test.delete(copy.getId());
+    }
+
+    @Test
+    public void emptyOrNullNameException() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            TestParams params = TestParams.builder().withName("").build();
+        });
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            TestParams params = TestParams.builder().withName(null).build();
+        });
+    }
+
+    @Test
+    public void emptyOrNullScriptException() {
+        Assertions.assertThrows(ApiException.class, () -> {
+            TestParams params = TestParams.builder().withScript("").build();
+        });
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            TestParams params = TestParams.builder().withScript(null).build();
+        });
+        Assertions.assertThrows(ApiException.class, () -> {
+            TestParams params = TestParams.builder().withScript("path", "").build();
+        });
+        Assertions.assertThrows(ApiException.class, () -> {
+            TestParams params = TestParams.builder().withScript("path", null).build();
+        });
+    }
+
+    @Test
+    public void malformedJson() {
+        wmRule.stubFor(get(urlMatching(".*/tests/[0-9]*/"))
+            .willReturn(aResponse()
+                .withStatus(HttpStatus.SC_OK)
+                .withBody("{"
+                    + "\"name\":\"name\""
+                    + "}"))
+        );
+
+        Assertions.assertThrows(ApiException.class, () -> {
+            com.loadero.model.Test test = com.loadero.model.Test.read(TEST_ID);
+        });
     }
 }

@@ -19,6 +19,7 @@ import com.loadero.types.AssertOperator;
 import com.loadero.types.Property;
 import java.io.IOException;
 import java.util.Locale;
+import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -104,6 +105,26 @@ public class TestPrecondition extends AbstractTestLoadero {
 
         Assertions.assertThrows(ApiException.class, () -> {
             Precondition notFound = Precondition.create(params);
+        });
+    }
+
+    @Test
+    public void negativeDelete() {
+        wmRule.stubFor(delete(urlMatching(".*/preconditions/[0-9]*/"))
+            .willReturn(aResponse()
+                .withStatus(HttpStatus.SC_NOT_FOUND))
+        );
+
+        Assertions.assertThrows(ApiException.class, () -> {
+           Precondition.delete(TEST_ID, ASSERT_ID, 1);
+        });
+
+        Assertions.assertThrows(ApiException.class, () -> {
+            Precondition.delete(TEST_ID, 1, PRECONDITION_ID);
+        });
+
+        Assertions.assertThrows(ApiException.class, () -> {
+            Precondition.delete(1, ASSERT_ID, PRECONDITION_ID);
         });
     }
 

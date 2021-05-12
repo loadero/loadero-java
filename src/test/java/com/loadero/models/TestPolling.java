@@ -110,7 +110,7 @@ public class TestPolling extends AbstractTestLoadero {
         TestRun run = com.loadero.model.Test.launch(7193);
         Assertions.assertNotNull(run);
         TestRun poll = TestRun.poll(7193, run.getId(),
-            Duration.ofSeconds(20), Duration.ofSeconds(100)
+            Duration.ofSeconds(5), Duration.ofSeconds(100)
         );
         assertEquals(RunStatus.DONE, poll.getStatus());
     }
@@ -223,5 +223,73 @@ public class TestPolling extends AbstractTestLoadero {
         Assertions.assertNotNull(run);
         TestRun poll = TestRun.poll(7193, run.getId(), Duration.ofSeconds(10));
         assertEquals(RunStatus.NO_USERS, poll.getStatus());
+    }
+
+    @Test
+    @Order(10)
+    public void testPollingAborted() throws IOException {
+        doneStub = wmRule.stubFor(get(urlMatching(getRunInfo))
+            .inScenario(scenarioName)
+            .whenScenarioStateIs("waiting for results")
+            .willReturn(aResponse()
+                .withStatus(HttpStatus.SC_OK)
+                .withBodyFile("body-projects-5040-tests-6866-runs-34778-aborted-ua.json"))
+        );
+
+        TestRun run = com.loadero.model.Test.launch(7193);
+        Assertions.assertNotNull(run);
+        TestRun poll = TestRun.poll(7193, run.getId(), Duration.ofSeconds(10));
+        assertEquals(RunStatus.ABORTED, poll.getStatus());
+    }
+
+    @Test
+    @Order(11)
+    public void testPollingAwsError() throws IOException {
+        doneStub = wmRule.stubFor(get(urlMatching(getRunInfo))
+            .inScenario(scenarioName)
+            .whenScenarioStateIs("waiting for results")
+            .willReturn(aResponse()
+                .withStatus(HttpStatus.SC_OK)
+                .withBodyFile("body-projects-5040-tests-6866-runs-34778-aws-error-ua.json"))
+        );
+
+        TestRun run = com.loadero.model.Test.launch(7193);
+        Assertions.assertNotNull(run);
+        TestRun poll = TestRun.poll(7193, run.getId(), Duration.ofSeconds(10));
+        assertEquals(RunStatus.AWS_ERROR, poll.getStatus());
+    }
+
+    @Test
+    @Order(12)
+    public void testPollingTimeoutExceeded() throws IOException {
+        doneStub = wmRule.stubFor(get(urlMatching(getRunInfo))
+            .inScenario(scenarioName)
+            .whenScenarioStateIs("waiting for results")
+            .willReturn(aResponse()
+                .withStatus(HttpStatus.SC_OK)
+                .withBodyFile("body-projects-5040-tests-6866-runs-34778-timeout-exceeded-ua.json"))
+        );
+
+        TestRun run = com.loadero.model.Test.launch(7193);
+        Assertions.assertNotNull(run);
+        TestRun poll = TestRun.poll(7193, run.getId(), Duration.ofSeconds(10));
+        assertEquals(RunStatus.TIMEOUT_EXCEEDED, poll.getStatus());
+    }
+
+    @Test
+    @Order(12)
+    public void testPollingInsufficientResources() throws IOException {
+        doneStub = wmRule.stubFor(get(urlMatching(getRunInfo))
+            .inScenario(scenarioName)
+            .whenScenarioStateIs("waiting for results")
+            .willReturn(aResponse()
+                .withStatus(HttpStatus.SC_OK)
+                .withBodyFile("body-projects-5040-tests-6866-runs-34778-insufficient-resources-ua.json"))
+        );
+
+        TestRun run = com.loadero.model.Test.launch(7193);
+        Assertions.assertNotNull(run);
+        TestRun poll = TestRun.poll(7193, run.getId(), Duration.ofSeconds(10));
+        assertEquals(RunStatus.INSUFFICIENT_RESOURCES, poll.getStatus());
     }
 }

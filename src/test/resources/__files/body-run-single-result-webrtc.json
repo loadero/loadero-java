@@ -1,0 +1,78 @@
+{
+  "id": 1007803,
+  "created": "2021-03-02T14:05:04Z",
+  "updated": "2021-03-02T14:05:04Z",
+  "start": "2021-03-02T14:04:17Z",
+  "end": "2021-03-02T14:05:01Z",
+  "status": "fail",
+  "selenium_result": "fail",
+  "run_participant_id": 1152384,
+  "participant_details": {
+    "id": 1152384,
+    "created": "2021-03-02T14:00:11Z",
+    "updated": "2021-03-02T14:00:11Z",
+    "participant_num": 0,
+    "participant_name": "unit test partic",
+    "group_num": 0,
+    "group_name": "new Group name from Java 2",
+    "profile_id": 38513,
+    "compute_unit": "g2",
+    "run_id": 34893,
+    "record_audio": false
+  },
+  "profile_params": {
+    "browser": "chrome88",
+    "network": "default",
+    "location": "us-west-2",
+    "media_type": "default",
+    "video_feed": "default",
+    "audio_feed": "default"
+  },
+  "log_paths": {
+    "id": 873902,
+    "created": "2021-03-02T14:05:04Z",
+    "result_id": 1007803,
+    "webrtc": "https://loadero-logs.s3.us-west-2.amazonaws.com/webrtc/476f8aa0-7b60-11eb-9a64-021af74ca1a7.txt",
+    "selenium": "https://loadero-logs.s3.us-west-2.amazonaws.com/selenium/47593242-7b60-11eb-9a64-021af74ca1a7.txt",
+    "browser": "https://loadero-logs.s3.us-west-2.amazonaws.com/browser/474ef4d2-7b60-11eb-9a64-021af74ca1a7.txt",
+    "rru": "https://loadero-logs.s3.us-west-2.amazonaws.com/rru/14bb6aaa-8d73-11eb-a92c-0a513a82d9fb.json"
+  },
+  "asserts": [
+    {
+      "path": "webrtc/audio/level/in/25th",
+      "operator": "lte",
+      "expected": "4545",
+      "id": 4290798,
+      "created": "2021-04-28T08:51:43Z",
+      "result_id": 1206938,
+      "run_assert_id": 222468,
+      "actual": "29.71",
+      "status": "pass"
+    },
+    {
+      "path": "webrtc/audio/codec/out",
+      "operator": "gt",
+      "expected": "4545",
+      "id": 4290799,
+      "created": "2021-04-28T08:51:43Z",
+      "result_id": 1206938,
+      "run_assert_id": 222469,
+      "actual": "99.64",
+      "status": "fail"
+    }
+  ],
+  "artifacts": {
+    "audio": {
+      "paths": ["path1", "path2", "path3"]
+    },
+    "downloads": {
+      "paths": ["path1", "path2", "path3"]
+    },
+    "screenshots": {
+      "paths": null
+    },
+    "video": {
+      "paths": null
+    }
+  }
+}

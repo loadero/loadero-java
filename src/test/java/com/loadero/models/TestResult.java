@@ -18,6 +18,8 @@ import org.junit.jupiter.api.Test;
 public class TestResult extends AbstractTestLoadero {
     private static final String resultFile = "body-run-single-result.json";
     private static final String resultsFile = "body-run-results-NyqBC.json";
+    private static final String resultsFileWithWebRtc = "body-run-single-result-webrtc.json";
+    private static final String resultsFileWithUnknownPaths = "body-run-single-result-unknown-assert-paths.json";
     private static final int resultId = 1007803;
 
     @BeforeAll
@@ -51,6 +53,30 @@ public class TestResult extends AbstractTestLoadero {
 
         Assertions.assertThrows(ApiException.class, () -> {
             Result result = Result.read(TEST_ID, RUN_ID, 1);
+        });
+    }
+
+    @Test
+    public void testWebRtcDeserialization() throws IOException {
+        wmRule.stubFor(get(urlMatching(".*/results/[0-9]*/"))
+            .willReturn(aResponse()
+                .withStatus(200)
+                .withBodyFile(resultsFileWithWebRtc))
+        );
+        Result result = Result.read(TEST_ID, RUN_ID, resultId);
+        Assertions.assertNotNull(result);
+        Assertions.assertNotNull(result.getAsserts().get(0));
+    }
+
+    @Test
+    public void testUnknownPathsDeserialization() throws IOException {
+        wmRule.stubFor(get(urlMatching(".*/results/[0-9]*/"))
+            .willReturn(aResponse()
+                .withStatus(200)
+                .withBodyFile(resultsFileWithUnknownPaths))
+        );
+        Assertions.assertThrows(ApiException.class, () -> {
+            Result result = Result.read(TEST_ID, RUN_ID, resultId);
         });
     }
 }
