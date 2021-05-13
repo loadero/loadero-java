@@ -4,6 +4,7 @@ import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.printer.PrettyPrinter;
 import com.github.javaparser.printer.PrettyPrinterConfiguration;
+import com.loadero.util.StringUtil;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -54,6 +55,10 @@ final class ScriptBodyParser {
      * Reads file content line by line into String.
      */
     public static String getScriptContent(String pathToScript) {
+        if (StringUtil.empty(pathToScript)) {
+            throw new IllegalArgumentException("Path to script cannot be empty.");
+        }
+
         Path path = Paths.get(pathToScript);
         StringBuilder builder = new StringBuilder();
         try (Scanner scanner = new Scanner(path)) {

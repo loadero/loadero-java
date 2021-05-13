@@ -184,16 +184,15 @@ public final class TestParams implements ModelParams {
          * Sets Java's Test-UI script.
          *
          * @param pathToScript Path to script's location.
-         * @param testName     Name of the test method that is going to be executed in Laodero.
+         * @param testName     Name of the test method that is going to be executed in Loadero.
          * @return value of {@link TestParamsBuilder}
-         * @throws ApiException if testName or script file is empty.
+         * @throws IllegalArgumentException if testName or path to script is empty.
          */
         public TestParamsBuilder withScript(String pathToScript, String testName) {
-            String script = ScriptBodyParser.getScriptContentJava(pathToScript, testName);
-            if (StringUtil.empty(testName) || StringUtil.empty(script)) {
-                throw new ApiException("Test name or script cannot be empty.");
+            if (StringUtil.empty(testName) || StringUtil.empty(pathToScript)) {
+                throw new IllegalArgumentException("Test name or path cannot be empty.");
             }
-            this.script = script;
+            this.script = ScriptBodyParser.getScriptContentJava(pathToScript, testName);
             return this;
         }
 
@@ -202,11 +201,12 @@ public final class TestParams implements ModelParams {
          *
          * @param pathToScript Path to Nightwatch.js script.
          * @return value of {@link TestParamsBuilder}
+         * @throws IllegalArgumentException if path or script is empty.
          */
         public TestParamsBuilder withScript(String pathToScript) {
             String script = ScriptBodyParser.getScriptContent(pathToScript);
             if (StringUtil.empty(script)) {
-                throw new ApiException("Test name or script cannot be empty.");
+                throw new IllegalArgumentException("Test name or script cannot be empty.");
             }
             this.script = script;
             return this;
