@@ -224,16 +224,16 @@ public class LoaderoTest extends AbstractTestLoadero {
 
     @Test
     public void emptyOrNullScriptException() {
-        Assertions.assertThrows(ApiException.class, () -> {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
             TestParams params = TestParams.builder().withScript("").build();
         });
-        Assertions.assertThrows(NullPointerException.class, () -> {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
             TestParams params = TestParams.builder().withScript(null).build();
         });
-        Assertions.assertThrows(ApiException.class, () -> {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
             TestParams params = TestParams.builder().withScript("path", "").build();
         });
-        Assertions.assertThrows(ApiException.class, () -> {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
             TestParams params = TestParams.builder().withScript("path", null).build();
         });
     }
