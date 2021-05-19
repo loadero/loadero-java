@@ -8,6 +8,7 @@ import com.loadero.exceptions.ApiException;
 import com.loadero.model.Group;
 import com.loadero.model.GroupParams;
 import java.io.IOException;
+import java.util.List;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -155,5 +156,12 @@ public class TestGroup extends AbstractTestLoadero {
         Assertions.assertNotNull(copy);
         Assertions.assertEquals(original.getCount(), copy.getCount());
         Group.delete(TEST_ID, copy.getId());
+    }
+
+    @Test
+    public void testReadAll() throws IOException {
+        List<Group> groupList = Group.readAll(TEST_ID);
+        System.out.println(groupList);
+        Assertions.assertNotNull(groupList);
     }
 }

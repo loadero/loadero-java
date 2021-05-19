@@ -4,6 +4,7 @@ import com.loadero.Loadero;
 import com.loadero.http.ApiResource;
 import com.loadero.http.RequestMethod;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Used for performing CRUD operations on groups.
@@ -38,6 +39,17 @@ public final class Group {
     public static Group read(int testId, int groupId) throws IOException {
         String route = buildRoute(testId, groupId);
         return ApiResource.request(RequestMethod.GET, route, null, Group.class);
+    }
+
+    /**
+     * Retrieves all existing groups.
+     * @param testId ID of the test.
+     * @return List containing {@link Group}s.
+     * @throws IOException if request failed.
+     */
+    public static List<Group> readAll(int testId) throws IOException {
+        String route = buildRoute(testId);
+        return ApiResource.request(RequestMethod.GET, route, null, GroupCollection.class);
     }
 
     /**

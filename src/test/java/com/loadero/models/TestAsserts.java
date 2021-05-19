@@ -19,11 +19,13 @@ import com.loadero.types.AssertOperator;
 import com.loadero.types.MachineAsserts;
 import com.loadero.types.WebRtcAsserts;
 import java.io.IOException;
+import java.util.List;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
 public class TestAsserts extends AbstractTestLoadero {
     private static final String assertsPrecondFile = "body-asserts-precond.json";
@@ -147,5 +149,13 @@ public class TestAsserts extends AbstractTestLoadero {
         Assertions.assertNotNull(copy);
         Assertions.assertEquals(read.getOperator(), copy.getOperator());
         Assertions.assertEquals(read.getPath(), copy.getPath());
+    }
+
+    @Test
+    @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
+    public void testReadAll() throws IOException {
+        List<Assert> asserts = Assert.readAll(TEST_ID);
+        System.out.println(asserts);
+        Assertions.assertNotNull(asserts);
     }
 }
