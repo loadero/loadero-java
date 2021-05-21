@@ -81,8 +81,6 @@ public class TestParticipant extends AbstractTestLoadero {
             .build();
         com.loadero.model.Participant create = com.loadero.model.Participant.create(params);
         assertNotNull(create);
-        System.out.println(Location.FRANKFURT);
-        System.out.println(create.getLocation());
         com.loadero.model.Participant
             .delete(create.getTestId(), create.getGroupId(), create.getId());
     }
