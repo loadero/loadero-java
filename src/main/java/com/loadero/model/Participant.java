@@ -11,6 +11,7 @@ import com.loadero.types.MediaType;
 import com.loadero.types.Network;
 import com.loadero.types.VideoFeed;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Used for performing CRUD operations on participants.
@@ -64,6 +65,21 @@ public final class Participant {
     public static Participant read(int testId, int groupId, int participantId) throws IOException {
         String route = buildRoute(testId, groupId, participantId);
         return ApiResource.request(RequestMethod.GET, route, null, Participant.class);
+    }
+
+    /**
+     * Retrieves all existing participants.
+     *
+     * @param testId ID of the test.
+     * @param groupId ID of the group.
+     * @return List containing {@link Participant}s.
+     * @throws IOException if request failed.
+     */
+    public static List<Participant> readAll(int testId, int groupId) throws IOException {
+        String route = buildRoute(testId, groupId);
+        return ApiResource.request(
+            RequestMethod.GET, route, null, ParticipantCollection.class
+        );
     }
 
     /**

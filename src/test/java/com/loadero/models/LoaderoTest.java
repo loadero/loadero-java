@@ -11,16 +11,19 @@ import com.github.tomakehurst.wiremock.stubbing.Scenario;
 import com.loadero.AbstractTestLoadero;
 import com.loadero.Loadero;
 import com.loadero.exceptions.ApiException;
+import com.loadero.model.Assert;
 import com.loadero.model.Script;
 import com.loadero.model.TestParams;
 import com.loadero.types.IncrementStrategy;
 import com.loadero.types.TestMode;
 import java.io.IOException;
 import java.time.Duration;
+import java.util.List;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
 public class LoaderoTest extends AbstractTestLoadero {
     private static final String testFile = "body-projects-5040-tests-6866-uaor7.json";
@@ -209,5 +212,12 @@ public class LoaderoTest extends AbstractTestLoadero {
         Assertions.assertEquals(original.getMode(), copy.getMode());
 
         com.loadero.model.Test.delete(copy.getId());
+    }
+
+    @Test
+    @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
+    public void testReadAll() throws IOException {
+        List<com.loadero.model.Test> tests = com.loadero.model.Test.readAll();
+        Assertions.assertNotNull(tests);
     }
 }

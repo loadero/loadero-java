@@ -2,5 +2,5 @@ package com.loadero.model;
 
 import java.util.ArrayList;
 
-public class AssertCollection extends ArrayList<Assert> {
+public final class AssertCollection extends ArrayList<Assert> {
 }

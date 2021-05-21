@@ -11,10 +11,12 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 
 import com.loadero.AbstractTestLoadero;
 import com.loadero.Loadero;
+import com.loadero.model.Assert;
 import com.loadero.model.Participant;
 import com.loadero.model.ParticipantParams;
 import java.io.IOException;
 import com.loadero.types.*;
+import java.util.List;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -113,5 +115,12 @@ public class TestParticipant extends AbstractTestLoadero {
         Assertions.assertEquals(original.getComputeUnit(), copy.getComputeUnit());
 
         Participant.delete(TEST_ID, GROUP_ID, copy.getId());
+    }
+
+    @Test
+    @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
+    public void testReadAll() throws IOException {
+        List<Participant> participants = Participant.readAll(TEST_ID, GROUP_ID);
+        Assertions.assertNotNull(participants);
     }
 }

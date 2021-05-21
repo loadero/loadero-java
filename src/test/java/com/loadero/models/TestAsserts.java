@@ -157,7 +157,6 @@ public class TestAsserts extends AbstractTestLoadero {
     @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
     public void testReadAll() throws IOException {
         List<Assert> asserts = Assert.readAll(TEST_ID);
-        System.out.println(asserts);
         Assertions.assertNotNull(asserts);
     }
 }

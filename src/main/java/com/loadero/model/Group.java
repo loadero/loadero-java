@@ -43,6 +43,7 @@ public final class Group {
 
     /**
      * Retrieves all existing groups.
+     *
      * @param testId ID of the test.
      * @return List containing {@link Group}s.
      * @throws IOException if request failed.

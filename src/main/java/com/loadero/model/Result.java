@@ -75,6 +75,26 @@ public final class Result {
         return ApiResource.request(RequestMethod.GET, route, null, Result.class);
     }
 
+    /**
+     * Retrieves all test run results.
+     *
+     * @param testId ID of the test.
+     * @param runId ID of the test run.
+     * @return List containing {@link Result}s.
+     * @throws IOException if request failed.
+     */
+    public static List<Result> readAll(int testId, int runId) throws IOException {
+        String route = buildRoute(testId, runId);
+        return ApiResource.request(RequestMethod.GET, route, null, ResultCollection.class);
+    }
+
+    private static String buildRoute(int testId, int runId) {
+        return String.format(
+            "%s/tests/%s/runs/%s/results/",
+            Loadero.getProjectUrl(), testId, runId
+        );
+    }
+
     private static String buildRoute(int testId, int runId, int resultId) {
         return String.format(
             "%s/tests/%s/runs/%s/results/%s/",

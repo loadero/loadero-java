@@ -8,10 +8,15 @@ import com.loadero.model.Group;
 import com.loadero.model.GroupCollection;
 import com.loadero.model.ModelParams;
 import com.loadero.model.Participant;
+import com.loadero.model.ParticipantCollection;
 import com.loadero.model.Precondition;
+import com.loadero.model.PreconditionCollection;
 import com.loadero.model.ProfileParams;
+import com.loadero.model.Result;
 import com.loadero.model.ResultAssert;
+import com.loadero.model.ResultCollection;
 import com.loadero.model.Test;
+import com.loadero.model.TestCollection;
 import com.loadero.model.TestRun;
 import java.io.IOException;
 
@@ -77,6 +82,10 @@ public enum ApiResource {
             .registerTypeAdapter(ResultAssert.class, new ResultAssertDeserializer())
             .registerTypeAdapter(AssertCollection.class, new CollectionDeserializer<>(Assert.class))
             .registerTypeAdapter(GroupCollection.class, new CollectionDeserializer<>(Group.class))
+            .registerTypeAdapter(ParticipantCollection.class, new CollectionDeserializer<>(Participant.class))
+            .registerTypeAdapter(PreconditionCollection.class, new CollectionDeserializer<>(Precondition.class))
+            .registerTypeAdapter(TestCollection.class, new CollectionDeserializer<>(Test.class))
+            .registerTypeAdapter(ResultCollection.class, new CollectionDeserializer<>(Result.class))
             .setPrettyPrinting()
             .create();
     }

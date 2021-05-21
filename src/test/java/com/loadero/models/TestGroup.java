@@ -163,7 +163,6 @@ public class TestGroup extends AbstractTestLoadero {
     @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
     public void testReadAll() throws IOException {
         List<Group> groupList = Group.readAll(TEST_ID);
-        System.out.println(groupList);
         Assertions.assertNotNull(groupList);
     }
 }
