@@ -72,7 +72,7 @@ public class TestParticipant extends AbstractTestLoadero {
             .builder()
             .withName("participant1")
             .withCount(1)
-            .withLocation(Location.EU_WEST_1)
+            .withLocation(Location.OREGON)
             .withNetwork(Network.DEFAULT)
             .withBrowser(new Browser(BrowserLatest.CHROME_LATEST))
             .withComputeUnit(ComputeUnit.G2)
