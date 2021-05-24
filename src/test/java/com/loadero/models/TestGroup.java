@@ -31,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class TestGroup extends AbstractTestLoadero {
     String groupUrl = String.format(".*/tests/%s/groups/[0-9]+/", TEST_ID);
     private static final String groupJson = "body-projects-5040-tests-6866-groups-48797-m03sm.json";
+    private static final String allGroupsFile = "body-all-groups.json";
     private static final Gson GSON = new GsonBuilder()
         .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
         .create();
@@ -281,9 +282,27 @@ public class TestGroup extends AbstractTestLoadero {
     }
 
     @Test
-    @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
     public void testReadAll() throws IOException {
+        wmRule.stubFor(get(urlMatching(".*/groups/"))
+            .willReturn(aResponse()
+                .withStatus(200)
+                .withBodyFile(allGroupsFile)
+            )
+        );
         List<Group> groupList = Group.readAll(TEST_ID);
         Assertions.assertNotNull(groupList);
+    }
+
+    @Test
+    public void negativeReadAll() {
+        wmRule.stubFor(get(urlMatching(".*/groups/"))
+            .willReturn(aResponse()
+                .withStatus(404)
+            )
+        );
+
+        Assertions.assertThrows(ApiException.class, () -> {
+            List<Group> groupList = Group.readAll(111);
+        });
     }
 }

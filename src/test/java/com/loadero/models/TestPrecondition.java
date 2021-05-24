@@ -13,7 +13,6 @@ import com.google.gson.GsonBuilder;
 import com.loadero.AbstractTestLoadero;
 import com.loadero.Loadero;
 import com.loadero.exceptions.ApiException;
-import com.loadero.model.Assert;
 import com.loadero.model.Precondition;
 import com.loadero.model.PreconditionParams;
 import com.loadero.types.AssertOperator;
@@ -25,10 +24,10 @@ import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
 public class TestPrecondition extends AbstractTestLoadero {
     private static final String precondFile = "body-precondition.json";
+    private static final String allPrecondFiles = "body-all-preconditions.json";
     private static final int PRECONDITION_ID = 692;
 
     @BeforeAll
@@ -205,9 +204,31 @@ public class TestPrecondition extends AbstractTestLoadero {
     }
 
     @Test
-    @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
     public void testReadAll() throws IOException {
+        wmRule.stubFor(get(urlMatching(".*/preconditions/"))
+            .willReturn(aResponse()
+                .withStatus(200)
+                .withBodyFile(allPrecondFiles)
+            )
+        );
+
         List<Precondition> preconditions = Precondition.readAll(TEST_ID, ASSERT_ID);
         Assertions.assertNotNull(preconditions);
+    }
+
+    @Test
+    public void negativeReadAll() {
+        wmRule.stubFor(get(urlMatching(".*/preconditions/"))
+            .willReturn(aResponse()
+                .withStatus(404)
+            )
+        );
+
+        Assertions.assertThrows(ApiException.class, () -> {
+            List<Precondition> preconditions = Precondition.readAll(1, ASSERT_ID);
+        });
+        Assertions.assertThrows(ApiException.class, () -> {
+            List<Precondition> preconditions = Precondition.readAll(TEST_ID, 1);
+        });
     }
 }

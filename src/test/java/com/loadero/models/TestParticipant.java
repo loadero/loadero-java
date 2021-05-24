@@ -23,11 +23,11 @@ import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
 public class TestParticipant extends AbstractTestLoadero {
     private static final String participantJson =
         "body-projects-5040-tests-6866-participants-94633-aZHuT.json";
+    private static final String allParticipantsFile = "body-all-participants.json";
     private static final String participantUrl = ".*/participants/[0-9]*/";
 
     @BeforeAll
@@ -283,9 +283,32 @@ public class TestParticipant extends AbstractTestLoadero {
     }
 
     @Test
-    @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
     public void testReadAll() throws IOException {
+        wmRule.stubFor(get(urlMatching(".*/participants/"))
+            .willReturn(aResponse()
+                .withStatus(200)
+                .withBodyFile(allParticipantsFile)
+            )
+        );
+
         List<Participant> participants = Participant.readAll(TEST_ID, GROUP_ID);
         Assertions.assertNotNull(participants);
+    }
+
+    @Test
+    public void negativeReadAll() {
+        wmRule.stubFor(get(urlMatching(".*/participants/"))
+            .willReturn(aResponse()
+                .withStatus(404)
+            )
+        );
+
+        Assertions.assertThrows(ApiException.class, () -> {
+            List<Participant> participants = Participant.readAll(1, GROUP_ID);
+        });
+
+        Assertions.assertThrows(ApiException.class, () -> {
+            List<Participant> participants = Participant.readAll(TEST_ID, 12);
+        });
     }
 }

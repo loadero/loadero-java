@@ -1,0 +1,159 @@
+{
+  "results": [
+    {
+      "id": 47523,
+      "created": "2021-03-24T12:33:06Z",
+      "updated": "2021-04-13T14:08:33Z",
+      "path": "webrtc/audio/jitterBuffer/75th",
+      "operator": "eq",
+      "expected": "nothing",
+      "test_id": 6866,
+      "preconditions": [
+        {
+          "id": 692,
+          "created": "2021-03-25T13:25:40Z",
+          "updated": "2021-04-23T07:49:03Z",
+          "property": "media_type",
+          "operator": "lte",
+          "expected": "expected",
+          "assert_id": 47523
+        },
+        {
+          "id": 693,
+          "created": "2021-03-25T13:25:40Z",
+          "updated": "2021-03-25T13:25:40Z",
+          "property": "location",
+          "operator": "neq",
+          "expected": "us-west-2",
+          "assert_id": 47523
+        }
+      ]
+    },
+    {
+      "id": 47524,
+      "created": "2021-03-24T13:41:09Z",
+      "updated": "2021-03-24T13:41:09Z",
+      "path": "machine/cpu/used/stddev",
+      "operator": "regex",
+      "expected": "4545",
+      "test_id": 6866,
+      "preconditions": null
+    },
+    {
+      "id": 47525,
+      "created": "2021-03-24T14:18:31Z",
+      "updated": "2021-03-24T14:18:31Z",
+      "path": "machine/cpu/used/95th",
+      "operator": "lt",
+      "expected": "do non in",
+      "test_id": 6866,
+      "preconditions": null
+    },
+    {
+      "id": 47752,
+      "created": "2021-04-13T13:29:50Z",
+      "updated": "2021-04-13T13:29:50Z",
+      "path": "machine/cpu/used/25th",
+      "operator": "eq",
+      "expected": "expected",
+      "test_id": 6866,
+      "preconditions": null
+    },
+    {
+      "id": 47753,
+      "created": "2021-04-13T13:31:25Z",
+      "updated": "2021-04-13T13:31:25Z",
+      "path": "machine/cpu/used/25th",
+      "operator": "eq",
+      "expected": "expected",
+      "test_id": 6866,
+      "preconditions": null
+    },
+    {
+      "id": 47754,
+      "created": "2021-04-13T13:32:19Z",
+      "updated": "2021-04-13T13:32:19Z",
+      "path": "machine/cpu/used/95th",
+      "operator": "lt",
+      "expected": "23234",
+      "test_id": 6866,
+      "preconditions": null
+    },
+    {
+      "id": 47756,
+      "created": "2021-04-13T13:52:44Z",
+      "updated": "2021-04-13T13:52:44Z",
+      "path": "machine/cpu/used/95th",
+      "operator": "lt",
+      "expected": "23234",
+      "test_id": 6866,
+      "preconditions": null
+    },
+    {
+      "id": 47796,
+      "created": "2021-04-21T13:38:10Z",
+      "updated": "2021-04-21T13:38:10Z",
+      "path": "webrtc/audio/jitter/25th",
+      "operator": "eq",
+      "expected": "998",
+      "test_id": 6866,
+      "preconditions": null
+    },
+    {
+      "id": 47805,
+      "created": "2021-04-26T06:32:58Z",
+      "updated": "2021-04-26T06:32:58Z",
+      "path": "webrtc/audio/jitter/25th",
+      "operator": "eq",
+      "expected": "998",
+      "test_id": 6866,
+      "preconditions": null
+    },
+    {
+      "id": 47853,
+      "created": "2021-05-06T12:20:12Z",
+      "updated": "2021-05-06T12:20:12Z",
+      "path": "machine/cpu/used/95th",
+      "operator": "lt",
+      "expected": "23234",
+      "test_id": 6866,
+      "preconditions": null
+    },
+    {
+      "id": 47854,
+      "created": "2021-05-06T12:23:25Z",
+      "updated": "2021-05-06T12:23:25Z",
+      "path": "webrtc/audio/jitterBuffer/75th",
+      "operator": "eq",
+      "expected": "nothing",
+      "test_id": 6866,
+      "preconditions": [
+        {
+          "id": 736,
+          "created": "2021-05-06T12:23:25Z",
+          "updated": "2021-05-06T12:23:25Z",
+          "property": "media_type",
+          "operator": "lte",
+          "expected": "expected",
+          "assert_id": 47854
+        },
+        {
+          "id": 737,
+          "created": "2021-05-06T12:23:25Z",
+          "updated": "2021-05-06T12:23:25Z",
+          "property": "location",
+          "operator": "neq",
+          "expected": "us-west-2",
+          "assert_id": 47854
+        }
+      ]
+    }
+  ],
+  "pagination": {
+    "limit": 0,
+    "offset": 0,
+    "page": 1,
+    "total_pages": 1
+  },
+  "filter": {}
+}

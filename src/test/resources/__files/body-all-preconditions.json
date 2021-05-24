@@ -1,0 +1,29 @@
+{
+  "pagination": {
+    "limit": 0,
+    "offset": 0,
+    "page": 1,
+    "total_pages": 1
+  },
+  "results": [
+    {
+      "id": 692,
+      "created": "2021-03-25T13:25:40Z",
+      "updated": "2021-04-23T07:49:03Z",
+      "property": "media_type",
+      "operator": "lte",
+      "expected": "expected",
+      "assert_id": 47523
+    },
+    {
+      "id": 693,
+      "created": "2021-03-25T13:25:40Z",
+      "updated": "2021-03-25T13:25:40Z",
+      "property": "location",
+      "operator": "neq",
+      "expected": "us-west-2",
+      "assert_id": 47523
+    }
+  ],
+  "filter": {}
+}

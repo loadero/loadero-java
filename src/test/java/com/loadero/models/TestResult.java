@@ -14,11 +14,10 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
 public class TestResult extends AbstractTestLoadero {
     private static final String resultFile = "body-run-single-result.json";
-    private static final String resultsFile = "body-run-results-NyqBC.json";
+    private static final String allResultsFile = "body-run-results-NyqBC.json";
     private static final String resultsFileWithWebRtc = "body-run-single-result-webrtc.json";
     private static final String resultsFileWithUnknownPaths = "body-run-single-result-unknown-assert-paths.json";
     private static final int resultId = 1007803;
@@ -82,9 +81,31 @@ public class TestResult extends AbstractTestLoadero {
     }
 
     @Test
-    @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
     public void testReadAll() throws IOException {
+        wmRule.stubFor(get(urlMatching(".*/results/"))
+            .willReturn(aResponse()
+                .withStatus(200)
+                .withBodyFile(allResultsFile)
+            )
+        );
         List<Result> results = Result.readAll(TEST_ID, RUN_ID);
         Assertions.assertNotNull(results);
+    }
+
+    @Test
+    public void negativeReadAll() {
+        wmRule.stubFor(get(urlMatching(".*/results/"))
+            .willReturn(aResponse()
+                .withStatus(404)
+            )
+        );
+
+        Assertions.assertThrows(ApiException.class, () -> {
+            List<Result> results = Result.readAll(1, RUN_ID);
+        });
+
+        Assertions.assertThrows(ApiException.class, () -> {
+            List<Result> results = Result.readAll(TEST_ID, 1);
+        });
     }
 }

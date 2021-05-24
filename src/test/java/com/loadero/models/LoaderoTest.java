@@ -29,6 +29,7 @@ import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
 public class LoaderoTest extends AbstractTestLoadero {
     private static final String testFile = "body-projects-5040-tests-6866-uaor7.json";
+    private static final String allTestsFile = "body-all-tests.json";
 
     @BeforeAll
     public void init() {
@@ -265,9 +266,28 @@ public class LoaderoTest extends AbstractTestLoadero {
     }
 
     @Test
-    @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
     public void testReadAll() throws IOException {
+        wmRule.stubFor(get(urlMatching(".*/tests/"))
+            .willReturn(aResponse()
+                .withStatus(200)
+                .withBodyFile(allTestsFile)
+            )
+        );
+
         List<com.loadero.model.Test> tests = com.loadero.model.Test.readAll();
         Assertions.assertNotNull(tests);
+    }
+
+    @Test
+    public void negativeReadAll() {
+        wmRule.stubFor(get(urlMatching(".*/tests/"))
+            .willReturn(aResponse()
+                .withStatus(404)
+            )
+        );
+
+        Assertions.assertThrows(ApiException.class, () -> {
+            List<com.loadero.model.Test> tests = com.loadero.model.Test.readAll();
+        });
     }
 }
