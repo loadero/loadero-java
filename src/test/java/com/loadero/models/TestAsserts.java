@@ -19,10 +19,12 @@ import com.loadero.types.AssertOperator;
 import com.loadero.types.MachineAsserts;
 import com.loadero.types.WebRtcAsserts;
 import java.io.IOException;
+import java.util.List;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
 public class TestAsserts extends AbstractTestLoadero {
     private static final String assertsPrecondFile = "body-asserts-precond.json";
@@ -128,10 +130,12 @@ public class TestAsserts extends AbstractTestLoadero {
             .withPath(MachineAsserts.MACHINE_CPU_PERCENT_25TH)
             .withOperator(AssertOperator.GREATER_OR_EQUAL)
             .withExpected("expected")
+            .withPreconditions(null)
             .build();
 
         Gson mockGson = new GsonBuilder()
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+            .serializeNulls()
             .create();
         System.out.println(mockGson.toJson(mockParams));
 
@@ -229,5 +233,12 @@ public class TestAsserts extends AbstractTestLoadero {
         Assertions.assertThrows(ApiException.class, () -> {
             Assert copy = Assert.copy(1, ASSERT_ID);
         });
+    }
+
+    @Test
+    @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
+    public void testReadAll() throws IOException {
+        List<Assert> asserts = Assert.readAll(TEST_ID);
+        Assertions.assertNotNull(asserts);
     }
 }

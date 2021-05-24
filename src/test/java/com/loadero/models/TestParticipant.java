@@ -9,10 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.loadero.AbstractTestLoadero;
 import com.loadero.Loadero;
@@ -22,6 +18,7 @@ import com.loadero.model.Participant;
 import com.loadero.model.ParticipantParams;
 import java.io.IOException;
 import com.loadero.types.*;
+import java.util.List;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -76,7 +73,7 @@ public class TestParticipant extends AbstractTestLoadero {
             .withProfileId(1)
             .withName("Participant 1")
             .withMediaType(MediaType.DEFAULT)
-            .withLocation(Location.AP_EAST_1)
+            .withLocation(Location.FRANKFURT)
             .withComputeUnit(ComputeUnit.G1)
             .withBrowser(new Browser(BrowserLatest.CHROME_LATEST))
             .withNetwork(Network.DEFAULT)
@@ -161,7 +158,7 @@ public class TestParticipant extends AbstractTestLoadero {
             .builder()
             .withName("participant1")
             .withCount(1)
-            .withLocation(Location.EU_WEST_1)
+            .withLocation(Location.OREGON)
             .withNetwork(Network.DEFAULT)
             .withBrowser(new Browser(BrowserLatest.CHROME_LATEST))
             .withComputeUnit(ComputeUnit.G2)
@@ -283,5 +280,12 @@ public class TestParticipant extends AbstractTestLoadero {
                 .withName(null)
                 .build();
         });
+    }
+
+    @Test
+    @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
+    public void testReadAll() throws IOException {
+        List<Participant> participants = Participant.readAll(TEST_ID, GROUP_ID);
+        Assertions.assertNotNull(participants);
     }
 }

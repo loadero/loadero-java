@@ -6,6 +6,7 @@ import com.loadero.http.RequestMethod;
 import com.loadero.types.AssertOperator;
 import com.loadero.types.Property;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Used to perform CRUD operations on assert's preconditions.
@@ -43,6 +44,21 @@ public final class Precondition {
     ) throws IOException {
         String route = buildRoute(testId, assertId, preconditionId);
         return ApiResource.request(RequestMethod.GET, route, null, Precondition.class);
+    }
+
+    /**
+     * Retrieves all existing preconditions.
+     *
+     * @param testId ID of the test.
+     * @param assertId ID of an assert.
+     * @return List containing {@link Precondition}s.
+     * @throws IOException if request failed.
+     */
+    public static List<Precondition> readAll(int testId, int assertId) throws IOException {
+        String route = buildRoute(testId, assertId);
+        return ApiResource.request(
+            RequestMethod.GET, route, null, PreconditionCollection.class
+        );
     }
 
     /**

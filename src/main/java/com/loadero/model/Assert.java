@@ -46,6 +46,18 @@ public final class Assert {
     }
 
     /**
+     * Retrieves all existing asserts.
+     *
+     * @param testId ID of the test.
+     * @return List containing {@link Assert}s.
+     * @throws IOException if request failed.
+     */
+    public static List<Assert> readAll(int testId) throws IOException {
+        String route = buildRoute(testId);
+        return ApiResource.request(RequestMethod.GET, route, null, AssertCollection.class);
+    }
+
+    /**
      * Creates assert.
      *
      * @param params Values defined in {@link AssertParams} object.

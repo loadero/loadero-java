@@ -9,11 +9,12 @@ import com.loadero.Loadero;
 import com.loadero.exceptions.ApiException;
 import com.loadero.model.Result;
 import com.loadero.types.ResultStatus;
-import com.loadero.types.RunStatus;
 import java.io.IOException;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
 public class TestResult extends AbstractTestLoadero {
     private static final String resultFile = "body-run-single-result.json";
@@ -78,5 +79,12 @@ public class TestResult extends AbstractTestLoadero {
         Assertions.assertThrows(ApiException.class, () -> {
             Result result = Result.read(TEST_ID, RUN_ID, resultId);
         });
+    }
+
+    @Test
+    @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
+    public void testReadAll() throws IOException {
+        List<Result> results = Result.readAll(TEST_ID, RUN_ID);
+        Assertions.assertNotNull(results);
     }
 }

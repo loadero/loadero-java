@@ -3,11 +3,13 @@ package com.loadero.http;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import com.loadero.exceptions.ApiException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -17,7 +19,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 final class CustomResponseHandler<T> implements ResponseHandler<T> {
-    private final Class<T> clazz;
+    private final Type type;
     private final RequestMethod method;
     private final String route;
     private final Logger log = LogManager.getLogger(CustomResponseHandler.class);
@@ -25,7 +27,7 @@ final class CustomResponseHandler<T> implements ResponseHandler<T> {
     public CustomResponseHandler(RequestMethod method, String route, Class<T> clazz) {
         this.method = method;
         this.route = route;
-        this.clazz = clazz;
+        this.type = TypeToken.get(clazz).getType();
     }
 
     @Override
@@ -50,7 +52,7 @@ final class CustomResponseHandler<T> implements ResponseHandler<T> {
 
         T resource;
         try {
-            resource = ApiResource.getGSON().fromJson(reader, clazz);
+            resource = ApiResource.getGSON().fromJson(reader, type);
             log.info("Successful - {} - {} - {}", method, resource, route);
         } catch (JsonSyntaxException | NullPointerException ex) {
             log.error("{} - {} - {}", ex.getMessage(), ex.fillInStackTrace(), route);

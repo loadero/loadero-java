@@ -11,11 +11,13 @@ import com.loadero.model.Group;
 import com.loadero.model.GroupParams;
 import com.loadero.model.ParticipantParams;
 import java.io.IOException;
+import java.util.List;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;
@@ -276,5 +278,12 @@ public class TestGroup extends AbstractTestLoadero {
                 .withName(null)
                 .build();
         });
+    }
+
+    @Test
+    @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
+    public void testReadAll() throws IOException {
+        List<Group> groupList = Group.readAll(TEST_ID);
+        Assertions.assertNotNull(groupList);
     }
 }
