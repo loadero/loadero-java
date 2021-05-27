@@ -10,6 +10,7 @@ import com.loadero.types.RunStatus;
 import com.loadero.types.TestMode;
 import java.io.IOException;
 import java.time.Duration;
+import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -91,6 +92,11 @@ public final class TestRun {
     public static TestRun read(int testId, int runId) throws IOException {
         String route = buildRoute(testId, runId);
         return ApiResource.request(RequestMethod.GET, route, null, TestRun.class);
+    }
+
+    public static List<TestRun> readAll(int testId) throws IOException {
+        String route = buildRoute(testId);
+        return ApiResource.request(RequestMethod.GET, route, null, TestRunCollection.class);
     }
 
     /**
@@ -210,6 +216,10 @@ public final class TestRun {
         }
 
         return result;
+    }
+
+    private static String buildRoute(int testId) {
+        return String.format("%s/tests/%s/runs/", Loadero.getProjectUrl(), testId);
     }
 
     private static String buildRoute(int testId, int runId) {

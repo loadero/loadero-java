@@ -3,14 +3,22 @@ package com.loadero.http;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.loadero.model.Assert;
+import com.loadero.model.AssertCollection;
 import com.loadero.model.Group;
+import com.loadero.model.GroupCollection;
 import com.loadero.model.ModelParams;
 import com.loadero.model.Participant;
+import com.loadero.model.ParticipantCollection;
 import com.loadero.model.Precondition;
+import com.loadero.model.PreconditionCollection;
 import com.loadero.model.ProfileParams;
+import com.loadero.model.Result;
 import com.loadero.model.ResultAssert;
+import com.loadero.model.ResultCollection;
 import com.loadero.model.Test;
+import com.loadero.model.TestCollection;
 import com.loadero.model.TestRun;
+import com.loadero.model.TestRunCollection;
 import java.io.IOException;
 
 /**
@@ -73,6 +81,13 @@ public enum ApiResource {
             .registerTypeAdapter(Precondition.class, new PreconditionSerializer())
             .registerTypeAdapter(ProfileParams.class, new ProfileParamsDeserializer())
             .registerTypeAdapter(ResultAssert.class, new ResultAssertDeserializer())
+            .registerTypeAdapter(AssertCollection.class, new CollectionDeserializer<>(Assert.class))
+            .registerTypeAdapter(GroupCollection.class, new CollectionDeserializer<>(Group.class))
+            .registerTypeAdapter(ParticipantCollection.class, new CollectionDeserializer<>(Participant.class))
+            .registerTypeAdapter(PreconditionCollection.class, new CollectionDeserializer<>(Precondition.class))
+            .registerTypeAdapter(TestCollection.class, new CollectionDeserializer<>(Test.class))
+            .registerTypeAdapter(ResultCollection.class, new CollectionDeserializer<>(Result.class))
+            .registerTypeAdapter(TestRunCollection.class, new CollectionDeserializer<>(TestRun.class))
             .setPrettyPrinting()
             .create();
     }

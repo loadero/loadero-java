@@ -5,7 +5,7 @@ import com.loadero.util.StringUtil;
 /**
  * Builder class that is used to define parameters for a {@link Group}.
  */
-public class GroupParams implements ModelParams {
+public final class GroupParams implements ModelParams {
     private final int id;
     private final String created;
     private final String updated;

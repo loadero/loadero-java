@@ -18,10 +18,12 @@ import com.loadero.model.PreconditionParams;
 import com.loadero.types.AssertOperator;
 import com.loadero.types.Property;
 import java.io.IOException;
+import java.util.List;
 import java.util.Locale;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
 public class TestPrecondition extends AbstractTestLoadero {
     private static final String precondFile = "body-precondition.json";
@@ -178,5 +180,12 @@ public class TestPrecondition extends AbstractTestLoadero {
         Assertions.assertEquals(Property.COMPUTE_UNIT, cu);
         Assertions.assertEquals("media_type", Property.MEDIA_TYPE.toString().toLowerCase());
         Assertions.assertEquals("compute_unit", Property.COMPUTE_UNIT.toString().toLowerCase());
+    }
+
+    @Test
+    @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
+    public void testReadAll() throws IOException {
+        List<Precondition> preconditions = Precondition.readAll(TEST_ID, ASSERT_ID);
+        Assertions.assertNotNull(preconditions);
     }
 }

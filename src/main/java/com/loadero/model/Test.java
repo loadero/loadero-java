@@ -7,6 +7,7 @@ import com.loadero.types.IncrementStrategy;
 import com.loadero.types.TestMode;
 import java.io.IOException;
 import java.time.Duration;
+import java.util.List;
 
 /**
  * Used for performing CRUD operations on tests.
@@ -52,6 +53,17 @@ public final class Test {
     public static Test read(int testId) throws IOException {
         String route = buildRoute(testId);
         return ApiResource.request(RequestMethod.GET, route, null, Test.class);
+    }
+
+    /**
+     * Retrieves all existing tests.
+     *
+     * @return List containing {@link Test}s.
+     * @throws IOException if request failed.
+     */
+    public static List<Test> readAll() throws IOException {
+        String route = buildRoute();
+        return ApiResource.request(RequestMethod.GET, route, null, TestCollection.class);
     }
 
     /**
