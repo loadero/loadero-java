@@ -18,6 +18,7 @@ import com.loadero.model.ResultCollection;
 import com.loadero.model.Test;
 import com.loadero.model.TestCollection;
 import com.loadero.model.TestRun;
+import com.loadero.model.TestRunCollection;
 import java.io.IOException;
 
 /**
@@ -86,6 +87,7 @@ public enum ApiResource {
             .registerTypeAdapter(PreconditionCollection.class, new CollectionDeserializer<>(Precondition.class))
             .registerTypeAdapter(TestCollection.class, new CollectionDeserializer<>(Test.class))
             .registerTypeAdapter(ResultCollection.class, new CollectionDeserializer<>(Result.class))
+            .registerTypeAdapter(TestRunCollection.class, new CollectionDeserializer<>(TestRun.class))
             .setPrettyPrinting()
             .create();
     }

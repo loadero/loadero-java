@@ -11,7 +11,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 
 import com.loadero.AbstractTestLoadero;
 import com.loadero.Loadero;
-import com.loadero.model.Assert;
 import com.loadero.model.Participant;
 import com.loadero.model.ParticipantParams;
 import java.io.IOException;

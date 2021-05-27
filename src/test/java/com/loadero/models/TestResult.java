@@ -7,7 +7,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import com.loadero.AbstractTestLoadero;
 import com.loadero.Loadero;
 import com.loadero.exceptions.ApiException;
-import com.loadero.model.Precondition;
 import com.loadero.model.Result;
 import com.loadero.types.ResultStatus;
 import com.loadero.types.RunStatus;

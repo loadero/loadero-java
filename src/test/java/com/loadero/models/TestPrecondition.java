@@ -13,7 +13,6 @@ import com.google.gson.GsonBuilder;
 import com.loadero.AbstractTestLoadero;
 import com.loadero.Loadero;
 import com.loadero.exceptions.ApiException;
-import com.loadero.model.Assert;
 import com.loadero.model.Precondition;
 import com.loadero.model.PreconditionParams;
 import com.loadero.types.AssertOperator;
