@@ -17,6 +17,7 @@ import com.loadero.model.TestRun;
 import com.loadero.types.RunStatus;
 import java.io.IOException;
 import java.time.Duration;
+import java.util.List;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -25,6 +26,7 @@ import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
 @TestMethodOrder(OrderAnnotation.class)
 public class TestPolling extends AbstractTestLoadero {
@@ -223,5 +225,13 @@ public class TestPolling extends AbstractTestLoadero {
         Assertions.assertNotNull(run);
         TestRun poll = TestRun.poll(7193, run.getId(), Duration.ofSeconds(10));
         assertEquals(RunStatus.NO_USERS, poll.getStatus());
+    }
+
+    @Test
+    @Order(10)
+    @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
+    public void testReadAllRuns() throws IOException {
+        List<TestRun> runs = TestRun.readAll(TEST_ID);
+        Assertions.assertNotNull(runs);
     }
 }

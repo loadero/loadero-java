@@ -13,7 +13,6 @@ import com.loadero.Loadero;
 import com.loadero.exceptions.ApiException;
 import com.loadero.model.Script;
 import com.loadero.model.TestParams;
-import com.loadero.model.TestRun;
 import com.loadero.types.IncrementStrategy;
 import com.loadero.types.Location;
 import com.loadero.types.TestMode;
@@ -227,12 +226,5 @@ public class LoaderoTest extends AbstractTestLoadero {
     public void testReadAll() throws IOException {
         List<com.loadero.model.Test> tests = com.loadero.model.Test.readAll();
         Assertions.assertNotNull(tests);
-    }
-
-    @Test
-    @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
-    public void testReadAllRuns() throws IOException {
-        List<TestRun> runs = TestRun.readAll(TEST_ID);
-        Assertions.assertNotNull(runs);
     }
 }
