@@ -9,15 +9,12 @@ import com.loadero.Loadero;
 import com.loadero.exceptions.ApiException;
 import com.loadero.model.Group;
 import com.loadero.model.GroupParams;
-import com.loadero.model.ParticipantParams;
 import java.io.IOException;
 import java.util.List;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;

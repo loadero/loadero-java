@@ -24,7 +24,6 @@ import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
 public class TestAsserts extends AbstractTestLoadero {
     private static final String assertsPrecondFile = "body-asserts-precond.json";

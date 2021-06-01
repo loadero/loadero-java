@@ -7,12 +7,10 @@ import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.put;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 
-import com.github.tomakehurst.wiremock.common.Json;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
 import com.loadero.AbstractTestLoadero;
 import com.loadero.Loadero;
 import com.loadero.exceptions.ApiException;
-import com.loadero.model.Assert;
 import com.loadero.model.Script;
 import com.loadero.model.TestParams;
 import com.loadero.types.IncrementStrategy;
@@ -25,7 +23,6 @@ import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
 public class LoaderoTest extends AbstractTestLoadero {
     private static final String testFile = "body-projects-5040-tests-6866-uaor7.json";
