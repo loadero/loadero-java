@@ -38,6 +38,7 @@ public class TestPolling extends AbstractTestLoadero {
     private StubMapping doneStub;
     private final String scenarioName = "polling";
     private final String getRunInfo = ".*/runs/.*";
+    private final String allTestRunsFile = "body-all-test-runs.json";
 
     @BeforeEach
     public void setupStubs() {
@@ -298,9 +299,29 @@ public class TestPolling extends AbstractTestLoadero {
 
     @Test
     @Order(13)
-    @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
     public void testReadAllRuns() throws IOException {
+        doneStub = wmRule.stubFor(get(urlMatching(".*/[0-9]*/runs/"))
+            .willReturn(aResponse()
+                .withStatus(200)
+                .withBodyFile(allTestRunsFile)
+            )
+        );
         List<TestRun> runs = TestRun.readAll(TEST_ID);
         Assertions.assertNotNull(runs);
+    }
+
+    @Test
+    @Order(14)
+    public void negativeReadAllRuns() {
+        doneStub = wmRule.stubFor(get(urlMatching(".*/[0-9]*/runs/"))
+            .willReturn(aResponse()
+                .withStatus(404)
+                .withBody("")
+            )
+        );
+
+        Assertions.assertThrows(ApiException.class, () -> {
+            List<TestRun> runs = TestRun.readAll(1);
+        });
     }
 }
