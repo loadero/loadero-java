@@ -1,6 +1,5 @@
 package com.loadero.model;
 
-import com.loadero.exceptions.ApiException;
 import com.loadero.util.StringUtil;
 import java.io.IOException;
 import java.time.Duration;
@@ -208,6 +207,22 @@ public final class TestParams implements ModelParams {
             if (StringUtil.empty(script)) {
                 throw new IllegalArgumentException("Test name or script cannot be empty.");
             }
+            this.script = script;
+            return this;
+        }
+
+        /**
+         * Sets Nightwatch.js or Py-TestUI script from String.
+         *
+         * @param script String representation of script
+         * @return value of {@link TestParamsBuilder}
+         * @throws IllegalArgumentException if script string is empty.
+         */
+        public TestParamsBuilder withScriptString(String script) {
+            if (StringUtil.empty(script)) {
+                throw new IllegalArgumentException("Script cannot be empty.");
+            }
+
             this.script = script;
             return this;
         }
