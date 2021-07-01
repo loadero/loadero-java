@@ -216,11 +216,8 @@ public class LoaderoTest extends AbstractTestLoadero {
 
     @Test
     public void testEnumLocation() {
-        Assertions.assertEquals(Location.FRANKFURT, Location.getConstant("frankfurt"));
         Assertions.assertEquals(Location.FRANKFURT, Location.getConstant("eu-central-1"));
         Assertions.assertEquals(Location.HONG_KONG, Location.getConstant("ap-east-1"));
-        Assertions.assertEquals(Location.HONG_KONG, Location.getConstant("hong-kong"));
-        Assertions.assertNotEquals(Location.HONG_KONG, Location.getConstant("oregon"));
         Assertions.assertEquals(Location.FRANKFURT.toString(), "eu-central-1");
         Assertions.assertEquals(Location.TOKYO.toString(), "ap-northeast-1");
         Assertions.assertEquals(Location.SAO_PAULO.toString(), "sa-east-1");

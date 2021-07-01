@@ -128,34 +128,14 @@ public class TestParticipant extends AbstractTestLoadero {
         String configJson1 = "frankfurt";
         String configJson2 = "sao-paulo";
         String configJson3 = "hong-kong";
+        String configJson4 = "north-virginia";
         Location config1 = gson.fromJson(configJson1, Location.class);
         Location config2 = gson.fromJson(configJson2, Location.class);
         Location config3 = gson.fromJson(configJson3, Location.class);
+        Location config4 = gson.fromJson(configJson4, Location.class);
         Assertions.assertEquals(Location.FRANKFURT, config1);
         Assertions.assertEquals(Location.SAO_PAULO, config2);
         Assertions.assertEquals(Location.HONG_KONG, config3);
-    }
-}
-
-class ParticipantConfig {
-    private Location location;
-
-    public ParticipantConfig(Location location) {
-        this.location = location;
-    }
-
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
-    @Override
-    public String toString() {
-        return "ParticipantConfig{" +
-            "location=" + location +
-            '}';
+        Assertions.assertEquals(Location.NORTH_VIRGINIA, config4);
     }
 }

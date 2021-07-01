@@ -20,7 +20,7 @@ public enum Location {
     HONG_KONG("ap-east-1"),
     @SerializedName(value = "ap-south-1", alternate = "mumbai")
     MUMBAI("ap-south-1"),
-    @SerializedName(value = "us-east-1", alternate = "north virginia")
+    @SerializedName(value = "us-east-1", alternate = "north-virginia")
     NORTH_VIRGINIA("us-east-1"),
     @SerializedName(value = "us-east-2", alternate = "ohio")
     OHIO("us-east-2"),
