@@ -311,4 +311,20 @@ public class TestParticipant extends AbstractTestLoadero {
             List<Participant> participants = Participant.readAll(TEST_ID, 12);
         });
     }
+  
+    @Test
+    public void testLocationDeserialization() {
+        String configJson1 = "frankfurt";
+        String configJson2 = "sao-paulo";
+        String configJson3 = "hong-kong";
+        String configJson4 = "north-virginia";
+        Location config1 = gson.fromJson(configJson1, Location.class);
+        Location config2 = gson.fromJson(configJson2, Location.class);
+        Location config3 = gson.fromJson(configJson3, Location.class);
+        Location config4 = gson.fromJson(configJson4, Location.class);
+        Assertions.assertEquals(Location.FRANKFURT, config1);
+        Assertions.assertEquals(Location.SAO_PAULO, config2);
+        Assertions.assertEquals(Location.HONG_KONG, config3);
+        Assertions.assertEquals(Location.NORTH_VIRGINIA, config4);
+    }
 }
