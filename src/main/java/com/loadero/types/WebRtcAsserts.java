@@ -24,8 +24,8 @@ public enum WebRtcAsserts implements AssertPath {
     WEBRTC_VIDEO_BITRATE_IN_75TH("webrtc/video/bitrate/in/75th"),
     @SerializedName("webrtc/video/bitrate/out/99th")
     WEBRTC_VIDEO_BITRATE_OUT_99TH("webrtc/video/bitrate/out/99th"),
-    @SerializedName("webrtc/video/jitter/99th")
-    WEBRTC_VIDEO_JITTER_99TH("webrtc/video/jitter/99th"),
+    @SerializedName("webrtc/video/jitter/out/99th")
+    WEBRTC_VIDEO_JITTER_OUT_99TH("webrtc/video/jitter/out/99th"),
     @SerializedName("webrtc/video/fps/in/99th")
     WEBRTC_VIDEO_FPS_IN_99TH("webrtc/video/fps/in/99th"),
     @SerializedName("webrtc/audio/bitrate/in/75th")
@@ -68,8 +68,8 @@ public enum WebRtcAsserts implements AssertPath {
     WEBRTC_AUDIO_PACKETSLOST_IN_TOTAL("webrtc/audio/packetsLost/in/total"),
     @SerializedName("webrtc/audio/packetsLost/in/percent")
     WEBRTC_AUDIO_PACKETSLOST_IN_PERCENT("webrtc/audio/packetsLost/in/percent"),
-    @SerializedName("webrtc/video/jitter/75th")
-    WEBRTC_VIDEO_JITTER_75TH("webrtc/video/jitter/75th"),
+    @SerializedName("webrtc/video/jitter/out/75th")
+    WEBRTC_VIDEO_JITTER_OUT_75TH("webrtc/video/jitter/out/75th"),
     @SerializedName("webrtc/video/bitrate/out/avg")
     WEBRTC_VIDEO_BITRATE_OUT_AVG("webrtc/video/bitrate/out/avg"),
     @SerializedName("webrtc/audio/bitrate/out/99th")
@@ -90,16 +90,16 @@ public enum WebRtcAsserts implements AssertPath {
     WEBRTC_AUDIO_LEVEL_IN_STDDEV("webrtc/audio/level/in/stddev"),
     @SerializedName("webrtc/video/bitrate/in/99th")
     WEBRTC_VIDEO_BITRATE_IN_99TH("webrtc/video/bitrate/in/99th"),
-    @SerializedName("webrtc/audio/jitter/stddev")
-    WEBRTC_AUDIO_JITTER_STDDEV("webrtc/audio/jitter/stddev"),
+    @SerializedName("webrtc/audio/jitter/out/stddev")
+    WEBRTC_AUDIO_JITTER_OUT_STDDEV("webrtc/audio/jitter/out/stddev"),
     @SerializedName("webrtc/audio/bitrate/in/stddev")
     WEBRTC_AUDIO_BITRATE_IN_STDDEV("webrtc/audio/bitrate/in/stddev"),
     @SerializedName("webrtc/video/fps/in/75th")
     WEBRTC_VIDEO_FPS_IN_75TH("webrtc/video/fps/in/75th"),
     @SerializedName("webrtc/audio/packets/in/max")
     WEBRTC_AUDIO_PACKETS_IN_MAX("webrtc/audio/packets/in/max"),
-    @SerializedName("webrtc/video/jitter/max")
-    WEBRTC_VIDEO_JITTER_MAX("webrtc/video/jitter/max"),
+    @SerializedName("webrtc/video/jitter/out/max")
+    WEBRTC_VIDEO_JITTER_OUT_MAX("webrtc/video/jitter/out/max"),
     @SerializedName("webrtc/audio/packets/out/max")
     WEBRTC_AUDIO_PACKETS_OUT_MAX("webrtc/audio/packets/out/max"),
     @SerializedName("webrtc/video/rtt/25th")
@@ -144,24 +144,24 @@ public enum WebRtcAsserts implements AssertPath {
     WEBRTC_AUDIO_BITRATE_IN_MIN("webrtc/audio/bitrate/in/min"),
     @SerializedName("webrtc/video/codec/out")
     WEBRTC_VIDEO_CODEC_OUT("webrtc/video/codec/out"),
-    @SerializedName("webrtc/audio/jitter/max")
-    WEBRTC_AUDIO_JITTER_MAX("webrtc/audio/jitter/max"),
+    @SerializedName("webrtc/audio/jitter/out/max")
+    WEBRTC_AUDIO_JITTER_OUT_MAX("webrtc/audio/jitter/out/max"),
     @SerializedName("webrtc/audio/rtt/95th")
     WEBRTC_AUDIO_RTT_95TH("webrtc/audio/rtt/95th"),
     @SerializedName("webrtc/audio/level/out/stddev")
     WEBRTC_AUDIO_LEVEL_OUT_STDDEV("webrtc/audio/level/out/stddev"),
     @SerializedName("webrtc/audio/rtt/stddev")
     WEBRTC_AUDIO_RTT_STDDEV("webrtc/audio/rtt/stddev"),
-    @SerializedName("webrtc/audio/jitter/rstddev")
-    WEBRTC_AUDIO_JITTER_RSTDDEV("webrtc/audio/jitter/rstddev"),
+    @SerializedName("webrtc/audio/jitter/out/rstddev")
+    WEBRTC_AUDIO_JITTER_OUT_RSTDDEV("webrtc/audio/jitter/out/rstddev"),
     @SerializedName("webrtc/video/packets/out/50th")
     WEBRTC_VIDEO_PACKETS_OUT_50TH("webrtc/video/packets/out/50th"),
     @SerializedName("webrtc/audio/bitrate/out/50th")
     WEBRTC_AUDIO_BITRATE_OUT_50TH("webrtc/audio/bitrate/out/50th"),
-    @SerializedName("webrtc/audio/jitter/50th")
-    WEBRTC_AUDIO_JITTER_50TH("webrtc/audio/jitter/50th"),
-    @SerializedName("webrtc/video/jitter/95th")
-    WEBRTC_VIDEO_JITTER_95TH("webrtc/video/jitter/95th"),
+    @SerializedName("webrtc/audio/jitter/out/50th")
+    WEBRTC_AUDIO_JITTER_OUT_50TH("webrtc/audio/jitter/out/50th"),
+    @SerializedName("webrtc/video/jitter/out/95th")
+    WEBRTC_VIDEO_JITTER_OUT_95TH("webrtc/video/jitter/out/95th"),
     @SerializedName("webrtc/video/fps/in/max")
     WEBRTC_VIDEO_FPS_IN_MAX("webrtc/video/fps/in/max"),
     @SerializedName("webrtc/audio/bitrate/in/max")
@@ -182,8 +182,8 @@ public enum WebRtcAsserts implements AssertPath {
     WEBRTC_VIDEO_BITRATE_IN_50TH("webrtc/video/bitrate/in/50th"),
     @SerializedName("webrtc/audio/bitrate/out/min")
     WEBRTC_AUDIO_BITRATE_OUT_MIN("webrtc/audio/bitrate/out/min"),
-    @SerializedName("webrtc/video/jitter/rstddev")
-    WEBRTC_VIDEO_JITTER_RSTDDEV("webrtc/video/jitter/rstddev"),
+    @SerializedName("webrtc/video/jitter/out/rstddev")
+    WEBRTC_VIDEO_JITTER_OUT_RSTDDEV("webrtc/video/jitter/out/rstddev"),
     @SerializedName("webrtc/audio/jitterBuffer/99th")
     WEBRTC_AUDIO_JITTERBUFFER_99TH("webrtc/audio/jitterBuffer/99th"),
     @SerializedName("webrtc/video/bitrate/in/min")
@@ -246,8 +246,8 @@ public enum WebRtcAsserts implements AssertPath {
     WEBRTC_VIDEO_FPS_OUT_STDDEV("webrtc/video/fps/out/stddev"),
     @SerializedName("webrtc/video/fps/out/95th")
     WEBRTC_VIDEO_FPS_OUT_95TH("webrtc/video/fps/out/95th"),
-    @SerializedName("webrtc/audio/jitter/99th")
-    WEBRTC_AUDIO_JITTER_99TH("webrtc/audio/jitter/99th"),
+    @SerializedName("webrtc/audio/jitter/out/99th")
+    WEBRTC_AUDIO_JITTER_OUT_99TH("webrtc/audio/jitter/out/99th"),
     @SerializedName("webrtc/audio/packets/out/avg")
     WEBRTC_AUDIO_PACKETS_OUT_AVG("webrtc/audio/packets/out/avg"),
     @SerializedName("webrtc/audio/packets/in/99th")
@@ -258,14 +258,14 @@ public enum WebRtcAsserts implements AssertPath {
     WEBRTC_VIDEO_FPS_IN_50TH("webrtc/video/fps/in/50th"),
     @SerializedName("webrtc/video/bitrate/out/min")
     WEBRTC_VIDEO_BITRATE_OUT_MIN("webrtc/video/bitrate/out/min"),
-    @SerializedName("webrtc/video/jitter/50th")
-    WEBRTC_VIDEO_JITTER_50TH("webrtc/video/jitter/50th"),
+    @SerializedName("webrtc/video/jitter/out/50th")
+    WEBRTC_VIDEO_JITTER_OUT_50TH("webrtc/video/jitter/out/50th"),
     @SerializedName("webrtc/audio/level/in/75th")
     WEBRTC_AUDIO_LEVEL_IN_75TH("webrtc/audio/level/in/75th"),
     @SerializedName("webrtc/audio/level/in/max")
     WEBRTC_AUDIO_LEVEL_IN_MAX("webrtc/audio/level/in/max"),
-    @SerializedName("webrtc/audio/jitter/95th")
-    WEBRTC_AUDIO_JITTER_95TH("webrtc/audio/jitter/95th"),
+    @SerializedName("webrtc/audio/jitter/out/95th")
+    WEBRTC_AUDIO_JITTER_OUT_95TH("webrtc/audio/jitter/out/95th"),
     @SerializedName("webrtc/video/packets/in/stddev")
     WEBRTC_VIDEO_PACKETS_IN_STDDEV("webrtc/video/packets/in/stddev"),
     @SerializedName("webrtc/video/bitrate/out/75th")
@@ -276,8 +276,8 @@ public enum WebRtcAsserts implements AssertPath {
     WEBRTC_VIDEO_FPS_IN_RSTDDEV("webrtc/video/fps/in/rstddev"),
     @SerializedName("webrtc/audio/packetsLost/out/total")
     WEBRTC_AUDIO_PACKETSLOST_OUT_TOTAL("webrtc/audio/packetsLost/out/total"),
-    @SerializedName("webrtc/video/jitter/stddev")
-    WEBRTC_VIDEO_JITTER_STDDEV("webrtc/video/jitter/stddev"),
+    @SerializedName("webrtc/video/jitter/out/stddev")
+    WEBRTC_VIDEO_JITTER_OUT_STDDEV("webrtc/video/jitter/out/stddev"),
     @SerializedName("webrtc/audio/packets/out/25th")
     WEBRTC_AUDIO_PACKETS_OUT_25TH("webrtc/audio/packets/out/25th"),
     @SerializedName("webrtc/audio/bitrate/in/95th")
@@ -298,10 +298,10 @@ public enum WebRtcAsserts implements AssertPath {
     WEBRTC_AUDIO_LEVEL_OUT_99TH("webrtc/audio/level/out/99th"),
     @SerializedName("webrtc/audio/jitterBuffer/avg")
     WEBRTC_AUDIO_JITTERBUFFER_AVG("webrtc/audio/jitterBuffer/avg"),
-    @SerializedName("webrtc/video/jitter/avg")
-    WEBRTC_VIDEO_JITTER_AVG("webrtc/video/jitter/avg"),
-    @SerializedName("webrtc/audio/jitter/25th")
-    WEBRTC_AUDIO_JITTER_25TH("webrtc/audio/jitter/25th"),
+    @SerializedName("webrtc/video/jitter/out/avg")
+    WEBRTC_VIDEO_JITTER_OUT_AVG("webrtc/video/jitter/out/avg"),
+    @SerializedName("webrtc/audio/jitter/out/25th")
+    WEBRTC_AUDIO_JITTER_OUT_25TH("webrtc/audio/jitter/out/25th"),
     @SerializedName("webrtc/audio/level/out/95th")
     WEBRTC_AUDIO_LEVEL_OUT_95TH("webrtc/audio/level/out/95th"),
     @SerializedName("webrtc/video/jitterBuffer/50th")
@@ -316,8 +316,8 @@ public enum WebRtcAsserts implements AssertPath {
     WEBRTC_VIDEO_PACKETS_OUT_RSTDDEV("webrtc/video/packets/out/rstddev"),
     @SerializedName("webrtc/video/packets/in/max")
     WEBRTC_VIDEO_PACKETS_IN_MAX("webrtc/video/packets/in/max"),
-    @SerializedName("webrtc/video/jitter/25th")
-    WEBRTC_VIDEO_JITTER_25TH("webrtc/video/jitter/25th"),
+    @SerializedName("webrtc/video/jitter/out/25th")
+    WEBRTC_VIDEO_JITTER_OUT_25TH("webrtc/video/jitter/out/25th"),
     @SerializedName("webrtc/video/bytes/out/total")
     WEBRTC_VIDEO_BYTES_OUT_TOTAL("webrtc/video/bytes/out/total"),
     @SerializedName("webrtc/audio/bitrate/in/avg")
@@ -348,8 +348,8 @@ public enum WebRtcAsserts implements AssertPath {
     WEBRTC_AUDIO_PACKETS_OUT_TOTAL("webrtc/audio/packets/out/total"),
     @SerializedName("webrtc/video/rtt/99th")
     WEBRTC_VIDEO_RTT_99TH("webrtc/video/rtt/99th"),
-    @SerializedName("webrtc/audio/jitter/avg")
-    WEBRTC_AUDIO_JITTER_AVG("webrtc/audio/jitter/avg"),
+    @SerializedName("webrtc/audio/jitter/out/avg")
+    WEBRTC_AUDIO_JITTER_OUT_AVG("webrtc/audio/jitter/out/avg"),
     @SerializedName("webrtc/audio/level/in/99th")
     WEBRTC_AUDIO_LEVEL_IN_99TH("webrtc/audio/level/in/99th"),
     @SerializedName("webrtc/audio/bitrate/out/max")
@@ -370,14 +370,58 @@ public enum WebRtcAsserts implements AssertPath {
     WEBRTC_AUDIO_PACKETS_IN_50TH("webrtc/audio/packets/in/50th"),
     @SerializedName("webrtc/video/packets/in/rstddev")
     WEBRTC_VIDEO_PACKETS_IN_RSTDDEV("webrtc/video/packets/in/rstddev"),
-    @SerializedName("webrtc/audio/jitter/75th")
-    WEBRTC_AUDIO_JITTER_75TH("webrtc/audio/jitter/75th"),
+    @SerializedName("webrtc/audio/jitter/out/75th")
+    WEBRTC_AUDIO_JITTER_OUT_75TH("webrtc/audio/jitter/out/75th"),
     @SerializedName("webrtc/audio/level/in/95th")
     WEBRTC_AUDIO_LEVEL_IN_95TH("webrtc/audio/level/in/95th"),
     @SerializedName("webrtc/video/rtt/rstddev")
     WEBRTC_VIDEO_RTT_RSTDDEV("webrtc/video/rtt/rstddev"),
     @SerializedName("webrtc/audio/packets/out/rstddev")
-    WEBRTC_AUDIO_PACKETS_OUT_RSTDDEV("webrtc/audio/packets/out/rstddev");
+    WEBRTC_AUDIO_PACKETS_OUT_RSTDDEV("webrtc/audio/packets/out/rstddev"),
+    @SerializedName("webrtc/audio/jitter/out/min")
+    WEBRTC_AUDIO_JITTER_OUT_MIN("webrtc/audio/jitter/out/min"),
+    @SerializedName("webrtc/audio/jitter/in/min")
+    WEBRTC_AUDIO_JITTER_IN_MIN("webrtc/audio/jitter/in/min"),
+    @SerializedName("webrtc/audio/jitter/in/max")
+    WEBRTC_AUDIO_JITTER_IN_MAX("webrtc/audio/jitter/in/max"),
+    @SerializedName("webrtc/audio/jitter/in/avg")
+    WEBRTC_AUDIO_JITTER_IN_AVG("webrtc/audio/jitter/in/avg"),
+    @SerializedName("webrtc/audio/jitter/in/stddev")
+    WEBRTC_AUDIO_JITTER_IN_STDDEV("webrtc/audio/jitter/in/stddev"),
+    @SerializedName("webrtc/audio/jitter/in/min")
+    WEBRTC_AUDIO_JITTER_IN_RSTDDEV("webrtc/audio/jitter/in/rstddev"),
+    @SerializedName("webrtc/audio/jitter/in/25th")
+    WEBRTC_AUDIO_JITTER_IN_25TH("webrtc/audio/jitter/in/25th"),
+    @SerializedName("webrtc/audio/jitter/in/50th")
+    WEBRTC_AUDIO_JITTER_IN_50TH("webrtc/audio/jitter/in/50th"),
+    @SerializedName("webrtc/audio/jitter/in/75th")
+    WEBRTC_AUDIO_JITTER_IN_75TH("webrtc/audio/jitter/in/75th"),
+    @SerializedName("webrtc/audio/jitter/in/95th")
+    WEBRTC_AUDIO_JITTER_IN_95TH("webrtc/audio/jitter/in/95th"),
+    @SerializedName("webrtc/audio/jitter/in/99th")
+    WEBRTC_AUDIO_JITTER_IN_99TH("webrtc/audio/jitter/in/99th"),
+    @SerializedName("webrtc/video/jitter/in/min")
+    WEBRTC_VIDEO_JITTER_IN_MIN("webrtc/video/jitter/in/min"),
+    @SerializedName("webrtc/video/jitter/in/max")
+    WEBRTC_VIDEO_JITTER_IN_MAX("webrtc/video/jitter/in/max"),
+    @SerializedName("webrtc/video/jitter/in/avg")
+    WEBRTC_VIDEO_JITTER_IN_AVG("webrtc/video/jitter/in/avg"),
+    @SerializedName("webrtc/video/jitter/in/stddev")
+    WEBRTC_VIDEO_JITTER_IN_STDDEV("webrtc/video/jitter/in/stddev"),
+    @SerializedName("webrtc/video/jitter/in/min")
+    WEBRTC_VIDEO_JITTER_IN_RSTDDEV("webrtc/video/jitter/in/rstddev"),
+    @SerializedName("webrtc/video/jitter/in/25th")
+    WEBRTC_VIDEO_JITTER_IN_25TH("webrtc/video/jitter/in/25th"),
+    @SerializedName("webrtc/video/jitter/in/50th")
+    WEBRTC_VIDEO_JITTER_IN_50TH("webrtc/video/jitter/in/50th"),
+    @SerializedName("webrtc/video/jitter/in/75th")
+    WEBRTC_VIDEO_JITTER_IN_75TH("webrtc/video/jitter/in/75th"),
+    @SerializedName("webrtc/video/jitter/in/95th")
+    WEBRTC_VIDEO_JITTER_IN_95TH("webrtc/video/jitter/in/95th"),
+    @SerializedName("webrtc/video/jitter/in/99th")
+    WEBRTC_VIDEO_JITTER_IN_99TH("webrtc/video/jitter/in/99th"),
+    @SerializedName("webrtc/video/jitter/out/min")
+    WEBRTC_VIDEO_JITTER_OUT_MIN("webrtc/video/jitter/out/min");
 
     private final String label;
     private static final EnumLookupHelper<WebRtcAsserts> helper = new EnumLookupHelper<>(values());
