@@ -133,7 +133,43 @@ public enum MachineAsserts implements AssertPath {
     @SerializedName("machine/cpu/percent/95th")
     MACHINE_CPU_PERCENT_95TH("machine/cpu/percent/95th"),
     @SerializedName("machine/cpu/percent/99th")
-    MACHINE_CPU_PERCENT_99TH("machine/cpu/percent/99th");
+    MACHINE_CPU_PERCENT_99TH("machine/cpu/percent/99th"),
+    @SerializedName("machine/network/packets/in/avg")
+    MACHINE_NETWORK_PACKETS_IN_AVG("machine/network/packets/in/avg"),
+    @SerializedName("machine/network/packets/in/max")
+    MACHINE_NETWORK_PACKETS_IN_MAX("machine/network/packets/in/max"),
+    @SerializedName("machine/network/packets/in/stddev")
+    MACHINE_NETWORK_PACKETS_IN_STDDEV("machine/network/packets/in/stddev"),
+    @SerializedName("machine/network/packets/in/rstddev")
+    MACHINE_NETWORK_PACKETS_IN_RSTDDEV("machine/network/packets/in/rstddev"),
+    @SerializedName("machine/network/packets/in/25th")
+    MACHINE_NETWORK_PACKETS_IN_25TH("machine/network/packets/in/25th"),
+    @SerializedName("machine/network/packets/in/50th")
+    MACHINE_NETWORK_PACKETS_IN_50TH("machine/network/packets/in/50th"),
+    @SerializedName("machine/network/packets/in/75th")
+    MACHINE_NETWORK_PACKETS_IN_75TH("machine/network/packets/in/75th"),
+    @SerializedName("machine/network/packets/in/95th")
+    MACHINE_NETWORK_PACKETS_IN_95TH("machine/network/packets/in/95th"),
+    @SerializedName("machine/network/packets/in/99th")
+    MACHINE_NETWORK_PACKETS_IN_99TH("machine/network/packets/in/99th"),
+    @SerializedName("machine/network/packets/out/avg")
+    MACHINE_NETWORK_PACKETS_OUT_AVG("machine/network/packets/out/avg"),
+    @SerializedName("machine/network/packets/out/max")
+    MACHINE_NETWORK_PACKETS_OUT_MAX("machine/network/packets/out/max"),
+    @SerializedName("machine/network/packets/out/stddev")
+    MACHINE_NETWORK_PACKETS_OUT_STDDEV("machine/network/packets/out/stddev"),
+    @SerializedName("machine/network/packets/out/rstddev")
+    MACHINE_NETWORK_PACKETS_OUT_RSTDDEV("machine/network/packets/out/rstddev"),
+    @SerializedName("machine/network/packets/out/25th")
+    MACHINE_NETWORK_PACKETS_OUT_25TH("machine/network/packets/out/25th"),
+    @SerializedName("machine/network/packets/out/50th")
+    MACHINE_NETWORK_PACKETS_OUT_50TH("machine/network/packets/out/50th"),
+    @SerializedName("machine/network/packets/out/75th")
+    MACHINE_NETWORK_PACKETS_OUT_75TH("machine/network/packets/out/75th"),
+    @SerializedName("machine/network/packets/out/95th")
+    MACHINE_NETWORK_PACKETS_OUT_95TH("machine/network/packets/out/95th"),
+    @SerializedName("machine/network/packets/out/99th")
+    MACHINE_NETWORK_PACKETS_OUT_99TH("machine/network/packets/out/99th");
 
     private final String label;
     private static final EnumLookupHelper<MachineAsserts> helper = new EnumLookupHelper<>(values());
