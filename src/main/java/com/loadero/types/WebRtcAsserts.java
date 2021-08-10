@@ -388,7 +388,7 @@ public enum WebRtcAsserts implements AssertPath {
     WEBRTC_AUDIO_JITTER_IN_AVG("webrtc/audio/jitter/in/avg"),
     @SerializedName("webrtc/audio/jitter/in/stddev")
     WEBRTC_AUDIO_JITTER_IN_STDDEV("webrtc/audio/jitter/in/stddev"),
-    @SerializedName("webrtc/audio/jitter/in/min")
+    @SerializedName("webrtc/audio/jitter/in/rstddev")
     WEBRTC_AUDIO_JITTER_IN_RSTDDEV("webrtc/audio/jitter/in/rstddev"),
     @SerializedName("webrtc/audio/jitter/in/25th")
     WEBRTC_AUDIO_JITTER_IN_25TH("webrtc/audio/jitter/in/25th"),
@@ -408,7 +408,7 @@ public enum WebRtcAsserts implements AssertPath {
     WEBRTC_VIDEO_JITTER_IN_AVG("webrtc/video/jitter/in/avg"),
     @SerializedName("webrtc/video/jitter/in/stddev")
     WEBRTC_VIDEO_JITTER_IN_STDDEV("webrtc/video/jitter/in/stddev"),
-    @SerializedName("webrtc/video/jitter/in/min")
+    @SerializedName("webrtc/video/jitter/in/rstddev")
     WEBRTC_VIDEO_JITTER_IN_RSTDDEV("webrtc/video/jitter/in/rstddev"),
     @SerializedName("webrtc/video/jitter/in/25th")
     WEBRTC_VIDEO_JITTER_IN_25TH("webrtc/video/jitter/in/25th"),
