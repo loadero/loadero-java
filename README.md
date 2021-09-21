@@ -20,6 +20,15 @@
 It allows you to create, delete, update, launch and retrieve information about tests 
 and test's related information.
 </p>
+
+<h3>Requirements</h3>
+<hr>
+<ul>
+    <li><b>Supported Versions:</b> Java 8+</li>
+    <li>Loadero API token. More information on <a href="https://wiki.loadero.com/loadero-usage/direct-api-access/">Direct API Access.</a> </li>
+    <li>Thanks to <b>JitPack</b> this library can be both used in <b>Maven</b> and <b>Gradle</b> projects.</li>
+</ul>
+
 <h3>Documentation</h3>
 <hr>
 <h4>Classes</h4>
@@ -282,7 +291,11 @@ Contains options for precondition's properties.
 <hr>
 
 <h4>Installation</h4>
+<p>
 Add <b>JitPack</b> repository and <b>loadero-java</b> dependency with recent version to your <b>pom.xml</b>.
+
+How to add <b>loadero-java</b> to <b>Gradle</b> project can be found here <a href="https://jitpack.io/#loadero/loadero-java">JitPack Loadero Java</a>.
+</p>
 
 ```
 <repositories>
