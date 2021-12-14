@@ -23,7 +23,7 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: ${{ matrix.java }}
-        distribution: 'adopt'
+        distribution: 'temurin'
     - name: Build with Maven
       run: mvn '-Dhttp.keepAlive=false' '-Dmaven.wagon.http.pool=false' '-Dmaven.wagon.httpconnectionManager.ttlSeconds=120' clean -B -U package --file pom.xml
   
@@ -37,7 +37,7 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: '11'
-        distribution: 'adopt'
+        distribution: 'temurin'
 
     - name: Build with Maven
       run: mvn clean -B test
