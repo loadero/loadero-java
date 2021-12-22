@@ -23,10 +23,10 @@ import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
 public class LoaderoTest extends AbstractTestLoadero {
     private static final String testFile = "body-projects-5040-tests-6866-uaor7.json";
+    private static final String allTestsFile = "body-all-tests.json";
 
     @BeforeAll
     public void init() {
@@ -215,6 +215,47 @@ public class LoaderoTest extends AbstractTestLoadero {
     }
 
     @Test
+    public void emptyOrNullNameException() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            TestParams params = TestParams.builder().withName("").build();
+        });
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            TestParams params = TestParams.builder().withName(null).build();
+        });
+    }
+
+    @Test
+    public void emptyOrNullScriptException() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            TestParams params = TestParams.builder().withScript("").build();
+        });
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            TestParams params = TestParams.builder().withScript(null).build();
+        });
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            TestParams params = TestParams.builder().withScript("path", "").build();
+        });
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            TestParams params = TestParams.builder().withScript("path", null).build();
+        });
+    }
+
+    @Test
+    public void malformedJson() {
+        wmRule.stubFor(get(urlMatching(".*/tests/[0-9]*/"))
+            .willReturn(aResponse()
+                .withStatus(HttpStatus.SC_OK)
+                .withBody("{"
+                    + "\"name\":\"name\""
+                    + "}"))
+        );
+
+        Assertions.assertThrows(ApiException.class, () -> {
+            com.loadero.model.Test test = com.loadero.model.Test.read(TEST_ID);
+        });
+    }
+
+    @Test
     public void testEnumLocation() {
         Assertions.assertEquals(Location.FRANKFURT, Location.getConstant("eu-central-1"));
         Assertions.assertEquals(Location.HONG_KONG, Location.getConstant("ap-east-1"));
@@ -224,9 +265,28 @@ public class LoaderoTest extends AbstractTestLoadero {
     }
 
     @Test
-    @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
     public void testReadAll() throws IOException {
+        wmRule.stubFor(get(urlMatching(".*/tests/"))
+            .willReturn(aResponse()
+                .withStatus(200)
+                .withBodyFile(allTestsFile)
+            )
+        );
+
         List<com.loadero.model.Test> tests = com.loadero.model.Test.readAll();
         Assertions.assertNotNull(tests);
+    }
+
+    @Test
+    public void negativeReadAll() {
+        wmRule.stubFor(get(urlMatching(".*/tests/"))
+            .willReturn(aResponse()
+                .withStatus(404)
+            )
+        );
+
+        Assertions.assertThrows(ApiException.class, () -> {
+            List<com.loadero.model.Test> tests = com.loadero.model.Test.readAll();
+        });
     }
 }

@@ -38,6 +38,7 @@ public class TestPolling extends AbstractTestLoadero {
     private StubMapping doneStub;
     private final String scenarioName = "polling";
     private final String getRunInfo = ".*/runs/.*";
+    private final String allTestRunsFile = "body-all-test-runs.json";
 
     @BeforeEach
     public void setupStubs() {
@@ -112,7 +113,7 @@ public class TestPolling extends AbstractTestLoadero {
         TestRun run = com.loadero.model.Test.launch(7193);
         Assertions.assertNotNull(run);
         TestRun poll = TestRun.poll(7193, run.getId(),
-            Duration.ofSeconds(20), Duration.ofSeconds(100)
+            Duration.ofSeconds(5), Duration.ofSeconds(100)
         );
         assertEquals(RunStatus.DONE, poll.getStatus());
     }
@@ -229,9 +230,98 @@ public class TestPolling extends AbstractTestLoadero {
 
     @Test
     @Order(10)
-    @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
+    public void testPollingAborted() throws IOException {
+        doneStub = wmRule.stubFor(get(urlMatching(getRunInfo))
+            .inScenario(scenarioName)
+            .whenScenarioStateIs("waiting for results")
+            .willReturn(aResponse()
+                .withStatus(HttpStatus.SC_OK)
+                .withBodyFile("body-projects-5040-tests-6866-runs-34778-aborted-ua.json"))
+        );
+
+        TestRun run = com.loadero.model.Test.launch(7193);
+        Assertions.assertNotNull(run);
+        TestRun poll = TestRun.poll(7193, run.getId(), Duration.ofSeconds(10));
+        assertEquals(RunStatus.ABORTED, poll.getStatus());
+    }
+
+    @Test
+    @Order(11)
+    public void testPollingAwsError() throws IOException {
+        doneStub = wmRule.stubFor(get(urlMatching(getRunInfo))
+            .inScenario(scenarioName)
+            .whenScenarioStateIs("waiting for results")
+            .willReturn(aResponse()
+                .withStatus(HttpStatus.SC_OK)
+                .withBodyFile("body-projects-5040-tests-6866-runs-34778-aws-error-ua.json"))
+        );
+
+        TestRun run = com.loadero.model.Test.launch(7193);
+        Assertions.assertNotNull(run);
+        TestRun poll = TestRun.poll(7193, run.getId(), Duration.ofSeconds(10));
+        assertEquals(RunStatus.AWS_ERROR, poll.getStatus());
+    }
+
+    @Test
+    @Order(12)
+    public void testPollingTimeoutExceeded() throws IOException {
+        doneStub = wmRule.stubFor(get(urlMatching(getRunInfo))
+            .inScenario(scenarioName)
+            .whenScenarioStateIs("waiting for results")
+            .willReturn(aResponse()
+                .withStatus(HttpStatus.SC_OK)
+                .withBodyFile("body-projects-5040-tests-6866-runs-34778-timeout-exceeded-ua.json"))
+        );
+
+        TestRun run = com.loadero.model.Test.launch(7193);
+        Assertions.assertNotNull(run);
+        TestRun poll = TestRun.poll(7193, run.getId(), Duration.ofSeconds(10));
+        assertEquals(RunStatus.TIMEOUT_EXCEEDED, poll.getStatus());
+    }
+
+    @Test
+    @Order(12)
+    public void testPollingInsufficientResources() throws IOException {
+        doneStub = wmRule.stubFor(get(urlMatching(getRunInfo))
+            .inScenario(scenarioName)
+            .whenScenarioStateIs("waiting for results")
+            .willReturn(aResponse()
+                .withStatus(HttpStatus.SC_OK)
+                .withBodyFile(
+                    "body-projects-5040-tests-6866-runs-34778-insufficient-resources-ua.json"))
+        );
+
+        TestRun run = com.loadero.model.Test.launch(7193);
+        Assertions.assertNotNull(run);
+        TestRun poll = TestRun.poll(7193, run.getId(), Duration.ofSeconds(10));
+        assertEquals(RunStatus.INSUFFICIENT_RESOURCES, poll.getStatus());
+    }
+
+    @Test
+    @Order(13)
     public void testReadAllRuns() throws IOException {
+        doneStub = wmRule.stubFor(get(urlMatching(".*/[0-9]*/runs/"))
+            .willReturn(aResponse()
+                .withStatus(200)
+                .withBodyFile(allTestRunsFile)
+            )
+        );
         List<TestRun> runs = TestRun.readAll(TEST_ID);
         Assertions.assertNotNull(runs);
+    }
+
+    @Test
+    @Order(14)
+    public void negativeReadAllRuns() {
+        doneStub = wmRule.stubFor(get(urlMatching(".*/[0-9]*/runs/"))
+            .willReturn(aResponse()
+                .withStatus(404)
+                .withBody("")
+            )
+        );
+
+        Assertions.assertThrows(ApiException.class, () -> {
+            List<TestRun> runs = TestRun.readAll(1);
+        });
     }
 }

@@ -23,13 +23,13 @@ import java.util.List;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
 public class TestAsserts extends AbstractTestLoadero {
     private static final String assertsPrecondFile = "body-asserts-precond.json";
     private static final String assertsNoPrecondFile = "body-asserts-no-precond.json";
+    private static final String assertsFile = "body-all-asserts.json";
+    private static final String url = ".*/asserts/[0-9]*/";
 
     @BeforeAll
     public void init() {
@@ -67,11 +67,6 @@ public class TestAsserts extends AbstractTestLoadero {
                 .withBodyFile(assertsNoPrecondFile))
         );
 
-        wmRule.stubFor(delete(urlMatching(".*/asserts/[0-9]*/"))
-            .willReturn(aResponse()
-                .withStatus(HttpStatus.SC_NO_CONTENT))
-        );
-
         AssertParams params = AssertParams.builder()
             .withTestId(TEST_ID)
             .withOperator(AssertOperator.EQUAL)
@@ -84,12 +79,49 @@ public class TestAsserts extends AbstractTestLoadero {
         Assertions.assertNotNull(create.getOperator());
         Assertions.assertNotNull(create.getPath());
 
+        wmRule.stubFor(delete(urlMatching(".*/asserts/" + create.getId() + "/"))
+            .willReturn(aResponse()
+                .withStatus(HttpStatus.SC_NO_CONTENT))
+        );
         Assert.delete(TEST_ID, create.getId());
     }
 
     @Test
+    public void negativeCreate() {
+        wmRule.stubFor(post(urlMatching(".*/asserts/"))
+            .willReturn(aResponse()
+                .withStatus(HttpStatus.SC_UNPROCESSABLE_ENTITY)
+                .withBodyFile(assertsNoPrecondFile))
+        );
+
+        AssertParams params = AssertParams.builder()
+            .withTestId(TEST_ID)
+            .withPath(WebRtcAsserts.WEBRTC_AUDIO_JITTER_25TH)
+            .build();
+
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Assert create = Assert.create(params);
+        });
+    }
+
+    @Test
+    public void negativeDeleteWrongId() {
+        wmRule.stubFor(delete(urlMatching(".*/asserts/" + ASSERT_ID + "/"))
+            .willReturn(aResponse()
+                .withStatus(HttpStatus.SC_NOT_FOUND))
+        );
+
+        Assertions.assertThrows(ApiException.class, () -> {
+            Assert.delete(TEST_ID, 1);
+        });
+
+        Assertions.assertThrows(ApiException.class, () -> {
+            Assert.delete(1, 1);
+        });
+    }
+
+    @Test
     public void updateAssert() throws IOException {
-        String url = ".*/asserts/[0-9]*/";
         AssertParams mockParams = AssertParams.builder()
             .withTestId(TEST_ID)
             .withId(ASSERT_ID)
@@ -132,6 +164,41 @@ public class TestAsserts extends AbstractTestLoadero {
     }
 
     @Test
+    public void negativeUpdate() {
+        wmRule.stubFor(get(urlMatching(url))
+            .willReturn(aResponse()
+                .withStatus(HttpStatus.SC_OK)
+                .withBodyFile(assertsPrecondFile))
+        );
+
+        wmRule.stubFor(put(urlMatching(url))
+            .willReturn(aResponse()
+                .withStatus(HttpStatus.SC_UNPROCESSABLE_ENTITY)
+                .withBody("")
+            ));
+
+        Assertions.assertThrows(ApiException.class, () -> {
+            AssertParams params = AssertParams.builder()
+                .withId(ASSERT_ID)
+                .withTestId(TEST_ID)
+                .build();
+            Assert update = Assert.update(params);
+        });
+        Assertions.assertThrows(ApiException.class, () -> {
+            AssertParams params = AssertParams.builder()
+                .withTestId(TEST_ID)
+                .build();
+            Assert update = Assert.update(params);
+        });
+        Assertions.assertThrows(ApiException.class, () -> {
+            AssertParams params = AssertParams.builder()
+                .withId(ASSERT_ID)
+                .build();
+            Assert update = Assert.update(params);
+        });
+    }
+
+    @Test
     public void testCopyAssert() throws IOException {
         String url = ".*/asserts/[0-9]*/";
 
@@ -154,9 +221,43 @@ public class TestAsserts extends AbstractTestLoadero {
     }
 
     @Test
-    @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
+    public void negativeCopy() {
+        wmRule.stubFor(post(urlMatching(url + "copy/"))
+            .willReturn(aResponse()
+                .withStatus(HttpStatus.SC_NOT_FOUND)
+            ));
+
+        Assertions.assertThrows(ApiException.class, () -> {
+            Assert copy = Assert.copy(TEST_ID, 1);
+        });
+        Assertions.assertThrows(ApiException.class, () -> {
+            Assert copy = Assert.copy(1, ASSERT_ID);
+        });
+    }
+
+    @Test
     public void testReadAll() throws IOException {
+        wmRule.stubFor(get(urlMatching(".*/asserts/"))
+            .willReturn(aResponse()
+                .withStatus(200)
+                .withBodyFile(assertsFile)
+            )
+        );
+
         List<Assert> asserts = Assert.readAll(TEST_ID);
         Assertions.assertNotNull(asserts);
+    }
+
+    @Test
+    public void negativeReadAll() {
+        wmRule.stubFor(get(urlMatching(".*/asserts/"))
+            .willReturn(aResponse()
+                .withStatus(404)
+            )
+        );
+
+        Assertions.assertThrows(ApiException.class, () -> {
+            List<Assert> asserts = Assert.readAll(112);
+        });
     }
 }

@@ -94,6 +94,13 @@ public final class TestRun {
         return ApiResource.request(RequestMethod.GET, route, null, TestRun.class);
     }
 
+    /**
+     * Retrieves all existing test runs.
+     *
+     * @param testId ID of the test.
+     * @return List containing {@link TestRun}s.
+     * @throws IOException
+     */
     public static List<TestRun> readAll(int testId) throws IOException {
         String route = buildRoute(testId);
         return ApiResource.request(RequestMethod.GET, route, null, TestRunCollection.class);

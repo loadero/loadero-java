@@ -1,0 +1,46 @@
+{
+  "pagination": {
+    "limit": 0,
+    "offset": 0,
+    "page": 1,
+    "total_pages": 1
+  },
+  "results": [
+    {
+      "id": 48797,
+      "created": "2021-02-02T12:00:25Z",
+      "updated": "2021-04-08T12:05:12Z",
+      "test_id": 6866,
+      "count": 1,
+      "name": "new name",
+      "participant_count": 15
+    },
+    {
+      "id": 50335,
+      "created": "2021-03-11T12:29:03Z",
+      "updated": "2021-04-01T05:31:51Z",
+      "test_id": 6866,
+      "count": 1,
+      "name": "New name from params"
+    },
+    {
+      "id": 50683,
+      "created": "2021-03-26T08:17:49Z",
+      "updated": "2021-03-26T08:17:49Z",
+      "test_id": 6866,
+      "count": 3,
+      "name": "duplicate name",
+      "participant_count": 3
+    },
+    {
+      "id": 51273,
+      "created": "2021-05-06T12:58:05Z",
+      "updated": "2021-05-06T12:58:05Z",
+      "test_id": 6866,
+      "count": 1,
+      "name": "new nameCopy",
+      "participant_count": 7
+    }
+  ],
+  "filter": {}
+}

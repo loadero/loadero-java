@@ -20,13 +20,14 @@ import com.loadero.types.Property;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
 public class TestPrecondition extends AbstractTestLoadero {
     private static final String precondFile = "body-precondition.json";
+    private static final String allPrecondFiles = "body-all-preconditions.json";
     private static final int PRECONDITION_ID = 692;
 
     @BeforeAll
@@ -110,6 +111,26 @@ public class TestPrecondition extends AbstractTestLoadero {
     }
 
     @Test
+    public void negativeDelete() {
+        wmRule.stubFor(delete(urlMatching(".*/preconditions/[0-9]*/"))
+            .willReturn(aResponse()
+                .withStatus(HttpStatus.SC_NOT_FOUND))
+        );
+
+        Assertions.assertThrows(ApiException.class, () -> {
+           Precondition.delete(TEST_ID, ASSERT_ID, 1);
+        });
+
+        Assertions.assertThrows(ApiException.class, () -> {
+            Precondition.delete(TEST_ID, 1, PRECONDITION_ID);
+        });
+
+        Assertions.assertThrows(ApiException.class, () -> {
+            Precondition.delete(1, ASSERT_ID, PRECONDITION_ID);
+        });
+    }
+
+    @Test
     public void updatePrecondition() throws IOException {
         String url = ".*/preconditions/[0-9]*/";
         wmRule.stubFor(get(urlMatching(url))
@@ -183,9 +204,31 @@ public class TestPrecondition extends AbstractTestLoadero {
     }
 
     @Test
-    @DisabledIfEnvironmentVariable(named = "LOADERO_BASE_URL", matches = ".*localhost.*")
     public void testReadAll() throws IOException {
+        wmRule.stubFor(get(urlMatching(".*/preconditions/"))
+            .willReturn(aResponse()
+                .withStatus(200)
+                .withBodyFile(allPrecondFiles)
+            )
+        );
+
         List<Precondition> preconditions = Precondition.readAll(TEST_ID, ASSERT_ID);
         Assertions.assertNotNull(preconditions);
+    }
+
+    @Test
+    public void negativeReadAll() {
+        wmRule.stubFor(get(urlMatching(".*/preconditions/"))
+            .willReturn(aResponse()
+                .withStatus(404)
+            )
+        );
+
+        Assertions.assertThrows(ApiException.class, () -> {
+            List<Precondition> preconditions = Precondition.readAll(1, ASSERT_ID);
+        });
+        Assertions.assertThrows(ApiException.class, () -> {
+            List<Precondition> preconditions = Precondition.readAll(TEST_ID, 1);
+        });
     }
 }
