@@ -96,7 +96,7 @@ public class TestAsserts extends AbstractTestLoadero {
 
         AssertParams params = AssertParams.builder()
             .withTestId(TEST_ID)
-            .withPath(WebRtcAsserts.WEBRTC_AUDIO_JITTER_25TH)
+            .withPath(WebRtcAsserts.WEBRTC_AUDIO_RTT_50TH)
             .build();
 
         Assertions.assertThrows(NullPointerException.class, () -> {
