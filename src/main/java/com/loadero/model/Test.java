@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Used for performing CRUD operations on tests.
  */
-public final class Test {
+public final class Test implements ModelParams {
     private final int id;
     private final String created;
     private final String updated;
@@ -75,7 +75,8 @@ public final class Test {
      */
     public static Test create(TestParams params) throws IOException {
         String route = buildRoute();
-        return ApiResource.request(RequestMethod.POST, route, params, Test.class);
+        Test newTest = new Test(params);
+        return ApiResource.request(RequestMethod.POST, route, newTest, Test.class);
     }
 
     /**
@@ -89,7 +90,8 @@ public final class Test {
         Test currentTest = read(params.getId());
         TestParams updateParams = params.copyUncommonFields(currentTest);
         String route = buildRoute(params.getId());
-        return ApiResource.request(RequestMethod.PUT, route, updateParams, Test.class);
+        Test updatedTest = new Test(updateParams);
+        return ApiResource.request(RequestMethod.PUT, route, updatedTest, Test.class);
     }
 
     /**
