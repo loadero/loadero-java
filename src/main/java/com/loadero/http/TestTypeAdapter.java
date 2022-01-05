@@ -10,12 +10,12 @@ import com.loadero.types.IncrementStrategy;
 import com.loadero.types.TestMode;
 import java.io.IOException;
 import java.time.Duration;
-import java.util.Objects;
 
 public class TestTypeAdapter extends TypeAdapter<Test> {
     private final String ID = "id";
     private final String PROJECT_ID = "project_id";
     private final String NAME = "name";
+    private final String SCRIPT = "script";
     private final String CREATED = "created";
     private final String UPDATED = "updated";
     private final String SCRIPT_FILE_ID = "script_file_id";
@@ -85,17 +85,17 @@ public class TestTypeAdapter extends TypeAdapter<Test> {
 
     @Override
     public void write(JsonWriter jsonWriter, Test test) throws IOException {
-        if (Objects.isNull(test)) {
+        if (test == null) {
             jsonWriter.nullValue();
         } else {
             jsonWriter.beginObject();
 
-            jsonWriter.name("name").value(test.getName());
-            jsonWriter.name("script").value(test.getScript());
-            jsonWriter.name("start_interval").value(test.getStartInterval().toString());
-            jsonWriter.name("participant_timeout").value(test.getParticipantTimeout().toString());
-            jsonWriter.name("mode").value(test.getMode().toString());
-            jsonWriter.name("increment_strategy").value(test.getIncrementStrategy().toString());
+            jsonWriter.name(NAME).value(test.getName());
+            jsonWriter.name(SCRIPT).value(test.getScript());
+            jsonWriter.name(START_INTERVAL).value(test.getStartInterval().toString());
+            jsonWriter.name(PARTICIPANT_TIMEOUT).value(test.getParticipantTimeout().toString());
+            jsonWriter.name(MODE).value(test.getMode().toString());
+            jsonWriter.name(INCREMENT_STRATEGY).value(test.getIncrementStrategy().toString());
 
             jsonWriter.endObject();
         }

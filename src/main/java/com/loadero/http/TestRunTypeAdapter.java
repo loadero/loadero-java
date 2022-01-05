@@ -125,19 +125,20 @@ public class TestRunTypeAdapter extends TypeAdapter<TestRun> {
 
         jsonReader.endObject();
 
-        double successRate = testRunMap.get(SUCCESS_RATE) == null ? 0.0 :
-            (double) testRunMap.get(SUCCESS_RATE);
-        int groupCount = testRunMap.get(GROUP_COUNT) == null ? 0 :
-            (int) testRunMap.get(GROUP_COUNT);
-        int participantCount = testRunMap.get(PARTICIPANT_COUNT) == null ? 0 :
-            (int) testRunMap.get(PARTICIPANT_COUNT);
-        String processingStarted = testRunMap.get(PROCESSING_STARTED) == null ? ""
+        double successRate = testRunMap.get(SUCCESS_RATE) == null ? 0.0 : (double) testRunMap.get(SUCCESS_RATE);
+        int groupCount = testRunMap.get(GROUP_COUNT) == null ? 0 : (int) testRunMap.get(GROUP_COUNT);
+        int participantCount = testRunMap.get(PARTICIPANT_COUNT) == null ? 0 : (int) testRunMap.get(PARTICIPANT_COUNT);
+        String processingStarted = testRunMap.get(PROCESSING_STARTED) == null
+            ? ""
             : (String) testRunMap.get(PROCESSING_STARTED);
-        String processingFinished = testRunMap.get(PROCESSING_FINISHED) == null ? ""
+        String processingFinished = testRunMap.get(PROCESSING_FINISHED) == null
+            ? ""
             : (String) testRunMap.get(PROCESSING_FINISHED);
-        String executionStarted = testRunMap.get(EXECUTION_STARTED) == null ? ""
+        String executionStarted = testRunMap.get(EXECUTION_STARTED) == null ?
+            ""
             : (String) testRunMap.get(EXECUTION_STARTED);
-        String executionFinished = testRunMap.get(EXECUTION_FINISHED) == null ? ""
+        String executionFinished = testRunMap.get(EXECUTION_FINISHED) == null ?
+            ""
             : (String) testRunMap.get(EXECUTION_FINISHED);
 
         return new TestRun(
