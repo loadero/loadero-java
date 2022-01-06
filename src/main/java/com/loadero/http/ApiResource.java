@@ -68,13 +68,12 @@ public enum ApiResource {
 
     private static Gson createGson() {
         return new GsonBuilder()
-            .registerTypeAdapter(Test.class, new TestDeserializer())
-            .registerTypeAdapter(Test.class, new TestSerializer())
+            .registerTypeAdapter(Test.class, new TestTypeAdapter())
             .registerTypeAdapter(Group.class, new GroupDeserializer())
             .registerTypeAdapter(Group.class, new GroupSerializer())
             .registerTypeAdapter(Participant.class, new ParticipantDeserializer())
             .registerTypeAdapter(Participant.class, new ParticipantSerializer())
-            .registerTypeAdapter(TestRun.class, new TestRunDeserializer())
+            .registerTypeAdapter(TestRun.class, new TestRunTypeAdapter())
             .registerTypeAdapter(Assert.class, new AssertDeserializer())
             .registerTypeAdapter(Assert.class, new AssertSerializer())
             .registerTypeAdapter(Precondition.class, new PreconditionDeserializer())

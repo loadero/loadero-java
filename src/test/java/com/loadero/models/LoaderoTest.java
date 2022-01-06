@@ -8,6 +8,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.put;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
+import com.google.gson.JsonSyntaxException;
 import com.loadero.AbstractTestLoadero;
 import com.loadero.Loadero;
 import com.loadero.exceptions.ApiException;
@@ -114,12 +115,6 @@ public class LoaderoTest extends AbstractTestLoadero {
             .willSetStateTo("created")
         );
 
-        wmRule.stubFor(delete(urlMatching(".*/tests/[0-9]*"))
-            .inScenario("create and delete test")
-            .whenScenarioStateIs("created")
-            .willReturn(aResponse()
-                .withStatus(204)));
-
         TestParams params = TestParams
             .builder()
             .withName("new test")
@@ -135,8 +130,14 @@ public class LoaderoTest extends AbstractTestLoadero {
         Assertions.assertNotNull(create.getMode());
         Assertions.assertNotNull(create.getIncrementStrategy());
 
-        Assertions
-            .assertThrows(ApiException.class, () -> com.loadero.model.Test.delete(create.getId()));
+        String deleteUrl = String.format(".*/tests/%s/", create.getId());
+        wmRule.stubFor(delete(urlMatching(deleteUrl))
+            .inScenario("create and delete test")
+            .whenScenarioStateIs("created")
+            .willReturn(aResponse()
+                .withStatus(204)));
+
+        com.loadero.model.Test.delete(create.getId());
     }
 
     @Test
@@ -246,8 +247,7 @@ public class LoaderoTest extends AbstractTestLoadero {
             .willReturn(aResponse()
                 .withStatus(HttpStatus.SC_OK)
                 .withBody("{"
-                    + "\"name\":\"name\""
-                    + "}"))
+                    + "\"name\":\"name\""))
         );
 
         Assertions.assertThrows(ApiException.class, () -> {

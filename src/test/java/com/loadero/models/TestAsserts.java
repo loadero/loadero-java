@@ -105,22 +105,6 @@ public class TestAsserts extends AbstractTestLoadero {
     }
 
     @Test
-    public void negativeDeleteWrongId() {
-        wmRule.stubFor(delete(urlMatching(".*/asserts/" + ASSERT_ID + "/"))
-            .willReturn(aResponse()
-                .withStatus(HttpStatus.SC_NOT_FOUND))
-        );
-
-        Assertions.assertThrows(ApiException.class, () -> {
-            Assert.delete(TEST_ID, 1);
-        });
-
-        Assertions.assertThrows(ApiException.class, () -> {
-            Assert.delete(1, 1);
-        });
-    }
-
-    @Test
     public void updateAssert() throws IOException {
         AssertParams mockParams = AssertParams.builder()
             .withTestId(TEST_ID)
