@@ -1,7 +1,13 @@
 package com.loadero.model;
 
 import com.google.gson.annotations.SerializedName;
+import com.loadero.types.AudioFeed;
+import com.loadero.types.Browser;
 import com.loadero.types.ComputeUnit;
+import com.loadero.types.Location;
+import com.loadero.types.MediaType;
+import com.loadero.types.Network;
+import com.loadero.types.VideoFeed;
 
 /*
  * Class to deserialize information about participant_details field in results.
@@ -27,6 +33,19 @@ public final class ParticipantDetails {
     @SerializedName("record_audio")
     private final boolean recordAudio;
 
+    @SerializedName("browser")
+    private final String browser;
+    @SerializedName("network")
+    private final Network network;
+    @SerializedName("location")
+    private final Location location;
+    @SerializedName("media_type")
+    private final MediaType mediaType;
+    @SerializedName("video_feed")
+    private final VideoFeed videoFeed;
+    @SerializedName("audio_feed")
+    private final AudioFeed audioFeed;
+
     public ParticipantDetails(
         int id,
         String created,
@@ -38,7 +57,13 @@ public final class ParticipantDetails {
         int profileId,
         ComputeUnit computeUnit,
         int runId,
-        boolean recordAudio
+        boolean recordAudio,
+        String browser,
+        Network network,
+        Location location,
+        MediaType mediaType,
+        VideoFeed videoFeed,
+        AudioFeed audioFeed
     ) {
         this.id = id;
         this.created = created;
@@ -51,6 +76,12 @@ public final class ParticipantDetails {
         this.computeUnit = computeUnit;
         this.runId = runId;
         this.recordAudio = recordAudio;
+        this.browser = browser;
+        this.network = network;
+        this.location = location;
+        this.mediaType = mediaType;
+        this.videoFeed = videoFeed;
+        this.audioFeed = audioFeed;
     }
 
     public int getId() {
@@ -97,6 +128,20 @@ public final class ParticipantDetails {
         return recordAudio;
     }
 
+    public Browser getBrowser() {
+        return new Browser(browser);
+    }
+
+    public Network getNetwork() { return network; }
+
+    public Location getLocation() { return location; }
+
+    public MediaType getMediaType() { return mediaType; }
+
+    public VideoFeed getVideoFeed() { return videoFeed; }
+
+    public AudioFeed getAudioFeed() { return audioFeed; }
+
     @Override
     public String toString() {
         return "ParticipantDetails{" +
@@ -110,7 +155,12 @@ public final class ParticipantDetails {
             ", profileId=" + profileId +
             ", computeUnit=" + computeUnit +
             ", runId=" + runId +
-            ", recordAudio=" + recordAudio +
+            ", browser=" + browser +
+            ", network=" + network +
+            ", location=" + location +
+            ", mediaType=" + mediaType +
+            ", videoFeed=" + videoFeed +
+            ", audioFeed=" + audioFeed +
             '}';
     }
 }
