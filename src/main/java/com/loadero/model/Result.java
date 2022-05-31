@@ -4,9 +4,12 @@ import com.google.gson.annotations.SerializedName;
 import com.loadero.Loadero;
 import com.loadero.http.ApiResource;
 import com.loadero.http.RequestMethod;
+import com.loadero.types.Browser;
 import com.loadero.types.ResultStatus;
 import java.io.IOException;
 import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Class for reading the results of a test run.
@@ -24,8 +27,9 @@ public final class Result {
     private final int runParticipantId;
     @SerializedName("participant_details")
     private final ParticipantDetails participantDetails;
-    @SerializedName("profile_params")
-    private final ProfileParams profileParams;
+
+    private transient ProfileParams profileParams;
+
     @SerializedName("log_paths")
     private final LogPaths logPaths;
     private final List<ResultAssert> asserts;
@@ -138,8 +142,22 @@ public final class Result {
         return participantDetails;
     }
 
+    @Deprecated
     public ProfileParams getProfileParams() {
-        return profileParams;
+        profileParams = new ProfileParams(
+            participantDetails.getBrowser(),
+            participantDetails.getNetwork(),
+            participantDetails.getLocation(),
+            participantDetails.getMediaType(),
+            participantDetails.getVideoFeed(),
+            participantDetails.getAudioFeed()
+        );
+
+         Logger log = LogManager.getLogger(Result.class);
+         log.warn("ProfileParams has been deprecated from Result API response. Please use "
+                  + "Result.ParticipantDetails");
+
+         return profileParams;
     }
 
     public LogPaths getLogPaths() {
@@ -166,7 +184,6 @@ public final class Result {
             ", seleniumResult=" + seleniumResult +
             ", runParticipantId=" + runParticipantId +
             ", participantDetails=" + participantDetails +
-            ", profileParams=" + profileParams +
             ", logPaths=" + logPaths +
             ", asserts=" + asserts +
             ", artifacts=" + artifacts +
