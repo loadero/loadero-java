@@ -92,7 +92,6 @@ public final class Result {
         return ApiResource.request(RequestMethod.GET, route, null, ResultCollection.class);
     }
 
-    // this
     private static String buildRoute(int testId, int runId) {
         return String.format(
             "%s/tests/%s/runs/%s/results/",
@@ -100,7 +99,6 @@ public final class Result {
         );
     }
 
-    // this
     private static String buildRoute(int testId, int runId, int resultId) {
         return String.format(
             "%s/tests/%s/runs/%s/results/%s/",
@@ -144,6 +142,7 @@ public final class Result {
         return participantDetails;
     }
 
+    @Deprecated
     public ProfileParams getProfileParams() {
         profileParams = new ProfileParams(
             participantDetails.getBrowser(),
