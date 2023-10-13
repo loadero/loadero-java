@@ -295,7 +295,7 @@ Add <b>JitPack</b> repository and <b>loadero-java</b> dependency with recent ver
     <dependency>
           <groupId>com.github.loadero</groupId>
 	  <artifactId>loadero-java</artifactId>
-	  <version>1.1.2</version>
+	  <version>1.1.3</version>
     </dependency>
 </dependencies>
 ```
