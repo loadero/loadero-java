@@ -12,10 +12,14 @@ public enum ComputeUnit {
     G1("g1"),
     @SerializedName("g2")
     G2("g2"),
+    @SerializedName("g4")
+    G4("g4"),
     @SerializedName("g6")
     G6("g6"),
-    @SerializedName("g4")
-    G4("g4");
+    @SerializedName("g8")
+    G8("g8"),
+    @SerializedName("g12")
+    G12("g12");
 
     private final String label;
     private static final EnumLookupHelper<ComputeUnit> helper = new EnumLookupHelper<>(values());

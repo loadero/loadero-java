@@ -17,7 +17,11 @@ public enum AudioFeed {
     @SerializedName("-30db")
     STEREO_MINUS_30_DB("-30db"),
     @SerializedName("128kbps")
-    STEREO_128_KBPS("128kbps");
+    STEREO_128_KBPS("128kbps"),
+    @SerializedName("silence")
+    SILENCE("silence"),
+    @SerializedName("visqol-speech")
+    VISQOL_SPEECH("visqol-speech");
 
     private final String label;
     private static final EnumLookupHelper<AudioFeed> helper = new EnumLookupHelper<>(values());

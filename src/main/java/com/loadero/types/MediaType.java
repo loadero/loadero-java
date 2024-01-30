@@ -6,6 +6,8 @@ import com.google.gson.annotations.SerializedName;
  * Contains values that can be used to set media type for a {@link com.loadero.model.Participant}.
  */
 public enum MediaType {
+    @SerializedName("custom")
+    CUSTOM("custom"),
     @SerializedName("default")
     DEFAULT("default"),
     @SerializedName("240pAV")
