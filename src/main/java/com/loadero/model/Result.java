@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName;
 import com.loadero.Loadero;
 import com.loadero.http.ApiResource;
 import com.loadero.http.RequestMethod;
-import com.loadero.types.Browser;
 import com.loadero.types.ResultStatus;
 import java.io.IOException;
 import java.util.List;
@@ -148,7 +147,6 @@ public final class Result {
             participantDetails.getBrowser(),
             participantDetails.getNetwork(),
             participantDetails.getLocation(),
-            participantDetails.getMediaType(),
             participantDetails.getVideoFeed(),
             participantDetails.getAudioFeed()
         );

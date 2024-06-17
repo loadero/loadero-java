@@ -9,7 +9,6 @@ import com.loadero.model.ProfileParams;
 import com.loadero.types.AudioFeed;
 import com.loadero.types.Browser;
 import com.loadero.types.Location;
-import com.loadero.types.MediaType;
 import com.loadero.types.Network;
 import com.loadero.types.VideoFeed;
 import java.lang.reflect.Type;
@@ -28,9 +27,6 @@ final class ProfileParamsDeserializer implements JsonDeserializer<ProfileParams>
         Location location = Location.getConstant(
             jsonObject.getAsJsonPrimitive("location").getAsString()
         );
-        MediaType mediaType = MediaType.getConstant(
-            jsonObject.getAsJsonPrimitive("media_type").getAsString()
-        );
         VideoFeed videoFeed = VideoFeed.getConstant(
             jsonObject.getAsJsonPrimitive("video_feed").getAsString()
         );
@@ -39,8 +35,7 @@ final class ProfileParamsDeserializer implements JsonDeserializer<ProfileParams>
         );
 
         return new ProfileParams(
-            browser, network, location,
-            mediaType, videoFeed, audioFeed
+            browser, network, location, videoFeed, audioFeed
         );
     }
 }

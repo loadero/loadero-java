@@ -11,7 +11,6 @@ import com.loadero.types.AudioFeed;
 import com.loadero.types.Browser;
 import com.loadero.types.ComputeUnit;
 import com.loadero.types.Location;
-import com.loadero.types.MediaType;
 import com.loadero.types.Network;
 import com.loadero.types.VideoFeed;
 import java.lang.reflect.Type;
@@ -33,8 +32,6 @@ final class ParticipantDeserializer implements JsonDeserializer<Participant> {
             jsonObject.getAsJsonPrimitive("network").getAsString());
         Location location = Location.getConstant(
             jsonObject.getAsJsonPrimitive("location").getAsString());
-        MediaType mediaType = MediaType.getConstant(
-            jsonObject.getAsJsonPrimitive("media_type").getAsString());
         AudioFeed audioFeed = AudioFeed.getConstant(
             jsonObject.getAsJsonPrimitive("audio_feed").getAsString());
         VideoFeed videoFeed = VideoFeed.getConstant(
@@ -52,7 +49,6 @@ final class ParticipantDeserializer implements JsonDeserializer<Participant> {
             .withBrowser(browser)
             .withNetwork(network)
             .withLocation(location)
-            .withMediaType(mediaType)
             .withRecordAudio(jsonObject.getAsJsonPrimitive("record_audio").getAsBoolean())
             .withAudioFeed(audioFeed)
             .withVideoFeed(videoFeed)
