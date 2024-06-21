@@ -159,7 +159,7 @@ public final class FileParams implements ModelParams {
          * @param password String value.
          * @return {@link FileParamsBuilder}
          */
-        public FileParamsBuilder withCount(String password) {
+        public FileParamsBuilder withPassword(String password) {
             this.password = password;
             return this;
         }
