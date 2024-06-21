@@ -79,7 +79,7 @@ public final class TestParams implements ModelParams {
             ? currentParams.getStartInterval() : this.startInterval;
         Duration timeout = this.participantTimeout == null
             ? currentParams.getParticipantTimeout() : this.participantTimeout;
-        String currentScript = Script.read(currentParams.getScriptFileId()).getContent();
+        String currentScript = File.read(currentParams.getScriptFileId()).getContent();
         String script = this.script == null ? currentScript : this.script;
 
         return new TestParams(

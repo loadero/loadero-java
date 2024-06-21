@@ -2,6 +2,7 @@ package com.loadero.model;
 
 import com.google.gson.annotations.SerializedName;
 import com.loadero.Loadero;
+import com.loadero.types.FileType;
 import com.loadero.http.ApiResource;
 import com.loadero.http.RequestMethod;
 import java.io.IOException;
@@ -15,25 +16,20 @@ public final class File {
     private final String updated;
     @SerializedName("project_id")
     private final int projectId;
-    @SerializedName("file_type")
-    private final String fileType;
+    private final FileType fileType;
     private final String content;
     private final String name;
     private final String password;
 
-    File(
-        int id, String created, String updated,
-        int projectId, String fileType, String content, 
-        String name, String password
-    ) {
-        this.id = id;
-        this.created = created;
-        this.updated = updated;
-        this.projectId = projectId;
-        this.fileType = fileType;
-        this.content = content;
-        this.name = name;
-        this.password = password;
+    public File(FileParams params) {
+        this.id = params.getId();
+        this.created = params.getCreated();
+        this.updated = params.getUpdated();
+        this.projectId = params.getProjectId();
+        this.fileType = params.getFileType();
+        this.content = params.getContent();
+        this.name = params.getName();
+        this.password = params.getPassword();
     }
 
     /**
@@ -46,6 +42,22 @@ public final class File {
     public static File read(int fileId) throws IOException {
         String route = buildRoute(fileId);
         return ApiResource.request(RequestMethod.GET, route, null, File.class);
+    }
+
+    /**
+     * Creates new file.
+     *
+     * @param params Parameters defined in {@link FileParams}
+     * @return {@link File} object.
+     * @throws IOException if request failed.
+     */
+    public static File create(FileParams params) throws IOException {
+        String route = buildRoute();
+        return ApiResource.request(RequestMethod.POST, route, params, File.class);
+    }
+
+    private static String buildRoute() {
+        return String.format("%s/files/", Loadero.getProjectUrl());
     }
 
     private static String buildRoute(int fileId) {
@@ -68,7 +80,7 @@ public final class File {
         return projectId;
     }
 
-    public String getFileType() {
+    public FileType getFileType() {
         return fileType;
     }
 
@@ -84,18 +96,17 @@ public final class File {
         return password;
     }
 
-
     @Override
     public String toString() {
         return "File{" +
-            "id=" + id +
-            ", created='" + created + '\'' +
-            ", updated='" + updated + '\'' +
-            ", projectId=" + projectId +
-            ", fileType='" + fileType + '\'' +
-            ", content='" + content + '\'' +
-            ", name='" + name + '\'' +
-            ", password='" + password + '\'' +
-            '}';
+                "id=" + id +
+                ", created='" + created + '\'' +
+                ", updated='" + updated + '\'' +
+                ", projectId=" + projectId +
+                ", fileType='" + fileType + '\'' +
+                ", content='" + content + '\'' +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }
