@@ -99,14 +99,14 @@ public final class File {
     @Override
     public String toString() {
         return "File{" +
-                "id=" + id +
-                ", created='" + created + '\'' +
-                ", updated='" + updated + '\'' +
-                ", projectId=" + projectId +
-                ", fileType='" + fileType + '\'' +
-                ", content='" + content + '\'' +
-                ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+            "id=" + id +
+            ", created='" + created + '\'' +
+            ", updated='" + updated + '\'' +
+            ", projectId=" + projectId +
+            ", fileType='" + fileType + '\'' +
+            ", content='" + content + '\'' +
+            ", name='" + name + '\'' +
+            ", password='" + password + '\'' +
+            '}';
     }
 }
