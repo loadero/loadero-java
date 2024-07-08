@@ -32,7 +32,8 @@ public final class FileParams implements ModelParams {
     private FileParams(
             int id, String created, String updated,
             int projectId, FileType fileType,
-            String content, String name, String password) {
+            String content, String name, String password
+        ) {
         this.id = id;
         this.created = created;
         this.updated = updated;
@@ -60,9 +61,10 @@ public final class FileParams implements ModelParams {
         String password = this.password == "" ? currentParams.getPassword() : this.password;
 
         return new FileParams(
-                id, created, updated,
-                projectId, fileType, content,
-                name, password);
+            id, created, updated,
+            projectId, fileType, content,
+            name, password
+        );
     }
 
     public static final class FileParamsBuilder {
@@ -209,14 +211,14 @@ public final class FileParams implements ModelParams {
     @Override
     public String toString() {
         return "FileParams{" +
-                "id=" + id +
-                ", created='" + created + '\'' +
-                ", updated='" + updated + '\'' +
-                ", projectId=" + projectId +
-                ", fileType='" + fileType + '\'' +
-                ", content='" + content + '\'' +
-                ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+            "id=" + id +
+            ", created='" + created + '\'' +
+            ", updated='" + updated + '\'' +
+            ", projectId=" + projectId +
+            ", fileType='" + fileType + '\'' +
+            ", content='" + content + '\'' +
+            ", name='" + name + '\'' +
+            ", password='" + password + '\'' +
+            '}';
     }
 }

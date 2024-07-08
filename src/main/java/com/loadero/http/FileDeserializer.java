@@ -22,7 +22,7 @@ final class FileDeserializer implements JsonDeserializer<File> {
         FileType fileType = FileType
             .getConstant(jsonObject.getAsJsonPrimitive("file_type").getAsString());
 
-            FileParams params = FileParams
+        FileParams params = FileParams
             .builder()
             .withId(jsonObject.getAsJsonPrimitive("id").getAsInt())
             .withCreated(jsonObject.getAsJsonPrimitive("created").getAsString())
