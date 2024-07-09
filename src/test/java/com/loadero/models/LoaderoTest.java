@@ -12,7 +12,7 @@ import com.google.gson.JsonSyntaxException;
 import com.loadero.AbstractTestLoadero;
 import com.loadero.Loadero;
 import com.loadero.exceptions.ApiException;
-import com.loadero.model.Script;
+import com.loadero.model.File;
 import com.loadero.model.TestParams;
 import com.loadero.types.IncrementStrategy;
 import com.loadero.types.Location;
@@ -62,7 +62,7 @@ public class LoaderoTest extends AbstractTestLoadero {
                 .withStatus(200)
                 .withBodyFile("body-script-file.json"))
         );
-        Script script = Script.read(57737);
+        File script = File.read(57737);
         Assertions.assertNotNull(script);
         Assertions.assertNotNull(script.getContent());
     }
@@ -75,7 +75,7 @@ public class LoaderoTest extends AbstractTestLoadero {
             ));
 
         Assertions.assertThrows(ApiException.class, () -> {
-            Script script = Script.read(1);
+            File script = File.read(1);
         });
     }
 

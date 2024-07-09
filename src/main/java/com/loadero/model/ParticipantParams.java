@@ -4,7 +4,6 @@ import com.loadero.types.AudioFeed;
 import com.loadero.types.Browser;
 import com.loadero.types.ComputeUnit;
 import com.loadero.types.Location;
-import com.loadero.types.MediaType;
 import com.loadero.types.Network;
 import com.loadero.types.VideoFeed;
 import com.loadero.util.StringUtil;
@@ -25,7 +24,6 @@ public final class ParticipantParams implements ModelParams {
     private final Browser browser;
     private final Network network;
     private final Location location;
-    private final MediaType mediaType;
     private final boolean recordAudio;
     private final AudioFeed audioFeed;
     private final VideoFeed videoFeed;
@@ -43,7 +41,6 @@ public final class ParticipantParams implements ModelParams {
         this.browser = builder.browser;
         this.network = builder.network;
         this.location = builder.location;
-        this.mediaType = builder.mediaType;
         this.recordAudio = builder.recordAudio;
         this.audioFeed = builder.audioFeed;
         this.videoFeed = builder.videoFeed;
@@ -53,7 +50,7 @@ public final class ParticipantParams implements ModelParams {
         int id, String created, String updated,
         int groupId, int testId, int profileId, String name, int count,
         ComputeUnit cu, Browser browser, Network network,
-        Location location, MediaType mediaType, boolean recordAudio,
+        Location location, boolean recordAudio,
         AudioFeed audioFeed, VideoFeed videoFeed
     ) {
         this.id = id;
@@ -68,7 +65,6 @@ public final class ParticipantParams implements ModelParams {
         this.browser = browser;
         this.network = network;
         this.location = location;
-        this.mediaType = mediaType;
         this.recordAudio = recordAudio;
         this.audioFeed = audioFeed;
         this.videoFeed = videoFeed;
@@ -94,13 +90,12 @@ public final class ParticipantParams implements ModelParams {
         boolean recordAudio = currentParams.getRecordAudio();
         ComputeUnit cu = this.computeUnit == null
             ? currentParams.getComputeUnit() : this.computeUnit;
-        MediaType mediaType = this.mediaType == null ? currentParams.getMediaType() : this.mediaType;
 
         return new ParticipantParams(
             id, created, updated,
             testId, groupId, profileId,
             name, count, cu, browser, network,
-            location, mediaType, recordAudio,
+            location, recordAudio,
             audioFeed, videoFeed
         );
     }
@@ -118,7 +113,6 @@ public final class ParticipantParams implements ModelParams {
         private Browser browser;
         private Network network;
         private Location location;
-        private MediaType mediaType;
         private boolean recordAudio;
         private AudioFeed audioFeed;
         private VideoFeed videoFeed;
@@ -257,17 +251,6 @@ public final class ParticipantParams implements ModelParams {
         }
 
         /**
-         * Sets media type.
-         *
-         * @param mediaType Value of {@link MediaType}.
-         * @return {@link ParticipantParamsBuilder}
-         */
-        public ParticipantParamsBuilder withMediaType(MediaType mediaType) {
-            this.mediaType = mediaType;
-            return this;
-        }
-
-        /**
          * Sets whether or not record audio.
          *
          * @param recordAudio True/False value.
@@ -358,10 +341,6 @@ public final class ParticipantParams implements ModelParams {
         return location;
     }
 
-    public MediaType getMediaType() {
-        return mediaType;
-    }
-
     public boolean getRecordAudio() {
         return recordAudio;
     }
@@ -389,7 +368,6 @@ public final class ParticipantParams implements ModelParams {
             ", browser=" + browser +
             ", network=" + network +
             ", location=" + location +
-            ", mediaType=" + mediaType +
             ", recordAudio=" + recordAudio +
             ", audioFeed=" + audioFeed +
             ", videoFeed=" + videoFeed +

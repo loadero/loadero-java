@@ -85,11 +85,10 @@ information about its test run state.</td>
 <td>
 
 ```java
-class Script(){}
+class File(){}
 ```
 </td>
-<td>Used to represent information about script file that is used
-by Loadero to run tests.
+<td>Used to represent information about file that is used by Loadero to run tests.
 </td>
 </tr>
 <tr>

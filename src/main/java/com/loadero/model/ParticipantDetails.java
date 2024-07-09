@@ -5,7 +5,6 @@ import com.loadero.types.AudioFeed;
 import com.loadero.types.Browser;
 import com.loadero.types.ComputeUnit;
 import com.loadero.types.Location;
-import com.loadero.types.MediaType;
 import com.loadero.types.Network;
 import com.loadero.types.VideoFeed;
 
@@ -39,8 +38,6 @@ public final class ParticipantDetails {
     private final Network network;
     @SerializedName("location")
     private final Location location;
-    @SerializedName("media_type")
-    private final MediaType mediaType;
     @SerializedName("video_feed")
     private final VideoFeed videoFeed;
     @SerializedName("audio_feed")
@@ -61,7 +58,6 @@ public final class ParticipantDetails {
         String browser,
         Network network,
         Location location,
-        MediaType mediaType,
         VideoFeed videoFeed,
         AudioFeed audioFeed
     ) {
@@ -79,7 +75,6 @@ public final class ParticipantDetails {
         this.browser = browser;
         this.network = network;
         this.location = location;
-        this.mediaType = mediaType;
         this.videoFeed = videoFeed;
         this.audioFeed = audioFeed;
     }
@@ -136,8 +131,6 @@ public final class ParticipantDetails {
 
     public Location getLocation() { return location; }
 
-    public MediaType getMediaType() { return mediaType; }
-
     public VideoFeed getVideoFeed() { return videoFeed; }
 
     public AudioFeed getAudioFeed() { return audioFeed; }
@@ -158,7 +151,6 @@ public final class ParticipantDetails {
             ", browser=" + browser +
             ", network=" + network +
             ", location=" + location +
-            ", mediaType=" + mediaType +
             ", videoFeed=" + videoFeed +
             ", audioFeed=" + audioFeed +
             '}';

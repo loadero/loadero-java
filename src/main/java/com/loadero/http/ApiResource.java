@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.loadero.model.Assert;
 import com.loadero.model.AssertCollection;
+import com.loadero.model.File;
 import com.loadero.model.Group;
 import com.loadero.model.GroupCollection;
 import com.loadero.model.ModelParams;
@@ -69,6 +70,8 @@ public enum ApiResource {
     private static Gson createGson() {
         return new GsonBuilder()
             .registerTypeAdapter(Test.class, new TestTypeAdapter())
+            .registerTypeAdapter(File.class, new FileDeserializer())
+            .registerTypeAdapter(File.class, new FileSerializer())
             .registerTypeAdapter(Group.class, new GroupDeserializer())
             .registerTypeAdapter(Group.class, new GroupSerializer())
             .registerTypeAdapter(Participant.class, new ParticipantDeserializer())

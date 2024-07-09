@@ -19,7 +19,6 @@ final class ParticipantSerializer implements JsonSerializer<ParticipantParams> {
         jsonObject.addProperty("browser", participant.getBrowser().getBrowser());
         jsonObject.addProperty("network", participant.getNetwork().toString());
         jsonObject.addProperty("location", participant.getLocation().toString());
-        jsonObject.addProperty("media_type", participant.getMediaType().toString());
         jsonObject.addProperty("record_audio", participant.getRecordAudio());
 
         return jsonObject;

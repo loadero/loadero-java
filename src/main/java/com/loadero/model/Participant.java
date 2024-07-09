@@ -7,7 +7,6 @@ import com.loadero.types.AudioFeed;
 import com.loadero.types.Browser;
 import com.loadero.types.ComputeUnit;
 import com.loadero.types.Location;
-import com.loadero.types.MediaType;
 import com.loadero.types.Network;
 import com.loadero.types.VideoFeed;
 import java.io.IOException;
@@ -29,7 +28,6 @@ public final class Participant {
     private final Browser browser;
     private final Network network;
     private final Location location;
-    private final MediaType mediaType;
     private final boolean recordAudio;
     private final AudioFeed audioFeed;
     private final VideoFeed videoFeed;
@@ -47,7 +45,6 @@ public final class Participant {
         this.browser = params.getBrowser();
         this.network = params.getNetwork();
         this.location = params.getLocation();
-        this.mediaType = params.getMediaType();
         this.recordAudio = params.getRecordAudio();
         this.audioFeed = params.getAudioFeed();
         this.videoFeed = params.getVideoFeed();
@@ -201,10 +198,6 @@ public final class Participant {
         return location;
     }
 
-    public MediaType getMediaType() {
-        return mediaType;
-    }
-
     public boolean getRecordAudio() {
         return recordAudio;
     }
@@ -232,7 +225,6 @@ public final class Participant {
             ", browser=" + browser +
             ", network=" + network +
             ", location=" + location +
-            ", mediaType=" + mediaType +
             ", recordAudio=" + recordAudio +
             ", audioFeed=" + audioFeed +
             ", videoFeed=" + videoFeed +
