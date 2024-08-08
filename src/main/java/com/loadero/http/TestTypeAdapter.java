@@ -93,8 +93,8 @@ public class TestTypeAdapter extends TypeAdapter<Test> {
         jsonWriter.beginObject();
         jsonWriter.name(NAME).value(test.getName());
         jsonWriter.name(SCRIPT).value(test.getScript());
-        jsonWriter.name(START_INTERVAL).value(test.getStartInterval().toString());
-        jsonWriter.name(PARTICIPANT_TIMEOUT).value(test.getParticipantTimeout().toString());
+        jsonWriter.name(START_INTERVAL).value(test.getStartInterval().getSeconds());
+        jsonWriter.name(PARTICIPANT_TIMEOUT).value(test.getParticipantTimeout().getSeconds());
         jsonWriter.name(MODE).value(test.getMode().toString());
         jsonWriter.name(INCREMENT_STRATEGY).value(test.getIncrementStrategy().toString());
         jsonWriter.endObject();
