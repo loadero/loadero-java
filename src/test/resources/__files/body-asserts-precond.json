@@ -11,7 +11,7 @@
       "id": 692,
       "created": "2021-03-25T13:25:40Z",
       "updated": "2021-03-25T13:25:40Z",
-      "property": "media_type",
+      "property": "video_feed",
       "operator": "eq",
       "expected": "1080p-20db",
       "assert_id": 47523

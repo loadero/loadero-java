@@ -1,5 +1,7 @@
 package com.loadero.model;
 
+import java.util.NoSuchElementException;
+
 import com.google.gson.annotations.SerializedName;
 import com.loadero.types.FileType;
 import com.loadero.util.StringUtil;
@@ -172,6 +174,10 @@ public final class FileParams implements ModelParams {
          * @return Built {@link FileParams} object.
          */
         public FileParams build() {
+            if (StringUtil.empty(this.name)) {
+                throw new NoSuchElementException("Name cannot be empty");
+            }
+
             return new FileParams(this);
         }
     }

@@ -8,8 +8,6 @@ import com.google.gson.annotations.SerializedName;
 public enum Property {
     @SerializedName("browser")
     BROWSER("browser"),
-    @SerializedName("media_type")
-    MEDIA_TYPE("media_type"),
     @SerializedName("network")
     NETWORK("network"),
     @SerializedName("location")

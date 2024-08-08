@@ -189,16 +189,6 @@ Availability depends on the subscription plan.
 <tr>
 <td>
 
-```java
-enum MediaType
-```
-</td>
-<td>
-Contains media type options.
-</td>
-</tr>
-<tr>
-<td>
 
 ```java
 enum Network
@@ -378,7 +368,8 @@ ParticipantParams pParams = ParticipantParams
     .withNetwork(Network.DEFAULT)
     .withBrowser(new Browser(BrowserLatest.CHROME_LATEST))
     .withComputeUnit(ComputeUnit.G2)
-    .withMediaType(MediaType.DEFAULT)
+    .withAudioFeed(AudioFeed.DEFAULT)
+    .withVideoFeed(VideoFeed.DEFAULT)
     .withRecordAudio(false)
     .build();
 

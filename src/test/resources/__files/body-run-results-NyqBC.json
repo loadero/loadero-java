@@ -26,7 +26,6 @@
         "browser": "chrome88",
         "network": "default",
         "location": "us-west-2",
-        "media_type": "default",
         "video_feed": "default",
         "audio_feed": "default"
       }
@@ -57,7 +56,6 @@
         "browser": "chrome88",
         "network": "default",
         "location": "us-west-2",
-        "media_type": "default",
         "video_feed": "default",
         "audio_feed": "default"
       }
@@ -88,7 +86,6 @@
         "browser": "chrome88",
         "network": "default",
         "location": "us-west-2",
-        "media_type": "default",
         "video_feed": "default",
         "audio_feed": "default"
       }
@@ -119,7 +116,6 @@
         "browser": "chrome88",
         "network": "default",
         "location": "us-west-2",
-        "media_type": "default",
         "video_feed": "default",
         "audio_feed": "default"
       }
@@ -150,7 +146,6 @@
         "browser": "chrome88",
         "network": "default",
         "location": "us-west-2",
-        "media_type": "default",
         "video_feed": "default",
         "audio_feed": "default"
       }
@@ -181,7 +176,6 @@
         "browser": "firefox85",
         "network": "3g",
         "location": "us-west-2",
-        "media_type": "480pAV",
         "video_feed": "480p",
         "audio_feed": "128kbps"
       }
