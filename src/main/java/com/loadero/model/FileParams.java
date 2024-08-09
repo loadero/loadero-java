@@ -174,10 +174,6 @@ public final class FileParams implements ModelParams {
          * @return Built {@link FileParams} object.
          */
         public FileParams build() {
-            if (StringUtil.empty(this.name)) {
-                throw new NoSuchElementException("Name cannot be empty");
-            }
-
             return new FileParams(this);
         }
     }
