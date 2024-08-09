@@ -14,7 +14,6 @@
       "browser": "chromeLatest",
       "network": "default",
       "location": "us-west-2",
-      "media_type": "default",
       "video_feed": "default",
       "audio_feed": "default"
     },
@@ -32,7 +31,6 @@
       "browser": "chromeLatest",
       "network": "default",
       "location": "us-west-2",
-      "media_type": "default",
       "video_feed": "default",
       "audio_feed": "default"
     },
@@ -50,7 +48,6 @@
       "browser": "chromeLatest",
       "network": "default",
       "location": "us-west-2",
-      "media_type": "default",
       "video_feed": "default",
       "audio_feed": "default"
     },
@@ -68,7 +65,6 @@
       "browser": "chromeLatest",
       "network": "default",
       "location": "eu-west-1",
-      "media_type": "default",
       "video_feed": "default",
       "audio_feed": "default"
     },
@@ -86,7 +82,6 @@
       "browser": "chromeLatest",
       "network": "default",
       "location": "eu-west-1",
-      "media_type": "default",
       "video_feed": "default",
       "audio_feed": "default"
     },
@@ -104,7 +99,6 @@
       "browser": "chromeLatest",
       "network": "default",
       "location": "us-west-2",
-      "media_type": "default",
       "video_feed": "default",
       "audio_feed": "default"
     },
@@ -122,7 +116,6 @@
       "browser": "chromeLatest",
       "network": "default",
       "location": "us-west-2",
-      "media_type": "default",
       "video_feed": "default",
       "audio_feed": "default"
     },
@@ -140,7 +133,6 @@
       "browser": "chromeLatest",
       "network": "default",
       "location": "us-west-2",
-      "media_type": "default",
       "video_feed": "default",
       "audio_feed": "default"
     },
@@ -158,7 +150,6 @@
       "browser": "chromeLatest",
       "network": "default",
       "location": "us-west-2",
-      "media_type": "default",
       "video_feed": "default",
       "audio_feed": "default"
     }

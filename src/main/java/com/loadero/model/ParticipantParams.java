@@ -79,8 +79,13 @@ public final class ParticipantParams implements ModelParams {
         return new ParticipantParamsBuilder();
     }
 
-    // Can change: name, count, location, network, browser, record_audio, computeUnit
-    // media_type
+    /**
+     * Can change: name, count, location, network, browser, recordAudio,
+     * computeUnit, audioFeed, videoFeed
+     * 
+     * @param currentParams {@link Participant}.
+     * @return {@link ParticipantParams}
+     */
     ParticipantParams copyUncommonFields(Participant currentParams) {
         String name = this.name == null ? currentParams.getName() : this.name;
         int count = this.count == 0 ? currentParams.getCount() : this.count;

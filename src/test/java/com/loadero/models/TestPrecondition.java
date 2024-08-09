@@ -77,7 +77,7 @@ public class TestPrecondition extends AbstractTestLoadero {
         PreconditionParams params = PreconditionParams.builder()
             .withTestId(TEST_ID)
             .withAssertId(ASSERT_ID)
-            .withProperty(Property.MEDIA_TYPE)
+            .withProperty(Property.AUDIO_FEED)
             .withOperator(AssertOperator.GREATER_OR_EQUAL)
             .withExpected("4232")
             .build();
@@ -100,7 +100,7 @@ public class TestPrecondition extends AbstractTestLoadero {
 
         PreconditionParams params = PreconditionParams.builder()
             .withAssertId(ASSERT_ID)
-            .withProperty(Property.MEDIA_TYPE)
+            .withProperty(Property.AUDIO_FEED)
             .withOperator(AssertOperator.GREATER_OR_EQUAL)
             .withExpected("4232")
             .build();
@@ -146,7 +146,7 @@ public class TestPrecondition extends AbstractTestLoadero {
             .withUpdated("date")
             .withCreated("date")
             .withOperator(AssertOperator.EQUAL)
-            .withProperty(Property.MEDIA_TYPE)
+            .withProperty(Property.AUDIO_FEED)
             .withExpected("111")
             .build();
 
@@ -195,11 +195,11 @@ public class TestPrecondition extends AbstractTestLoadero {
 
     @Test
     public void getProperty() {
-        Property mediaType = Property.valueOf("media_type".toUpperCase(Locale.ROOT));
+        Property audioFeed = Property.valueOf("audio_feed".toUpperCase(Locale.ROOT));
         Property cu = Property.valueOf("compute_unit".toUpperCase(Locale.ROOT));
-        Assertions.assertEquals(Property.MEDIA_TYPE, mediaType);
+        Assertions.assertEquals(Property.AUDIO_FEED, audioFeed);
         Assertions.assertEquals(Property.COMPUTE_UNIT, cu);
-        Assertions.assertEquals("media_type", Property.MEDIA_TYPE.toString().toLowerCase());
+        Assertions.assertEquals("audio_feed", Property.AUDIO_FEED.toString().toLowerCase());
         Assertions.assertEquals("compute_unit", Property.COMPUTE_UNIT.toString().toLowerCase());
     }
 
