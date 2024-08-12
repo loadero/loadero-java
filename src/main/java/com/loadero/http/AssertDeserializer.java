@@ -11,6 +11,8 @@ import com.loadero.model.AssertParams;
 import com.loadero.model.Precondition;
 import com.loadero.types.AssertOperator;
 import com.loadero.types.AssertPath;
+import com.loadero.types.TimeExecutionAsserts;
+import com.loadero.types.MOSAsserts;
 import com.loadero.types.MachineAsserts;
 import com.loadero.types.WebRtcAsserts;
 import java.lang.reflect.Type;
@@ -29,7 +31,7 @@ final class AssertDeserializer implements JsonDeserializer<Assert> {
             .getConstant(jsonObject.getAsJsonPrimitive("operator").getAsString());
         List<Precondition> preconditions = new ArrayList<>();
 
-        if (!jsonObject.get("preconditions").isJsonNull()) {
+        if (jsonObject.get("preconditions") != null && !jsonObject.get("preconditions").isJsonNull()) {
             jsonObject.get("preconditions").getAsJsonArray()
                 .forEach(p -> preconditions.add(context.deserialize(p, Precondition.class)));
         }
@@ -56,6 +58,10 @@ final class AssertDeserializer implements JsonDeserializer<Assert> {
             path = MachineAsserts.getConstant(name);
         } else if (name.startsWith("webrtc")){
             path = WebRtcAsserts.getConstant(name);
+        } else if (name.startsWith("mos")){
+            path = MOSAsserts.getConstant(name);
+        } else if (name.startsWith("actions/timeExecution")) {
+            path = TimeExecutionAsserts.getConstant(name);
         } else {
             throw new ApiException("Unknown assert path.");
         }

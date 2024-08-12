@@ -24,7 +24,6 @@
     "browser": "chrome88",
     "network": "default",
     "location": "us-west-2",
-    "media_type": "default",
     "video_feed": "default",
     "audio_feed": "default"
   },

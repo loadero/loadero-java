@@ -1,5 +1,7 @@
 package com.loadero.model;
 
+import java.util.NoSuchElementException;
+
 import com.google.gson.annotations.SerializedName;
 import com.loadero.types.FileType;
 import com.loadero.util.StringUtil;

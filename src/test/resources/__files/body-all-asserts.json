@@ -13,7 +13,7 @@
           "id": 692,
           "created": "2021-03-25T13:25:40Z",
           "updated": "2021-04-23T07:49:03Z",
-          "property": "media_type",
+          "property": "audio_feed",
           "operator": "lte",
           "expected": "expected",
           "assert_id": 47523
@@ -132,7 +132,7 @@
           "id": 736,
           "created": "2021-05-06T12:23:25Z",
           "updated": "2021-05-06T12:23:25Z",
-          "property": "media_type",
+          "property": "audio_feed",
           "operator": "lte",
           "expected": "expected",
           "assert_id": 47854
