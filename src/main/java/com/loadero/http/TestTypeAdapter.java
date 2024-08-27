@@ -73,6 +73,7 @@ public class TestTypeAdapter extends TypeAdapter<Test> {
                     paramsBuilder.withParticipantCount(jsonReader.nextInt());
                     break;
                 default:
+                    jsonReader.skipValue();
                     break;
             }
         }

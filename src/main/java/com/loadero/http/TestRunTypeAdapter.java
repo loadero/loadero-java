@@ -119,6 +119,7 @@ public class TestRunTypeAdapter extends TypeAdapter<TestRun> {
                     testRunMap.put(PARTICIPANT_TIMEOUT, jsonReader.nextInt());
                     break;
                 default:
+                    jsonReader.skipValue();
                     break;
             }
         }
