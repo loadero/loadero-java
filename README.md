@@ -343,7 +343,7 @@ TestParams tParams = TestParams
     .withMode(TestMode.LOAD)
     .withIncrementStrategy(IncrementStrategy.RANDOM)
     .withStartInterval(Duration.ofSeconds(10))
-    .withParticipantTimeout(Duration.ofSeocnds(360))
+    .withParticipantTimeout(Duration.ofSeconds(360))
     .withScript("/path/to/TestMe.java/", "testSomething")
     .build();
 
